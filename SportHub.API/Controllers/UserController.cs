@@ -17,12 +17,20 @@ public class UserController : ControllerBase
         _usersService = userService;
     }
 
-    [HttpGet(Name = "GetWeatherForecast")]
+    [HttpGet(Name = "GetUsers")]
     public async Task<IActionResult> Get()
     {
         var users = await _usersService.GetUsersAsync();
     
         return Ok(users);
 
+    }
+    
+    [HttpGet("{id}", Name = "GetUserById")]
+    public async Task<IActionResult> GetById(string id)
+    {
+        var user = await _usersService.GetUserByIdAsync(id);
+    
+        return Ok(user);
     }
 }

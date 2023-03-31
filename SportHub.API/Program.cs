@@ -1,3 +1,5 @@
+using SportHub.API.Helpers;
+using SportHub.API.Helpers.Implementations;
 using SportHub.Services;
 using SportHub.Services.Implementations;
 
@@ -10,6 +12,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<IUserService, UserService>();
 var app = builder.Build();
 
