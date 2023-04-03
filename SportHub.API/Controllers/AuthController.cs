@@ -28,9 +28,49 @@ public class AuthController : ControllerBase
             return Unauthorized();
         }
 
-        JwtResponse token = _jwtService.GenerateSecurityToken(user);
+        JwtResponse response = _jwtService.GenerateTokens(user).Result;
+        
+        Response.Cookies.Append(
+            "refreshToken",
+            response.RefreshToken,
+            new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.Strict
+            }
+        );
 
-        return Ok(token);
+        return Ok(response);
+    }
+    
+    [HttpPost("refresh")]
+    public async Task<IActionResult> Refresh()
+    {
+        var refreshToken = Request.Cookies["refreshToken"];
+        
+        if (refreshToken == null || !_jwtService.ValidateToken(refreshToken))
+        {
+            return Unauthorized();
+        }
+        
+        var userEmail =  await _jwtService.GetUserEmailAsync(refreshToken);
+
+        if (userEmail == null)
+        {
+            return Unauthorized();
+        }
+
+        var user = await _userService.GetUserByEmailAsync(userEmail);
+        
+        if (user == null)
+        {
+            return Unauthorized();
+        }
+        
+        var response = await _jwtService.GenerateTokens(user);
+        
+        return Ok(response);
     }
 }  
 

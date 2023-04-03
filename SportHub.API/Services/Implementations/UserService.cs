@@ -9,13 +9,10 @@ namespace SportHub.Services.Implementations
 {
     public class UserService : IUserService
     {
-        private readonly IConfiguration _configuration;
-        
         private readonly string _connectionString;
 
         public UserService(IConfiguration configuration)
         {
-            _configuration = configuration;
             _connectionString = configuration.GetConnectionString("DefaultConnection");
         }
         
