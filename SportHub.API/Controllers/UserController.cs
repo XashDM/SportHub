@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SportHub.API.Middlewares.Implementations;
 using SportHub.Services;
 
 namespace SportHub.Controllers;
