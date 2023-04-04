@@ -1,4 +1,6 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SportHub.API.Middlewares.Implementations;
 using SportHub.Services;
 
 namespace SportHub.Controllers;
@@ -18,6 +20,7 @@ public class UserController : ControllerBase
     }
 
     [HttpGet(Name = "GetUsers")]
+    [Authorize("AdminPolicy")]    
     public async Task<IActionResult> Get()
     {
         var users = await _usersService.GetUsersAsync();
@@ -26,10 +29,11 @@ public class UserController : ControllerBase
 
     }
     
-    [HttpGet("{id}", Name = "GetUserById")]
-    public async Task<IActionResult> GetById(string id)
+    [HttpGet("{email}", Name = "GetUserByEmail")]
+    [Authorize]  
+    public async Task<IActionResult> GetByEmail(string email)
     {
-        var user = await _usersService.GetUserByIdAsync(id);
+        var user = await _usersService.GetUserByEmailAsync(email);
     
         return Ok(user);
     }

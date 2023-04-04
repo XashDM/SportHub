@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SportHub.API.Helpers;
 using SportHub.Models;
@@ -5,6 +6,7 @@ using SportHub.Services;
 
 namespace SportHub.Controllers;
 
+[AllowAnonymous]
 [ApiController]
 [Route("[controller]")]
 public class AuthController : ControllerBase
@@ -19,6 +21,7 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("login")]
+    [AllowAnonymous]
     public IActionResult Login(string email, string password)
     {
         var user = _userService.GetUserByEmailAsync(email).Result;

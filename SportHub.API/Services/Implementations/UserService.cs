@@ -25,14 +25,14 @@ namespace SportHub.Services.Implementations
             }  
         }
         
-        public async Task<User> GetUserByIdAsync(string id)
-        {
-            using (var connection = new MySqlConnection(_connectionString))
-            {
-                connection.Open();
-                return connection.Query<User>($"SELECT * FROM user WHERE userId = {id};").First();
-            }  
-        }
+        // public async Task<User> GetUserByIdAsync(string id)
+        // {
+        //     using (var connection = new MySqlConnection(_connectionString))
+        //     {
+        //         connection.Open();
+        //         return connection.Query<User>($"SELECT * FROM user WHERE userId = {id};").First();
+        //     }  
+        // }
         
         public async Task<User> GetUserByEmailAsync(string email)
         {
