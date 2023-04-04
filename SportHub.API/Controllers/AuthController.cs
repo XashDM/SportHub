@@ -22,7 +22,7 @@ public class AuthController : ControllerBase
 
     [HttpPost("login")]
     [AllowAnonymous]
-    public IActionResult Login(string email, string password)
+    public IActionResult LogIn(string email, string password)
     {
         var user = _userService.GetUserByEmailAsync(email).Result;
 
@@ -74,6 +74,24 @@ public class AuthController : ControllerBase
         var response = await _jwtService.GenerateTokens(user);
         
         return Ok(response);
+    }
+
+    [HttpPost("logout")]
+    public async Task<IActionResult> LogOut()
+    {
+        var refreshToken = Request.Cookies["refreshToken"];
+
+        if (string.IsNullOrEmpty(refreshToken))
+        {
+            return StatusCode(404);
+        }
+        // if (!_jwtService.ValidateToken(refreshToken) || _jwtService.DeleteRefreshToken(refreshToken))
+        if (_jwtService.DeleteRefreshToken(refreshToken))
+        {
+            return Ok();
+        }
+      
+        return StatusCode(500);
     }
 }  
 

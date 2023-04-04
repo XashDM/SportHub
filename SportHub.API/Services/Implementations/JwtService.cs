@@ -94,6 +94,26 @@ public class JwtService : IJwtService
             return false;
         }
     }
+    
+    public bool DeleteRefreshToken(string token)
+    {
+        try
+        {
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                connection.Open();
+                var sql = "DELETE FROM token WHERE refreshToken = @refreshToken";
+                connection.Execute(sql, new { refreshToken=token });
+            }   
+            
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"An error occurred: {ex.Message}");
+            return false;
+        }
+    }
 
     private async void _WriteTokenInDb(string token, string email)
     {
