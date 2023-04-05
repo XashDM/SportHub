@@ -1,6 +1,13 @@
+using SportHub.Business.Interfaces;
+using SportHub.Business.Services;
+using SportHub.Data.Interfaces;
+using SportHub.Data.Repositories;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddSingleton<IArticleRepository, ArticleRepository>();
+builder.Services.AddSingleton<IArticlesService, ArticlesService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
