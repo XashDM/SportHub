@@ -1,6 +1,6 @@
-using SportHub.Models;
+using SportHub.Data;
 
-namespace SportHub.API.Helpers;
+namespace SportHub.Business;
 
 public interface IJwtService
 {

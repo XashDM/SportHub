@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SportHub.Services;
-
+using SportHub.Business;
 namespace SportHub.Controllers;
 
 [ApiController]
@@ -33,6 +32,11 @@ public class UserController : ControllerBase
     public async Task<IActionResult> GetByEmail(string email)
     {
         var user = await _usersService.GetUserByEmailAsync(email);
+        
+        if (user == null)
+        {
+            return StatusCode(404);
+        }
     
         return Ok(user);
     }

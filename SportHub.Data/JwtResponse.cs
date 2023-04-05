@@ -1,10 +1,12 @@
-using SportHub.API.DTOs;
+using SportHub.Data.DTOs;
 
-namespace SportHub.Models;
+namespace SportHub.Data;
 
 public class JwtResponse 
 {
     public string AccessToken { get; set; }
+    
     public string RefreshToken { get; set; }
+    
     public UserDto User { get; set; }
 }

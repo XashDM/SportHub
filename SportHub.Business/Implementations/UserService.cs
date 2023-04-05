@@ -1,11 +1,9 @@
-
-
-using System.Configuration;
 using Dapper;
+using Microsoft.Extensions.Configuration;
 using MySql.Data.MySqlClient;
-using SportHub.Models;
+using SportHub.Data;
 
-namespace SportHub.Services.Implementations
+namespace SportHub.Business.Implementations
 {
     public class UserService : IUserService
     {

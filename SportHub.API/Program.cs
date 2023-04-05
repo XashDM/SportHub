@@ -1,10 +1,8 @@
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using SportHub.API.Helpers;
-using SportHub.API.Helpers.Implementations;
-using SportHub.Services;
-using SportHub.Services.Implementations;
+using SportHub.Business;
+using SportHub.Business.Implementations;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.

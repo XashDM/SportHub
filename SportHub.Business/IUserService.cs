@@ -1,6 +1,6 @@
-using SportHub.Models;
+using SportHub.Data;
 
-namespace SportHub.Services
+namespace SportHub.Business
 {
     public interface IUserService
     {

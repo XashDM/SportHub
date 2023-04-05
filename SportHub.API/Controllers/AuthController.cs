@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SportHub.API.Helpers;
-using SportHub.Models;
-using SportHub.Services;
+using SportHub.Business;
+using SportHub.Data;
+using SportHub.Business;
 
 namespace SportHub.Controllers;
 

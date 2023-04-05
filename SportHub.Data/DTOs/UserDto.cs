@@ -1,4 +1,4 @@
-namespace SportHub.API.DTOs;
+namespace SportHub.Data.DTOs;
 
 public class UserDto
 {

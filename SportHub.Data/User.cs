@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace SportHub.Models
+namespace SportHub.Data
 {
     public class User
     {

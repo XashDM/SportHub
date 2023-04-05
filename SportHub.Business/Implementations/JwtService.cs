@@ -1,14 +1,14 @@
-using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Dapper;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using MySql.Data.MySqlClient;
-using SportHub.API.DTOs;
-using SportHub.Models;
+using SportHub.Data;
+using SportHub.Data.DTOs;
 
-namespace SportHub.API.Helpers.Implementations;
+namespace SportHub.Business.Implementations;
 
 public class JwtService : IJwtService
 {
@@ -17,7 +17,7 @@ public class JwtService : IJwtService
 
     public JwtService(IConfiguration config)
     {
-        _key = config.GetValue<string>("JwtSettings:SecretKey");
+        _key = config.GetSection("JwtSettings")["SecretKey"];
         _connectionString = config.GetConnectionString("DefaultConnection");
 
     }
