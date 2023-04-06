@@ -1,6 +1,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SportHub.Business;
+using SportHub.Data;
+using SportHub.Data.DTOs;
+
 namespace SportHub.Controllers;
 
 [ApiController]
@@ -17,9 +20,9 @@ public class UserController : ControllerBase
         _usersService = userService;
     }
 
-    [HttpGet(Name = "GetUsers")]
+    [HttpGet("all")]
     [Authorize("AdminPolicy")]    
-    public async Task<IActionResult> Get()
+    public async Task<IActionResult> GetAllUsersAsync()
     {
         var users = await _usersService.GetUsersAsync();
     
@@ -27,17 +30,61 @@ public class UserController : ControllerBase
 
     }
     
-    [HttpGet("{email}", Name = "GetUserByEmail")]
-    [Authorize]  
-    public async Task<IActionResult> GetByEmail(string email)
+    [HttpGet("{email}")]
+    [Authorize("AdminPolicy")]    
+    public async Task<IActionResult> GetByEmailAsync(string email)
     {
         var user = await _usersService.GetUserByEmailAsync(email);
         
         if (user == null)
         {
-            return StatusCode(404);
+            return NotFound("User not found");
         }
     
-        return Ok(user);
+        return Ok(new UserResponseDto
+        {
+            Email = user.Email,
+            FirstName = user.FirstName,
+            SecondName = user.SecondName,
+            IsAdmin = user.IsAdmin
+        });
     }
+    
+    [HttpPost(Name = "InsertUser")]
+    public async Task<IActionResult> InsertUserAsync([FromBody] UserRequestDto user)
+    {
+        try
+        {
+            await _usersService.InsertOneAsync(user);
+
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex.Message);
+            return BadRequest(ex.Message);
+        }
+    }
+    
+    //TODO: ask about it on scrum meeting
+    // public async Task<IActionResult> InsertUserAsync([FromBody] UserRequestDto user)
+    // {
+    //     return await TryCatchAsync(async () => {
+    //         await _usersService.InsertOneAsync(user);
+    //         return Ok();
+    //     });
+    // }
+    //
+    // private async Task<IActionResult> TryCatchAsync(Func<Task<IActionResult>> action)
+    // {
+    //     try
+    //     {
+    //         return await action();
+    //     }
+    //     catch (Exception ex)
+    //     {
+    //         _logger.LogError(ex.Message);
+    //         return BadRequest(ex.Message);
+    //     }
+    // }
 }

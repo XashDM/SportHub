@@ -1,7 +1,9 @@
 using Dapper;
 using Microsoft.Extensions.Configuration;
 using MySql.Data.MySqlClient;
+using Org.BouncyCastle.Tls;
 using SportHub.Data;
+using SportHub.Data.DTOs;
 
 namespace SportHub.Business.Implementations
 {
@@ -14,12 +16,15 @@ namespace SportHub.Business.Implementations
             _connectionString = configuration.GetConnectionString("DefaultConnection");
         }
         
-        public async Task<IEnumerable<User>> GetUsersAsync()
+        public async Task<IEnumerable<UserResponseDto>> GetUsersAsync()
         {
             using (var connection = new MySqlConnection(_connectionString))
             {
                 connection.Open();
-                return connection.Query<User>("SELECT * FROM user");
+                var sql = "SELECT firstName, secondName, isAdmin, email FROM user";
+                var users = await connection.QueryAsync<UserResponseDto>(sql);
+                
+                return users;
             }  
         }
         
@@ -32,15 +37,35 @@ namespace SportHub.Business.Implementations
         //     }  
         // }
         
-        public async Task<User> GetUserByEmailAsync(string email)
+        public async Task<User> GetUserByEmailAsync(string email, string? password = null)
         {
             using (var connection = new MySqlConnection(_connectionString))
             {
                 connection.Open();
-                var user = connection.Query<User>($"SELECT * FROM user WHERE email = '{email}';")?.FirstOrDefault();
-                 
+                var response = await connection.QueryAsync<User>($"SELECT * FROM user WHERE email = '{email}';");
+                User user = response?.FirstOrDefault();
+
+                if (user == null || (string.IsNullOrEmpty(password) ? false : user.Password != password))
+                {
+                    return null;
+                }
+
                 return user;
-            }  
+            }
+        }
+
+        public async Task<bool> InsertOneAsync(UserRequestDto user)
+        {
+   
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                connection.Open();
+                var sql = "INSERT INTO User (isActivated, isAdmin, password, email, firstName, secondName) " +
+                          "VALUES (false, false, @password, @email, @firstName, @secondName)";
+                await connection.ExecuteAsync(sql, user);
+            }
+            
+            return true;
         }
     }
 }

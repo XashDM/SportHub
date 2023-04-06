@@ -22,7 +22,7 @@ public class JwtService : IJwtService
 
     }
 
-    public async Task<JwtResponse> GenerateTokens(User user)
+    public async Task<JwtResponse> GenerateTokensAsync(User user)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
         var key = Encoding.ASCII.GetBytes(_key);
@@ -43,13 +43,13 @@ public class JwtService : IJwtService
         
         tokenDescriptor.Expires = DateTime.UtcNow.AddMinutes(2);
         var refreshToken  = tokenHandler.CreateToken(tokenDescriptor);
-        _WriteTokenInDb(tokenHandler.WriteToken(refreshToken), user.Email);
+        await WriteTokenInDbAsync(tokenHandler.WriteToken(refreshToken), user.Email);
         
         
         JwtResponse response= new JwtResponse();
         response.AccessToken = tokenHandler.WriteToken(accessToken);
         response.RefreshToken = tokenHandler.WriteToken(refreshToken);
-        response.User = new UserDto
+        response.User = new UserResponseDto
         {
             Email = user.Email,
             FirstName = user.FirstName,
@@ -95,27 +95,18 @@ public class JwtService : IJwtService
         }
     }
     
-    public bool DeleteRefreshToken(string token)
+    public async Task DeleteRefreshTokenAsync(string token)
     {
-        try
+        using (var connection = new MySqlConnection(_connectionString))
         {
-            using (var connection = new MySqlConnection(_connectionString))
-            {
-                connection.Open();
-                var sql = "DELETE FROM token WHERE refreshToken = @refreshToken";
-                connection.Execute(sql, new { refreshToken=token });
-            }   
+            connection.Open();
+            var sql = "DELETE FROM token WHERE refreshToken = @refreshToken";
             
-            return true;
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"An error occurred: {ex.Message}");
-            return false;
+            await connection.ExecuteAsync(sql, new { refreshToken=token });
         }
     }
 
-    private async void _WriteTokenInDb(string token, string email)
+    private async Task WriteTokenInDbAsync(string token, string email)
     {
         using (var connection = new MySqlConnection(_connectionString))
         {

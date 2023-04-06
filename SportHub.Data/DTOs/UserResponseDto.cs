@@ -1,6 +1,6 @@
 namespace SportHub.Data.DTOs;
 
-public class UserDto
+public class UserResponseDto
 {
     public string FirstName { get; set; } 
     
