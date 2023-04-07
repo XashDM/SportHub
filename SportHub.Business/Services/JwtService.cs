@@ -1,25 +1,24 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Dapper;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using MySql.Data.MySqlClient;
-using SportHub.Data;
-using SportHub.Data.DTOs;
+
+using SportHub.Data.Entities;
+using SportHub.Data.DTO;
+using SportHub.Data.Interfaces;
 
 namespace SportHub.Business.Implementations;
 
 public class JwtService : IJwtService
 {
     private readonly string _key;
-    private readonly string _connectionString;
+    private readonly ITokenRepository _tokenRepository;
 
-    public JwtService(IConfiguration config)
+    public JwtService(IConfiguration config, ITokenRepository tokenRepository)
     {
         _key = config.GetSection("JwtSettings")["SecretKey"];
-        _connectionString = config.GetConnectionString("DefaultConnection");
-
+        _tokenRepository = tokenRepository;
     }
 
     public async Task<JwtResponse> GenerateTokensAsync(User user)
@@ -43,7 +42,7 @@ public class JwtService : IJwtService
         
         tokenDescriptor.Expires = DateTime.UtcNow.AddMinutes(2);
         var refreshToken  = tokenHandler.CreateToken(tokenDescriptor);
-        await WriteTokenInDbAsync(tokenHandler.WriteToken(refreshToken), user.Email);
+        await _tokenRepository.WriteTokenInDbAsync(tokenHandler.WriteToken(refreshToken), user.Email);
         
         
         JwtResponse response= new JwtResponse();
@@ -59,18 +58,7 @@ public class JwtService : IJwtService
         
         return response;
     }
-
-    public async Task<string> GetUserEmailAsync(string token)
-    {
-        using (var connection = new MySqlConnection(_connectionString))
-        {
-            connection.Open();
-            var query = "SELECT email FROM token WHERE refreshToken = @token";
-            var result = await connection.QueryAsync<string>(query, new { token });
-            return result.FirstOrDefault();
-        }  
-    }
-
+    
     public bool ValidateToken(string token)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
@@ -94,30 +82,17 @@ public class JwtService : IJwtService
             return false;
         }
     }
-    
+
     public async Task DeleteRefreshTokenAsync(string token)
     {
-        using (var connection = new MySqlConnection(_connectionString))
-        {
-            connection.Open();
-            var sql = "DELETE FROM token WHERE refreshToken = @refreshToken";
-            
-            await connection.ExecuteAsync(sql, new { refreshToken=token });
-        }
+        await _tokenRepository.DeleteRefreshTokenAsync(token);
     }
 
-    private async Task WriteTokenInDbAsync(string token, string email)
+    public async Task<string> GetEmailByTokenAsync(string token)
     {
-        using (var connection = new MySqlConnection(_connectionString))
-        {
-            connection.Open();
-            var parameters = new { Email = email, RefreshToken = token };
-            var sql = @"
-                        INSERT INTO token (refreshToken, email)
-                        VALUES (@RefreshToken, @Email)
-                        ON DUPLICATE KEY UPDATE refreshToken = @RefreshToken;";
-        
-            await connection.ExecuteAsync(sql, parameters);
-        }   
+        var email = await _tokenRepository.GetEmailByTokenAsync(token);
+
+        return email;
     }
+    
 }

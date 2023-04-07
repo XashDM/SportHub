@@ -1,6 +1,6 @@
-using SportHub.Data.DTOs;
+using SportHub.Data.DTO;
 
-namespace SportHub.Data;
+namespace SportHub.Data.Entities;
 
 public class JwtResponse 
 {

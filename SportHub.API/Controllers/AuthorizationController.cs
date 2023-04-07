@@ -1,8 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SportHub.Business;
-using SportHub.Data;
-using SportHub.Business;
+using SportHub.Data.Entities;
 
 namespace SportHub.Controllers;
 
@@ -69,7 +68,7 @@ public class AuthController : ControllerBase
                 return Unauthorized();
             }
             
-            var userEmail =  await _jwtService.GetUserEmailAsync(refreshToken);
+            var userEmail =  await _jwtService.GetEmailByTokenAsync(refreshToken);
 
             if (userEmail == null)
             {

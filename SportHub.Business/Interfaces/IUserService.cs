@@ -1,5 +1,5 @@
-using SportHub.Data;
-using SportHub.Data.DTOs;
+using SportHub.Data.Entities;
+using SportHub.Data.DTO;
 
 namespace SportHub.Business
 {
@@ -8,7 +8,7 @@ namespace SportHub.Business
         public Task<IEnumerable<UserResponseDto>> GetUsersAsync();
 
         public Task<User> GetUserByEmailAsync(string email, string? password = null);
-        public Task<bool> InsertOneAsync(UserRequestDto user);
+        public Task InsertOneAsync(UserRequestDto userDto);
     }
 }
 
