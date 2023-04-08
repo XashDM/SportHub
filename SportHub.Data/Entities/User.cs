@@ -7,7 +7,6 @@ namespace SportHub.Data.Entities
     {
         public string FirstName { get; set; } 
         
-        
         public string SecondName { get; set; } 
         
         public bool IsAdmin { get; set; } 

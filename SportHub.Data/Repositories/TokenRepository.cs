@@ -8,19 +8,19 @@ namespace SportHub.Data.Repositories;
 public class TokenRepository : ITokenRepository
 {
     private readonly string _key;
-    private readonly string _connectionString;
+    private readonly IDbConnectionFactory _dbConnectionFactory;
 
-    public TokenRepository(IConfiguration config)
+    public TokenRepository(IConfiguration config, IDbConnectionFactory dbConnectionFactory)
     {
         _key = config.GetSection("JwtSettings")["SecretKey"];
-        _connectionString = config.GetConnectionString("DefaultConnection");
+        _dbConnectionFactory = dbConnectionFactory;
 
     }
     
 
     public async Task<string> GetEmailByTokenAsync(string token)
     {
-        using (var connection = new MySqlConnection(_connectionString))
+        using (var connection = _dbConnectionFactory.GetConnection())
         {
             connection.Open();
             var query = "SELECT email FROM token WHERE refreshToken = @token";
@@ -32,7 +32,7 @@ public class TokenRepository : ITokenRepository
 
     public async Task DeleteRefreshTokenAsync(string token)
     {
-        using (var connection = new MySqlConnection(_connectionString))
+        using (var connection = _dbConnectionFactory.GetConnection())
         {
             connection.Open();
             var sql = "DELETE FROM token WHERE refreshToken = @refreshToken";
@@ -43,7 +43,7 @@ public class TokenRepository : ITokenRepository
 
     public async Task WriteTokenInDbAsync(string token, string email)
     {
-        using (var connection = new MySqlConnection(_connectionString))
+        using (var connection = _dbConnectionFactory.GetConnection())
         {
             connection.Open();
             var parameters = new { Email = email, RefreshToken = token };
