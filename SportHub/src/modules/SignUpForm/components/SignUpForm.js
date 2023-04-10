@@ -8,12 +8,12 @@ function SignUpForm(){
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [firstName, setFirstName] = useState('')
-    const [lastName, setLastName] = useState('')
+    const [secondName, setSecondName] = useState('')
     const [error, setError] = useState(false)
     const handleSignUp = async (event) => {
         event.preventDefault()
 
-        const result = await signUpRequest({email, password, firstName, lastName})
+        const result = await signUpRequest({email, password, firstName, secondName})
 
         if (result === "ERR_BAD_REQUEST") {
            setError(true)
@@ -39,7 +39,7 @@ function SignUpForm(){
                 <Input label={"Last name"}
                        placeholder={"Doe"}
                        error={error}
-                       onChange={(event) => setLastName(event.target.value)}/>
+                       onChange={(event) => setSecondName(event.target.value)}/>
             </div>
 
 

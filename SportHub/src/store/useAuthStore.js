@@ -1,7 +1,7 @@
 import {create} from 'zustand'
 
 export const useAuthStore = create((set) => ({
-    userData: {},
+    userData: null,
     accessToken: '',
     setUserData: (userData) => set({ userData }),
     setAccessToken: (accessToken) => set({ accessToken }),
