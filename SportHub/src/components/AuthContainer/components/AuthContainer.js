@@ -1,18 +1,19 @@
 import styles from "../styles/style.module.scss"
 import Button from "../../../ui/Button"
 import {useNavigate} from "react-router-dom"
+import {ROUTES} from "../../../routes/routes"
 
 function AuthContainer({isLogIn, children}){
     const navigate = useNavigate()
 
     function handleLogToSign(e){
         e.stopPropagation()
-        navigate("/sign-up")
+        navigate(ROUTES.SIGNUP)
     }
 
     function handleSignToLog(e){
         e.stopPropagation()
-        navigate("/log-in")
+        navigate(ROUTES.LOGIN)
     }
     return(
         <div className={styles.container}>

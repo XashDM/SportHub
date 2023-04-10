@@ -6,12 +6,12 @@ import {ROUTES} from "../../../routes/routes"
 
 
 export default function HomePage(){
-    const { userData }=useAuthStore()
+    const { userData, setUserData} = useAuthStore()
     const navigate = useNavigate()
     return (
         <>
             {
-                userData.isAdmin
+                userData?.isAdmin
                 ?
                     <>
                         <h1>Hi admin</h1>
@@ -20,6 +20,7 @@ export default function HomePage(){
                 :
                     <h1>Home, sweet home :)</h1>
             }
+            <Button text={"LOG OUT"} isOutlined={true} onClick={()=>setUserData(null)}/>
         </>
     )
 
