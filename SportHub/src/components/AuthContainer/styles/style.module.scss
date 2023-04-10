@@ -1,0 +1,47 @@
+@import "src/styles/mixins";
+
+.container{
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+
+    .img_container{
+        background-image: url("https://library.sportingnews.com/2023-02/nba-plain--bae9f57c-4bd8-46fd-a3ad-5e5f2c6d7df4.png");
+        background-size: cover;
+        width: 45%;
+
+        .logo{
+            position: absolute;
+            left:0;
+            top:0;
+
+            @include flex-center;
+            background: var(--main-color);
+            width: 18vw;
+            height: 10vh;
+            font-size: 22px;
+            color: white;
+        }
+    }
+
+    .form_container{
+        @include flex-center;
+        position: relative;
+        width: 55%;
+
+        .controls_container{
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 10%;
+
+            display: flex;
+            align-items: center;
+            gap: 5vw;
+            padding: 0 4vw;
+            justify-content: right;
+        }
+    }
+}
+
