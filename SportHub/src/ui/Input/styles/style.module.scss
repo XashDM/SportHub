@@ -1,0 +1,17 @@
+
+.form__control{
+    width: 100%;
+
+    .link{
+        all: unset;
+
+        color: #4B90E2;
+        position: absolute;
+        right: 5px;
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+}
+

@@ -1,59 +1,40 @@
-import React, { Component } from 'react';
+import {BrowserRouter, Route, Routes} from 'react-router-dom'
 
-export default class App extends Component {
-    static displayName = App.name;
+import RegistrationPage from "./pages/Registration"
+import AuthorizationPage from "./pages/Authorization"
+import HomePage from "./pages/Home"
+import ProtectedRoute from "./routes/ProtectedRoute"
+import ErrorPage from "./pages/Error"
+import AdminPage from "./pages/Admin"
 
-    constructor(props) {
-        super(props);
-        this.state = { forecasts: [], loading: true };
-    }
+import "./styles/base.scss"
+import {ROUTES} from "./routes/routes"
 
-    componentDidMount() {
-        this.populateWeatherData();
-    }
 
-    static renderForecastsTable(forecasts) {
-        return (
-            <table className='table table-striped' aria-labelledby="tabelLabel">
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Temp. (C)</th>
-                        <th>Temp. (F)</th>
-                        <th>Summary</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {forecasts.map(forecast =>
-                        <tr key={forecast.date}>
-                            <td>{forecast.date}</td>
-                            <td>{forecast.temperatureC}</td>
-                            <td>{forecast.temperatureF}</td>
-                            <td>{forecast.summary}</td>
-                        </tr>
-                    )}
-                </tbody>
-            </table>
-        );
-    }
 
-    render() {
-        let contents = this.state.loading
-            ? <p><em>Loading... Please refresh once the ASP.NET backend has started. See <a href="https://aka.ms/jspsintegrationreact">https://aka.ms/jspsintegrationreact</a> for more details.</em></p>
-            : App.renderForecastsTable(this.state.forecasts);
 
-        return (
-            <div>
-                <h1 id="tabelLabel" >Weather forecast</h1>
-                <p>This component demonstrates fetching data from the server.</p>
-                {contents}
-            </div>
-        );
-    }
+function App() {
+    return (
+        <BrowserRouter>
+            <Routes>
+                <Route exact path={ROUTES.HOME} element={
+                    <ProtectedRoute roles={["admin", "user"]}>
+                        <HomePage/>
+                    </ProtectedRoute>
+                } />
 
-    async populateWeatherData() {
-        const response = await fetch('weatherforecast');
-        const data = await response.json();
-        this.setState({ forecasts: data, loading: false });
-    }
+                <Route exact path={ROUTES.ADMIN} element={
+                    <ProtectedRoute roles={["admin"]}>
+                        <AdminPage/>
+                    </ProtectedRoute>
+                } />
+
+                    <Route exact path={ROUTES.SIGNUP} element={<RegistrationPage/>} />
+                    <Route exact path={ROUTES.LOGIN} element={<AuthorizationPage/>} />
+                    <Route exact path="*" element={<ErrorPage/>} />
+            </Routes>
+        </BrowserRouter>
+    )
 }
+
+export default App
