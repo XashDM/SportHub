@@ -8,16 +8,16 @@ namespace SportHub.Data.Repositories
 {
     public class UserRepository : IUserRepository
     {
-        private readonly string _connectionString;
-
-        public UserRepository(IConfiguration configuration)
+        private readonly IDbConnectionFactory _dbConnectionFactory;
+    
+        public UserRepository(IDbConnectionFactory dbConnectionFactory)
         {
-            _connectionString = configuration.GetConnectionString("DefaultConnection");
+            _dbConnectionFactory = dbConnectionFactory;
             
         }
         public async Task<User> GetUserByEmailAsync(string email)
         {
-            using (var connection = new MySqlConnection(_connectionString))
+            using (var connection = _dbConnectionFactory.GetConnection())
             {
                 connection.Open();
                 var response = await connection.QueryAsync<User>($"SELECT * FROM user WHERE email = '{email}';");
@@ -29,7 +29,7 @@ namespace SportHub.Data.Repositories
 
         public async Task<IEnumerable<User>> GetAllUsersAsync()
         {
-            using (var connection = new MySqlConnection(_connectionString))
+            using (var connection = _dbConnectionFactory.GetConnection())
             {
                 connection.Open();
                 var sql = "SELECT * FROM user";
@@ -41,7 +41,7 @@ namespace SportHub.Data.Repositories
 
         public async Task InsertOneAsync(User user)
         {
-            using (var connection = new MySqlConnection(_connectionString))
+            using (var connection = _dbConnectionFactory.GetConnection())
             {
                 connection.Open();
                 var sql = "INSERT INTO User (isActivated, isAdmin, password, email, firstName, secondName) " +

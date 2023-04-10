@@ -12,38 +12,26 @@ namespace SportHub.Business.Implementations;
 
 public class JwtService : IJwtService
 {
-    private readonly string _key;
+    private readonly byte[] _key;
     private readonly ITokenRepository _tokenRepository;
 
     public JwtService(IConfiguration config, ITokenRepository tokenRepository)
     {
-        _key = config.GetSection("JwtSettings")["SecretKey"];
+        _key = Encoding.ASCII.GetBytes(config.GetSection("JwtSettings")["SecretKey"]);
         _tokenRepository = tokenRepository;
     }
 
     public async Task<JwtResponse> GenerateTokensAsync(User user)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.ASCII.GetBytes(_key);
-        var tokenDescriptor = new SecurityTokenDescriptor
-        {
-            Subject = new ClaimsIdentity(new[]
-            {
-                new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.Name, user.FirstName + " " + user.SecondName),
-                new Claim(ClaimTypes.Role, user.IsAdmin ? "admin" : "user")
-            }),
-            Expires = DateTime.UtcNow.AddMinutes(1),
-            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key),
-                SecurityAlgorithms.HmacSha256Signature)
-        };
+
+        var tokenDescriptor = CreateTokenDescriptor(user);
         
         var accessToken = tokenHandler.CreateToken(tokenDescriptor);
         
         tokenDescriptor.Expires = DateTime.UtcNow.AddMinutes(2);
         var refreshToken  = tokenHandler.CreateToken(tokenDescriptor);
         await _tokenRepository.WriteTokenInDbAsync(tokenHandler.WriteToken(refreshToken), user.Email);
-        
         
         JwtResponse response= new JwtResponse();
         response.AccessToken = tokenHandler.WriteToken(accessToken);
@@ -62,18 +50,12 @@ public class JwtService : IJwtService
     public bool ValidateToken(string token)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.ASCII.GetBytes(_key);
 
         try
         {
-            tokenHandler.ValidateToken(token, new TokenValidationParameters
-            {
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(key),
-                ValidateIssuer = false,
-                ValidateAudience = false,
-                ClockSkew = TimeSpan.Zero
-            }, out SecurityToken validatedToken);
+            tokenHandler.ValidateToken(token,  
+                CreateTokenValidationParameters(), 
+                out SecurityToken validatedToken);
 
             return true;
         }
@@ -94,5 +76,34 @@ public class JwtService : IJwtService
 
         return email;
     }
-    
+
+    private SecurityTokenDescriptor CreateTokenDescriptor(User user)
+    {
+        return new SecurityTokenDescriptor
+        {
+            Subject = new ClaimsIdentity(new[]
+            {
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.Name, user.FirstName + " " + user.SecondName),
+                new Claim(ClaimTypes.Role, user.IsAdmin ? "admin" : "user")
+            }),
+            Expires = DateTime.UtcNow.AddMinutes(1),
+            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(_key),
+                SecurityAlgorithms.HmacSha256Signature)
+        };
+    }
+
+    private TokenValidationParameters CreateTokenValidationParameters()
+    {
+        return new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(_key),
+            ValidateIssuer = false,
+            ValidateAudience = false,
+            ClockSkew = TimeSpan.Zero
+        };
+    }
+
+
 }

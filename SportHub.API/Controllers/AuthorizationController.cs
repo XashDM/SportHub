@@ -22,7 +22,7 @@ public class AuthController : ControllerBase
 
     [HttpPost("login")]
     [AllowAnonymous]
-    public async Task<IActionResult> LogIn(string email, string password)
+    public async Task<IActionResult> LogInAsync(string email, string password)
     {
         try
         {
@@ -57,7 +57,7 @@ public class AuthController : ControllerBase
     }
     
     [HttpPost("refresh")]
-    public async Task<IActionResult> Refresh()
+    public async Task<IActionResult> RefreshAsync()
     {
         try
         {
@@ -95,7 +95,7 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("logout")]
-    public async Task<IActionResult> LogOut()
+    public async Task<IActionResult> LogOutAsync()
     {
         var refreshToken = Request.Cookies["refreshToken"];
 
