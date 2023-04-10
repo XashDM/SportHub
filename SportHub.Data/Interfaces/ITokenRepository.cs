@@ -2,11 +2,11 @@ namespace SportHub.Data.Interfaces
 {
    public interface ITokenRepository
    {
-       Task<string> GetEmailByTokenAsync(string token);
+       Task<string> GetIdByTokenAsync(string token);
    
        Task DeleteRefreshTokenAsync(string token);
    
-       Task WriteTokenInDbAsync(string token, string email);
+       Task WriteTokenInDbAsync(string token, string id);
    } 
 }
 

@@ -68,14 +68,14 @@ public class AuthController : ControllerBase
                 return Unauthorized();
             }
             
-            var userEmail =  await _jwtService.GetEmailByTokenAsync(refreshToken);
+            var userId =  await _jwtService.GetIdByTokenAsync(refreshToken);
 
-            if (userEmail == null)
+            if (userId == null)
             {
                 return Unauthorized();
             }
 
-            var user = await _userService.GetUserByEmailAsync(userEmail);
+            var user = await _userService.GetUserByIdAsync(userId);
             
             if (user == null)
             {

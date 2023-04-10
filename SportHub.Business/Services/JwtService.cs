@@ -31,16 +31,17 @@ namespace SportHub.Business.Implementations
             
             tokenDescriptor.Expires = DateTime.UtcNow.AddMinutes(2);
             var refreshToken  = tokenHandler.CreateToken(tokenDescriptor);
-            await _tokenRepository.WriteTokenInDbAsync(tokenHandler.WriteToken(refreshToken), user.Email);
+            await _tokenRepository.WriteTokenInDbAsync(tokenHandler.WriteToken(refreshToken), user.Id);
             
             JwtResponse response= new JwtResponse();
             response.AccessToken = tokenHandler.WriteToken(accessToken);
             response.RefreshToken = tokenHandler.WriteToken(refreshToken);
             response.User = new UserResponseDto
             {
+                Id = user.Id,
                 Email = user.Email,
                 FirstName = user.FirstName,
-                SecondName = user.SecondName,
+                LastName = user.LastName,
                 IsAdmin = user.IsAdmin
             };
             
@@ -70,11 +71,11 @@ namespace SportHub.Business.Implementations
             await _tokenRepository.DeleteRefreshTokenAsync(token);
         }
 
-        public async Task<string> GetEmailByTokenAsync(string token)
+        public async Task<string> GetIdByTokenAsync(string token)
         {
-            var email = await _tokenRepository.GetEmailByTokenAsync(token);
+            var id = await _tokenRepository.GetIdByTokenAsync(token);
 
-            return email;
+            return id;
         }
 
         private SecurityTokenDescriptor CreateTokenDescriptor(User user)
@@ -84,7 +85,7 @@ namespace SportHub.Business.Implementations
                 Subject = new ClaimsIdentity(new[]
                 {
                     new Claim(ClaimTypes.Email, user.Email),
-                    new Claim(ClaimTypes.Name, user.FirstName + " " + user.SecondName),
+                    new Claim(ClaimTypes.Name, user.FirstName + " " + user.LastName),
                     new Claim(ClaimTypes.Role, user.IsAdmin ? "admin" : "user")
                 }),
                 Expires = DateTime.UtcNow.AddMinutes(1),

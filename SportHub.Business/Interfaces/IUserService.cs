@@ -7,6 +7,7 @@ namespace SportHub.Business
     {
         public Task<IEnumerable<UserResponseDto>> GetUsersAsync();
         public Task<User> GetUserByEmailAsync(string email, string? password = null);
+        public Task<User> GetUserByIdAsync(string id);
         public Task InsertOneAsync(UserRequestDto userDto);
     }
 }

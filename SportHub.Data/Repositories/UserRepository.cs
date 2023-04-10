@@ -20,7 +20,18 @@ namespace SportHub.Data.Repositories
             using (var connection = _dbConnectionFactory.GetConnection())
             {
                 connection.Open();
-                var response = await connection.QueryFirstOrDefaultAsync<User>($"SELECT * FROM user WHERE email = '{email}';");
+                var response = await connection.QueryFirstOrDefaultAsync<User>($"SELECT * FROM user WHERE Email = '{email}';");
+
+                return response;
+            }
+        }
+        
+        public async Task<User> GetUserByIdAsync(string id)
+        {
+            using (var connection = _dbConnectionFactory.GetConnection())
+            {
+                connection.Open();
+                var response = await connection.QueryFirstOrDefaultAsync<User>($"SELECT * FROM user WHERE Id = '{id}';");
 
                 return response;
             }
@@ -43,8 +54,8 @@ namespace SportHub.Data.Repositories
             using (var connection = _dbConnectionFactory.GetConnection())
             {
                 connection.Open();
-                var sql = "INSERT INTO User (isActivated, isAdmin, password, email, firstName, secondName) " +
-                          "VALUES (@isActivated, @isAdmin, @password, @email, @firstName, @secondName)";
+                var sql = "INSERT INTO User (Id, IsActivated, IsAdmin, Password, Email, FirstName, LastName) " +
+                          "VALUES (@Id, @IsActivated, @IsAdmin, @Password, @Email, @FirstName, @LastName)";
                 await connection.ExecuteAsync(sql, user);
             }
         }

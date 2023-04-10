@@ -1,6 +1,5 @@
 using Dapper;
 using Microsoft.Extensions.Configuration;
-using MySql.Data.MySqlClient;
 using SportHub.Data.Interfaces;
 
 namespace SportHub.Data.Repositories;
@@ -17,12 +16,12 @@ public class TokenRepository : ITokenRepository
     }
     
 
-    public async Task<string> GetEmailByTokenAsync(string token)
+    public async Task<string> GetIdByTokenAsync(string token)
     {
         using (var connection = _dbConnectionFactory.GetConnection())
         {
             connection.Open();
-            var query = "SELECT email FROM token WHERE refreshToken = @token";
+            var query = "SELECT UserId FROM token WHERE RefreshToken = @token";
             var result = await connection.QueryFirstOrDefaultAsync<string>(query, new { token });
 
             return result;
@@ -40,16 +39,16 @@ public class TokenRepository : ITokenRepository
         }
     }
 
-    public async Task WriteTokenInDbAsync(string token, string email)
+    public async Task WriteTokenInDbAsync(string token, string id)
     {
         using (var connection = _dbConnectionFactory.GetConnection())
         {
             connection.Open();
-            var parameters = new { Email = email, RefreshToken = token };
+            var parameters = new { UserId = id, RefreshToken = token };
             var sql = @"
-                        INSERT INTO token (refreshToken, email)
-                        VALUES (@RefreshToken, @Email)
-                        ON DUPLICATE KEY UPDATE refreshToken = @RefreshToken;";
+                        INSERT INTO token (RefreshToken, UserId)
+                        VALUES (@RefreshToken, @UserId)
+                        ON DUPLICATE KEY UPDATE RefreshToken = @RefreshToken;";
         
             await connection.ExecuteAsync(sql, parameters);
         }   

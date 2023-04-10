@@ -19,7 +19,8 @@ namespace SportHub.Business.Implementations
             
             IEnumerable<UserResponseDto> userDtos = users.Select(u => new UserResponseDto
             {
-                SecondName = u.SecondName,
+                Id = u.Id,
+                LastName = u.LastName,
                 FirstName = u.FirstName,
                 Email = u.Email,
                 IsAdmin = u.IsAdmin
@@ -39,14 +40,22 @@ namespace SportHub.Business.Implementations
 
             return user;
         }
+        
+        public async Task<User> GetUserByIdAsync(string id)
+        {
+            var user = await _userRepository.GetUserByIdAsync(id);
+            
+            return user;
+        }
 
         public async Task InsertOneAsync(UserRequestDto userDto)
         {
             User user = new User
             {
+                Id = Guid.NewGuid().ToString(),
                 Email = userDto.Email,
                 FirstName = userDto.FirstName,
-                SecondName = userDto.SecondName,
+                LastName = userDto.LastName,
                 Password = userDto.Password,
                 IsActivated = false,
                 IsAdmin = false

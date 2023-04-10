@@ -30,9 +30,9 @@ public class UserController : ControllerBase
 
     }
     
-    [HttpGet("{email}")]
+    [HttpGet("Email/{email}")]
     [Authorize("AdminPolicy")]    
-    public async Task<IActionResult> GetByEmailAsync(string email)
+    public async Task<IActionResult> GetByEmailAsync([FromRoute] string email)
     {
         var user = await _usersService.GetUserByEmailAsync(email);
         
@@ -43,9 +43,31 @@ public class UserController : ControllerBase
     
         return Ok(new UserResponseDto
         {
+            Id = user.Id,
             Email = user.Email,
             FirstName = user.FirstName,
-            SecondName = user.SecondName,
+            LastName = user.LastName,
+            IsAdmin = user.IsAdmin
+        });
+    }
+    
+    [HttpGet("Id/{id}")]
+    [Authorize("AdminPolicy")]    
+    public async Task<IActionResult> GetByIdAsync([FromRoute] string id)
+    {
+        var user = await _usersService.GetUserByIdAsync(id);
+        
+        if (user == null)
+        {
+            return NotFound("User not found");
+        }
+    
+        return Ok(new UserResponseDto
+        {
+            Id = user.Id,
+            Email = user.Email,
+            FirstName = user.FirstName,
+            LastName = user.LastName,
             IsAdmin = user.IsAdmin
         });
     }
