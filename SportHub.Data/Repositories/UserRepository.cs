@@ -20,10 +20,9 @@ namespace SportHub.Data.Repositories
             using (var connection = _dbConnectionFactory.GetConnection())
             {
                 connection.Open();
-                var response = await connection.QueryAsync<User>($"SELECT * FROM user WHERE email = '{email}';");
-                User user = response?.FirstOrDefault();
+                var response = await connection.QueryFirstOrDefaultAsync<User>($"SELECT * FROM user WHERE email = '{email}';");
 
-                return user;
+                return response;
             }
         }
 

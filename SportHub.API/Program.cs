@@ -54,7 +54,7 @@ builder.Services.AddAuthorization(options =>
         policy.RequireRole("user");
     });
 });
-// builder.Services.AddAuthorization();
+
 var app = builder.Build();
 
 

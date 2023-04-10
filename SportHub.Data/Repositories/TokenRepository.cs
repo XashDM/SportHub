@@ -14,7 +14,6 @@ public class TokenRepository : ITokenRepository
     {
         _key = config.GetSection("JwtSettings")["SecretKey"];
         _dbConnectionFactory = dbConnectionFactory;
-
     }
     
 
@@ -24,9 +23,9 @@ public class TokenRepository : ITokenRepository
         {
             connection.Open();
             var query = "SELECT email FROM token WHERE refreshToken = @token";
-            var result = await connection.QueryAsync<string>(query, new { token });
-            
-            return result.FirstOrDefault();
+            var result = await connection.QueryFirstOrDefaultAsync<string>(query, new { token });
+
+            return result;
         }  
     }
 
