@@ -17,7 +17,8 @@
     "react-dom": "^18.2.0",
     "react-redux": "^8.0.5",
     "react-router-dom": "^6.10.0",
-    "react-scripts": "5.0.1"
+    "react-scripts": "5.0.1",
+    "zustand": "^4.3.7"
   },
   "scripts": {
     "start": "set HTTPS=true&&react-scripts start",
