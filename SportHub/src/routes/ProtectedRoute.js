@@ -1,5 +1,6 @@
 import {Navigate} from 'react-router-dom'
 import { useAuthStore } from '../store/useAuthStore'
+import {ROUTES} from "./routes"
 
 
 function ProtectedRoute({ roles, children }) {
@@ -9,11 +10,11 @@ function ProtectedRoute({ roles, children }) {
 
     if (!userData) {
         // User is not authenticated, redirect to login page
-        return <Navigate  to='/log-in' />
+        return <Navigate  to={ROUTES.LOGIN} />
     }
 
     if (roles && roles.indexOf(role) === -1) {
-        return <Navigate  to='/' />
+        return <Navigate  to={ROUTES.HOME} />
     }
 
     return children

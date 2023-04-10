@@ -8,6 +8,7 @@ import ErrorPage from "./pages/Error"
 import AdminPage from "./pages/Admin"
 
 import "./styles/base.scss"
+import {ROUTES} from "./routes/routes"
 
 
 
@@ -16,20 +17,20 @@ function App() {
     return (
         <BrowserRouter>
             <Routes>
-                <Route exact path="/" element={
+                <Route exact path={ROUTES.HOME} element={
                     <ProtectedRoute roles={["admin", "user"]}>
                         <HomePage/>
                     </ProtectedRoute>
                 } />
 
-                <Route exact path="/admin" element={
+                <Route exact path={ROUTES.ADMIN} element={
                     <ProtectedRoute roles={["admin"]}>
                         <AdminPage/>
                     </ProtectedRoute>
                 } />
 
-                    <Route exact path="/sign-up" element={<RegistrationPage/>} />
-                    <Route exact path="/log-in" element={<AuthorizationPage/>} />
+                    <Route exact path={ROUTES.SIGNUP} element={<RegistrationPage/>} />
+                    <Route exact path={ROUTES.LOGIN} element={<AuthorizationPage/>} />
                     <Route exact path="*" element={<ErrorPage/>} />
             </Routes>
         </BrowserRouter>

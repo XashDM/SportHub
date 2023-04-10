@@ -5,6 +5,7 @@ import {useEffect, useState} from "react"
 import {useNavigate} from 'react-router-dom'
 import loginRequest from "../helpers/loginRequest"
 import {useAuthStore} from "../../../store/useAuthStore"
+import {ROUTES} from "../../../routes/routes"
 function LoginForm(){
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -22,7 +23,7 @@ function LoginForm(){
             setUserData(result.user)
             setAccessToken(result.accessToken)
             setError(false)
-            navigate("/")
+            navigate(ROUTES.HOME)
         }
     }
 
