@@ -1,7 +1,7 @@
 import React, {Component, useRef, useState} from 'react';
 import { ReactSVG } from "react-svg";
 import "../Styles/HorizontalAdminMenu.css";
-import HorizontalAdminMenuElement from "../../../Components/HorizontalAdminMenuElement/Components/HorizontalAdminMenuElement";
+import HorizontalAdminMenuElement from "../../../components/HorizontalAdminMenuElement/Components/HorizontalAdminMenuElement";
 
 export default function HorizontalAdminMenu(){
 

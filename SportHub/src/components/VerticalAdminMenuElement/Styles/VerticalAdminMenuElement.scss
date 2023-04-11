@@ -4,8 +4,32 @@
   cursor: pointer;
 }
 
-.inactive path, circle, rect, mask{
+.active path{
   stroke: var(--color-red-regular);
   fill: var(--color-red-regular);
 }
 
+.active rect{
+  stroke: var(--color-red-regular);
+  fill: var(--color-red-regular);
+}
+
+.active circle{
+  stroke: var(--color-red-regular);
+  fill: var(--color-red-regular);
+}
+
+.inactive path{
+  stroke: var(--color-dark-menu-item);
+  fill: var(--color-dark-menu-item);
+}
+
+.inactive circle{
+  stroke: var(--color-dark-menu-item);
+  fill: var(--color-dark-menu-item);
+}
+
+.inactive rect{
+  stroke: var(--color-dark-menu-item);
+  fill: var(--color-dark-menu-item);
+}

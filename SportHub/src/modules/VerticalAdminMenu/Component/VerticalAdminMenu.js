@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import "../Styles/VerticalAdminMenu.css"
-import VerticalAdminMenuElement from "../../../Components/VerticalAdminMenuElement";
+import VerticalAdminMenuElement from "../../../components/VerticalAdminMenuElement";
 
 export default function VerticalAdminMenu(){
 

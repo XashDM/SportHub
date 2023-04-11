@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import '../Styles/Header.css';
-import '../../../Styles/Hint/Hint.css';
-import ProfileDropdownList from "../../../Components/ProfileDropdownList";
+import '../../../styles/Hint/Hint.css';
+import ProfileDropdownList from "../../../components/ProfileDropdownList";
 
 export default function Header(){
 

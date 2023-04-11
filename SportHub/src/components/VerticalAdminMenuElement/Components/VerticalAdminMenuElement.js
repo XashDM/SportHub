@@ -1,7 +1,7 @@
 import React from 'react';
 import {ReactSVG} from "react-svg";
 import "../Styles/VerticalAdminMenuElement.css"
-import "../../../Styles/Hint/Hint.css"
+import "../../../styles/Hint/Hint.css"
 
 export default function VerticalAdminMenuElement(props) {
 
