@@ -1,0 +1,3 @@
+import HorizontalAdminMenuElement from "./components/HorizontalAdminMenuElement"
+
+export default HorizontalAdminMenuElement

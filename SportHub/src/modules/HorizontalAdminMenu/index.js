@@ -1,3 +1,3 @@
-import HorizontalAdminMenu from "./Components/HorizontalAdminMenu"
+import HorizontalAdminMenu from "./components/HorizontalAdminMenu"
 
 export default HorizontalAdminMenu

@@ -1,3 +1,3 @@
-import VerticalAdminMenu from "./Component/VerticalAdminMenu"
+import VerticalAdminMenu from "./components/VerticalAdminMenu"
 
 export default VerticalAdminMenu
