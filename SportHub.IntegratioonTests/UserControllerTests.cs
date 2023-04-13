@@ -16,12 +16,18 @@ namespace SportHub.IntegratioonTests
         [Test]
         public async Task NewUserRequest_InsertedIntoDatabase_NewUserCreated()
         {
+            // Arrange
+
             var loggerMock = new Mock<ILogger<UserController>>();
             var userService = CreateUserService();
                         
             var userController = new UserController(loggerMock.Object, userService);
 
+            // Act
+
             var actualResult = await userController.InsertUserAsync(new Data.DTO.UserRequestDto());
+
+            // Assert
 
             Assert.IsTrue(actualResult is BadRequestObjectResult);
         }
