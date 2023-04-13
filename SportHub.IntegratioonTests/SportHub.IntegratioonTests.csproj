@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SportHub.Business\SportHub.Business.csproj" />
+    <ProjectReference Include="..\SportHub.API\SportHub.API.csproj" />
   </ItemGroup>
 
 </Project>
