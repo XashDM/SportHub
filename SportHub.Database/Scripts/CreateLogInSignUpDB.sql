@@ -9,7 +9,8 @@ USE `SportHub` ;
 -- Connection port : 3306
 
 CREATE USER IF NOT EXISTS'user'@'localhost' IDENTIFIED BY 'password' ;
-
+GRANT ALL PRIVILEGES ON SportHub.* TO 'user'@'localhost';
+    
 -- -----------------------------------------------------
 -- Table `SportHub`.`user`
 -- -----------------------------------------------------
