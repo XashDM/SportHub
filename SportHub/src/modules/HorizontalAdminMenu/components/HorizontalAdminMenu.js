@@ -2,11 +2,11 @@ import React, {useRef, useState} from 'react'
 import { ReactSVG } from "react-svg"
 import styles from "../styles/style.module.scss"
 import HorizontalAdminMenuElement from "./HorizontalAdminMenuElement"
-import {HORIZONTALMENUCONSTAINTS} from "../../../constants/HorizontalMenuConstants"
+import {HORIZONTAL_MENU_CONSTANT} from "../../../constants/HorizontalMenuConstants"
 
 export default function HorizontalAdminMenu(){
 
-    const [listOfSections, setListOfSections] = useState(HORIZONTALMENUCONSTAINTS)
+    const [listOfSections, setListOfSections] = useState(HORIZONTAL_MENU_CONSTANT)
     const [currentSection, setCurrentSection] = useState(0)
 
     const [canScrollLeft, setCanScrollLeft] = useState(false)
