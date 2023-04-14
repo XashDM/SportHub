@@ -12,29 +12,29 @@ CREATE USER IF NOT EXISTS'user'@'localhost' IDENTIFIED BY 'password' ;
 GRANT ALL PRIVILEGES ON SportHub.* TO 'user'@'localhost';
     
 -- -----------------------------------------------------
--- Table `SportHub`.`user`
+-- Table `SportHub`.`User`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `SportHub`.`user` (
-    `Id` VARCHAR(150) NOT NULL,
+CREATE TABLE IF NOT EXISTS `SportHub`.`User` (
+    `UserId` VARCHAR(150) NOT NULL,
     `Email` VARCHAR(70) NOT NULL,
     `Password` VARCHAR(255) NOT NULL,
     `FirstName` VARCHAR(100) NOT NULL,
     `LastName` VARCHAR(100) NOT NULL,
-    `isAdmin` TINYINT NOT NULL DEFAULT '0',
-    `isActivated` TINYINT NOT NULL DEFAULT '0',
-    PRIMARY KEY (`Id`),
+    `IsAdmin` TINYINT NOT NULL DEFAULT '0',
+    `IsActivated` TINYINT NOT NULL DEFAULT '0',
+    PRIMARY KEY (`UserId`),
     UNIQUE INDEX `Email_UNIQUE` (`Email` ASC) VISIBLE)
     ENGINE = InnoDB;
 
 -- -----------------------------------------------------
--- Table `SportHub`.`token`
+-- Table `SportHub`.`Token`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `SportHub`.`token` (
-    `refreshToken` VARCHAR(300) NOT NULL,
+CREATE TABLE IF NOT EXISTS `SportHub`.`Token` (
+    `RefreshToken` VARCHAR(300) NOT NULL,
     `UserId` VARCHAR(150) NOT NULL,
-    PRIMARY KEY (`refreshToken`),
+    PRIMARY KEY (`RefreshToken`),
     UNIQUE INDEX `UserId_UNIQUE` (`UserId` ASC) VISIBLE,
     CONSTRAINT `fk_UserId`
     FOREIGN KEY (`UserId`)
-    REFERENCES `SportHub`.`user` (`Id`))
+    REFERENCES `SportHub`.`User` (`UserId`))
     ENGINE = InnoDB;
