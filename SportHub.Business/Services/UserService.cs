@@ -1,3 +1,4 @@
+using AutoMapper;
 using SportHub.Data.Entities;
 using SportHub.Data.DTO;
 using SportHub.Data.Interfaces;
@@ -7,24 +8,19 @@ namespace SportHub.Business.Implementations
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
-
-        public UserService(IUserRepository userRepository)
+        private readonly IMapper _mapper;
+        
+        public UserService(IUserRepository userRepository, IMapper mapper)
         {
             _userRepository = userRepository;
+            _mapper = mapper;
         }
         
         public async Task<IEnumerable<UserResponseDto>> GetUsersAsync()
         {
             var users = await _userRepository.GetAllUsersAsync();
             
-            IEnumerable<UserResponseDto> userDtos = users.Select(u => new UserResponseDto
-            {
-                UserId = u.UserId,
-                LastName = u.LastName,
-                FirstName = u.FirstName,
-                Email = u.Email,
-                IsAdmin = u.IsAdmin
-            });
+            IEnumerable<UserResponseDto> userDtos = _mapper.Map<IEnumerable<UserResponseDto>>(users);
             
             return userDtos;
         }
@@ -38,28 +34,16 @@ namespace SportHub.Business.Implementations
                 return null;
             }
 
-            return (new UserResponseDto
-            {
-                UserId = user.UserId,
-                Email = user.Email,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                IsAdmin = user.IsAdmin
-            });
+            return _mapper.Map<User, UserResponseDto>(user);
         }
         
         public async Task<UserResponseDto> GetUserByIdAsync(string id)
         {
             var user = await _userRepository.GetUserByIdAsync(id);
+
+            return _mapper.Map<User, UserResponseDto>(user);
+
             
-            return (new UserResponseDto
-            {
-                UserId = user.UserId,
-                Email = user.Email,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                IsAdmin = user.IsAdmin
-            });
         }
 
         public async Task InsertOneAsync(UserRequestDto userDto)

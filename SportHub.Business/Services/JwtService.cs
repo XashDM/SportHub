@@ -29,7 +29,7 @@ namespace SportHub.Business.Implementations
             
             var accessToken = tokenHandler.CreateToken(tokenDescriptor);
             
-            tokenDescriptor.Expires = DateTime.UtcNow.AddMinutes(2);
+            tokenDescriptor.Expires = DateTime.UtcNow.AddMinutes(15);
             var refreshToken  = tokenHandler.CreateToken(tokenDescriptor);
             await _tokenRepository.WriteTokenInDbAsync(tokenHandler.WriteToken(refreshToken), user.UserId);
             
@@ -81,7 +81,7 @@ namespace SportHub.Business.Implementations
                     new Claim(ClaimTypes.Name, user.FirstName + " " + user.LastName),
                     new Claim(ClaimTypes.Role, user.IsAdmin ? "admin" : "user")
                 }),
-                Expires = DateTime.UtcNow.AddMinutes(1),
+                Expires = DateTime.UtcNow.AddMinutes(5),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(_key),
                     SecurityAlgorithms.HmacSha256Signature)
             };
