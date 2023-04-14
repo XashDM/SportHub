@@ -21,7 +21,7 @@ namespace SportHub.Business.Implementations
             _tokenRepository = tokenRepository;
         }
 
-        public async Task<JwtResponse> GenerateTokensAsync(User user)
+        public async Task<JwtResponse> GenerateTokensAsync(UserResponseDto user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
 
@@ -31,19 +31,12 @@ namespace SportHub.Business.Implementations
             
             tokenDescriptor.Expires = DateTime.UtcNow.AddMinutes(2);
             var refreshToken  = tokenHandler.CreateToken(tokenDescriptor);
-            await _tokenRepository.WriteTokenInDbAsync(tokenHandler.WriteToken(refreshToken), user.Id);
+            await _tokenRepository.WriteTokenInDbAsync(tokenHandler.WriteToken(refreshToken), user.UserId);
             
             JwtResponse response= new JwtResponse();
             response.AccessToken = tokenHandler.WriteToken(accessToken);
             response.RefreshToken = tokenHandler.WriteToken(refreshToken);
-            response.User = new UserResponseDto
-            {
-                Id = user.Id,
-                Email = user.Email,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                IsAdmin = user.IsAdmin
-            };
+            response.User = user;
             
             return response;
         }
@@ -78,7 +71,7 @@ namespace SportHub.Business.Implementations
             return id;
         }
 
-        private SecurityTokenDescriptor CreateTokenDescriptor(User user)
+        private SecurityTokenDescriptor CreateTokenDescriptor(UserResponseDto user)
         {
             return new SecurityTokenDescriptor
             {

@@ -19,7 +19,7 @@ namespace SportHub.Business.Implementations
             
             IEnumerable<UserResponseDto> userDtos = users.Select(u => new UserResponseDto
             {
-                Id = u.Id,
+                UserId = u.UserId,
                 LastName = u.LastName,
                 FirstName = u.FirstName,
                 Email = u.Email,
@@ -29,7 +29,7 @@ namespace SportHub.Business.Implementations
             return userDtos;
         }
 
-        public async Task<User> GetUserByEmailAsync(string email, string? password = null)
+        public async Task<UserResponseDto> GetUserByEmailAsync(string email, string? password = null)
         {
             var user = await _userRepository.GetUserByEmailAsync(email);
             
@@ -38,21 +38,35 @@ namespace SportHub.Business.Implementations
                 return null;
             }
 
-            return user;
+            return (new UserResponseDto
+            {
+                UserId = user.UserId,
+                Email = user.Email,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                IsAdmin = user.IsAdmin
+            });
         }
         
-        public async Task<User> GetUserByIdAsync(string id)
+        public async Task<UserResponseDto> GetUserByIdAsync(string id)
         {
             var user = await _userRepository.GetUserByIdAsync(id);
             
-            return user;
+            return (new UserResponseDto
+            {
+                UserId = user.UserId,
+                Email = user.Email,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                IsAdmin = user.IsAdmin
+            });
         }
 
         public async Task InsertOneAsync(UserRequestDto userDto)
         {
             User user = new User
             {
-                Id = Guid.NewGuid().ToString(),
+                UserId = Guid.NewGuid().ToString(),
                 Email = userDto.Email,
                 FirstName = userDto.FirstName,
                 LastName = userDto.LastName,

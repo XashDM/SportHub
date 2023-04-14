@@ -43,7 +43,7 @@ public class UserController : ControllerBase
     
         return Ok(new UserResponseDto
         {
-            Id = user.Id,
+            UserId = user.UserId,
             Email = user.Email,
             FirstName = user.FirstName,
             LastName = user.LastName,
@@ -62,14 +62,7 @@ public class UserController : ControllerBase
             return NotFound("User not found");
         }
     
-        return Ok(new UserResponseDto
-        {
-            Id = user.Id,
-            Email = user.Email,
-            FirstName = user.FirstName,
-            LastName = user.LastName,
-            IsAdmin = user.IsAdmin
-        });
+        return Ok();
     }
     
     [HttpPost(Name = "InsertUser")]
@@ -79,7 +72,9 @@ public class UserController : ControllerBase
         {
             await _usersService.InsertOneAsync(user);
 
-            return Ok();
+            var insertedUser = await _usersService.GetUserByEmailAsync(user.Email);
+
+            return Ok(insertedUser);
         }
         catch (Exception ex)
         {
@@ -88,25 +83,4 @@ public class UserController : ControllerBase
         }
     }
     
-    //TODO: ask about it on scrum meeting
-    // public async Task<IActionResult> InsertUserAsync([FromBody] UserRequestDto user)
-    // {
-    //     return await TryCatchAsync(async () => {
-    //         await _usersService.InsertOneAsync(user);
-    //         return Ok();
-    //     });
-    // }
-    //
-    // private async Task<IActionResult> TryCatchAsync(Func<Task<IActionResult>> action)
-    // {
-    //     try
-    //     {
-    //         return await action();
-    //     }
-    //     catch (Exception ex)
-    //     {
-    //         _logger.LogError(ex.Message);
-    //         return BadRequest(ex.Message);
-    //     }
-    // }
 }
