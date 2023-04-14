@@ -1,6 +1,7 @@
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using SportHub.API;
 using SportHub.Business;
 using SportHub.Business.Implementations;
 using SportHub.Data.Factories;
@@ -8,6 +9,9 @@ using SportHub.Data.Interfaces;
 using SportHub.Data.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddAutoMapper(typeof(MapperConfig));
+
 // Add services to the container.
 
 builder.Services.AddControllers();
