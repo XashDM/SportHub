@@ -20,7 +20,7 @@ namespace SportHub.Data.Repositories
             using (var connection = _dbConnectionFactory.GetConnection())
             {
                 connection.Open();
-                var response = await connection.QueryFirstOrDefaultAsync<User>($"SELECT * FROM user WHERE Email = '{email}';");
+                var response = await connection.QueryFirstOrDefaultAsync<User>($"SELECT * FROM User WHERE Email = '{email}';");
 
                 return response;
             }
@@ -31,7 +31,7 @@ namespace SportHub.Data.Repositories
             using (var connection = _dbConnectionFactory.GetConnection())
             {
                 connection.Open();
-                var response = await connection.QueryFirstOrDefaultAsync<User>($"SELECT * FROM user WHERE Id = '{id}';");
+                var response = await connection.QueryFirstOrDefaultAsync<User>($"SELECT * FROM User WHERE UserId = '{id}';");
 
                 return response;
             }
@@ -42,7 +42,7 @@ namespace SportHub.Data.Repositories
             using (var connection = _dbConnectionFactory.GetConnection())
             {
                 connection.Open();
-                var sql = "SELECT * FROM user";
+                var sql = "SELECT * FROM User";
                 var users = await connection.QueryAsync<User>(sql);
                 
                 return users;
@@ -54,8 +54,8 @@ namespace SportHub.Data.Repositories
             using (var connection = _dbConnectionFactory.GetConnection())
             {
                 connection.Open();
-                var sql = "INSERT INTO User (Id, IsActivated, IsAdmin, Password, Email, FirstName, LastName) " +
-                          "VALUES (@Id, @IsActivated, @IsAdmin, @Password, @Email, @FirstName, @LastName)";
+                var sql = "INSERT INTO User (UserId, IsActivated, IsAdmin, Password, Email, FirstName, LastName) " +
+                          "VALUES (@UserId, @IsActivated, @IsAdmin, @Password, @Email, @FirstName, @LastName)";
                 await connection.ExecuteAsync(sql, user);
             }
         }
