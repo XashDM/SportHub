@@ -1,12 +1,12 @@
 -- -----------------------------------------------------
--- Insert admin and user accounts to `user` table
+-- Insert admin and user accounts to `User` table
 -- -----------------------------------------------------
-INSERT INTO `SportHub`.`user` (`Id`, `Email`, `Password`, `FirstName`, `LastName`, `isAdmin`, `isActivated`) VALUES ('testUserId', 'testUserEmail@gmail.com', 'testUserPassword', 'Oleh', 'User', '0', '0');
-INSERT INTO `SportHub`.`user` (`Id`, `Email`, `Password`, `FirstName`, `LastName`, `isAdmin`, `isActivated`) VALUES ('testAdminId', 'testAdminEmail', 'testAdminPassword', 'Andriy', 'Admin', '1', '0');
+INSERT INTO `SportHub`.`User` (`UserId`, `Email`, `Password`, `FirstName`, `LastName`, `IsAdmin`, `IsActivated`) VALUES ('testUserId', 'testUserEmail@gmail.com', 'testUserPassword', 'Oleh', 'User', '0', '0');
+INSERT INTO `SportHub`.`User` (`UserId`, `Email`, `Password`, `FirstName`, `LastName`, `IsAdmin`, `IsActivated`) VALUES ('testAdminId', 'testAdminEmail@gmail.com', 'testAdminPassword', 'Andriy', 'Admin', '1', '0');
 
 -- -----------------------------------------------------
--- Insert admin and user refresh tokens to `refreshToken` table
+-- Insert admin and user refresh tokens to `RefreshToken` table
 -- -----------------------------------------------------
 
-INSERT INTO `SportHub`.`token` (`refreshToken`, `UserId`) VALUES ('testUserRefreshToken', 'testUserId');
-INSERT INTO `SportHub`.`token` (`refreshToken`, `UserId`) VALUES ('testAdminRefreshToken', 'testAdminId');
+INSERT INTO `SportHub`.`Token` (`RefreshToken`, `UserId`) VALUES ('testUserRefreshToken', 'testUserId');
+INSERT INTO `SportHub`.`Token` (`RefreshToken`, `UserId`) VALUES ('testAdminRefreshToken', 'testAdminId');
