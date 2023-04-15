@@ -64,25 +64,7 @@ public class UserController : ControllerBase
     
         return Ok(user);
     }
-    
-    [HttpPost(Name = "InsertUser")]
-    public async Task<IActionResult> InsertUserAsync([FromBody] UserRequestDto user)
-    {
-        try
-        {
-            await _usersService.InsertOneAsync(user);
 
-            var insertedUser = await _usersService.GetUserByEmailAsync(user.Email);
-
-            return Ok(insertedUser);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex.Message);
-            return BadRequest(ex.Message);
-        }
-    }
-    
     [HttpPut]
     public async Task<IActionResult> UpdateUserAsync([FromBody] UserRequestDto newUser)
     {

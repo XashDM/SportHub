@@ -2,7 +2,7 @@ namespace SportHub.Data.DTO
 {
     public class UserRequestDto
     {
-        public string UserId { get; set; }
+        public string? UserId { get; set; }
         
         public string? FirstName { get; set; }
         

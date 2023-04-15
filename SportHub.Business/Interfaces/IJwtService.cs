@@ -5,7 +5,8 @@ namespace SportHub.Business;
 public interface IJwtService
 {
     public Task<JwtResponse> GenerateTokensAsync(UserResponseDto user);
-    public bool ValidateToken(string token);
+    public string ValidateToken(string token);
     public Task<string> GetIdByTokenAsync(string token);
     public Task DeleteRefreshTokenAsync(string token);
+    public string GenerateActivationLink(UserResponseDto user);
 }

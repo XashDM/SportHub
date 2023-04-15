@@ -29,7 +29,8 @@ namespace SportHub.Business.Implementations
         {
             var user = await _userRepository.GetUserByEmailAsync(email);
             
-            if (user == null || (string.IsNullOrEmpty(password) ? false : user.Password != password))
+            //if password provided then check if  password is correct and if account is activated 
+            if (user == null || (string.IsNullOrEmpty(password) ? false : !(user.Password == password && user.IsActivated)))
             {
                 return null;
             }
@@ -68,6 +69,11 @@ namespace SportHub.Business.Implementations
 
             await _userRepository.UpdateUserAsync(updatedUser);
         }
+
+        public async Task ActivateUserAccountAsync(string id)
+        {
+            await _userRepository.ActivateUserAccountAsync(id);
+        } 
         
     }
 }
