@@ -42,8 +42,6 @@ namespace SportHub.Business.Implementations
             var user = await _userRepository.GetUserByIdAsync(id);
 
             return _mapper.Map<User, UserResponseDto>(user);
-
-            
         }
 
         public async Task InsertOneAsync(UserRequestDto userDto)
@@ -61,6 +59,16 @@ namespace SportHub.Business.Implementations
 
            await _userRepository.InsertOneAsync(user);
         }
+
+        public async Task UpdateUserAsync(UserRequestDto newUser)
+        {
+            var existingUser = await _userRepository.GetUserByIdAsync(newUser.UserId);
+            
+            var updatedUser = _mapper.Map<UserRequestDto, User>(newUser, existingUser);
+
+            await _userRepository.UpdateUserAsync(updatedUser);
+        }
+        
     }
 }
 
