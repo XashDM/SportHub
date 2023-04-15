@@ -75,6 +75,17 @@ namespace SportHub.Data.Repositories
 
             }
         }
+
+        public async Task ActivateUserAccountAsync(string id)
+        {
+            using (var connection = _dbConnectionFactory.GetConnection())
+            {
+                connection.Open();
+                var sql = $"UPDATE User SET IsActivated = 1 WHERE UserId = '{id}';";
+                await connection.ExecuteAsync(sql);
+
+            }
+        }
     }
 }
 

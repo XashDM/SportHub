@@ -41,21 +41,22 @@ namespace SportHub.Business.Implementations
             return response;
         }
         
-        public bool ValidateToken(string token)
+        public string ValidateToken(string token)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
 
             try
             {
-                tokenHandler.ValidateToken(token,  
-                    CreateTokenValidationParameters(), 
+                var tokenData = tokenHandler.ValidateToken(token,
+                    CreateTokenValidationParameters(),
                     out SecurityToken validatedToken);
+                string response = tokenData.Claims.First(claim => claim.Type == ClaimTypes.NameIdentifier).Value;
 
-                return true;
+                return response;
             }
             catch
             {
-                return false;
+                return "";
             }
         }
 
@@ -77,6 +78,7 @@ namespace SportHub.Business.Implementations
             {
                 Subject = new ClaimsIdentity(new[]
                 {
+                    new Claim(ClaimTypes.NameIdentifier, user.UserId),
                     new Claim(ClaimTypes.Email, user.Email),
                     new Claim(ClaimTypes.Name, user.FirstName + " " + user.LastName),
                     new Claim(ClaimTypes.Role, user.IsAdmin ? "admin" : "user")
@@ -97,6 +99,20 @@ namespace SportHub.Business.Implementations
                 ValidateAudience = false,
                 ClockSkew = TimeSpan.Zero
             };
+        }
+
+        public string GenerateActivationLink(UserResponseDto user)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+
+            var tokenDescriptor = CreateTokenDescriptor(user);
+            tokenDescriptor.Expires = DateTime.UtcNow.AddHours(24);
+            
+            var activationToken = tokenHandler.CreateToken(tokenDescriptor);
+
+            string activationLink = $"https://localhost:7168/Auth/activate/{tokenHandler.WriteToken(activationToken)}";
+
+            return activationLink;
         }
     
     }

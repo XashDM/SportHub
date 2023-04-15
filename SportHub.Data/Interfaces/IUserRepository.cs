@@ -9,6 +9,7 @@ namespace SportHub.Data.Interfaces
         Task<IEnumerable<User>> GetAllUsersAsync();
         Task InsertOneAsync(User user); 
         Task UpdateUserAsync(User user);
+        Task ActivateUserAccountAsync(string id);
     }
 }
 

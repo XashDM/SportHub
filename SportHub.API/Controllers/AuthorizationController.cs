@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SportHub.Business;
+using SportHub.Data.DTO;
 using SportHub.Data.Entities;
 
 namespace SportHub.Controllers;
@@ -32,8 +33,7 @@ public class AuthController : ControllerBase
             {
                 return Unauthorized();
             }
-
-        
+            
             JwtResponse response = await _jwtService.GenerateTokensAsync(user);
             
             Response.Cookies.Append(
@@ -63,7 +63,7 @@ public class AuthController : ControllerBase
         {
             var refreshToken = Request.Cookies["refreshToken"];
             
-            if (refreshToken == null || !_jwtService.ValidateToken(refreshToken))
+            if (refreshToken == null || string.IsNullOrEmpty(_jwtService.ValidateToken(refreshToken)))
             {
                 return Unauthorized();
             }
@@ -106,13 +106,56 @@ public class AuthController : ControllerBase
 
         try
         {
-            if(!_jwtService.ValidateToken(refreshToken))
+            if(string.IsNullOrEmpty(_jwtService.ValidateToken(refreshToken)))
             {
                 return Ok();
             }
             
             await _jwtService.DeleteRefreshTokenAsync(refreshToken);
             return Ok();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex.Message);
+            return BadRequest(ex.Message);
+        }
+    }
+    
+    [HttpGet("activate/{token}")]
+    [AllowAnonymous]
+    public async Task<IActionResult> ActivateAccountAsync(string token)
+    {
+        try
+        {
+            string userId = _jwtService.ValidateToken(token);
+            
+            if(!string.IsNullOrEmpty(userId))
+            {
+                await _userService.ActivateUserAccountAsync(userId);
+                return Ok();
+            }
+            
+            return BadRequest("Activate token expiration time passed");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex.Message);
+            return BadRequest(ex.Message);
+        }
+    }
+    
+    [HttpPost("register")]
+    public async Task<IActionResult> InsertUserAsync([FromBody] UserRequestDto user)
+    {
+        try
+        {
+            await _userService.InsertOneAsync(user);
+            
+            var insertedUser = await _userService.GetUserByEmailAsync(user.Email);
+            
+            var activationLink = _jwtService.GenerateActivationLink(insertedUser);
+
+            return Ok(activationLink);
         }
         catch (Exception ex)
         {
