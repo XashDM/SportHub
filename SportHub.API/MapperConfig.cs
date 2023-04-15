@@ -9,6 +9,8 @@ namespace SportHub.API
         public MapperConfig()
         {
             CreateMap<User, UserResponseDto>();
+            CreateMap<UserRequestDto, User>()
+                .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
         }
     }
 }

@@ -62,7 +62,7 @@ public class UserController : ControllerBase
             return NotFound("User not found");
         }
     
-        return Ok();
+        return Ok(user);
     }
     
     [HttpPost(Name = "InsertUser")]
@@ -83,4 +83,25 @@ public class UserController : ControllerBase
         }
     }
     
+    [HttpPut]
+    public async Task<IActionResult> UpdateUserAsync([FromBody] UserRequestDto newUser)
+    {
+        try
+        {
+            var existingUser = await _usersService.GetUserByIdAsync(newUser.UserId);
+            
+            if (existingUser == null)
+            {
+                return NotFound($"User with ID '{newUser.UserId}' not found.");
+            }
+            
+            await _usersService.UpdateUserAsync(newUser);
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex.Message);
+            return BadRequest(ex.Message);
+        }
+    }
 }

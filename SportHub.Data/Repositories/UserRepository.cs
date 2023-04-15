@@ -9,29 +9,32 @@ namespace SportHub.Data.Repositories
     public class UserRepository : IUserRepository
     {
         private readonly IDbConnectionFactory _dbConnectionFactory;
-    
+
         public UserRepository(IDbConnectionFactory dbConnectionFactory)
         {
             _dbConnectionFactory = dbConnectionFactory;
-            
+
         }
+
         public async Task<User> GetUserByEmailAsync(string email)
         {
             using (var connection = _dbConnectionFactory.GetConnection())
             {
                 connection.Open();
-                var response = await connection.QueryFirstOrDefaultAsync<User>($"SELECT * FROM User WHERE Email = '{email}';");
+                var response =
+                    await connection.QueryFirstOrDefaultAsync<User>($"SELECT * FROM User WHERE Email = '{email}';");
 
                 return response;
             }
         }
-        
+
         public async Task<User> GetUserByIdAsync(string id)
         {
             using (var connection = _dbConnectionFactory.GetConnection())
             {
                 connection.Open();
-                var response = await connection.QueryFirstOrDefaultAsync<User>($"SELECT * FROM User WHERE UserId = '{id}';");
+                var response =
+                    await connection.QueryFirstOrDefaultAsync<User>($"SELECT * FROM User WHERE UserId = '{id}';");
 
                 return response;
             }
@@ -44,9 +47,9 @@ namespace SportHub.Data.Repositories
                 connection.Open();
                 var sql = "SELECT * FROM User";
                 var users = await connection.QueryAsync<User>(sql);
-                
+
                 return users;
-            }  
+            }
         }
 
         public async Task InsertOneAsync(User user)
@@ -57,6 +60,19 @@ namespace SportHub.Data.Repositories
                 var sql = "INSERT INTO User (UserId, IsActivated, IsAdmin, Password, Email, FirstName, LastName) " +
                           "VALUES (@UserId, @IsActivated, @IsAdmin, @Password, @Email, @FirstName, @LastName)";
                 await connection.ExecuteAsync(sql, user);
+            }
+        }
+
+        public async Task UpdateUserAsync(User user)
+        {
+            using (var connection = _dbConnectionFactory.GetConnection())
+            {
+                connection.Open();
+                var sql = "UPDATE User SET IsActivated = @IsActivated, IsAdmin = @IsAdmin, Password = @Password, " +
+                               "Email = @Email, FirstName = @FirstName, LastName = @LastName " +
+                               "WHERE UserId = @UserId;";
+                await connection.ExecuteAsync(sql, user);
+
             }
         }
     }
