@@ -13,12 +13,15 @@ public class AuthController : ControllerBase
 {
     private readonly IUserService _userService;
     private readonly IJwtService _jwtService;
+    private readonly IEmailService _emailService;
     private readonly ILogger<AuthController> _logger;
-    public AuthController(ILogger<AuthController> logger, IUserService userService, IJwtService jwtService)
+    public AuthController(ILogger<AuthController> logger, IUserService userService, 
+        IJwtService jwtService, IEmailService emailService)
     {
         _userService = userService;
         _jwtService = jwtService;
         _logger = logger;
+        _emailService = emailService;
     }
 
     [HttpPost("login")]
@@ -154,6 +157,8 @@ public class AuthController : ControllerBase
             var insertedUser = await _userService.GetUserByEmailAsync(user.Email);
             
             var activationLink = _jwtService.GenerateActivationLink(insertedUser);
+
+            await _emailService.SendActivationEmailAsync(user.Email, activationLink);
 
             return Ok(activationLink);
         }
