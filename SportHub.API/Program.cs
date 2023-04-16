@@ -41,8 +41,8 @@ builder.Services.AddAuthentication(options =>
 .AddCookie()
 .AddGoogle(options =>
 {
-    options.ClientId = "your_google_client_id";
-    options.ClientSecret = "your_google_client_secret";
+    options.ClientId = builder.Configuration["GoogleCredentials:ClientId"];
+    options.ClientSecret = builder.Configuration["GoogleCredentials:ClientSecret"];
     options.SignInScheme = JwtBearerDefaults.AuthenticationScheme;
 })
 .AddJwtBearer(o =>
