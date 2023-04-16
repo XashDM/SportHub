@@ -1,5 +1,7 @@
 using System.Text;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.IdentityModel.Tokens;
 using SportHub.API;
 using SportHub.Business;
@@ -33,8 +35,17 @@ builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(o =>
+    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = "Google";
+})
+.AddCookie()
+.AddGoogle(options =>
+{
+    options.ClientId = "your_google_client_id";
+    options.ClientSecret = "your_google_client_secret";
+    options.SignInScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(o =>
 {
     o.TokenValidationParameters = new TokenValidationParameters
     {
