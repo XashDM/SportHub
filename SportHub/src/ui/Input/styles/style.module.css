@@ -1,0 +1,14 @@
+.form__control {
+  width: 100%;
+}
+.form__control .link {
+  all: unset;
+  color: #4B90E2;
+  position: absolute;
+  right: 5px;
+}
+.form__control .link:hover {
+  cursor: pointer;
+}
+
+/*# sourceMappingURL=style.module.css.map */
