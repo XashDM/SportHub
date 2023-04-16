@@ -4,6 +4,7 @@ import Button from "../../../ui/Button"
 import {useState} from "react"
 
 import signUpRequest from "../helpers/signUpRequest"
+import GoogleSignUpButton from "../../../components/GoogleSignUpButton"
 function SignUpForm(){
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -20,6 +21,16 @@ function SignUpForm(){
         }else{
             setError(false)
         }
+    }
+
+    const handleSignUpSuccess = (response) => {
+        // handle successful sign up
+        console.log('Sign up success:', response)
+    }
+
+    const handleSignUpFailure = (response) => {
+        // handle sign up failure
+        console.log('Sign up failure:', response)
     }
 
     return(
@@ -56,6 +67,11 @@ function SignUpForm(){
             />
 
             <Button onClick={handleSignUp} text={"SIGN UP"}/>
+
+            <GoogleSignUpButton
+                onSuccess={handleSignUpSuccess}
+                onFailure={handleSignUpFailure}
+            />
         </div>
     )
 }

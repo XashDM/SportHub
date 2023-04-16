@@ -6,6 +6,8 @@ import {useNavigate} from 'react-router-dom'
 import loginRequest from "../helpers/loginRequest"
 import {useAuthStore} from "../../../store/useAuthStore"
 import {ROUTES} from "../../../routes/routes"
+import GoogleLoginButton from "../../../components/GoogleLoginButton"
+
 function LoginForm(){
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -26,10 +28,19 @@ function LoginForm(){
             navigate(ROUTES.HOME)
         }
     }
-
     useEffect(() => {
         console.log(userData)
     }, [userData])
+
+    const handleLoginSuccess = (response) => {
+        // handle successful login
+        console.log('Login success:', response)
+    }
+
+    const handleLoginFailure = (response) => {
+        // handle login failure
+        console.log('Login failure:', response)
+    }
 
     return(
         <div className={styles.container}>
@@ -52,8 +63,13 @@ function LoginForm(){
             />
 
             <Button onClick={handleLogin} text={"LOG IN"}/>
+
+            <GoogleLoginButton
+                onSuccess={handleLoginSuccess}
+                onFailure={handleLoginFailure}
+            />
         </div>
     )
 }
 
-export default LoginForm;
+export default LoginForm
