@@ -6,7 +6,9 @@ import {useNavigate} from 'react-router-dom'
 import loginRequest from "../helpers/loginRequest"
 import {useAuthStore} from "../../../store/useAuthStore"
 import {ROUTES} from "../../../routes/routes"
-import GoogleLoginButton from "../../../components/GoogleLoginButton"
+import GoogleLoginButton from "../../../ui/GoogleLoginButton"
+import jwt_decode from "jwt-decode"
+import {useGoogleLogin} from "@react-oauth/google"
 
 function LoginForm(){
     const [email, setEmail] = useState('')
@@ -35,12 +37,25 @@ function LoginForm(){
     const handleLoginSuccess = (response) => {
         // handle successful login
         console.log('Login success:', response)
+        setUserData({firstName: "Oleh", lastName: "Kril", email: "mayorford777@gmail.com"})
+        setAccessToken(response.code)
+        setError(false)
+        navigate(ROUTES.HOME)
     }
-
     const handleLoginFailure = (response) => {
         // handle login failure
+        console.log('Login failure:')
         console.log('Login failure:', response)
+        setError(true)
     }
+
+    const handleGoogleLogin = useGoogleLogin({
+        onSuccess: response => handleLoginSuccess(response),
+        onError: response => handleLoginFailure(response),
+        flow: 'implicit',
+    })
+
+
 
     return(
         <div className={styles.container}>
@@ -49,6 +64,10 @@ function LoginForm(){
                 <h2>Log in to Sports Hub</h2>
                 {error && <h3 className={styles.error}>Incorrect user email or password. Try again</h3>}
             </div>
+
+            <GoogleLoginButton
+                onClick={handleGoogleLogin}
+            />
 
             <Input label={"Email"}
                    placeholder={"Email@gmail.com"}
@@ -63,11 +82,6 @@ function LoginForm(){
             />
 
             <Button onClick={handleLogin} text={"LOG IN"}/>
-
-            <GoogleLoginButton
-                onSuccess={handleLoginSuccess}
-                onFailure={handleLoginFailure}
-            />
         </div>
     )
 }
