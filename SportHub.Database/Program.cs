@@ -9,10 +9,11 @@ namespace SQLScriptRunner
         {
             string server = "localhost";
             string database = "SportHub";
-            string uid = "user";
+            string uid = "root";
             string password = "root";
+            string port = "5900";
             string scriptFilePath = @"CreateDB_script.sql";
-            string connectionString = $"SERVER={server};DATABASE={database};UID={uid};PASSWORD={password};";
+            string connectionString = $"server={server};  port={port}; database={database};uid={uid};pwd={password};";
             try
             {
                 string script = File.ReadAllText(scriptFilePath);
