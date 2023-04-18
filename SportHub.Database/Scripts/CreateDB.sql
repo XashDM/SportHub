@@ -1,4 +1,4 @@
-CREATE SCHEMA IF NOT EXISTS `SportHub` DEFAULT CHARACTER SET utf8 ;
+CREATE SCHEMA IF NOT EXISTS `SportHub` DEFAULT CHARACTER SET utf8mb4 ;
 USE `SportHub` ;
 
 CREATE TABLE IF NOT EXISTS `SportHub`.`UserAccount` (
@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS `SportHub`.`UserAccount` (
   `IsAdmin` TINYINT(2) NOT NULL DEFAULT 0,
   `IsDelete` TINYINT(2) NOT NULL,
   PRIMARY KEY (`UserId`),
-  UNIQUE INDEX `id_UNIQUE` (`UserId` ASC) VISIBLE,
+  UNIQUE INDEX `Userid_UNIQUE` (`UserId` ASC) VISIBLE,
   UNIQUE INDEX `Email_UNIQUE` (`Email` ASC) VISIBLE,
   UNIQUE INDEX `Password_UNIQUE` (`Password` ASC) VISIBLE)
 ENGINE = InnoDB;
@@ -41,20 +41,20 @@ CREATE TABLE IF NOT EXISTS `SportHub`.`Articles` (
   `AuthorId` INT NOT NULL,
   `CategoryId` INT NOT NULL,
   PRIMARY KEY (`ArticleId`),
-  INDEX `fk_Articles_Images1_idx` (`ImageId` ASC) VISIBLE,
-  INDEX `fk_Articles_UserAccount1_idx` (`AuthorId` ASC) VISIBLE,
-  INDEX `fk_Articles_Category1_idx` (`CategoryId` ASC) VISIBLE,
-  CONSTRAINT `fk_Articles_Images1`
+  INDEX `fk_Articles_Images_idx` (`ImageId` ASC) VISIBLE,
+  INDEX `fk_Articles_UserAccount_idx` (`AuthorId` ASC) VISIBLE,
+  INDEX `fk_Articles_Category_idx` (`CategoryId` ASC) VISIBLE,
+  CONSTRAINT `fk_Articles_Images`
     FOREIGN KEY (`ImageId`)
     REFERENCES `SportHub`.`Images` (`ImageId`)
     ON DELETE NO ACTION
     ON UPDATE CASCADE,
-  CONSTRAINT `fk_Articles_UserAccount1`
+  CONSTRAINT `fk_Articles_UserAccount`
     FOREIGN KEY (`AuthorId`)
     REFERENCES `SportHub`.`UserAccount` (`UserId`)
     ON DELETE NO ACTION
     ON UPDATE CASCADE,
-  CONSTRAINT `fk_Articles_Category1`
+  CONSTRAINT `fk_Articles_Category`
     FOREIGN KEY (`CategoryId`)
     REFERENCES `SportHub`.`Category` (`CategoryId`)
     ON DELETE NO ACTION
@@ -70,7 +70,7 @@ CREATE TABLE IF NOT EXISTS `SportHub`.`Teams` (
   UNIQUE INDEX `TeamId_UNIQUE` (`TeamId` ASC) VISIBLE,
   UNIQUE INDEX `TeamName_UNIQUE` (`TeamName` ASC) VISIBLE,
   INDEX `fk_Teams_Articles1_idx` (`ArticlesId` ASC) VISIBLE,
-  CONSTRAINT `fk_Teams_Articles1`
+  CONSTRAINT `fk_Teams_Articles`
     FOREIGN KEY (`ArticlesId`)
     REFERENCES `SportHub`.`Articles` (`ArticleId`)
     ON DELETE NO ACTION
