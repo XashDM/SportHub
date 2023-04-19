@@ -7,8 +7,8 @@ import loginRequest from "../helpers/loginRequest"
 import {useAuthStore} from "../../../store/useAuthStore"
 import {ROUTES} from "../../../routes/routes"
 import GoogleLoginButton from "../../../ui/GoogleLoginButton"
-import jwt_decode from "jwt-decode"
 import {useGoogleLogin} from "@react-oauth/google"
+import axios from "axios"
 
 function LoginForm(){
     const [email, setEmail] = useState('')
@@ -34,11 +34,24 @@ function LoginForm(){
         console.log(userData)
     }, [userData])
 
-    const handleLoginSuccess = (response) => {
+    const handleLoginSuccess = async (googleResponse) => {
         // handle successful login
-        console.log('Login success:', response)
-        setUserData({firstName: "Oleh", lastName: "Kril", email: "mayorford777@gmail.com"})
-        setAccessToken(response.code)
+        debugger
+        console.log('Login success:', googleResponse)
+
+        try {
+            const response = await axios.get('https://www.googleapis.com/oauth2/v2/userinfo', {
+                headers: {
+                    Authorization: `Bearer ${googleResponse.access_token}`,
+                },
+            })
+            setUserData(response.data)
+        } catch (error) {
+            console.error(error)
+        }
+
+
+        setAccessToken(googleResponse.code)
         setError(false)
         navigate(ROUTES.HOME)
     }
