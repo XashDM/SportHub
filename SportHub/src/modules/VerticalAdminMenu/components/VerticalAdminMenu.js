@@ -10,7 +10,7 @@ export default function VerticalAdminMenu(){
     const [currentVerticalMenuElement, setCurrentVerticalMenuElement] = useState()
 
     return (
-        <div>
+        
             <div className={styles.vertical_menu}>
                 {verticalMenuElements.map((verticalMenuElement, index) => {
                     return <div
@@ -23,6 +23,6 @@ export default function VerticalAdminMenu(){
                     </div>
                 })}
             </div>
-        </div>
+        
     )
 }

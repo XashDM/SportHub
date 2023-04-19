@@ -1,0 +1,16 @@
+.dropdown {
+    position: absolute;
+    right: 0;
+    left: 150px;
+    list-style: none;
+    display: none;
+}
+
+    .dropdown.show {
+        display: block;
+    }
+
+    .dropdown.dropdown_submenu {
+        position: absolute;
+        left: 150px;
+    }

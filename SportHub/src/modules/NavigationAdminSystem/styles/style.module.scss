@@ -1,0 +1,12 @@
+.nav_area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 100vw;
+}
+
+.menus {
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+}
