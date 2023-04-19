@@ -1,0 +1,91 @@
+.header {
+  height: 12vh;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--color-light-lines);
+
+  .logo {
+    width: 17.5vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-red-regular);
+    font-family: var(--font-style-open-sans);
+    border-right: 1px solid var(--color-light-lines);
+
+    .logo_inscription {
+      margin: 0;
+      color: var(--color-light-white);
+      font-size: 28px;
+    }
+  }
+}
+
+.profile_sector {
+  width: 23vw;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  border-left: 1px solid var(--color-light-lines);
+
+  .switch {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    cursor: pointer;
+
+    .switch_image {
+      border-radius: 100%;
+
+      .switch_image:hover {
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+.mini_profile {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 10.5vw;
+  cursor: pointer;
+
+  .profile_picture {
+    width: 2.5vw;
+    height: 2.5vw;
+    border-radius: 100%;
+  }
+}
+
+.profile_info {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  margin-left: 1vw;
+
+  .name_surname_label {
+    font-family: var(--font-style-open-sans);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--color-dark-black);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    white-space: nowrap;
+
+    .open_profile_menu {
+      width:fit-content;
+      height:fit-content;
+      margin-left: 0.2vw;
+    }
+  }
+
+  .administrator_label {
+    font-family: var(--font-style-open-sans);
+    font-size: 8px;
+    color: var(--color-dark-menu-item);
+  }
+}

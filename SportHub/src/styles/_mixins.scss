@@ -1,0 +1,58 @@
+@mixin flex-center(){
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@mixin text-h1-background-text{
+    font-family: var(--font-style-roboto-condensed);
+    font-weight: bold;
+    font-size: 141px;
+}
+
+@mixin text-menu-caption{
+    font-weight: bold;
+    font-size: 22px;
+}
+
+@mixin text-heading-two{
+    font-weight: bold;
+    font-size: 18px;
+}
+
+@mixin text-search{
+    font-family: var(--font-style-roboto);
+    font-size: 16px;
+}
+
+@mixin text-heading-three{
+    font-weight: bold;
+    font-size: 16px;
+}
+
+@mixin text-menu-items{
+    font-weight: bold;
+    font-size: 14px;
+}
+
+@mixin text-caption{
+    font-size: 14px;
+}
+
+@mixin text-button{
+    font-size: 12px;
+}
+
+@mixin text-body-regular{
+    font-size: 12px;
+}
+
+@mixin text-bodysemibold{
+    font-weight: 600;
+    font-size: 12px;
+}
+
+@mixin text-lable{
+    font-weight: 600;
+    font-size: 10px;
+}

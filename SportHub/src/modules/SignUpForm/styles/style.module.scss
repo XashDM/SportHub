@@ -1,0 +1,19 @@
+.container{
+    display: flex;
+    flex-direction: column;
+    width: 30vw;
+    gap: 3vh;
+
+    .error{
+        color: var(--color-red-regular);
+        font-size: 18px;
+    }
+
+    .two_col_container{
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        gap: 4vw;
+    }
+}
+

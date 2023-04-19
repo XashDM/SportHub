@@ -2,8 +2,9 @@
 
 namespace SportHub.Data.Interfaces
 {
-	public interface IDbConnectionFactory
-	{
-		IDbConnection GetConnection();
-	}
+    public interface IDbConnectionFactory
+    {
+        IDbConnection GetConnection();
+    }
 }
+
