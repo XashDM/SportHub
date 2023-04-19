@@ -1,6 +1,6 @@
 ﻿using SportHub.Data.Entities;
 
-namespace SportHub.Business.Interfaces
+namespace SportHub.Business
 {
 	public interface IArticleService
 	{

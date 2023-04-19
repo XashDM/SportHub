@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using SportHub.Business.Interfaces;
+using SportHub.Business;
 using SportHub.Data.Entities;
 using System.Text.Json;
 

@@ -1,8 +1,7 @@
-﻿using SportHub.Business.Interfaces;
-using SportHub.Data.Entities;
+﻿using SportHub.Data.Entities;
 using SportHub.Data.Interfaces;
 
-namespace SportHub.Business.Services
+namespace SportHub.Business.Implementations
 {
 	public class ArticleService : IArticleService
 	{
