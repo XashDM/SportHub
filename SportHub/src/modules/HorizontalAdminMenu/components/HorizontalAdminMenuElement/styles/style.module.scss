@@ -1,0 +1,17 @@
+.active, .inactive{
+  font-family: var(--font-style-open-sans);
+  font-size: 14pt;
+  font-weight: bold;
+}
+
+.active:hover, .inactive:hover {
+  cursor: pointer;
+}
+
+.active{
+  color: var(--color-red-regular);
+}
+
+.inactive{
+  color: var(--color-dark-menu-item);
+}
