@@ -4,11 +4,11 @@ import Button from "../../../ui/Button"
 import {useEffect, useState} from "react"
 import {useNavigate} from 'react-router-dom'
 import loginRequest from "../helpers/loginRequest"
+import googleLoginRequest from "../helpers/googleLoginRequest"
 import {useAuthStore} from "../../../store/useAuthStore"
 import {ROUTES} from "../../../routes/routes"
 import GoogleLoginButton from "../../../ui/GoogleLoginButton"
 import {useGoogleLogin} from "@react-oauth/google"
-import axios from "axios"
 
 function LoginForm(){
     const [email, setEmail] = useState('')
@@ -36,16 +36,20 @@ function LoginForm(){
 
     const handleLoginSuccess = async (googleResponse) => {
         // handle successful login
-        debugger
         console.log('Login success:', googleResponse)
 
         try {
-            const response = await axios.get('https://www.googleapis.com/oauth2/v2/userinfo', {
-                headers: {
-                    Authorization: `Bearer ${googleResponse.access_token}`,
-                },
-            })
-            setUserData(response.data)
+            const result = await googleLoginRequest(googleResponse.access_token)
+
+            if (result === "ERR_BAD_REQUEST") {
+                setError(true)
+            }else{
+                setUserData(result.user)
+                setAccessToken(result.accessToken)
+                setError(false)
+                navigate(ROUTES.HOME)
+            }
+
         } catch (error) {
             console.error(error)
         }
