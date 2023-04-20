@@ -1,7 +1,6 @@
 using System.Text;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.IdentityModel.Tokens;
 using SportHub.API;
 using SportHub.Business;
@@ -32,32 +31,24 @@ builder.Services.AddScoped<IUserService, UserService>();
 
 // Add jwt access token validation
 builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = "Google";
-})
-.AddCookie()
-.AddGoogle(options =>
-{
-    options.ClientId = builder.Configuration["GoogleCredentials:ClientId"];
-    options.ClientSecret = builder.Configuration["GoogleCredentials:ClientSecret"];
-    options.SignInScheme = JwtBearerDefaults.AuthenticationScheme;
-})
-.AddJwtBearer(o =>
-{
-    o.TokenValidationParameters = new TokenValidationParameters
     {
-        IssuerSigningKey = new SymmetricSecurityKey
-            (Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:SecretKey"])),
-        ValidateIssuer = false,
-        ValidateAudience = false,
-        ValidateLifetime = true,
-        ValidateIssuerSigningKey = true,
-        ClockSkew = TimeSpan.Zero
-    };
-});
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    })
+    .AddJwtBearer(o =>
+    {
+        o.TokenValidationParameters = new TokenValidationParameters
+        {
+            IssuerSigningKey = new SymmetricSecurityKey
+                (Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:SecretKey"])),
+            ValidateIssuer = false,
+            ValidateAudience = false,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ClockSkew = TimeSpan.Zero
+        };
+    });
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("AdminPolicy", policy =>
@@ -71,6 +62,7 @@ builder.Services.AddAuthorization(options =>
     });
 });
 
+builder.Services.AddHttpClient();
 var app = builder.Build();
 
 
