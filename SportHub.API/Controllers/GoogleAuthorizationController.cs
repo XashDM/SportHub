@@ -15,8 +15,6 @@ namespace SportHub.Controllers
     public class GoogleAuthorizationController : ControllerBase
     {
         private readonly HttpClient _httpClient;
-        private readonly string _clientId;
-        private readonly string _clientSecret;
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
         private readonly IJwtService _jwtService;
@@ -25,8 +23,6 @@ namespace SportHub.Controllers
             IUserService userService, IMapper mapper, IJwtService jwtService)
         {
             _httpClient = httpClientFactory.CreateClient();
-            _clientId = config.GetSection("GoogleCredentials")["ClientId"];
-            _clientSecret = config.GetSection("GoogleCredentials")["ClientSecret"];
             _userService = userService;
             _mapper = mapper;
             _jwtService = jwtService;
