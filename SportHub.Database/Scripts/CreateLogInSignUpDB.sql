@@ -17,7 +17,7 @@ GRANT ALL PRIVILEGES ON SportHub.* TO 'user'@'localhost';
 CREATE TABLE IF NOT EXISTS `SportHub`.`User` (
     `UserId` VARCHAR(150) NOT NULL,
     `Email` VARCHAR(70) NOT NULL,
-    `Password` VARCHAR(255) NOT NULL,
+    `Password` VARCHAR(255),
     `FirstName` VARCHAR(100) NOT NULL,
     `LastName` VARCHAR(100) NOT NULL,
     `IsAdmin` TINYINT NOT NULL DEFAULT '0',
@@ -30,11 +30,13 @@ CREATE TABLE IF NOT EXISTS `SportHub`.`User` (
 -- Table `SportHub`.`Token`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `SportHub`.`Token` (
-    `RefreshToken` VARCHAR(300) NOT NULL,
+    `RefreshToken` VARCHAR(500) NOT NULL,
     `UserId` VARCHAR(150) NOT NULL,
     PRIMARY KEY (`RefreshToken`),
     UNIQUE INDEX `UserId_UNIQUE` (`UserId` ASC) VISIBLE,
     CONSTRAINT `fk_UserId`
-    FOREIGN KEY (`UserId`)
-    REFERENCES `SportHub`.`User` (`UserId`))
+        FOREIGN KEY (`UserId`)
+        REFERENCES `SportHub`.`User` (`UserId`)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE)
     ENGINE = InnoDB;
