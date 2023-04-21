@@ -2,5 +2,6 @@ export const ROUTES = {
     LOGIN: "/log-in",
     SIGNUP: "/sign-up",
     HOME: "/",
-    ADMIN: "/admin"
+    ADMIN: "/admin",
+    PASSWORD_RESET: "/password-reset"
 }
