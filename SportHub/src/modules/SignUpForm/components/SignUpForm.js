@@ -22,16 +22,6 @@ function SignUpForm(){
         }
     }
 
-    const handleSignUpSuccess = (response) => {
-        // handle successful sign up
-        console.log('Sign up success:', response)
-    }
-
-    const handleSignUpFailure = (response) => {
-        // handle sign up failure
-        console.log('Sign up failure:', response)
-    }
-
     return(
         <div className={styles.container}>
 
@@ -60,8 +50,7 @@ function SignUpForm(){
 
             <Input label={"Password"}
                    placeholder={"8 + characters (letters and numbers)"}
-                   error={error} isVisible={false}
-                   onClick={() => console.log("Forgot password clicked!")}
+                   error={error}
                    onChange={(event) => setPassword(event.target.value)}
             />
 
