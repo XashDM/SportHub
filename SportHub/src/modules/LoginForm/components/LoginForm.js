@@ -94,7 +94,7 @@ function LoginForm(){
             <Input label={"Password"}
                    placeholder={"8 + characters (letters and numbers)"}
                    error={error} isVisible={false}
-                   onClick={() => console.log("Forgot password clicked!")}
+                   onClick={() => navigate(ROUTES.PASSWORD_RESET)}
                    onChange={(event) => setPassword(event.target.value)}
             />
 
