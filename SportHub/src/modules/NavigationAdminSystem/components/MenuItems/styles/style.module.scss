@@ -1,10 +1,18 @@
 .menu_items {
     position: relative;
-    width: 140px;
+    width: 160px;
     font-size: 15px;
     font-family: var(--font-style-open-sans), sans-serif;
     color: var(--color-dark-menu-item);
     font-weight: bold;
+
+    .show_arrow{
+        display: block;
+    }
+
+    .hide_arrow{
+        display: none;
+    }
 
     p {
         display: block;
@@ -20,8 +28,9 @@
     }
 
     button {
-        margin-top:5px;
+        margin-top:10px;
         width: 40px;
+        height: 40px;
         color: inherit;
         font-size: inherit;
         font-family: inherit;

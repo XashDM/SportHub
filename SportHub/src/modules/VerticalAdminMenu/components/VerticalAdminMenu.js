@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 import styles from "../styles/style.module.scss"
 import VerticalAdminMenuElement from "./VerticalAdminMenuElement"
 import {VERTICAL_MENU_ELEMENTS, VERTICAL_MENU_HINTS} from "../../../constants/VerticalMenuConstants";
+import NavigationSystem from "../../../modules/NavigationAdminSystem"
 
 export default function VerticalAdminMenu(){
 
@@ -10,7 +11,7 @@ export default function VerticalAdminMenu(){
     const [currentVerticalMenuElement, setCurrentVerticalMenuElement] = useState()
 
     return (
-        
+        <div>
             <div className={styles.vertical_menu}>
                 {verticalMenuElements.map((verticalMenuElement, index) => {
                     return <div
@@ -19,10 +20,16 @@ export default function VerticalAdminMenu(){
                         <VerticalAdminMenuElement
                             name={verticalMenuElement}
                             hintText={hintText[index]}
-                            isActive={index === currentVerticalMenuElement}  />
+                            isActive={index === currentVerticalMenuElement} />
                     </div>
                 })}
             </div>
+            {currentVerticalMenuElement === 5 && (
+                <div className={styles.module_content_container}>
+                    <NavigationSystem />
+                </div>
+            )}
+        </div>
         
     )
 }

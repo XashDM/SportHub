@@ -1,4 +1,5 @@
 .vertical_menu{
+  float: left;
   width: 6vw;
   display: flex;
   position:relative;
@@ -10,5 +11,11 @@
     margin-top: 3vh;
     cursor: pointer;
   }
+}
+
+.module_content_container {
+  float: left;
+  display: flex;
+  justify-content: left;
 }
 

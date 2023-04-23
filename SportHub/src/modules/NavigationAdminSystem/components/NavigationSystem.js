@@ -1,3 +1,4 @@
+import React from 'react';
 import styles from "../styles/style.module.scss"
 import {menuItems} from "../../../constants/menuItems";
 import MenuItems from "./MenuItems";

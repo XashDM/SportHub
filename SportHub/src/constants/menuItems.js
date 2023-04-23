@@ -31,7 +31,19 @@ export const menuItems = [
             title: "test4",
             id: 8
         }]
-        }
+        },
+        {
+            title: "WEST NFL",
+            id: 9,
+            submenu: [{
+                title: "test5",
+                id: 10
+            },
+            {
+                title: "test6",
+                id: 11
+            }]
+            }
     ] 
 
     }

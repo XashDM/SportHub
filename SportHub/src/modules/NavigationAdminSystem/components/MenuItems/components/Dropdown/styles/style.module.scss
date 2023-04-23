@@ -1,9 +1,9 @@
 .dropdown {
     position: absolute;
-    right: 0;
-    left: 150px;
+    left: 170px;
     list-style: none;
     display: none;
+    top: 0px;
 }
 
     .dropdown.show {
@@ -12,5 +12,5 @@
 
     .dropdown.dropdown_submenu {
         position: absolute;
-        left: 150px;
+        left: 170px;
     }
