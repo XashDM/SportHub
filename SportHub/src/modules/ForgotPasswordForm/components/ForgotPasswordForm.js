@@ -5,6 +5,7 @@ import {useState} from "react"
 import {useNavigate} from 'react-router-dom'
 import {ROUTES} from "../../../routes/routes"
 import EmailSentContainer from "../../../components/EmailSentContainer"
+import passwordResetRequest from "../helpers/passwordResetRequest"
 
 
 function ForgotPasswordForm(){
@@ -14,17 +15,13 @@ function ForgotPasswordForm(){
     const navigate = useNavigate()
     const handleRequestPasswordButton = async (event) => {
         event.preventDefault()
-        setIsSent(true)
-        // const result = await passwordResetRequest(email, password)
-        //
-        // if (result === "ERR_BAD_REQUEST") {
-        //    setError(true)
-        // }else{
-        //     setUserData(result.user)
-        //     setAccessToken(result.accessToken)
-        //     setError(false)
-        //     navigate(ROUTES.HOME)
-        // }
+        const result = await passwordResetRequest(email)
+
+        if(result.status === 200){
+            setIsSent(true)
+        }else{
+            setError(true)
+        }
     }
 
 
@@ -34,7 +31,7 @@ function ForgotPasswordForm(){
             <div className={styles.container}>
                 <div>
                     <h2 className={styles.heading}>Forgot your password?</h2>
-                    {error && <h3 className={styles.error}>Incorrect email. Try again</h3>}
+                    {error && <h3 className={styles.error}>Something went wrong. Try again later</h3>}
                 </div>
 
                 <p className={styles.text_muted}>Enter your email address below and we'll get you back on track.</p>

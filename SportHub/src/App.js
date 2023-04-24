@@ -10,10 +10,8 @@ import AdminPage from "./pages/Admin"
 
 import "./styles/base.scss"
 import {ROUTES} from "./routes/routes"
-import PasswordResetPage from "./pages/PasswordReset"
-
-
-
+import PasswordChangePage from "./pages/PasswordReset"
+import PasswordResetPage from "./pages/PasswordChange"
 
 function App() {
     return (
@@ -34,6 +32,7 @@ function App() {
 
                     <Route exact path={ROUTES.SIGNUP} element={<RegistrationPage/>} />
                     <Route exact path={ROUTES.PASSWORD_RESET} element={<PasswordResetPage/>} />
+                    <Route exact path={ROUTES.PASSWORD_CHANGE} element={<PasswordChangePage/>} />
                     <Route exact path={ROUTES.LOGIN} element={<AuthorizationPage/>} />
                     <Route exact path="*" element={<ErrorPage/>} />
             </Routes>

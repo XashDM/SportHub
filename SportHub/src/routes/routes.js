@@ -3,5 +3,6 @@ export const ROUTES = {
     SIGNUP: "/sign-up",
     HOME: "/",
     ADMIN: "/admin",
-    PASSWORD_RESET: "/password-reset"
+    PASSWORD_RESET: "/password-reset",
+    PASSWORD_CHANGE: "/password-change/:token"
 }

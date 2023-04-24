@@ -1,2 +1,2 @@
-import PasswordResetPage from "./components/PasswordResetPage"
-export default PasswordResetPage
+import PasswordChangePage from "./components/PasswordChangePage"
+export default PasswordChangePage
