@@ -135,7 +135,7 @@ public class AuthController : ControllerBase
             if(!string.IsNullOrEmpty(userId))
             {
                 await _userService.ActivateUserAccountAsync(userId);
-                return Ok();
+                return Redirect("http://localhost:3000/log-in");
             }
             
             return BadRequest("Activate token expiration time passed");
@@ -148,6 +148,7 @@ public class AuthController : ControllerBase
     }
     
     [HttpPost("register")]
+    [AllowAnonymous]
     public async Task<IActionResult> InsertUserAsync([FromBody] UserRequestDto user)
     {
         try
@@ -156,7 +157,9 @@ public class AuthController : ControllerBase
             
             var insertedUser = await _userService.GetUserByEmailAsync(user.Email);
             
-            var activationLink = _jwtService.GenerateActivationLink(insertedUser);
+            var activationToken = _jwtService.GenerateActivationToken(insertedUser);
+            
+            string activationLink = $"https://localhost:7168/Auth/activate/{activationToken}";
 
             await _emailService.SendActivationEmailAsync(user.Email, activationLink);
 
