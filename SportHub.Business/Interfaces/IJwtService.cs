@@ -8,5 +8,5 @@ public interface IJwtService
     public string ValidateToken(string token);
     public Task<string> GetIdByTokenAsync(string token);
     public Task DeleteRefreshTokenAsync(string token);
-    public string GenerateActivationLink(UserResponseDto user);
+    public string GenerateActivationToken(UserResponseDto user);
 }

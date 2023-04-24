@@ -101,7 +101,7 @@ namespace SportHub.Business.Implementations
             };
         }
 
-        public string GenerateActivationLink(UserResponseDto user)
+        public string GenerateActivationToken(UserResponseDto user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
 
@@ -110,9 +110,7 @@ namespace SportHub.Business.Implementations
             
             var activationToken = tokenHandler.CreateToken(tokenDescriptor);
 
-            string activationLink = $"https://localhost:7168/Auth/activate/{tokenHandler.WriteToken(activationToken)}";
-
-            return activationLink;
+            return tokenHandler.WriteToken(activationToken);
         }
     
     }
