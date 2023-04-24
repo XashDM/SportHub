@@ -10,6 +10,7 @@ namespace SportHub.Business
         public Task InsertOneAsync(UserRequestDto userDto);
         public  Task UpdateUserAsync(UserRequestDto newUser);
         public Task ActivateUserAccountAsync(string id);
+        public Task ChangePasswordAsync(string userId, string password);
     }
 }
 

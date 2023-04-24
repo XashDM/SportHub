@@ -10,6 +10,7 @@ namespace SportHub.Data.Interfaces
         Task InsertOneAsync(User user); 
         Task UpdateUserAsync(User user);
         Task ActivateUserAccountAsync(string id);
+        Task ChangePasswordAsync(string userId, string password);
     }
 }
 
