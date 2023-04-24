@@ -9,11 +9,8 @@ export default function AdminPage() {
         return (
             <div>
                 <AdminHeader />
-                <HorizontalAdminMenu />
-               
-                <VerticalAdminMenu />
-                    
-                
+                <HorizontalAdminMenu />              
+                <VerticalAdminMenu />                            
             </div>
         )
 }
