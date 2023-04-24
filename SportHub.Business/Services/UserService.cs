@@ -73,8 +73,14 @@ namespace SportHub.Business.Implementations
         public async Task ActivateUserAccountAsync(string id)
         {
             await _userRepository.ActivateUserAccountAsync(id);
-        } 
-        
+        }
+
+        public async Task ChangePasswordAsync(string userId, string password)
+        {
+            await _userRepository.ChangePasswordAsync(userId, password);
+        }
+
+
     }
 }
 

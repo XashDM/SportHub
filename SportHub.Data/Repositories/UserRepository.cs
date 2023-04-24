@@ -86,6 +86,17 @@ namespace SportHub.Data.Repositories
 
             }
         }
+
+        public async Task ChangePasswordAsync(string userId, string password)
+        {
+            using (var connection = _dbConnectionFactory.GetConnection())
+            {
+                connection.Open();
+                var sql = $"UPDATE User SET Password = '{password}' WHERE UserId = '{userId}';";
+                await connection.ExecuteAsync(sql);
+
+            } 
+        }
     }
 }
 
