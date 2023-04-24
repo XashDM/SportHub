@@ -147,12 +147,69 @@ public class AuthController : ControllerBase
         }
     }
     
+    [HttpGet("changePassword")]
+    [AllowAnonymous]
+    public async Task<IActionResult> ResetPasswordAsync(string token, string password)
+    {
+        try
+        {
+            string userId = _jwtService.ValidateToken(token);
+            
+            if(string.IsNullOrEmpty(userId))
+            {
+                return BadRequest("Invalid token");
+            }
+
+            var user = await _userService.GetUserByIdAsync(userId);
+            
+            if (user == null)
+            {
+                return BadRequest("Account do not exists");
+            }
+            
+            await _userService.ChangePasswordAsync(userId, password);
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex.Message);
+            return BadRequest(ex.Message);
+        }
+    }
+    
+    [HttpGet("requestResetPassword/{email}")]
+    [AllowAnonymous]
+    public async Task<IActionResult> SendResetPasswordLinkAsync(string email)
+    {
+        try
+        {
+            var insertedUser = await _userService.GetUserByEmailAsync(email);
+            
+            var activationToken = _jwtService.GenerateActivationToken(insertedUser);
+            
+            string activationLink = $"http://localhost:3000/password-change/{activationToken}";
+            
+            _emailService.SendPasswordResetLinkAsync(email, activationLink);
+            
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex.Message);
+            return BadRequest(ex.Message);
+        }
+    }
+    
     [HttpPost("register")]
     [AllowAnonymous]
     public async Task<IActionResult> InsertUserAsync([FromBody] UserRequestDto user)
     {
         try
         {
+            if (user.Password == null || user.Email == null)
+            {
+                return BadRequest("No password or email provided");
+            }
             await _userService.InsertOneAsync(user);
             
             var insertedUser = await _userService.GetUserByEmailAsync(user.Email);
