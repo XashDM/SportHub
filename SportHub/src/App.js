@@ -25,7 +25,7 @@ function App() {
 
                 <Route exact path={ROUTES.ADMIN} element={
                     <ProtectedRoute roles={["admin"]}>
-                        <AdminPage/>
+                        <AdminPage />
                     </ProtectedRoute>
                 } />
 
