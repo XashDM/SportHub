@@ -1,16 +1,19 @@
 import React from 'react';
 import styles from "../styles/style.module.scss"
 import {menuItems} from "../../../constants/menuItems";
+import CategoryRequest from "../helpers/CategoryRequest"
 import MenuItems from "./MenuItems";
 
 
 
 const NavigationSystem = () => {
+    const categories = CategoryRequest()
+    console.log(categories)
 return(
-<div className={styles.nav_area} >
+<div className={styles.nav_area}>
     <ul className={styles.menus}> 
     {
-        menuItems.map((menu) => {
+        categories.map((menu) => {
             const depthLevel = 0;
             return <MenuItems items={menu} key={menu.id} depthLevel={depthLevel}/>;
         })

@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import styles from "../styles/style.module.scss"
 import VerticalAdminMenuElement from "./VerticalAdminMenuElement"
 import {VERTICAL_MENU_ELEMENTS, VERTICAL_MENU_HINTS} from "../../../constants/VerticalMenuConstants";
-import NavigationSystem from "../../../modules/NavigationAdminSystem"
+import NavigationSystem from "../../NavigationAdminSystem"
 
 export default function VerticalAdminMenu(){
 
