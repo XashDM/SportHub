@@ -2,7 +2,6 @@
 using SportHub.Data.DTO;
 using SportHub.Data.Interfaces;
 using SportHub.Business.Interfaces;
-using SportHub.Data.Repositories;
 
 namespace SportHub.Business.Services
 {
@@ -17,15 +16,17 @@ namespace SportHub.Business.Services
 
         public async Task DeleteLanguageAsync(string shortTitle)
         {
+            if (shortTitle == "en")
+                return;
             await _languageRepository.DeleteLanguageAsync(shortTitle);
         }
 
-        public async Task AddLanguageAsync(LanguageRequest languageDTO)
+        public async Task AddLanguageAsync(LanguageRequest languageRequest)
         {
             Language language = new Language
             {
-                ShortTitle = languageDTO.ShortTitle,
-                IsActive = languageDTO.IsActive
+                ShortTitle = languageRequest.ShortTitle,
+                IsActive = languageRequest.IsActive
             };
 
             await _languageRepository.AddLanguageAsync(language);
@@ -33,6 +34,8 @@ namespace SportHub.Business.Services
 
         public async Task ChangeLanguageIsActiveAsync(string shortTitle, bool isActive)
         {
+            if (shortTitle == "en")
+                return;
             await _languageRepository.ChangeLanguageIsActiveAsync(shortTitle, isActive);
         }
 
@@ -40,26 +43,14 @@ namespace SportHub.Business.Services
         {
             var language = await _languageRepository.GetLanguageByTitleAsync(shortTitle);
 
-            if (language == null)
-            {
-                return null;
-            }
-
             return language;
         }
 
-        public async Task<IEnumerable<LanguageResponse>> GetLanguagesAsync()
+        public async Task<IEnumerable<Language>> GetLanguagesAsync()
         {
-            var request = await _languageRepository.GetLanguagesAsync();
+            var languages = await _languageRepository.GetLanguagesAsync();
 
-            IEnumerable<LanguageResponse> response = request.Select(l => new LanguageResponse
-            {
-                LanguageId = l.LanguageId,
-                ShortTitle = l.ShortTitle,
-                IsActive = l.IsActive
-            });
-
-            return response;
+            return languages;
         }
     }
 }

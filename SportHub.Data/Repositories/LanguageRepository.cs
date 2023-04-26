@@ -1,6 +1,4 @@
 ﻿using Dapper;
-using Microsoft.Extensions.Configuration;
-using MySql.Data.MySqlClient;
 using SportHub.Data.Entities;
 using SportHub.Data.Interfaces;
 
@@ -13,7 +11,6 @@ namespace SportHub.Data.Repositories
         public LanguageRepository(IDbConnectionFactory dbConnectionFactory)
         {
             _dbConnectionFactory = dbConnectionFactory;
-
         }
 
         public async Task DeleteLanguageAsync(string shortTitle)

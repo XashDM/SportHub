@@ -70,11 +70,9 @@ namespace SportHub.API.Controllers
             }
         }
 
-        [HttpPut("{shortTitle}/{isActive}")]
-        public async Task<IActionResult> ChangeLanguageIsActiveAsync([FromRoute] string shortTitle, [FromRoute] bool isActive)
+        [HttpPut("{shortTitle}")]
+        public async Task<IActionResult> ChangeLanguageIsActiveAsync([FromRoute] string shortTitle, [FromBody] bool isActive)
         {
-            if (shortTitle == "en")
-                return BadRequest();
             try
             {
                 await _languageService.ChangeLanguageIsActiveAsync(shortTitle, isActive);
@@ -91,8 +89,6 @@ namespace SportHub.API.Controllers
         [HttpDelete("{shortTitle}")]
         public async Task<IActionResult> DeleteLanguageAsync([FromRoute] string shortTitle)
         {
-            if (shortTitle == "en")
-                return BadRequest();
             try
             {
                 await _languageService.DeleteLanguageAsync(shortTitle);    

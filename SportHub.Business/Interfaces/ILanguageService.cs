@@ -5,9 +5,9 @@ namespace SportHub.Business.Interfaces
 {
     public interface ILanguageService
     {
-        Task<IEnumerable<LanguageResponse>> GetLanguagesAsync();
+        Task<IEnumerable<Language>> GetLanguagesAsync();
         Task<Language> GetLanguageByTitleAsync(string shortTitle);
-        Task AddLanguageAsync(LanguageRequest languageDTO);
+        Task AddLanguageAsync(LanguageRequest languageRequest);
         Task ChangeLanguageIsActiveAsync(string shortTitle, bool isActive);
         Task DeleteLanguageAsync(string shortTitle);
     }
