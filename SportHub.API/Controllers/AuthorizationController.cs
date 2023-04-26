@@ -30,7 +30,7 @@ public class AuthController : ControllerBase
     {
         try
         {
-            var user = await _userService.GetUserByEmailAsync(email, password);
+            var user = await _userService.GetUserByEmailAndPasswordAsync(email, password);
 
             if (user == null)
             {
@@ -210,6 +210,13 @@ public class AuthController : ControllerBase
             {
                 return BadRequest("No password or email provided");
             }
+            
+            // Check if object is correct
+            if (user.UserId != null || user.FirstName == null || user.LastName == null)
+            {
+                return BadRequest("Not correct object provided");
+            }
+            
             await _userService.InsertOneAsync(user);
             
             var insertedUser = await _userService.GetUserByEmailAsync(user.Email);

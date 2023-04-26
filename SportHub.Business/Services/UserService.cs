@@ -1,3 +1,4 @@
+using System.ComponentModel.Design;
 using AutoMapper;
 using SportHub.Data.Entities;
 using SportHub.Data.DTO;
@@ -25,12 +26,23 @@ namespace SportHub.Business.Implementations
             return userDtos;
         }
 
-        public async Task<UserResponseDto> GetUserByEmailAsync(string email, string? password = null)
+        public async Task<UserResponseDto> GetUserByEmailAsync(string email)
         {
             var user = await _userRepository.GetUserByEmailAsync(email);
             
-            //if password provided then check if  password is correct and if account is activated 
-            if (user == null || (string.IsNullOrEmpty(password) ? false : !(user.Password == password && user.IsActivated)))
+            return _mapper.Map<User, UserResponseDto>(user);
+        }
+        
+        public async Task<UserResponseDto> GetUserByEmailAndPasswordAsync(string email, string password)
+        {
+            if (string.IsNullOrEmpty(password))
+            {
+                return null;
+            }
+            
+            var user = await _userRepository.GetUserByEmailAsync(email);
+            
+            if (user == null || !(user.Password == password && user.IsActivated))
             {
                 return null;
             }
@@ -45,7 +57,7 @@ namespace SportHub.Business.Implementations
             return _mapper.Map<User, UserResponseDto>(user);
         }
 
-        public async Task InsertOneAsync(UserRequestDto userDto)
+        public async Task<string> InsertOneAsync(UserRequestDto userDto)
         {
             User user = new User
             {
@@ -57,8 +69,11 @@ namespace SportHub.Business.Implementations
                 IsActivated = false,
                 IsAdmin = false
             };
+            
+            
+            string id = await _userRepository.InsertOneAsync(user);
 
-           await _userRepository.InsertOneAsync(user);
+            return id;
         }
 
         public async Task UpdateUserAsync(UserRequestDto newUser)

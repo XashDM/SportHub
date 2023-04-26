@@ -52,7 +52,7 @@ namespace SportHub.Data.Repositories
             }
         }
 
-        public async Task InsertOneAsync(User user)
+        public async Task<string> InsertOneAsync(User user)
         {
             using (var connection = _dbConnectionFactory.GetConnection())
             {
@@ -61,6 +61,8 @@ namespace SportHub.Data.Repositories
                           "VALUES (@UserId, @IsActivated, @IsAdmin, @Password, @Email, @FirstName, @LastName)";
                 await connection.ExecuteAsync(sql, user);
             }
+
+            return user.UserId;
         }
 
         public async Task UpdateUserAsync(User user)
