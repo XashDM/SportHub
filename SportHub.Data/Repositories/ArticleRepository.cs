@@ -1,6 +1,4 @@
 ﻿using Dapper;
-using Microsoft.Extensions.Configuration;
-using MySql.Data.MySqlClient;
 using SportHub.Data.Entities;
 using SportHub.Data.Interfaces;
 
@@ -13,30 +11,25 @@ public class ArticleRepository : IArticleRepository
 	public ArticleRepository(IDbConnectionFactory dbConnectionFactory)
 	{
 		_dbConnectionFactory = dbConnectionFactory;
-
 	}
 
-	public async Task PostArticleAsync(Article article)
+	public async Task CreateArticleAsync(Article article)
 	{
 		using (var connection = _dbConnectionFactory.GetConnection())
 		{
 			connection.Open();
-			var sql = "INSERT INTO Articles (ArticleId, PublishingDate, AuthorId, SubCategoryId, TeamId, Published, ShowComments) " +
-					  "VALUES (@ArticleId, @PublishingDate, @AuthorId, @SubCategoryId, @TeamId, @Published, @ShowComments)";
-			await connection.ExecuteAsync(sql, article);
-		}
-	}
 
-	public async Task PostArticleInfosAsync(ArticleInfo[] articleInfos)
-	{
-		using (var connection = _dbConnectionFactory.GetConnection())
-		{
-			connection.Open();
-			var sql = "INSERT INTO ArticleInfos (LanguageId, ArticleId, Title, Subtitle, MainText) " +
-					  "VALUES (@LanguageId, @ArticleId, @Title, @Subtitle, @MainText)";
-			foreach(var el in articleInfos)
+			using (var tran = connection.BeginTransaction())
 			{
-				await connection.ExecuteAsync(sql, el);
+				var sqlArticle = "INSERT INTO Articles (ArticleId, PublishingDate, AuthorId, SubCategoryId, TeamId, Published, ShowComments) " +
+				"VALUES (@ArticleId, @PublishingDate, @AuthorId, @SubCategoryId, @TeamId, @Published, @ShowComments)";
+				var sqlInfos = "INSERT INTO ArticleInfos (LanguageId, ArticleId, Title, Subtitle, MainText) " +
+					  "VALUES (@LanguageId, @ArticleId, @Title, @Subtitle, @MainText)";
+
+				await connection.ExecuteAsync(sqlArticle, article, tran);
+				await connection.ExecuteAsync(sqlInfos, article.Infos, tran);
+
+				tran.Commit();
 			}
 		}
 	}

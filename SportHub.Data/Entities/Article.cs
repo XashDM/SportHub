@@ -9,4 +9,5 @@ public class Article
 	public string TeamId { get; set; } = null!;
 	public bool Published { get; set; }
 	public bool ShowComments { get; set; }
+	public List<ArticleInfo> Infos { get; set; } = null!;
 }

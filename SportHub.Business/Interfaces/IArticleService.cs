@@ -4,6 +4,6 @@ namespace SportHub.Business
 {
 	public interface IArticleService
 	{
-		Task PostArticleAsync(Article article, ArticleInfo[] articleInfos);
+		Task CreateArticleAsync(Article article);
 	}
 }

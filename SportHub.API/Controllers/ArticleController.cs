@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using SportHub.Business;
 using SportHub.Data.Entities;
-using System.Text.Json;
 
 namespace SportHub.API.Controllers
 {
@@ -19,16 +18,13 @@ namespace SportHub.API.Controllers
 			_logger = logger;
 		}
 
-		[HttpPost(Name = "PostArticle")]
-		public async Task<IActionResult> PostArticleTestAsync([FromBody] JsonElement json)
+		[HttpPost(Name = "Article")]
+		public async Task<IActionResult> CreateArticleAsync([FromBody] Article article)
 		{
 			try
 			{
-				var article = JsonSerializer.Deserialize<Article>(json.GetProperty("Article"));
-				var articleInfos = JsonSerializer.Deserialize<ArticleInfo[]>(json.GetProperty("ArticleInfos"));
-
-				await _articlesService.PostArticleAsync(article, articleInfos);
-				return Ok();
+				await _articlesService.CreateArticleAsync(article);
+				return Ok(article.TeamId);
 			}
 			catch (Exception ex)
 			{

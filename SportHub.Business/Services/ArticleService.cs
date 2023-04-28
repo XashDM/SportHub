@@ -12,20 +12,17 @@ namespace SportHub.Business.Implementations
 			_articleRepository = articleRepository;
 		}
 
-		public async Task PostArticleAsync(Article article, ArticleInfo[] articleInfos)
+		public async Task CreateArticleAsync(Article article)
 		{
 			var articleId = Guid.NewGuid().ToString();
 
 			article.ArticleId = articleId;
-			foreach (var el in articleInfos)
+			foreach(var el in article.Infos)
 			{
-				el.ArticleId = article.ArticleId;
+				el.ArticleId = articleId;
 			}
 
-			article.Published = false;
-
-			await _articleRepository.PostArticleAsync(article);
-			await _articleRepository.PostArticleInfosAsync(articleInfos);
+			await _articleRepository.CreateArticleAsync(article);
 		}
 	}
 }
