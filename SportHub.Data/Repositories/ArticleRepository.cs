@@ -21,8 +21,8 @@ public class ArticleRepository : IArticleRepository
 
 			using (var tran = connection.BeginTransaction())
 			{
-				var sqlArticle = "INSERT INTO Articles (ArticleId, PublishingDate, AuthorId, SubCategoryId, TeamId, Published, ShowComments) " +
-				"VALUES (@ArticleId, @PublishingDate, @AuthorId, @SubCategoryId, @TeamId, @Published, @ShowComments)";
+				var sqlArticle = "INSERT INTO Articles (ArticleId, PublishingDate, AuthorId, SubCategoryId, TeamId, ImageId, LocationId, Published, ShowComments) " +
+				"VALUES (@ArticleId, @PublishingDate, @AuthorId, @SubCategoryId, @TeamId, @ImageId, @LocationId, @Published, @ShowComments)";
 				var sqlInfos = "INSERT INTO ArticleInfos (LanguageId, ArticleId, Title, Subtitle, MainText) " +
 					  "VALUES (@LanguageId, @ArticleId, @Title, @Subtitle, @MainText)";
 

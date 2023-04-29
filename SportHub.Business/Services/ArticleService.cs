@@ -21,6 +21,7 @@ namespace SportHub.Business.Implementations
 			{
 				el.ArticleId = articleId;
 			}
+			article.PublishingDate = DateTime.Now;
 
 			await _articleRepository.CreateArticleAsync(article);
 		}

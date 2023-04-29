@@ -24,7 +24,7 @@ namespace SportHub.API.Controllers
 			try
 			{
 				await _articlesService.CreateArticleAsync(article);
-				return Ok(article.TeamId);
+				return Ok();
 			}
 			catch (Exception ex)
 			{
