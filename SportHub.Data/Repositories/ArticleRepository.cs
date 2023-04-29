@@ -19,17 +19,17 @@ public class ArticleRepository : IArticleRepository
 		{
 			connection.Open();
 
-			using (var tran = connection.BeginTransaction())
+			using (var transaction = connection.BeginTransaction())
 			{
 				var sqlArticle = "INSERT INTO Articles (ArticleId, PublishingDate, AuthorId, SubCategoryId, TeamId, ImageId, LocationId, Published, ShowComments) " +
 				"VALUES (@ArticleId, @PublishingDate, @AuthorId, @SubCategoryId, @TeamId, @ImageId, @LocationId, @Published, @ShowComments)";
 				var sqlInfos = "INSERT INTO ArticleInfos (LanguageId, ArticleId, Title, Subtitle, MainText) " +
 					  "VALUES (@LanguageId, @ArticleId, @Title, @Subtitle, @MainText)";
 
-				await connection.ExecuteAsync(sqlArticle, article, tran);
-				await connection.ExecuteAsync(sqlInfos, article.Infos, tran);
+				await connection.ExecuteAsync(sqlArticle, article, transaction);
+				await connection.ExecuteAsync(sqlInfos, article.Infos, transaction);
 
-				tran.Commit();
+				transaction.Commit();
 			}
 		}
 	}
