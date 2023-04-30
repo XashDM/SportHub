@@ -8,7 +8,6 @@ import MenuItems from "./MenuItems";
 
 const NavigationSystem = () => {
     const categories = CategoryRequest()
-    console.log(categories)
 return(
 <div className={styles.nav_area}>
     <ul className={styles.menus}> 
