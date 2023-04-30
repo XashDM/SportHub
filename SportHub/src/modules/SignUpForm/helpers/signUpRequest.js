@@ -3,8 +3,10 @@ import hashPassword from "../../../helpers/hashPassword"
 
 
 const signUpRequest = async (user) => {
+    const backendHost = process.env.REACT_APP_BACKEND_HOST
+
     try {
-        const response = await axios.post('https://localhost:7168/Auth/register',
+        const response = await axios.post(`${backendHost}/Auth/register`,
             {...user, password: hashPassword(user.password)})
 
         console.log(response.data)

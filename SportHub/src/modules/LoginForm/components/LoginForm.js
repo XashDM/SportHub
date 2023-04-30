@@ -60,8 +60,6 @@ function LoginForm(){
         navigate(ROUTES.HOME)
     }
     const handleLoginFailure = (response) => {
-        // handle login failure
-        console.log('Login failure:')
         console.log('Login failure:', response)
         setError(true)
     }

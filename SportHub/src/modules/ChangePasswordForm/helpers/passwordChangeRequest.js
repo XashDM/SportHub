@@ -1,9 +1,11 @@
 import axios from "axios"
 import hashPassword from "../../../helpers/hashPassword"
 const passwordChangeRequest = async (token, password) => {
+    const backendHost = process.env.REACT_APP_BACKEND_HOST
+
     try {
         const response = await axios.get(
-            `https://localhost:7168/Auth/changePassword?token=${token}&password=${hashPassword(password)}`)
+            `${backendHost}/Auth/changePassword?token=${token}&password=${hashPassword(password)}`)
 
         console.log(response)
         return response
