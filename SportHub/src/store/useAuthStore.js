@@ -19,12 +19,16 @@ export const useAuthStore = () => {
         userData: JSON.parse(storedUserData) || state.userData,
         accessToken: storedAccessToken || state.accessToken,
         setUserData: (userData) => {
-            setStoredUserData(JSON.stringify(userData))
-            state.setUserData(userData)
+            if(userData !== undefined){
+                setStoredUserData(JSON.stringify(userData))
+                state.setUserData(userData)
+            }
         },
         setAccessToken: (accessToken) => {
-            setStoredAccessToken(accessToken)
-            state.setAccessToken(accessToken)
+            if(accessToken !== undefined){
+                setStoredAccessToken(accessToken)
+                state.setAccessToken(accessToken)
+            }
         },
     }))
 }
