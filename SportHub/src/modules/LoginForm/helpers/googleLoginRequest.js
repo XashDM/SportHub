@@ -1,13 +1,11 @@
 import axios from "axios"
-import hashPassword from "../../../helpers/hashPassword"
-const loginRequest = async (email, password) => {
+const googleLoginRequest = async (accessToken) => {
     const backendHost = process.env.REACT_APP_BACKEND_HOST
 
     try {
-        const response = await axios.post(`${backendHost}/Auth/login`,null, {
+        const response = await axios.post(`${backendHost}/GoogleAuthorization`,null, {
             params: {
-                email: email,
-                password: hashPassword(password)
+                accessToken
             }
         })
 
@@ -19,4 +17,4 @@ const loginRequest = async (email, password) => {
     }
 }
 
-export default loginRequest
+export default googleLoginRequest

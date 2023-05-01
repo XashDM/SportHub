@@ -3,5 +3,6 @@
     public class LanguageRequest
     {
         public string ShortTitle { get; set; }
+        public bool IsActive { get; set; }
     }
 }

@@ -1,0 +1,31 @@
+@import "src/styles/mixins";
+
+.container{
+    display: flex;
+    flex-direction: column;
+    width: 30vw;
+    gap: 3vh;
+
+    .heading{
+        margin-bottom: 0;
+    }
+
+    .error{
+        color: var(--color-red-regular);
+        font-size: 18px;
+    }
+
+    .text_muted{
+        margin-top: 0;
+        width: 70%;
+        @include text-muted-paragraph;
+    }
+
+    .bottom_link{
+        all: unset;
+        cursor: pointer;
+        @include text-bodysemibold;
+        margin: 0 auto;
+    }
+}
+

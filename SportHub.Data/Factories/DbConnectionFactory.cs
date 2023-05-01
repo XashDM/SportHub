@@ -1,4 +1,4 @@
-using System.Data;
+﻿using System.Data;
 using Microsoft.Extensions.Configuration;
 using MySql.Data.MySqlClient;
 using SportHub.Data.Interfaces;
@@ -12,7 +12,6 @@ public class DbConnectionFactory: IDbConnectionFactory
     public DbConnectionFactory(IConfiguration config)
     {
         _connectionString = config.GetConnectionString("DefaultConnection");
-
     }
     
     public IDbConnection GetConnection()
