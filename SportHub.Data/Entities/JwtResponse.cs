@@ -8,5 +8,5 @@ public class JwtResponse
     
     public string RefreshToken { get; set; }
     
-    public UserResponseDto User { get; set; }
+    public User User { get; set; }
 }

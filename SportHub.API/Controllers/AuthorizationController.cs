@@ -1,3 +1,4 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SportHub.Business;
@@ -13,15 +14,15 @@ public class AuthController : ControllerBase
 {
     private readonly IUserService _userService;
     private readonly IJwtService _jwtService;
-    private readonly IEmailService _emailService;
     private readonly ILogger<AuthController> _logger;
+    private readonly IMapper _mapper;
     public AuthController(ILogger<AuthController> logger, IUserService userService, 
-        IJwtService jwtService, IEmailService emailService)
+        IJwtService jwtService, IMapper mapper)
     {
         _userService = userService;
         _jwtService = jwtService;
         _logger = logger;
-        _emailService = emailService;
+        _mapper = mapper;
     }
 
     [HttpPost("login")]
@@ -37,11 +38,13 @@ public class AuthController : ControllerBase
                 return Unauthorized();
             }
             
-            JwtResponse response = await _jwtService.GenerateTokensAsync(user);
+            JwtResponse jwtResponse = await _jwtService.GenerateTokensAsync(user);
             
+            UserResponseDto userDto =  _mapper.Map<User, UserResponseDto>(jwtResponse.User);
+
             Response.Cookies.Append(
                 "refreshToken",
-                response.RefreshToken,
+                jwtResponse.RefreshToken,
                 new CookieOptions
                 {
                     HttpOnly = true,
@@ -49,7 +52,13 @@ public class AuthController : ControllerBase
                     SameSite = SameSiteMode.Strict
                 }
             );
-
+            
+            UserLoginResponseDto response = new UserLoginResponseDto
+            {
+                AccessToken = jwtResponse.AccessToken,
+                User = userDto
+            };
+            
             return Ok(response);
         }
         catch (Exception ex)
@@ -66,12 +75,12 @@ public class AuthController : ControllerBase
         {
             var refreshToken = Request.Cookies["refreshToken"];
             
-            if (refreshToken == null || string.IsNullOrEmpty(_jwtService.ValidateToken(refreshToken)))
+            if (refreshToken == null || !_jwtService.ValidateToken(refreshToken))
             {
                 return Unauthorized();
             }
             
-            var userId =  await _jwtService.GetIdByTokenAsync(refreshToken);
+            var userId =  await _jwtService.GetIdByRefreshTokenAsync(refreshToken);
 
             if (userId == null)
             {
@@ -85,9 +94,13 @@ public class AuthController : ControllerBase
                 return Unauthorized();
             }
             
-            var response = await _jwtService.GenerateTokensAsync(user);
+            var jwtResponse = await _jwtService.GenerateTokensAsync(user);
                     
-            return Ok(response);
+            return Ok(new
+            {
+                AccessToken=jwtResponse.AccessToken,
+                User = jwtResponse.User
+            });
         }
         catch (Exception ex)
         {
@@ -109,7 +122,7 @@ public class AuthController : ControllerBase
 
         try
         {
-            if(string.IsNullOrEmpty(_jwtService.ValidateToken(refreshToken)))
+            if(!_jwtService.ValidateToken(refreshToken))
             {
                 return Ok();
             }
@@ -130,15 +143,14 @@ public class AuthController : ControllerBase
     {
         try
         {
-            string userId = _jwtService.ValidateToken(token);
+            var isActivated = await _userService.ActivateUserAccountAsync(token);
             
-            if(!string.IsNullOrEmpty(userId))
+            if (isActivated)
             {
-                await _userService.ActivateUserAccountAsync(userId);
-                return Redirect("http://localhost:3000/log-in");
+                return Redirect("http://localhost:3000/log-in");  
             }
             
-            return BadRequest("Activate token expiration time passed");
+            return Redirect("http://localhost:3000/activate-account");
         }
         catch (Exception ex)
         {
@@ -149,26 +161,17 @@ public class AuthController : ControllerBase
     
     [HttpGet("changePassword")]
     [AllowAnonymous]
-    public async Task<IActionResult> ResetPasswordAsync(string token, string password)
+    public async Task<IActionResult> ChangePasswordAsync(string token, string password)
     {
         try
         {
-            string userId = _jwtService.ValidateToken(token);
-            
-            if(string.IsNullOrEmpty(userId))
+            ResponseWithBoolAndMessage response = await _userService.ChangePasswordAsync(token, password);
+            if (response.IsSuccess)
             {
-                return BadRequest("Invalid token");
-            }
-
-            var user = await _userService.GetUserByIdAsync(userId);
-            
-            if (user == null)
-            {
-                return BadRequest("Account do not exists");
+                return Ok();
             }
             
-            await _userService.ChangePasswordAsync(userId, password);
-            return Ok();
+            return BadRequest(response.ErrorMessage);
         }
         catch (Exception ex)
         {
@@ -183,15 +186,14 @@ public class AuthController : ControllerBase
     {
         try
         {
-            var insertedUser = await _userService.GetUserByEmailAsync(email);
+            bool isSent = await _userService.SendResetPasswordLinkAsync(email);
+
+            if (isSent)
+            {
+                return Ok(); 
+            }
             
-            var activationToken = _jwtService.GenerateActivationToken(insertedUser);
-            
-            string activationLink = $"http://localhost:3000/password-change/{activationToken}";
-            
-            _emailService.SendPasswordResetLinkAsync(email, activationLink);
-            
-            return Ok();
+            return BadRequest();
         }
         catch (Exception ex)
         {
@@ -202,32 +204,15 @@ public class AuthController : ControllerBase
     
     [HttpPost("register")]
     [AllowAnonymous]
-    public async Task<IActionResult> InsertUserAsync([FromBody] UserRequestDto user)
+    public async Task<IActionResult> InsertUserAsync([FromBody] UserRequestDto userDto)
     {
         try
         {
-            if (user.Password == null || user.Email == null)
-            {
-                return BadRequest("No password or email provided");
-            }
+            User user = _mapper.Map<UserRequestDto, User>(userDto);
             
-            // Check if object is correct
-            if (user.UserId != null || user.FirstName == null || user.LastName == null)
-            {
-                return BadRequest("Not correct object provided");
-            }
-            
-            await _userService.InsertOneAsync(user);
-            
-            var insertedUser = await _userService.GetUserByEmailAsync(user.Email);
-            
-            var activationToken = _jwtService.GenerateActivationToken(insertedUser);
-            
-            string activationLink = $"https://localhost:7168/Auth/activate/{activationToken}";
+            await _userService.CreateUserAsync(user);
 
-            await _emailService.SendActivationEmailAsync(user.Email, activationLink);
-
-            return Ok(activationLink);
+            return Ok();
         }
         catch (Exception ex)
         {

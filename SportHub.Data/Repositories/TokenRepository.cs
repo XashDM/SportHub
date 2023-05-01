@@ -53,4 +53,16 @@ public class TokenRepository : ITokenRepository
             await connection.ExecuteAsync(sql, parameters);
         }   
     }
+
+    public async Task<string> GetTokenByUserId(string id)
+    {
+        using (var connection = _dbConnectionFactory.GetConnection())
+        {
+            connection.Open();
+            var query = "SELECT RefreshToken FROM Token WHERE UserId = @id";
+            var result = await connection.QueryFirstOrDefaultAsync<string>(query, new { id });
+
+            return result;
+        }   
+    }
 }

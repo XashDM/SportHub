@@ -1,10 +1,8 @@
 using AutoMapper;
 using Moq;
-using Org.BouncyCastle.Math.EC;
 using SportHub.API;
 using SportHub.Business;
 using SportHub.Business.Implementations;
-using SportHub.Data.DTO;
 using SportHub.Data.Entities;
 using SportHub.Data.Interfaces;
 
@@ -13,32 +11,25 @@ namespace SportHub.UnitTests
     public class UserServiceTests
     {
         private User _testUser;
-        private UserResponseDto _testUserResponseDto;
-        private UserRequestDto _testUserRequestDto;
         private IMapper _mapper;
         private UserService _userService;
         private Mock<IUserRepository> _userRepositoryMock;
+        private Mock<IJwtService> _jwtServiceMock;
+        private Mock<IEmailService> _emailServiceMock;
 
         [SetUp]
         public void SetUp()
         {
             var config = new MapperConfiguration(cfg =>
             {
-                cfg.CreateMap<User, UserResponseDto>();
-                cfg.CreateMap<User, UserRequestDto>();
-                cfg.CreateMap<UserRequestDto, User>()
-                    .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
-                cfg.CreateMap<UserGoogleDto, User>()
-                    .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.Id))
-                    .ForMember(dest => dest.FirstName,
-                        opt => opt.MapFrom(src => src.Name.Split(" ", StringSplitOptions.RemoveEmptyEntries)[1]))
-                    .ForMember(dest => dest.LastName,
-                        opt => opt.MapFrom(src => src.Name.Split(" ", StringSplitOptions.RemoveEmptyEntries)[0]));
+                cfg.AddProfile<MapperConfig>();
             });
             
-            _mapper = config.CreateMapper();
+            _mapper = new Mapper(config);
 
             _userRepositoryMock = new Mock<IUserRepository>();
+            _jwtServiceMock = new Mock<IJwtService>();
+            _emailServiceMock = new Mock<IEmailService>();
             
             _testUser = new User
             {
@@ -50,10 +41,12 @@ namespace SportHub.UnitTests
                 IsActivated = true, 
                 IsAdmin = false 
             };
-
-            _testUserResponseDto = _mapper.Map<User, UserResponseDto>(_testUser);
-            _testUserRequestDto = _mapper.Map<User, UserRequestDto>(_testUser);
-            _userService = new UserService(_userRepositoryMock.Object, _mapper);
+            
+            _userRepositoryMock.Setup(foo => foo.GetUserByEmailAsync(It.IsAny<string>()).Result)
+                .Returns((string email) => email == "testUserEmail@gmail.com" ? _testUser : null);
+            
+            _userService = new UserService(_userRepositoryMock.Object, _mapper, 
+                _jwtServiceMock.Object, _emailServiceMock.Object);
 
         }
         
@@ -79,12 +72,6 @@ namespace SportHub.UnitTests
         [TestCase("incorrect_email", "testUserPassword")]
         public async Task IncorrectPasswordOrEmail_SearchingForUser_UserIsNotReturned(string email, string password)
         {
-            // Arrange
-
-            _userRepositoryMock.Setup(foo => foo.GetUserByEmailAsync(It.IsAny<string>()).Result)
-                .Returns((string email) => email == "testUserEmail@gmail.com" ? _testUser : null);
-            
-            
             // Act
 
             var expectedUser = await _userService.GetUserByEmailAndPasswordAsync(email, password);
@@ -97,18 +84,14 @@ namespace SportHub.UnitTests
         [TestCase("testUserEmail@gmail.com", "testUserPassword")]
         public async Task CorrectPasswordAndEmail_SearchingForUser_UserResponseDtoIsReturned(string email, string password)
         {
-            // Arrange
-
-            _userRepositoryMock.Setup(foo => foo.GetUserByEmailAsync(It.IsAny<string>()).Result)
-                .Returns((string email) => email == "testUserEmail@gmail.com" ? _testUser : null);
-            
             // Act
 
-            UserResponseDto user = await _userService.GetUserByEmailAndPasswordAsync(email, password);
+            User user = await _userService.GetUserByEmailAndPasswordAsync(email, password);
 
             // Assert   
+            
             Assert.IsNotNull(user);
-            Assert.IsInstanceOf<UserResponseDto>(user);
+            Assert.IsInstanceOf<User>(user);
             // Assert.AreEqual(_testUserResponseDto, user);
         }
         
@@ -130,7 +113,7 @@ namespace SportHub.UnitTests
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.IsInstanceOf<IEnumerable<UserResponseDto>>(result);
+            Assert.IsInstanceOf<IEnumerable<User>>(result);
             Assert.That(3, Is.EqualTo(result.Count()));
         }
         
@@ -138,16 +121,14 @@ namespace SportHub.UnitTests
         [TestCase("testUserEmail@gmail.com")]
         public async Task CorrectUserEmailProvided_SearchingForUserByEmail_UserResponseDtoIsReturned(string email)
         {
-            // Arrange
-            _userRepositoryMock.Setup(foo => foo.GetUserByEmailAsync(It.IsAny<string>()).Result)
-                .Returns((string email) => email == "testUserEmail@gmail.com" ? _testUser : null);
-
             // Act
-            UserResponseDto result = await _userService.GetUserByEmailAsync(email);
+            
+            User result = await _userService.GetUserByEmailAsync(email);
 
             // Assert
+            
             Assert.IsNotNull(result);
-            Assert.IsInstanceOf<UserResponseDto>(result);
+            Assert.IsInstanceOf<User>(result);
         }
         
         [Test]
@@ -155,15 +136,17 @@ namespace SportHub.UnitTests
         public async Task CorrectUserIdProvided_SearchingForUserIdEmail_UserResponseDtoIsReturned(string id)
         {
             // Arrange
+            
             _userRepositoryMock.Setup(foo => foo.GetUserByIdAsync(It.IsAny<string>()).Result)
                 .Returns((string id) => id == _testUser.UserId ? _testUser : null);
 
             // Act
-            UserResponseDto result = await _userService.GetUserByIdAsync(id);
+            
+            User result = await _userService.GetUserByIdAsync(id);
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.IsInstanceOf<UserResponseDto>(result);
+            Assert.IsInstanceOf<User>(result);
         }
     
         [Test]
@@ -171,13 +154,16 @@ namespace SportHub.UnitTests
         public async Task IncorrectUserIdProvided_SearchingForUserIdEmail_UserResponseDtoIsReturned(string id)
         {
             // Arrange
+            
             _userRepositoryMock.Setup(foo => foo.GetUserByIdAsync(It.IsAny<string>()).Result)
                 .Returns((string id) => id == _testUser.UserId ? _testUser : null);
 
             // Act
-            UserResponseDto result = await _userService.GetUserByIdAsync(id);
+            
+            User result = await _userService.GetUserByIdAsync(id);
 
             // Assert
+            
             Assert.IsNull(result);
         }
 
@@ -185,13 +171,16 @@ namespace SportHub.UnitTests
         public async Task CorrectUserRequestDtoProvided_InsertingUserInToDb_UserIdReturned()
         {
             // Arrange
+            
             _userRepositoryMock.Setup(foo => foo.InsertOneAsync(It.IsAny<User>()).Result)
                 .Returns((User user) => user.UserId);
 
             // Act
-            string result = await _userService.InsertOneAsync(_testUserRequestDto);
+            
+            string result = await _userService.CreateUserAsync(_testUser);
 
             // Assert
+            
             Assert.IsNotNull(result);
             Assert.IsInstanceOf<string>(result);
         }

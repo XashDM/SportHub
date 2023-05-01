@@ -21,7 +21,7 @@ namespace SportHub.Business.Implementations
             _tokenRepository = tokenRepository;
         }
 
-        public async Task<JwtResponse> GenerateTokensAsync(UserResponseDto user)
+        public async Task<JwtResponse> GenerateTokensAsync(User user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
 
@@ -29,7 +29,7 @@ namespace SportHub.Business.Implementations
             
             var accessToken = tokenHandler.CreateToken(tokenDescriptor);
             
-            tokenDescriptor.Expires = DateTime.UtcNow.AddMinutes(15);
+            tokenDescriptor.Expires = DateTime.UtcNow.AddDays(7);
             var refreshToken  = tokenHandler.CreateToken(tokenDescriptor);
             await _tokenRepository.WriteTokenInDbAsync(tokenHandler.WriteToken(refreshToken), user.UserId);
             
@@ -41,7 +41,7 @@ namespace SportHub.Business.Implementations
             return response;
         }
         
-        public string ValidateToken(string token)
+        public string GetUserIdByToken(string token)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
 
@@ -60,19 +60,37 @@ namespace SportHub.Business.Implementations
             }
         }
 
+        public bool ValidateToken(string token)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+
+            try
+            {
+                tokenHandler.ValidateToken(token,  
+                    CreateTokenValidationParameters(), 
+                    out SecurityToken validatedToken);
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+        
         public async Task DeleteRefreshTokenAsync(string token)
         {
             await _tokenRepository.DeleteRefreshTokenAsync(token);
         }
 
-        public async Task<string> GetIdByTokenAsync(string token)
+        public async Task<string> GetIdByRefreshTokenAsync(string token)
         {
             var id = await _tokenRepository.GetIdByTokenAsync(token);
 
             return id;
         }
 
-        private SecurityTokenDescriptor CreateTokenDescriptor(UserResponseDto user)
+        private SecurityTokenDescriptor CreateTokenDescriptor(User user)
         {
             return new SecurityTokenDescriptor
             {
@@ -83,7 +101,7 @@ namespace SportHub.Business.Implementations
                     new Claim(ClaimTypes.Name, user.FirstName + " " + user.LastName),
                     new Claim(ClaimTypes.Role, user.IsAdmin ? "admin" : "user")
                 }),
-                Expires = DateTime.UtcNow.AddMinutes(5),
+                Expires = DateTime.UtcNow.AddDays(1),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(_key),
                     SecurityAlgorithms.HmacSha256Signature)
             };
@@ -101,7 +119,7 @@ namespace SportHub.Business.Implementations
             };
         }
 
-        public string GenerateActivationToken(UserResponseDto user)
+        public string GenerateActivationToken(User user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
 
@@ -112,7 +130,13 @@ namespace SportHub.Business.Implementations
 
             return tokenHandler.WriteToken(activationToken);
         }
-    
+
+        public async Task<string> GetRefreshTokenByUserId(string id)
+        {
+            var response = await _tokenRepository.GetTokenByUserId(id);
+            
+            return response;
+        }
     }
 }
 

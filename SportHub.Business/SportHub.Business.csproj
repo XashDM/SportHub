@@ -18,4 +18,11 @@
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.28.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="Services\Emails\account-activation-email.html" />
+    <EmbeddedResource Include="Services\Emails\account-activation-email.html" />
+    <None Remove="Services\Emails\password-reset-email.html" />
+    <EmbeddedResource Include="Services\Emails\password-reset-email.html" />
+  </ItemGroup>
+
 </Project>

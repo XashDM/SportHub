@@ -1,3 +1,4 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SportHub.Business;
@@ -11,22 +12,25 @@ namespace SportHub.Controllers;
 public class UserController : ControllerBase
 {
     private readonly ILogger<UserController> _logger;
-    
     private readonly IUserService _usersService;
+    private readonly IMapper _mapper;
     
-    public UserController(ILogger<UserController> logger, IUserService userService)
+    public UserController(ILogger<UserController> logger, IMapper mapper, IUserService userService)
     {
         _logger = logger;
         _usersService = userService;
+        _mapper = mapper;
     }
 
     [HttpGet("all")]
     [Authorize("AdminPolicy")]    
     public async Task<IActionResult> GetAllUsersAsync()
     {
-        var users = await _usersService.GetUsersAsync();
+        IEnumerable<User> users = await _usersService.GetUsersAsync();
     
-        return Ok(users);
+        var usersDto = _mapper.Map<IEnumerable<UserResponseDto>>(users);
+        
+        return Ok(usersDto);
 
     }
     
@@ -34,21 +38,16 @@ public class UserController : ControllerBase
     [Authorize("AdminPolicy")]    
     public async Task<IActionResult> GetByEmailAsync([FromRoute] string email)
     {
-        var user = await _usersService.GetUserByEmailAsync(email);
+        User user = await _usersService.GetUserByEmailAsync(email);
         
         if (user == null)
         {
             return NotFound("User not found");
         }
+
+        var userDto = _mapper.Map<User, UserResponseDto>(user);
     
-        return Ok(new UserResponseDto
-        {
-            UserId = user.UserId,
-            Email = user.Email,
-            FirstName = user.FirstName,
-            LastName = user.LastName,
-            IsAdmin = user.IsAdmin
-        });
+        return Ok(userDto);
     }
     
     [HttpGet("Id/{id}")]
@@ -62,22 +61,27 @@ public class UserController : ControllerBase
             return NotFound("User not found");
         }
     
-        return Ok(user);
+        var userDto = _mapper.Map<User, UserResponseDto>(user);
+        
+        return Ok(userDto);
     }
 
     [HttpPut]
-    public async Task<IActionResult> UpdateUserAsync([FromBody] UserRequestDto newUser)
+    public async Task<IActionResult> UpdateUserAsync([FromBody] UserUpdateRequestDto newUserDto)
     {
         try
         {
-            var existingUser = await _usersService.GetUserByIdAsync(newUser.UserId);
+            var existingUser = await _usersService.GetUserByIdAsync(newUserDto.UserId);
             
             if (existingUser == null)
             {
-                return NotFound($"User with ID '{newUser.UserId}' not found.");
+                return NotFound($"User with ID '{newUserDto.UserId}' not found.");
             }
             
+            User newUser = _mapper.Map<UserUpdateRequestDto, User>(newUserDto, existingUser);
+            
             await _usersService.UpdateUserAsync(newUser);
+            
             return Ok();
         }
         catch (Exception ex)
