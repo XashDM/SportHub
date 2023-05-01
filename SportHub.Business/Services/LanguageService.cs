@@ -21,15 +21,9 @@ namespace SportHub.Business.Services
             await _languageRepository.DeleteLanguageAsync(shortTitle);
         }
 
-        public async Task AddLanguageAsync(LanguageRequest languageRequest)
+        public async Task AddLanguagesAsync(IEnumerable<Language> languages)
         {
-            Language language = new Language
-            {
-                ShortTitle = languageRequest.ShortTitle,
-                IsActive = languageRequest.IsActive
-            };
-
-            await _languageRepository.AddLanguageAsync(language);
+            await _languageRepository.AddLanguagesAsync(languages);
         }
 
         public async Task ChangeLanguageIsActiveAsync(string shortTitle, bool isActive)
