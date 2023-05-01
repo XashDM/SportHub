@@ -1,0 +1,33 @@
+.container {
+    display: grid;
+    grid-template-areas: 'success text close';
+    align-items: center;
+    padding: (3vh 3vh 3vh 0);
+  
+    img {
+      grid-area: success;
+      height: 100%;
+    }
+  
+    .textContainer {
+      grid-area: text;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      padding-left: 3vh;
+  
+      h3 {
+        margin: 0;
+      }
+    }
+  }
+  .closeButton {
+    grid-area: close;
+    padding-top: 1vh;
+    padding-right: 3vh;
+    justify-self: end;
+    align-self: start;
+    cursor: pointer;
+  }
+  

@@ -1,7 +1,8 @@
 import React, {useState} from 'react'
 import styles from "../styles/style.module.scss"
 import VerticalAdminMenuElement from "./VerticalAdminMenuElement"
-import {VERTICAL_MENU_ELEMENTS, VERTICAL_MENU_HINTS} from "../../../constants/VerticalMenuConstants";
+import { VERTICAL_MENU_ELEMENTS, VERTICAL_MENU_HINTS } from "../../../constants/VerticalMenuConstants"
+import LanguagesManagement from "../../../modules/LanguagesManagement"
 
 export default function VerticalAdminMenu(){
 
@@ -23,6 +24,11 @@ export default function VerticalAdminMenu(){
                     </div>
                 })}
             </div>
+            {currentVerticalMenuElement === 2 && (
+                <div className={styles.module_content_container}>
+                    <LanguagesManagement />
+                </div>
+            )}
         </div>
     )
 }
