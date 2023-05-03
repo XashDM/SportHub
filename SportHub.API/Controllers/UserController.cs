@@ -67,20 +67,13 @@ public class UserController : ControllerBase
     }
 
     [HttpPut]
-    public async Task<IActionResult> UpdateUserAsync([FromBody] UserUpdateRequestDto newUserDto)
+    public async Task<IActionResult> UpdateUserAsync([FromBody] UserUpdateRequestDto userUpdatesDto)
     {
         try
         {
-            var existingUser = await _usersService.GetUserByIdAsync(newUserDto.UserId);
+            var userUpdates = _mapper.Map<UserUpdateRequestDto, User>(userUpdatesDto);
             
-            if (existingUser == null)
-            {
-                return NotFound($"User with ID '{newUserDto.UserId}' not found.");
-            }
-            
-            User newUser = _mapper.Map<UserUpdateRequestDto, User>(newUserDto, existingUser);
-            
-            await _usersService.UpdateUserAsync(newUser);
+            await _usersService.UpdateUserAsync(userUpdates);
             
             return Ok();
         }

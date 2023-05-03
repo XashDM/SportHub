@@ -3,6 +3,7 @@ using System.IdentityModel.Tokens.Jwt;
 using Microsoft.Extensions.Configuration;
 using System.Security.Claims;
 using System.Text;
+using Microsoft.Extensions.Logging;
 using SportHub.Data.Interfaces;
 using SportHub.Data.Entities;
 using SportHub.Data.DTO;
@@ -14,11 +15,13 @@ namespace SportHub.Business.Implementations
     {
         private readonly byte[] _key;
         private readonly ITokenRepository _tokenRepository;
+        private readonly ILogger<JwtService> _logger;
 
-        public JwtService(IConfiguration config, ITokenRepository tokenRepository)
+        public JwtService(IConfiguration config, ITokenRepository tokenRepository, ILogger<JwtService> logger)
         {
             _key = Encoding.ASCII.GetBytes(config.GetSection("JwtSettings")["SecretKey"]);
             _tokenRepository = tokenRepository;
+            _logger = logger;
         }
 
         public async Task<JwtResponse> GenerateTokensAsync(User user)
@@ -54,8 +57,9 @@ namespace SportHub.Business.Implementations
 
                 return response;
             }
-            catch
+            catch(Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return "";
             }
         }

@@ -80,9 +80,18 @@ namespace SportHub.Business.Implementations
             return id;
         }
 
-        public async Task UpdateUserAsync(User newUser)
+        public async Task UpdateUserAsync(User userUpdates)
         {
-            await _userRepository.UpdateUserAsync(newUser);
+            var existingUser = await this.GetUserByIdAsync(userUpdates.UserId);
+            
+            if (existingUser == null)
+            {
+                throw new Exception($"User with ID '{userUpdates.UserId}' not found.");
+            }
+            
+            User updatedUser = _mapper.Map<User, User>(userUpdates, existingUser);
+            
+            await _userRepository.UpdateUserAsync(updatedUser);
         }
 
         public async Task<bool> ActivateUserAccountAsync(string token)

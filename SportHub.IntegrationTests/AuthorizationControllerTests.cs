@@ -11,6 +11,7 @@ using SportHub.Controllers;
 using SportHub.Data.Interfaces;
 using SportHub.Data.Repositories;
 using Microsoft.Extensions.Configuration;
+using Mysqlx.Crud;
 using SportHub.Data.DTO;
 using SportHub.Data.Entities;
 
@@ -21,6 +22,8 @@ namespace SportHub.IntegrationTests
     public class AuthorizationControllerTests
     {
         private Mock<ILogger<AuthController>> _loggerMock;
+        private Mock<ILogger<JwtService>> _jwtLoggerMock;
+
         private AuthController _authController;
         private IUserService _userService;
         private IJwtService _jwtService;
@@ -36,7 +39,9 @@ namespace SportHub.IntegrationTests
         [SetUp]
         public void SetUp()
         {
+            // Order DO matter
             _loggerMock = new Mock<ILogger<AuthController>>();
+            _jwtLoggerMock = new Mock<ILogger<JwtService>>();
             _configuration = CreateConfiguration();
             _mapper = CreateMapper();
             _emailService = CreateEmailService();
@@ -219,15 +224,9 @@ namespace SportHub.IntegrationTests
             var connectionFactoryMock = new Mock<IDbConnectionFactory>();
             connectionFactoryMock.Setup(factory => factory.GetConnection())
                 .Returns(new MySqlConnection("server=localhost;database=SportHub;user=root;password=rootadmin2022"));
-       
-            var configuration = new ConfigurationBuilder()
-                .SetBasePath(Path.Combine(AppContext.BaseDirectory, "../../../../SportHub.API"))
-                .AddJsonFile("appsettings.json", optional: true)
-                .Build();
             
-            var tokenRepository = new TokenRepository(configuration, connectionFactoryMock.Object);
-            
-            var tokenService = new JwtService(configuration, tokenRepository);
+            var tokenRepository = new TokenRepository(_configuration, connectionFactoryMock.Object);
+            var tokenService = new JwtService(_configuration, tokenRepository, _jwtLoggerMock.Object);
 
             return tokenService;
         }

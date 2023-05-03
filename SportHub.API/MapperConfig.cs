@@ -20,6 +20,9 @@ namespace SportHub.API
             CreateMap<UserUpdateRequestDto, User>()
                 .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
             
+            CreateMap<User, User>()
+                .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
+            
             CreateMap<UserGoogleDto, User>()
                 .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dest => dest.FirstName,
