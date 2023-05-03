@@ -1,0 +1,13 @@
+.button{
+    all: unset;
+
+    $size: 2.5vw;
+    width: $size;
+    height: $size;
+
+    .icon{
+        width: 100%;
+        height: 100%;
+    }
+}
+
