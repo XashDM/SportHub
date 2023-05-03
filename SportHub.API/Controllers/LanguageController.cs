@@ -55,11 +55,20 @@ namespace SportHub.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddLanguageAsync([FromBody] LanguageRequest language)
+        public async Task<IActionResult> AddLanguageAsync([FromBody] IEnumerable<LanguageRequest> languagesRequests)
         {
             try
             {
-                await _languageService.AddLanguageAsync(language);
+                var languages = new List<Language>();
+                foreach (var request in languagesRequests)
+                {
+                    var language = new Language
+                    {
+                        ShortTitle = request.ShortTitle
+                    };
+                    languages.Add(language);
+                }
+                await _languageService.AddLanguagesAsync(languages);
 
                 return Ok();
             }
