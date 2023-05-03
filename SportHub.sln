@@ -7,13 +7,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SportHub.Business", "SportH
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SportHub.Data", "SportHub.Data\SportHub.Data.csproj", "{982E96C0-6836-4BD0-9F6B-1A575E58FF96}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SportHub.Tests", "SportHub.Tests\SportHub.Tests.csproj", "{967EAFB9-5603-49B3-8F3C-52FDEA914F34}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SportHub.Database", "SportHub.Database\SportHub.Database.csproj", "{664EC9D3-201B-432A-8AC2-33C47C0C80EC}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SportHub.API", "SportHub.API\SportHub.API.csproj", "{DADD825B-2ADC-4A44-93D0-40DA5DA698BC}"
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "SportHub", "SportHub\SportHub.esproj", "{79BEEC82-DAFC-4553-83CF-0CB8F8DD0A2A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SportHub.UnitTests", "SportHub.UnitTests\SportHub.UnitTests.csproj", "{DEF9EA5A-626A-4056-B55B-8D58C3F2F8C6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SportHub.IntegrationTests", "SportHub.IntegrationTests\SportHub.IntegrationTests.csproj", "{7601699E-968A-41B6-89DF-32B04F25C89C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +31,6 @@ Global
 		{982E96C0-6836-4BD0-9F6B-1A575E58FF96}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{982E96C0-6836-4BD0-9F6B-1A575E58FF96}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{982E96C0-6836-4BD0-9F6B-1A575E58FF96}.Release|Any CPU.Build.0 = Release|Any CPU
-		{967EAFB9-5603-49B3-8F3C-52FDEA914F34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{967EAFB9-5603-49B3-8F3C-52FDEA914F34}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{967EAFB9-5603-49B3-8F3C-52FDEA914F34}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{967EAFB9-5603-49B3-8F3C-52FDEA914F34}.Release|Any CPU.Build.0 = Release|Any CPU
 		{664EC9D3-201B-432A-8AC2-33C47C0C80EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{664EC9D3-201B-432A-8AC2-33C47C0C80EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{664EC9D3-201B-432A-8AC2-33C47C0C80EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -47,6 +45,14 @@ Global
 		{79BEEC82-DAFC-4553-83CF-0CB8F8DD0A2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{79BEEC82-DAFC-4553-83CF-0CB8F8DD0A2A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{79BEEC82-DAFC-4553-83CF-0CB8F8DD0A2A}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{DEF9EA5A-626A-4056-B55B-8D58C3F2F8C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DEF9EA5A-626A-4056-B55B-8D58C3F2F8C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DEF9EA5A-626A-4056-B55B-8D58C3F2F8C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DEF9EA5A-626A-4056-B55B-8D58C3F2F8C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7601699E-968A-41B6-89DF-32B04F25C89C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7601699E-968A-41B6-89DF-32B04F25C89C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7601699E-968A-41B6-89DF-32B04F25C89C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7601699E-968A-41B6-89DF-32B04F25C89C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
