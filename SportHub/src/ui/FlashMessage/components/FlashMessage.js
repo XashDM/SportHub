@@ -1,13 +1,17 @@
 import * as React from 'react'
 import styles from "../styles/style.module.scss"
 import FlashMessageStyles from '../styles/FlashMessageStyles'
+import CancelIcon from '@mui/icons-material/Cancel'
 
-function FlashMessage({ title, content, open, handleClose }) {
-
+function FlashMessage({ title, content, open, isSuccess, handleClose }) {
     const action = (
         <React.Fragment>
             <div className={styles.container}>
-                <img src={process.env.PUBLIC_URL + '/icons/Success.svg'} alt="Success" />
+            {isSuccess ? (
+                    <img src={process.env.PUBLIC_URL + '/icons/Success.svg'} alt="Success icon" />
+                ) : (
+                    <CancelIcon sx={{ width: 46, height: 46, color: "#D72130" }}/>
+                )}
                 <div className={styles.textContainer}>
                     <h3>{title}</h3>
                     <span>{content}</span>
@@ -17,7 +21,7 @@ function FlashMessage({ title, content, open, handleClose }) {
                     <img src={process.env.PUBLIC_URL + '/icons/Close.svg'} alt="Close" />
                 </span>
         </React.Fragment>
-    );
+    )
 
     return (
         <div>
@@ -28,7 +32,7 @@ function FlashMessage({ title, content, open, handleClose }) {
                 action={action}
             />
         </div>
-    );
+    )
 }
 
 export default FlashMessage

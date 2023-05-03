@@ -22,6 +22,7 @@ function LanguagesManagement() {
     const [languageToDelete, setLanguageToDelete] = useState()
 
     const [openFlashMessage, setOpenFlashMessage] = useState(false)
+    const [flashIsSuccess, setFlashIsSuccess] = useState(true)
     const [flashTitle, setFlashTitle] = useState()
     const [flashContent, setFlashContent] = useState()
 
@@ -55,17 +56,13 @@ function LanguagesManagement() {
         setOpenPopUpAddLanguages(false)
         setFlashTitle('Success!')
         setFlashContent('Successfully added new language!')
+        setFlashIsSuccess(true)
         setOpenFlashMessage(true)
     }
 
     const handleLanguagesGet = async () => {
-
         const result = await getLanguagesRequest()
-
-        if (result === "ERR_BAD_REQUEST") {
-        } else {
-            setLanguages(result.data)
-        }
+        setLanguages(result.data)
     }
 
     const handleToggleSwitch = async (event, shortTitle) => {
@@ -73,6 +70,10 @@ function LanguagesManagement() {
         // Don't change switch position if language is 'en' (default) or response isn't Ok
         const result = await editLanguageRequest(shortTitle, checked)
         if ((shortTitle === languages[0].shortTitle && !checked) || result.status !== 200) {
+            setFlashTitle('Error!')
+            setFlashContent("This language can't be hidden.")
+            setFlashIsSuccess(false)
+            setOpenFlashMessage(true)
             return
         }
         const updatedLanguages = languages.map((language) =>
@@ -81,6 +82,7 @@ function LanguagesManagement() {
         setLanguages(updatedLanguages)
         setFlashTitle('Success!')
         setFlashContent('Successfully changed language show/hide parameter.')
+        setFlashIsSuccess(true)
         setOpenFlashMessage(true)
     }
 
@@ -88,6 +90,10 @@ function LanguagesManagement() {
         // Don't remove language from list if language is 'en' (default) or response isn't Ok
         const result = await deleteLanguageRequest(languageToDelete)
         if (languageToDelete === languages[0].shortTitle || result.status !== 200) {
+            setFlashTitle('Error!')
+            setFlashContent("This language can't be deleted.")
+            setFlashIsSuccess(false)
+            setOpenFlashMessage(true)
             return
         }
         const updatedLanguages = languages.filter((language) => language.shortTitle !== languageToDelete)
@@ -95,6 +101,7 @@ function LanguagesManagement() {
         setOpenPopUpRemovalWarning(false)
         setFlashTitle('Deleted!')
         setFlashContent('The language is successfully deleted.')
+        setFlashIsSuccess(true)
         setOpenFlashMessage(true)
     }
 
@@ -109,7 +116,7 @@ function LanguagesManagement() {
                         </tr>
                     </thead>
                     <tbody>
-                        {languages.map((language) => (
+                        {languages?.map((language) => (
                             <tr key={"language"+language.shortTitle}>
                                 <td key={language.shortTitle}>{LANGUAGES_CONSTANTS.find(lang => lang.code === language.shortTitle).label}</td>
                                 <td key={"showhide"+language.shortTitle}>
@@ -134,7 +141,10 @@ function LanguagesManagement() {
                         ))}
                     </tbody>
                 </table>
-                <FlashMessage title={flashTitle} content={flashContent} open={openFlashMessage}
+                <FlashMessage title={flashTitle} 
+                    content={flashContent} 
+                    open={openFlashMessage}
+                    isSuccess={flashIsSuccess}
                     handleClose={handleCloseFlashMessage} />
                 <PopUpRemovalWarning open={openPopUpRemovalWarning}
                     handleDelete={handleLanguageDelete}

@@ -10,7 +10,7 @@ import { LANGUAGES_CONSTANTS } from '../../../../../../../constants/LanguagesCon
 
 function SearchLanguages({ currentLanguages, selectedLanguages, onSelectedLanguagesChange }) {
   const filteredLanguages = LANGUAGES_CONSTANTS.filter(language => {
-    return !currentLanguages.some(lang => lang.shortTitle === language.code);
+    return !currentLanguages?.some(lang => lang.shortTitle === language.code);
   })
 
   const handleChange = (event, value) => {
