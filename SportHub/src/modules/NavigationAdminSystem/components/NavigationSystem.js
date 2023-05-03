@@ -1,8 +1,7 @@
 import React from 'react';
 import styles from "../styles/style.module.scss"
-import {menuItems} from "../../../constants/menuItems";
 import CategoryRequest from "../helpers/CategoryRequest"
-import MenuItems from "./MenuItems";
+import NavigationItems from "./NavigationItems";
 
 
 
@@ -14,7 +13,7 @@ return(
     {
         categories.map((menu) => {
             const depthLevel = 0;
-            return <MenuItems items={menu} key={menu.id} depthLevel={depthLevel}/>;
+            return <NavigationItems items={menu} key={menu.id} depthLevel={depthLevel}/>;
         })
      }
     </ul>           

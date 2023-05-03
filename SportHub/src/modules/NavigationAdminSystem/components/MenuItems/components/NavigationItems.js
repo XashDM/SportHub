@@ -1,15 +1,12 @@
-import React from "react";
-import {useState,useTransition,useEffect,useRef,Suspense} from "react";
-import styles from "../styles/style.module.scss"
+import React,{useState,useTransition,useEffect,useRef,Suspense} from "react";
+import styles from "../styles/style.module.scss";
 import SubCategoryRequest from "../helpers/RequestsSubCategories";
 import TeamsRequest from "../helpers/RequestTeam";
-// import Dropdown from "./Dropdown";
 import Xarrow, {Xwrapper,useXarrow} from "react-xarrows";
-
 const Dropdown = React.lazy(() => import("./Dropdown"))
 
 
-const MenuItems = ({items,depthLevel}) => 
+const NavigationItems = ({items,depthLevel}) => 
 {   
     const [,startTransition] = useTransition(); 
     const [load, setLoad] = useState(false);
@@ -86,4 +83,4 @@ const MenuItems = ({items,depthLevel}) =>
    );
 };
 
-export default MenuItems;
+export default NavigationItems;
