@@ -26,6 +26,7 @@ namespace SportHub.IntegrationTests
         private IJwtService _jwtService;
         private IEmailService _emailService;
         private IMapper _mapper;
+        private IConfiguration _configuration;
         
         private User _testUser;
         private UserRequestDto _testUserRequestDto;
@@ -36,12 +37,13 @@ namespace SportHub.IntegrationTests
         public void SetUp()
         {
             _loggerMock = new Mock<ILogger<AuthController>>();
+            _configuration = CreateConfiguration();
             _mapper = CreateMapper();
             _emailService = CreateEmailService();
             _jwtService = CreateJwtService();
             _userService = CreateUserService();
             
-            _authController = new AuthController(_loggerMock.Object, _userService, _jwtService, _mapper);
+            _authController = new AuthController(_configuration, _loggerMock.Object, _userService, _jwtService, _mapper);
             
             // Prepare cookies response context for controller
             var httpContext = new Mock<HttpContext>();
@@ -232,13 +234,7 @@ namespace SportHub.IntegrationTests
         
         private IEmailService CreateEmailService()
         {
-            
-            var configuration = new ConfigurationBuilder()
-                .SetBasePath(Path.Combine(AppContext.BaseDirectory, "../../../../SportHub.API"))
-                .AddJsonFile("appsettings.json", optional: true)
-                .Build();
-            
-            var emailService = new EmailService(configuration);
+            var emailService = new EmailService(_configuration);
 
             return emailService;
         }
@@ -251,6 +247,17 @@ namespace SportHub.IntegrationTests
             });
 
             return new Mapper(config);
+        }
+        
+        private IConfiguration CreateConfiguration()
+        {
+            
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath(Path.Combine(AppContext.BaseDirectory, "../../../../SportHub.API"))
+                .AddJsonFile("appsettings.json", optional: true)
+                .Build();
+
+            return configuration;
         }
     }
 }

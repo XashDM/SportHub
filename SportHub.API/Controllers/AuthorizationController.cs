@@ -16,13 +16,15 @@ public class AuthController : ControllerBase
     private readonly IJwtService _jwtService;
     private readonly ILogger<AuthController> _logger;
     private readonly IMapper _mapper;
-    public AuthController(ILogger<AuthController> logger, IUserService userService, 
+    private readonly string  _frontendUrl;
+    public AuthController(IConfiguration config, ILogger<AuthController> logger, IUserService userService, 
         IJwtService jwtService, IMapper mapper)
     {
         _userService = userService;
         _jwtService = jwtService;
         _logger = logger;
         _mapper = mapper;
+        _frontendUrl = config.GetSection("Frontend")["Url"];
     }
 
     [HttpPost("login")]
@@ -95,7 +97,8 @@ public class AuthController : ControllerBase
             }
             
             var jwtResponse = await _jwtService.GenerateTokensAsync(user);
-                    
+            
+            // TODO    : Make it more simple   
             return Ok(new
             {
                 AccessToken=jwtResponse.AccessToken,
@@ -147,10 +150,10 @@ public class AuthController : ControllerBase
             
             if (isActivated)
             {
-                return Redirect("http://localhost:3000/log-in");  
+                return Redirect($"{_frontendUrl}/log-in");  
             }
             
-            return Redirect("http://localhost:3000/activate-account");
+            return Redirect($"{_frontendUrl}/activate-account");
         }
         catch (Exception ex)
         {
@@ -165,13 +168,14 @@ public class AuthController : ControllerBase
     {
         try
         {
-            ResponseWithBoolAndMessage response = await _userService.ChangePasswordAsync(token, password);
-            if (response.IsSuccess)
+            var (isSuccess, errorMessage) = await _userService.ChangePasswordAsync(token, password);
+            
+            if (isSuccess)
             {
                 return Ok();
             }
             
-            return BadRequest(response.ErrorMessage);
+            return BadRequest(errorMessage);
         }
         catch (Exception ex)
         {

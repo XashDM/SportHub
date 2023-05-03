@@ -11,7 +11,7 @@ namespace SportHub.Business
         public Task<string> CreateUserAsync(User userDto, Boolean autoActivate = false);
         public  Task UpdateUserAsync(User newUser);
         public Task<bool> ActivateUserAccountAsync(string token);
-        public Task<ResponseWithBoolAndMessage> ChangePasswordAsync(string token, string password);
+        public Task<(bool, string)> ChangePasswordAsync(string token, string password);
         public Task<User> GetUserByEmailAndPasswordAsync(string email, string password);
         public Task<bool> SendResetPasswordLinkAsync(string email);
     }

@@ -102,34 +102,25 @@ namespace SportHub.Business.Implementations
             
         }
 
-        public async Task<ResponseWithBoolAndMessage> ChangePasswordAsync(string token, string password)
+        public async Task<(bool, string)> ChangePasswordAsync(string token, string password)
         {
             string userId = _jwtService.GetUserIdByToken(token);
             
             if(string.IsNullOrEmpty(userId))
             {
-                return new ResponseWithBoolAndMessage
-                {
-                    IsSuccess = false, ErrorMessage = "Invalid token"
-                };
+                return (false, "Invalid token");
             }
 
             var user = await this.GetUserByIdAsync(userId);
             
             if (user == null)
             {
-                return new ResponseWithBoolAndMessage
-                {
-                    IsSuccess = false, ErrorMessage = "Account do not exists"
-                };
+                return (false, "Account do not exists");
             }
             
             await _userRepository.ChangePasswordAsync(userId, password);
             
-            return new ResponseWithBoolAndMessage
-            {
-                IsSuccess = true, ErrorMessage = ""
-            };
+            return (true, "");
         }
 
         public async Task<bool> SendResetPasswordLinkAsync(string email)
