@@ -7,7 +7,7 @@ namespace SportHub.Business.Interfaces
     {
         Task<IEnumerable<Language>> GetLanguagesAsync();
         Task<Language> GetLanguageByTitleAsync(string shortTitle);
-        Task AddLanguageAsync(LanguageRequest languageRequest);
+        Task AddLanguagesAsync(IEnumerable<Language> languages);
         Task ChangeLanguageIsActiveAsync(string shortTitle, bool isActive);
         Task DeleteLanguageAsync(string shortTitle);
     }
