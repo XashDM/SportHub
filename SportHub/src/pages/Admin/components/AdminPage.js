@@ -6,7 +6,6 @@ import VerticalAdminMenu from "../../../modules/VerticalAdminMenu"
 import AdminMainArticlesSection from "../../../modules/AdminMainArticlesSection/components/AdminMainArticlesSection"
 import Surveys from "../../../modules/Surveys"
 
-
 export default function AdminPage() {
 
     const [selectedMenuElement, setSelectedMenuElement] = useState("Home")
@@ -20,6 +19,7 @@ export default function AdminPage() {
                 break
             case "Surveys":
                 setContent(<Surveys />)
+                setHeaderButtons([])
                 break
             default:
                 break

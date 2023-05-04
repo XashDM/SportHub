@@ -5,7 +5,8 @@ const buttonStylesOutlined = {
     borderRadius:"0",
     color: '#D72230',
     height: "3vw",
-    padding: "0 4vw",
+    padding: "0 2vw",
+
     '&:hover': {
         backgroundColor: '#E02431',
         border: "1px solid #E02431",

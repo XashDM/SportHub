@@ -1,4 +1,4 @@
-import React, {useEffect, useState, Component } from 'react'
+import React, {useEffect, useState} from 'react'
 import styles from '../styles/style.module.scss'
 import AddMainArticle from "./AddMainArticle"
 import MAX_MAIN_ARTICLES_AMOUNT from "../constants/MaxMainArticlesAmount"
@@ -30,10 +30,22 @@ export default function AdminMainArticlesSection({setButtons}){
         return JSON.stringify(jsonPostRequest)
     }
 
+    const CancelChanges = () =>{
+        setMainArticles([])
+        setContent([])
+    }
+
+    useEffect(() =>{
+        if(typeof(setButtons) == "function"){
+            setButtons([{text: "Cancel", function: CancelChanges, isOutlined: true},
+                {text: "Save changes", function: SaveChanges, isOutlined: false}])
+        }
+    })
+
     const GenerateAddMainArticleButton = () => {
         if (mainArticles.length === 0)
             return (
-                <div className={styles.add_one_more_article} onClick={event => AddNewMainArticle()}>
+                <div className={styles.add_one_more_article} onClick={() => AddNewMainArticle()}>
                 + Add main article
                 </div>
             )
@@ -53,8 +65,7 @@ export default function AdminMainArticlesSection({setButtons}){
 
     const DeleteMainArticle = (index) => {
         const newList = [...mainArticles]
-        console.log(newList.splice(index, 1))
-        console.log(newList)
+        newList.splice(index, 1)
         setMainArticles(newList);
     }
 
@@ -94,10 +105,10 @@ export default function AdminMainArticlesSection({setButtons}){
 
     return (
         <div>
-            <div className={styles.content} onClick={() => setButtons([{lable: "Save changes", function: SaveChanges}])}>
+            <div className={styles.content}>
                 <LableForModules label={"MAIN ARTICLES"}/>
                 {GenerateAddMainArticleButton()}
-                {content.map((form, index) => {
+                {content.map((form) => {
                     return form
                 })}
             </div>

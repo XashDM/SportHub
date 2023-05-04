@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react"
 import AutoComplete from "../../../../../ui/AutoComplete"
 import styles from "../styles/style.module.scss"
+import OPTIONS from "../../../constants/Options"
 
 export default function AddMainArticle({selectedOrder = null, selectedCategory = null, selectedSubcategory = null,
                                            selectedTeam = null, selectedArticle= null, isLastMainArticle,
@@ -27,6 +28,11 @@ export default function AddMainArticle({selectedOrder = null, selectedCategory =
         setSubcategory(null)
         setTeam(null)
         setArticle(null)
+        if(category === selectedCategory){
+            setSubcategory(selectedSubcategory)
+            setTeam(selectedTeam)
+            setArticle(selectedArticle)
+        }
     }, [category])
 
     useEffect(() => {
@@ -36,7 +42,7 @@ export default function AddMainArticle({selectedOrder = null, selectedCategory =
     const GenerateAddOneMoreArticleButton = () => {
         if (isLastMainArticle)
             return(
-            <div className={styles.add_one_more_article} onClick={event => AddNewMainArticle()}>
+            <div className={styles.add_one_more_article} onClick={() => AddNewMainArticle()}>
                 + Add one more article
             </div>
         )
@@ -51,7 +57,7 @@ export default function AddMainArticle({selectedOrder = null, selectedCategory =
                         width={"17vw"}
                         value={selectedCategory}
                         setValue={setCategory}
-                        options={[{id: 1, name:"Name1"}, {id: 2, name:"Name2"}, {id: 3, name:"Name3"}, {id: 4, name:"Name4"}, {id: 5, name:"Name5"}]}
+                        options={OPTIONS}
                         areOptionsObjects={true}
                         optionLable={"name"}
                         propertyToCompare={"id"} />
@@ -61,7 +67,7 @@ export default function AddMainArticle({selectedOrder = null, selectedCategory =
                         value={selectedSubcategory}
                         setValue={setSubcategory}
                         disabled={disabled}
-                        options={[{id: 1, name:"Name1"}, {id: 2, name:"Name2"}, {id: 3, name:"Name3"}, {id: 4, name:"Name4"}, {id: 5, name:"Name5"}]}
+                        options={OPTIONS}
                         areOptionsObjects={true}
                         optionLable={"name"}
                         propertyToCompare={"id"} />
@@ -71,7 +77,7 @@ export default function AddMainArticle({selectedOrder = null, selectedCategory =
                         value={selectedTeam}
                         setValue={setTeam}
                         disabled={disabled}
-                        options={[{id: 1, name:"Name1"}, {id: 2, name:"Name2"}, {id: 3, name:"Name3"}, {id: 4, name:"Name4"}, {id: 5, name:"Name5"}]}
+                        options={OPTIONS}
                         areOptionsObjects={true}
                         optionLable={"name"}
                         propertyToCompare={"id"} />
@@ -83,13 +89,13 @@ export default function AddMainArticle({selectedOrder = null, selectedCategory =
                         value={selectedArticle}
                         setValue={setArticle}
                         disabled={disabled}
-                        options={[{id: 1, name:"Name1"}, {id: 2, name:"Name2"}, {id: 3, name:"Name3"}, {id: 4, name:"Name4"}, {id: 5, name:"Name5"}]}
+                        options={OPTIONS}
                         areOptionsObjects={true}
                         optionLable={"name"}
                         propertyToCompare={"id"} />
                 </div>
                 <div className={styles.buttons}>
-                    <div className={styles.delete_button} onClick={event => {DeleteMainArticle(order)}}>Delete</div>
+                    <div className={styles.delete_button} onClick={() => {DeleteMainArticle(order)}}>Delete</div>
                     {GenerateAddOneMoreArticleButton()}
                 </div>
                 <div className={styles.line}></div>
