@@ -4,7 +4,6 @@ import CategoryRequest from "../helpers/CategoryRequest"
 import NavigationItems from "./NavigationItems";
 
 
-
 const NavigationSystem = () => {
     const categories = CategoryRequest()
 return(

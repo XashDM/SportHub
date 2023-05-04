@@ -1,3 +1,3 @@
-import NavigationItems  from "./components/NavigationItems "
+import NavigationItems  from "./components/NavigationItems"
 
 export default NavigationItems 
