@@ -18,5 +18,11 @@ namespace SportHub.Business.Implementations
 
 			return subCategories;
 		}
-	}
+
+        public async Task<IEnumerable<SubCategory>> GetAllSubCategoriesByCategoryId(int categoryId){
+			var subCategories = await _subCategoryRepository.GetAllSubCategoriesByCategoryId(categoryId);
+
+			return subCategories;
+		}
+    }
 }

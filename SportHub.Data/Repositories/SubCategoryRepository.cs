@@ -24,4 +24,15 @@ public class SubCategoryRepository : ISubCategoryRepository
 			return subCategories;
 		}
 	}
+
+	public async Task<IEnumerable<SubCategory>> GetAllSubCategoriesByCategoryId(int categoryId) {
+		using(var connection = _dbConnectionFactory.GetConnection())
+		{
+			connection.Open();
+			var sql = $"SELECT * FROM subcategories WHERE CategoryId={categoryId}";
+			var subCategories = await connection.QueryAsync<SubCategory>(sql);
+
+			return subCategories;
+        }
+	}
 }

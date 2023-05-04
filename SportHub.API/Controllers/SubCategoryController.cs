@@ -17,11 +17,19 @@ namespace SportHub.API.Controllers
 		}
 
 		[HttpGet("all")]
-		public async Task<IActionResult> GetAllCategoriesAsync()
+		public async Task<IActionResult> GetAllSubCategoriesAsync()
 		{
 			var subCategories = await _subCategoryService.GetAllSubCategoriesAsync();
 
 			return Ok(subCategories);
 		}
-	}
+
+        [HttpGet("category/{id}")]
+        public async Task<IActionResult> Get([FromRoute] int id)
+        {
+			var subCategories = await _subCategoryService.GetAllSubCategoriesByCategoryId(id);
+
+            return Ok(subCategories);
+        }
+    }
 }
