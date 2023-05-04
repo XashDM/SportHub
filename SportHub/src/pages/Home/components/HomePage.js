@@ -3,6 +3,7 @@ import {useAuthStore} from "../../../store/useAuthStore"
 import {useNavigate} from "react-router-dom"
 import Button from "../../../ui/Button"
 import {ROUTES} from "../../../routes/routes"
+import {googleLogout} from "@react-oauth/google"
 
 
 export default function HomePage(){
@@ -20,7 +21,8 @@ export default function HomePage(){
                 :
                     <h1>Home, sweet home :)</h1>
             }
-            <Button text={"LOG OUT"} isOutlined={true} onClick={()=>setUserData(null)}/>
+            <Button text={"LOG OUT"} isOutlined={true} onClick={()=>{setUserData(null)
+                googleLogout()}}/>
         </>
     )
 
