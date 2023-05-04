@@ -1,6 +1,9 @@
 import {TextField, styled} from "@mui/material"
 
 const TextFieldStyles = styled(TextField)({
+    '& disabled': {
+        borderColor: 'orange'
+    },
     '& .MuiOutlinedInput-root': {
         '& fieldset': {
             borderColor: '#EDEDED',
@@ -12,6 +15,7 @@ const TextFieldStyles = styled(TextField)({
             borderColor: '#C80515',
         },
     },
+
 })
 
 export default TextFieldStyles

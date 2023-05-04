@@ -2,12 +2,12 @@ import React, {useRef, useState} from 'react'
 import { ReactSVG } from "react-svg"
 import styles from "../styles/style.module.scss"
 import HorizontalAdminMenuElement from "./HorizontalAdminMenuElement"
-import {HORIZONTAL_MENU_CONSTANT} from "../../../constants/HorizontalMenuConstants"
+import {HORIZONTAL_MENU_CONSTANT} from "../constants/HorizontalMenuConstants"
 
-export default function HorizontalAdminMenu(){
+export default function HorizontalAdminMenu({currentMenuElement, setCurrentMenuElement, headerButtons}){
 
+    const [buttons, setButtons] = useState(headerButtons)
     const [listOfSections, setListOfSections] = useState(HORIZONTAL_MENU_CONSTANT)
-    const [currentSection, setCurrentSection] = useState(0)
 
     const [canScrollLeft, setCanScrollLeft] = useState(false)
     const [canScrollRight, setCanScrollRight] = useState(true)
@@ -25,8 +25,12 @@ export default function HorizontalAdminMenu(){
     return (
         <div>
             <div className={styles.new_article_area}>
-                <div className={styles.section_name}>{listOfSections[currentSection]}</div>
-                <div className={styles.add_new_article_button}>+ New Article</div>
+                <div className={styles.section_name}>{currentMenuElement}</div>
+                {headerButtons.map((element, index) => {
+                    return (<div key={index} onClick={element.function} className={styles.add_new_article_button}>
+                        {element.lable}
+                    </div>)
+                })}
             </div>
 
             <div className={styles.horizontal_menu}>
@@ -37,8 +41,9 @@ export default function HorizontalAdminMenu(){
 
                 <div ref={sectionElements} className={styles.section_elements}>
                 {listOfSections.map((section, index) => {
-                    return <div onClick={() => setCurrentSection(index)} className={styles.horizontal_menu_element}>
-                                <HorizontalAdminMenuElement  name={section} active={index === currentSection}  />
+                    return <div key={index} onClick={() => {setCurrentMenuElement(section)}}
+                                className={styles.horizontal_menu_element}>
+                                <HorizontalAdminMenuElement   name={section} active={section === currentMenuElement}  />
                             </div>
                     })}
                 </div>
