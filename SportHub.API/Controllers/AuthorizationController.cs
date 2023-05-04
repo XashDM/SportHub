@@ -98,11 +98,13 @@ public class AuthController : ControllerBase
             
             var jwtResponse = await _jwtService.GenerateTokensAsync(user);
             
+            UserResponseDto userDto =  _mapper.Map<User, UserResponseDto>(jwtResponse.User);
+
             // TODO    : Make it more simple   
             return Ok(new
             {
                 AccessToken=jwtResponse.AccessToken,
-                User = jwtResponse.User
+                User = userDto
             });
         }
         catch (Exception ex)
