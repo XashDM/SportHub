@@ -1,0 +1,93 @@
+@import "src/styles/mixins";
+ul{
+  list-style: none;
+  color: rgb(162, 162, 162);
+  cursor: pointer;
+}
+.footer
+{
+  position: absolute;
+  width: 100vw;
+  height: 30vh;
+  left: 0;
+  top: 70vh;
+
+  .top_footer
+  {
+    font-size: 11px;
+    position: absolute;
+    left: 18vw;
+    height: 20vh;
+    width: 82vw;
+    border-top: 1px solid rgb(204, 204, 204);
+
+    .company_info
+    {
+      position: absolute;
+      left: 0vw;
+      height: 20vh;
+      width: 28vw;
+    }
+    .contributors
+    {
+      position: absolute;
+      left: 28vw;
+      height: 20vh;
+      width: 16vw;
+    }
+    .newsletter
+    {
+      position: absolute;
+      left: 56vw;
+      height: 20vh;
+      width: 26vw;
+
+      .input{
+        @include flex-center;
+        .search_bar
+        {
+         padding-bottom: 23px;
+          width: 58%;
+        }
+      }
+    }
+  }
+  .bottom_footer
+  {
+    position: absolute;
+    left: 0vw;
+    top:20vh;
+    height: 10vh;
+    width: 100vw;
+    background-color: var(--color-red-regular);
+
+    .logo{
+      position: absolute;
+      left:0;
+      top:0;
+      @include flex-center;
+      width: 18vw;
+      height: 10vh;
+      font-size: 22px;
+      color: white;
+      padding-bottom: 2vh;
+    }
+
+    .copyright
+    {
+      position: sticky;
+      left:70vw;
+      top:0;
+      @include flex-center;
+      width: 30vw;
+      height: 10vh;
+      font-size: 22px;
+      color: white;
+      padding-bottom: 2vh;
+
+      ul{
+        color: white;
+      }
+    }
+  }
+}

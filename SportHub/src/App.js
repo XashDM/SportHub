@@ -12,6 +12,7 @@ import "./styles/base.scss"
 import {ROUTES} from "./routes/routes"
 import PasswordChangePage from "./pages/PasswordReset"
 import PasswordResetPage from "./pages/PasswordChange"
+import Landing from "./pages/Landing";
 
 function App() {
     return (
@@ -30,6 +31,7 @@ function App() {
                     </ProtectedRoute>
                 } />
 
+                    <Route exact path={ROUTES.LANDINGPAGE} element={<Landing/>}/>
                     <Route exact path={ROUTES.SIGNUP} element={<RegistrationPage/>} />
                     <Route exact path={ROUTES.PASSWORD_RESET} element={<PasswordResetPage/>} />
                     <Route exact path={ROUTES.PASSWORD_CHANGE} element={<PasswordChangePage/>} />

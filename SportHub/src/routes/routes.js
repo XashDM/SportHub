@@ -4,5 +4,7 @@ export const ROUTES = {
     HOME: "/",
     ADMIN: "/admin",
     PASSWORD_RESET: "/password-reset",
-    PASSWORD_CHANGE: "/password-change/:token"
+    PASSWORD_CHANGE: "/password-change/:token",
+
+    LANDINGPAGE: "/landing"
 }
