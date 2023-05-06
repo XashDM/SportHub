@@ -11,7 +11,7 @@ select::-ms-expand {
 
   .header{
       width: 100vw;
-      height: 10vh;
+      height: 12vh;
       border-bottom: 1px solid rgb(240, 240, 240);
       .logo{
         position: absolute;
@@ -20,7 +20,7 @@ select::-ms-expand {
         @include flex-center;
         background: var(--color-red-regular);
         width: 18vw;
-        height: 10vh;
+        height: 12vh;
         font-size: 22px;
         color: white;
 
@@ -37,7 +37,7 @@ select::-ms-expand {
           @include flex-center;
           background: var(white);
           width: 25vw;
-          height: 10vh;
+          height: 12vh;
           font-size: 18px;
           color: rgb(189, 189, 189);
           border-right: 1px solid rgb(240, 240, 240);
@@ -58,7 +58,7 @@ select::-ms-expand {
         @include flex-center;
         background: var(white);
         width: 25vw;
-        height: 10vh;
+        height: 12vh;
         font-size: 15px;
         color: rgb(189, 189, 189);
         border-right: 1px solid rgb(240, 240, 240);
@@ -128,7 +128,7 @@ select::-ms-expand {
       @include flex-center;
       background: var(white);
       width: 21vw;
-      height: 10vh;
+      height: 12vh;
       font-size: 18px;
       color: rgb(189, 189, 189);
 
@@ -141,7 +141,7 @@ select::-ms-expand {
       @include flex-center;
       background: var(white);
       width: 11vw;
-      height: 10vh;
+      height: 12vh;
       font-size: 18px;
       color: rgb(189, 189, 189);
 
