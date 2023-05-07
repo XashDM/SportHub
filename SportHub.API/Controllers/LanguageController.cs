@@ -64,6 +64,7 @@ namespace SportHub.API.Controllers
                 {
                     var language = new Language
                     {
+                        LanguageId = Guid.NewGuid().ToString(),
                         ShortTitle = request.ShortTitle
                     };
                     languages.Add(language);

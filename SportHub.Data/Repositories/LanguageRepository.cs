@@ -28,12 +28,12 @@ namespace SportHub.Data.Repositories
             using (var connection = _dbConnectionFactory.GetConnection())
             {
                 connection.Open();
-                var sql = "INSERT INTO Language (ShortTitle, IsActive) " +
-                    "VALUES (@ShortTitle, 0);";
+                var sql = "INSERT INTO Language (LanguageId, ShortTitle, IsActive) " +
+                    "VALUES (@LanguageId, @ShortTitle, @IsActive);";
                 foreach (var language in languages)
                 {
                     // IsActive = 0 because after adding new language it shouldn't activate immediately
-                    await connection.ExecuteAsync(sql, new { ShortTitle = language.ShortTitle, IsActive = 0 });
+                    await connection.ExecuteAsync(sql, new { LanguageId = language.LanguageId, ShortTitle = language.ShortTitle, IsActive = 0 });
                 }
             }
         }
