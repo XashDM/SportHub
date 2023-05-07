@@ -1,0 +1,18 @@
+@import "src/styles/mixins";
+
+.container{
+    @include flex-center;
+    flex-direction: column;
+
+    width: 30vw;
+    text-align: center;
+
+    .icon{
+        width: 6vw;
+    }
+
+    .sub_heading{
+        @include text-muted-paragraph;
+    }
+}
+
