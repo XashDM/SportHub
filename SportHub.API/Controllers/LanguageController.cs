@@ -6,6 +6,9 @@ using SportHub.Data.DTO;
 using SportHub.Business.Interfaces;
 using SportHub.Controllers;
 using SportHub.Business.Services;
+using AutoMapper;
+using SportHub.Business.Implementations;
+using Org.BouncyCastle.Asn1.Ocsp;
 
 namespace SportHub.API.Controllers
 {
@@ -15,11 +18,13 @@ namespace SportHub.API.Controllers
     {
         private readonly ILanguageService _languageService;
         private readonly ILogger<LanguageController> _logger;
+        private readonly IMapper _mapper;
 
-        public LanguageController(ILanguageService languageService, ILogger<LanguageController> logger)
+        public LanguageController(ILanguageService languageService, ILogger<LanguageController> logger, IMapper mapper)
         {
             _languageService = languageService;
             _logger = logger;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -27,9 +32,10 @@ namespace SportHub.API.Controllers
         {
             try
             {
-                var response = await _languageService.GetLanguagesAsync();
+                IEnumerable<Language> response = await _languageService.GetLanguagesAsync();
+                var languages = _mapper.Map<IEnumerable<LanguageResponse>>(response);
 
-                return Ok(response);
+                return Ok(languages);
             }
             catch (Exception ex)
             {
@@ -44,8 +50,9 @@ namespace SportHub.API.Controllers
             try
             {
                 var response = await _languageService.GetLanguageByTitleAsync(shortTitle);
+                var language = _mapper.Map<Language, LanguageResponse>(response);
 
-                return Ok(response);
+                return Ok(language);
             }
             catch (Exception ex)
             {
@@ -59,16 +66,8 @@ namespace SportHub.API.Controllers
         {
             try
             {
-                var languages = new List<Language>();
-                foreach (var request in languagesRequests)
-                {
-                    var language = new Language
-                    {
-                        LanguageId = Guid.NewGuid().ToString(),
-                        ShortTitle = request.ShortTitle
-                    };
-                    languages.Add(language);
-                }
+                var languages = _mapper.Map<IEnumerable<LanguageRequest>, IEnumerable<Language>>(languagesRequests);
+
                 await _languageService.AddLanguagesAsync(languages);
 
                 return Ok();
