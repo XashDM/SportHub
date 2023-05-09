@@ -1,0 +1,42 @@
+.content{
+  width: 56vw;
+
+  .upper_autocompletes{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .add_article_autocomplete{
+    margin-top: 3vh;
+  }
+
+  .buttons{
+    font-size: 1.2vw;
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: center;
+    margin-top: 3vh;
+  }
+
+  .delete_button{
+    color: var(--color-red-regular);
+    cursor: pointer;
+  }
+
+  .add_one_more_article{
+    margin-left: 2vw;
+    color: var(--color-red-regular);
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  .line{
+    height: 1px;
+    border-bottom: 1px dashed var(--color-light-lines);
+    margin-top: 5vh;
+    margin-bottom: 5vh;
+  }
+}
