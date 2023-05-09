@@ -1,0 +1,9 @@
+.vertical_menu_and_content{
+  display: flex;
+  flex-direction: row;
+
+  .content{
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
