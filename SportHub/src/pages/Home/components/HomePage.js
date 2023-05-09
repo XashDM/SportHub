@@ -3,7 +3,7 @@ import {useAuthStore} from "../../../store/useAuthStore"
 import {useNavigate} from "react-router-dom"
 import Button from "../../../ui/Button"
 import {ROUTES} from "../../../routes/routes"
-import {googleLogout} from "@react-oauth/google"
+import MainArticlesSlider from "../../../modules/MainArticlesSlider"
 
 
 export default function HomePage(){
@@ -19,10 +19,10 @@ export default function HomePage(){
                         <Button onClick={() => navigate(ROUTES.ADMIN)} text={"To admin page"}/>
                     </>
                 :
-                    <h1>Home, sweet home :)</h1>
+                    <MainArticlesSlider />
             }
-            <Button text={"LOG OUT"} isOutlined={true} onClick={()=>{setUserData(null)
-                googleLogout()}}/>
+            {/*<Button text={"LOG OUT"} isOutlined={true} onClick={()=>{setUserData(null)*/}
+            {/*    googleLogout()}}/>*/}
         </>
     )
 

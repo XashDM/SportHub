@@ -1,0 +1,23 @@
+.container{
+    width: 50vw;
+    margin: 0 auto;
+
+    .small_cards_container{
+        height: 40vh;
+        display: flex;
+        width: 80%;
+        gap: 0.5vw;
+
+        & > *{
+            width: 25%;
+        }
+    }
+
+    .big_card_container{
+        position: relative;
+
+        height: 50vh;
+        display: flex;
+    }
+}
+

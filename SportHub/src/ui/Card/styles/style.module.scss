@@ -1,0 +1,54 @@
+@import "src/styles/mixins";
+.card{
+    text-align: left;
+    height:100%;
+    padding: 1vw;
+    background: white;
+    overflow-y: hidden;
+    cursor: pointer;
+    position: relative;
+    @include text-body-regular();
+
+    & > *{
+        pointer-events: none;
+    }
+
+    &:hover{
+        --animation-time: 0.3s;
+        transition: box-shadow var(--animation-time);
+
+        box-shadow: 0 0 40px rgba($color: #000000, $alpha: 0.15);
+
+        .arrow{
+            transition: all var(--animation-time);
+
+            visibility: visible;
+            opacity: 1;
+        }
+    }
+
+    .image{
+        max-height: 30%;
+        height: 30%;
+        width: 100%;
+        object-fit: cover;
+    }
+
+    .main_text{
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+    }
+
+    .arrow{
+        opacity: 0;
+        visibility: hidden;
+
+        position: absolute;
+        right: 1vw;
+        bottom: 1vw;
+        height: 2vh;
+        transform: rotate(180deg);
+    }
+}
