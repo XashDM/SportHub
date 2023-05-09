@@ -7,6 +7,7 @@ namespace SportHub.Data.Interfaces
        Task DeleteRefreshTokenAsync(string token);
    
        Task WriteTokenInDbAsync(string token, string id);
+       Task<string> GetTokenByUserId(string id);
    } 
 }
 
