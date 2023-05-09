@@ -7,6 +7,7 @@ import NavigationItems from "./NavigationItems";
 const NavigationSystem = () => {
     const categories = CategoryRequest()
 return(
+<div className={styles.navigation_container}>
 <div className={styles.nav_area}>
     <ul className={styles.menus}> 
     {
@@ -16,6 +17,7 @@ return(
         })
      }
     </ul>           
+</div>
 </div>
 )
 };
