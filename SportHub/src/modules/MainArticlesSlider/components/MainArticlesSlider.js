@@ -39,7 +39,7 @@ function MainArticlesSlider() {
         const cards =  mainArticlesRequest()
         setCardsState(cards)
 
-
+        // TODO: start animation when component rendered
         // When component unmount
         return () => stopAutoScroll()
     }, [])
@@ -68,6 +68,7 @@ function MainArticlesSlider() {
                         {...cardObj}
                         key={idx}
                         idx={idx+1}
+                        onClick={() => console.log("Go to article details!")}
                     />
                 ))}
             </div>

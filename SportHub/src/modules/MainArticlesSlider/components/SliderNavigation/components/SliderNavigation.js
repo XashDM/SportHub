@@ -13,7 +13,7 @@ export default function SliderNavigation({ cards, currentCardIdx,setCurrentCardI
             <img className={styles.arrow}
                  alt={"prev"}
                  onClick={currentCardIdx === 0 ? null : onPrevClick}
-                 src={currentCardIdx === 0 ? "/icons/ArrowICircle.svg" : "/icons/ArrowInCircleActive.svg"}/>
+                 src={currentCardIdx === 0 ? "/icons/ArrowInCircle.svg" : "/icons/ArrowInCircleActive.svg"}/>
 
             <div className={styles.digits_container}>
             {cards.map((image, index) => (
@@ -28,7 +28,7 @@ export default function SliderNavigation({ cards, currentCardIdx,setCurrentCardI
             </div>
 
             <img className={`${styles.arrow} ${styles.arrow_next}`}
-                 alt={"next"}
+                 alt={"prev"}
                  onClick={currentCardIdx === cards.length - 1 ? null : onNextClick}
                  src={currentCardIdx === cards.length - 1 ? "/icons/ArrowInCircle.svg" : "/icons/ArrowInCircleActive.svg"}/>
         </div>

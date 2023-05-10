@@ -5,6 +5,17 @@
     padding: 2vw 0;
     position: relative;
 
+    .category{
+        position: absolute;
+        top: 2vw;
+        left: 0;
+        padding: 0.5vw 2vw;
+        color: white;
+
+        @include flex-center();
+        @include text-bodysemibold();
+        background: var(--color-dark-text-color);
+    }
     .image{
         width: 80%;
         height: 100%;
