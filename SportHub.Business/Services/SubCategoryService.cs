@@ -24,5 +24,21 @@ namespace SportHub.Business.Implementations
 
 			return subCategories;
 		}
+
+        public async Task<string> CreateSubCategory(SubCategory subCategory){
+			var NewSubCategoryId = Guid.NewGuid().ToString();
+			subCategory.SubCategoryId = NewSubCategoryId;
+
+			return await _subCategoryRepository.CreateSubCategory(subCategory);
+        }
+
+        public async Task DeleteSubCategoryAsync(string SubCategoryId) {
+			await _subCategoryRepository.DeleteSubCategoryAsync(SubCategoryId);
+		}
+
+        public async Task UpdateSubcategory(SubCategory subCategory)
+		{
+			await _subCategoryRepository.UpdateSubcategory(subCategory);
+		}
     }
 }
