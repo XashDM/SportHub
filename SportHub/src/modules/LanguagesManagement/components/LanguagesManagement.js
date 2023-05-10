@@ -16,7 +16,7 @@ import {LANGUAGES_CONSTANTS} from "../../../constants/LanguagesConstants"
 import Button from "../../../ui/Button"
 
 
-function LanguagesManagement() {
+function LanguagesManagement({setButtons}) {
     const [languages, setLanguages] = useState([])
     const [languagesToAdd, setLanguagesToAdd] = useState([])
     const [languageToDelete, setLanguageToDelete] = useState()
@@ -31,6 +31,9 @@ function LanguagesManagement() {
 
     useEffect(() => {
         handleLanguagesGet()
+        if(typeof(setButtons) == "function"){
+            setButtons([{text: "Add languages", function: handleOpenPopUpAddLanguages, isOutlined: false}])
+        }
     }, [])
 
     const handleCloseFlashMessage = () => {
@@ -39,6 +42,10 @@ function LanguagesManagement() {
 
     const handleClosePopUpRemovalWarning = () => {
         setOpenPopUpRemovalWarning(false)
+    }
+
+    const handleOpenPopUpAddLanguages = () => {
+        setOpenPopUpAddLanguages(true)
     }
 
     const handleClosePopUpAddLanguages = () => {
