@@ -33,4 +33,15 @@ public class ArticleRepository : IArticleRepository
 			}
 		}
 	}
+
+	public async Task<Article> GetArticleAsync(int id)
+	{
+		using (var connection = _dbConnectionFactory.GetConnection())
+		{
+			connection.Open();
+			var response = await connection.QueryFirstOrDefaultAsync<Article>($"SELECT * FROM Articles WHERE ArticleId = '{id}';");
+
+			return response;
+		}
+	}
 }

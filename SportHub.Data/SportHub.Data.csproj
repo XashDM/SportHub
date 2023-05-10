@@ -12,4 +12,16 @@
     <PackageReference Include="MySql.Data" Version="8.0.32.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="Repositories\UserRepository 2.cs" />
+    <Compile Remove="Repositories\TokenRepository 2.cs" />
+    <Compile Remove="Interfaces\IUserRepository 2.cs" />
+    <Compile Remove="Interfaces\ITokenRepository 2.cs" />
+    <Compile Remove="Interfaces\IDbConnectionFactory 2.cs" />
+    <Compile Remove="Factories\DbConnectionFactory 2.cs" />
+    <Compile Remove="Entities\User 2.cs" />
+    <Compile Remove="Entities\JwtResponse 2.cs" />
+    <Compile Remove="DTO\UserResponseDto 2.cs" />
+  </ItemGroup>
+
 </Project>

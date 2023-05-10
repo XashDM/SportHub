@@ -1,4 +1,5 @@
-﻿using SportHub.Data.Entities;
+﻿using SportHub.Data.DTO;
+using SportHub.Data.Entities;
 using SportHub.Data.Interfaces;
 
 namespace SportHub.Business.Implementations
@@ -6,10 +7,12 @@ namespace SportHub.Business.Implementations
 	public class ArticleService : IArticleService
 	{
 		private readonly IArticleRepository _articleRepository;
+		private readonly IUserRepository _userRepository;
 
-		public ArticleService(IArticleRepository articleRepository)
+		public ArticleService(IArticleRepository articleRepository, IUserRepository userRepository)
 		{
 			_articleRepository = articleRepository;
+			_userRepository = userRepository;
 		}
 
 		public async Task CreateArticleAsync(Article article)
@@ -24,6 +27,22 @@ namespace SportHub.Business.Implementations
 			article.PublishingDate = DateTime.Now;
 
 			await _articleRepository.CreateArticleAsync(article);
+		}
+		
+		public async Task<FullArticle> GetArticleAsync(int id)
+		{
+			var article = await _articleRepository.GetArticleAsync(id);
+
+			var fullArticle = new FullArticle
+			{
+				ArticleId = article.ArticleId,
+				PublishingDate = article.PublishingDate,
+			};
+
+			var author = await _userRepository.GetUserByIdAsync(article.AuthorId);
+			fullArticle.Author = author;
+
+			return fullArticle;
 		}
 	}
 }
