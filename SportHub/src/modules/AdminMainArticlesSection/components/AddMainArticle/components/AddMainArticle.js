@@ -3,91 +3,85 @@ import AutoComplete from "../../../../../ui/AutoComplete"
 import styles from "../styles/style.module.scss"
 import OPTIONS from "../../../constants/Options"
 
-export default function AddMainArticle({selectedOrder = null, selectedCategory = null, selectedSubcategory = null,
-                                           selectedTeam = null, selectedArticle= null, isLastMainArticle,
+export default function AddMainArticle({order = null, category = null, subcategory = null,
+                                           team = null, article= null, isLastMainArticle,
                                            AddNewMainArticle, DeleteMainArticle, SaveData}){
 
-    const [order, setOrder] = useState(selectedOrder)
+    const [currentOrder, setCurrentOrder] = useState(order)
 
-    const [category, setCategory] = useState(selectedCategory)
-    useEffect(() => setCategory(selectedCategory), [selectedCategory])
+    const [currentCategory, setCurrentCategory] = useState(category)
+    useEffect(() => setCurrentCategory(category), [category])
 
-    const [subcategory, setSubcategory] = useState(selectedSubcategory)
-    useEffect(() => setSubcategory(selectedSubcategory), [selectedSubcategory])
+    const [currentSubcategory, setCurrentSubcategory] = useState(subcategory)
+    useEffect(() => setCurrentSubcategory(subcategory), [subcategory])
 
-    const [team, setTeam] = useState(selectedTeam)
-    useEffect(() => setTeam(selectedTeam), [selectedTeam])
+    const [currentTeam, setCurrentTeam] = useState(team)
+    useEffect(() => setCurrentTeam(team), [team])
 
-    const [article, setArticle] = useState(selectedArticle)
-    useEffect(() => setArticle(selectedArticle), [selectedArticle])
+    const [currentArticle, setCurrentArticle] = useState(article)
+    useEffect(() => setCurrentArticle(article), [article])
 
-    const [disabled, setDisabled] = useState(category === undefined || category === null)
+    const [disabled, setDisabled] = useState(currentCategory === undefined || currentCategory === null)
 
     useEffect(() => {
-        setDisabled(category === undefined || category === null)
-        setSubcategory(null)
-        setTeam(null)
-        setArticle(null)
-        if(category === selectedCategory){
-            setSubcategory(selectedSubcategory)
-            setTeam(selectedTeam)
-            setArticle(selectedArticle)
+        setDisabled(currentCategory === undefined || currentCategory === null)
+        setCurrentSubcategory(null)
+        setCurrentTeam(null)
+        setCurrentArticle(null)
+
+        if(currentCategory === category){
+            setCurrentSubcategory(subcategory)
+            setCurrentTeam(team)
+            setCurrentArticle(article)
         }
-    }, [category])
+    }, [currentCategory])
 
     useEffect(() => {
-        SaveData(order, category, subcategory, team, article)
-    }, [order, category, subcategory, team, article])
-
-    const GenerateAddOneMoreArticleButton = () => {
-        if (isLastMainArticle)
-            return(
-            <div className={styles.add_one_more_article} onClick={() => AddNewMainArticle()}>
-                + Add one more article
-            </div>
-        )
-    }
+        SaveData(currentOrder, currentCategory, currentSubcategory, currentTeam, currentArticle)
+    }, [currentOrder, currentCategory, currentSubcategory, currentTeam, currentArticle])
 
     return (
         <div>
             <div className={styles.content}>
                 <div className={styles.upper_autocompletes}>
-                    <AutoComplete
-                        label={"Category*"}
-                        width={"17vw"}
-                        value={selectedCategory}
-                        setValue={setCategory}
-                        options={OPTIONS}
-                        areOptionsObjects={true}
-                        optionLable={"name"}
-                        propertyToCompare={"id"} />
-                    <AutoComplete
-                        label={"Subcategory"}
-                        width={"17vw"}
-                        value={selectedSubcategory}
-                        setValue={setSubcategory}
-                        disabled={disabled}
-                        options={OPTIONS}
-                        areOptionsObjects={true}
-                        optionLable={"name"}
-                        propertyToCompare={"id"} />
-                    <AutoComplete
-                        label={"Team"}
-                        width={"17vw"}
-                        value={selectedTeam}
-                        setValue={setTeam}
-                        disabled={disabled}
-                        options={OPTIONS}
-                        areOptionsObjects={true}
-                        optionLable={"name"}
-                        propertyToCompare={"id"} />
+                    <div className={styles.small_autocomplete}>
+                        <AutoComplete
+                            label={"Category*"}
+                            value={category}
+                            setValue={setCurrentCategory}
+                            options={OPTIONS}
+                            areOptionsObjects={true}
+                            optionLable={"name"}
+                            propertyToCompare={"id"} />
+                    </div>
+                    <div className={styles.small_autocomplete}>
+                        <AutoComplete
+                            label={"Subcategory"}
+                            value={subcategory}
+                            setValue={setCurrentSubcategory}
+                            disabled={disabled}
+                            options={OPTIONS}
+                            areOptionsObjects={true}
+                            optionLable={"name"}
+                            propertyToCompare={"id"} />
+                    </div>
+                    <div className={styles.small_autocomplete}>
+                        <AutoComplete
+                            label={"Team"}
+                            value={team}
+                            setValue={setCurrentTeam}
+                            disabled={disabled}
+                            options={OPTIONS}
+                            areOptionsObjects={true}
+                            optionLable={"name"}
+                            propertyToCompare={"id"} />
+                    </div>
                 </div>
                 <div className={styles.add_article_autocomplete}>
                     <AutoComplete
                         label={"Article*"}
-                        width={"100%"}
-                        value={selectedArticle}
-                        setValue={setArticle}
+                        value={article}
+                        setValue={setCurrentArticle}
                         disabled={disabled}
                         options={OPTIONS}
                         areOptionsObjects={true}
@@ -95,8 +89,12 @@ export default function AddMainArticle({selectedOrder = null, selectedCategory =
                         propertyToCompare={"id"} />
                 </div>
                 <div className={styles.buttons}>
-                    <div className={styles.delete_button} onClick={() => {DeleteMainArticle(order)}}>Delete</div>
-                    {GenerateAddOneMoreArticleButton()}
+                    <div className={styles.delete_button} onClick={() => {DeleteMainArticle(currentOrder)}}>Delete</div>
+                    {isLastMainArticle
+                        ? <div className={styles.add_one_more_article} onClick={() => AddNewMainArticle()}>
+                            + Add one more article
+                        </div>
+                        : null}
                 </div>
                 <div className={styles.line}></div>
             </div>
