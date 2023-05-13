@@ -26,7 +26,10 @@ export default function AutoComplete({label, disabled, value, setValue, options,
                         areOptionsObjects === true && optionLable !== null && propertyToCompare !== null
                             ? option[optionLable] : option}
                     renderInput={(params) => <TextFieldStyles required={required} disabled={disabled} {...params} />}
-                    renderOption={(props, option) => <div {...props} className={styles.option}>{option.name}</div>}
+                    renderOption={(props, option) => <div {...props} className={styles.option}>
+                        {areOptionsObjects === true && optionLable !== null && propertyToCompare !== null
+                        ? option[optionLable] : option}
+                        </div>}
                 />
             </div>
         </div>
