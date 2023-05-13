@@ -1,0 +1,13 @@
+.content{
+  margin-left: auto;
+  margin-right: auto;
+  width: fit-content;
+
+  .add_one_more_article{
+    margin-left: 2vw;
+    color: var(--color-red-regular);
+    text-decoration: underline;
+    cursor: pointer;
+  }
+}
+

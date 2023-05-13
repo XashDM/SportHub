@@ -1,0 +1,26 @@
+.content{
+
+  width: 56vw;
+  margin-top: 5vh;
+  margin-bottom: 5vh;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+  .lableSection{
+    font-size: 1.2vw;
+    font-weight: bold;
+    border: 1px solid var(--color-light-field-frame);
+    white-space: nowrap;
+    display: inline-block;
+    padding: 1vw 2vw 1vw 2vw;
+    border-radius: 2vw;
+  }
+
+  .line{
+    height: 1px;
+    background-color: var(--color-light-field-frame);
+    width: 100%;
+  }
+}
