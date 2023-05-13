@@ -1,6 +1,6 @@
 import React from "react"
 import styles from "../styles/style.module.scss"
-export default function LableForModules({label}){
+export default function CapsuleLable({label}){
 
     return (
         <div>

@@ -3,8 +3,8 @@ import styles from "../styles/style.module.scss"
 import AdminHeader from "../../../modules/AdminHeader"
 import HorizontalAdminMenu from "../../../modules/HorizontalAdminMenu"
 import VerticalAdminMenu from "../../../modules/VerticalAdminMenu"
-import AdminMainArticlesSection from "../../../modules/AdminMainArticlesSection/components/AdminMainArticlesSection"
-import Surveys from "../../../modules/Surveys"
+import SECTION_NAMES from "../constants/SectionsNames"
+import AdminMainArticlesSection from "../../../modules/AdminMainArticlesSection"
 
 export default function AdminPage() {
 
@@ -14,12 +14,8 @@ export default function AdminPage() {
 
         useEffect(() =>{
                 switch (selectedMenuElement){
-                        case "Home":
+                        case SECTION_NAMES["Home"]:
                                 setContent(<AdminMainArticlesSection setButtons={setHeaderButtons} />)
-                                break
-                        case "Surveys":
-                                setContent(<Surveys />)
-                                setHeaderButtons([])
                                 break
                         default:
                                 break
