@@ -5,7 +5,7 @@ import LabelStyles from '../styles/LabelStyles'
 import BoxStyles from '../styles/BoxStyles'
 import CloseIcon from '@mui/icons-material/Close';
 
-import { LANGUAGES_CONSTANTS } from '../../../../../../../constants/LanguagesConstants'
+import { LANGUAGES_CONSTANTS } from '../../../../../constants/LanguagesConstants'
 
 
 function SearchLanguages({ currentLanguages, selectedLanguages, onSelectedLanguagesChange }) {

@@ -11,7 +11,7 @@ import getLanguagesRequest from "../helpers/getLanguagesRequest"
 import editLanguageRequest from "../helpers/editLanguageRequest"
 import deleteLanguageRequest from "../helpers/deleteLanguageRequest"
 
-import {LANGUAGES_CONSTANTS} from "../../../constants/LanguagesConstants"
+import {LANGUAGES_CONSTANTS} from "../constants/LanguagesConstants"
 
 import Button from "../../../ui/Button"
 
@@ -76,7 +76,7 @@ function LanguagesManagement({setButtons}) {
         const { checked } = event.target
         // Don't change switch position if language is 'en' (default) or response isn't Ok
         const result = await editLanguageRequest(shortTitle, checked)
-        if ((shortTitle === languages[0].shortTitle && !checked) || result.status !== 200) {
+        if ((shortTitle === "en" && !checked) || result.status !== 200) {
             setFlashTitle('Error!')
             setFlashContent("This language can't be hidden.")
             setFlashIsSuccess(false)
@@ -96,7 +96,7 @@ function LanguagesManagement({setButtons}) {
     const handleLanguageDelete = async () => {
         // Don't remove language from list if language is 'en' (default) or response isn't Ok
         const result = await deleteLanguageRequest(languageToDelete)
-        if (languageToDelete === languages[0].shortTitle || result.status !== 200) {
+        if (languageToDelete === "en" || result.status !== 200) {
             setFlashTitle('Error!')
             setFlashContent("This language can't be deleted.")
             setFlashIsSuccess(false)
@@ -162,8 +162,6 @@ function LanguagesManagement({setButtons}) {
                     languagesToAdd={languagesToAdd}
                     setLanguagesToAdd={setLanguagesToAdd} 
                     currentLanguages={languages}/>
-
-                <Button text={"Add languages"} onClick={() => setOpenPopUpAddLanguages(true)}/>
             </div>
         </div>
     )

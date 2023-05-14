@@ -12,6 +12,6 @@
     <BuildOutputFolder>$(MSBuildProjectDirectory)\build</BuildOutputFolder>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="src\modules\LanguagesManagement\" />
+    <Folder Include="src\modules\LanguagesManagement\constants\" />
   </ItemGroup>
 </Project>
