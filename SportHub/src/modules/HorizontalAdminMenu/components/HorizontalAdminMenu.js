@@ -44,11 +44,11 @@ export default function HorizontalAdminMenu({currentMenuElement, setCurrentMenuE
                 </div>
 
                 <div ref={sectionElements} className={styles.section_elements}>
-                {listOfSections.map((section, index) => {
-                    return <div key={index} onClick={() => {setCurrentMenuElement(section)}}
-                                className={styles.horizontal_menu_element}>
-                                <HorizontalAdminMenuElement name={section} active={section === currentMenuElement}  />
-                            </div>
+                    {listOfSections.map((section, index) => {
+                        return <div key={index} onClick={() => {setCurrentMenuElement(section)}}
+                                    className={styles.horizontal_menu_element}>
+                            <HorizontalAdminMenuElement name={section} active={section === currentMenuElement}  />
+                        </div>
                     })}
                 </div>
                 <div className={styles.right_arrow} onClick={() => scroll(20)}>

@@ -29,6 +29,15 @@ namespace SportHub.API
                     opt => opt.MapFrom(src => src.Name.Split(" ", StringSplitOptions.RemoveEmptyEntries)[1]))
                 .ForMember(dest => dest.LastName,
                     opt => opt.MapFrom(src => src.Name.Split(" ", StringSplitOptions.RemoveEmptyEntries)[0]));
+
+            CreateMap<Language, LanguageResponse>();
+
+            CreateMap<Language, LanguageRequest>();
+
+            CreateMap<LanguageRequest, Language>()
+                .ForMember(dest => dest.LanguageId, opt => opt.MapFrom(src => Guid.NewGuid()))
+                .ForMember(dest => dest.ShortTitle, opt => opt.MapFrom(src => src.ShortTitle))
+                .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => false));
         }
     }
 }

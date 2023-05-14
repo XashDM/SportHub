@@ -48,15 +48,21 @@
 
 .mini_profile {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
   width: 10.5vw;
   cursor: pointer;
 
-  .profile_picture {
-    width: 2.5vw;
-    height: 2.5vw;
-    border-radius: 100%;
+  .mini_profile_wrapper {
+    display: flex;
+    flex-direction: row;
+
+    .profile_picture {
+      width: 2.5vw;
+      height: 2.5vw;
+      border-radius: 100%;
+    }
   }
 }
 

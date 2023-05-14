@@ -1,0 +1,20 @@
+.content{
+
+  .label{
+    color: var(--color-dark-lable-name);
+    font-family: var(--font-style-roboto);
+    font-size: 1vw;
+  }
+}
+
+.option{
+  font-family: var(--font-style-open-sans);
+  font-size: 1.4vw;
+  padding: 1vh 0 1vh 1vw;
+}
+
+.option:hover{
+  background-color: var(--color-red-regular-transparent);
+  color: var(--color-red-regular);
+  cursor: pointer;
+}
