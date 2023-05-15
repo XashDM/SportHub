@@ -11,15 +11,15 @@ export default function Header()
             {(()=>{
                 if (userData?.isAdmin)
                 {
-                    return <AdminHeader/>
+                    return <> <AdminHeader/> </>
                 }
                 else if (userData?.isAdmin === false)
                 {
-                    return <UserHeader/>
+                    return <> <UserHeader/> </>
                 }
                 else
                 {
-                    return <NotLoginedHeader/>
+                    return <> <NotLoginedHeader/> </>
                 }
                 }
             )()}
