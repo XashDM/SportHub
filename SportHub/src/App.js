@@ -19,9 +19,9 @@ function App() {
         <BrowserRouter>
             <Routes>
                 <Route exact path={ROUTES.HOME} element={
-                    <ProtectedRoute roles={["admin", "user"]}>
+                    // <ProtectedRoute roles={["admin", "user"]}>
                         <HomePage/>
-                    </ProtectedRoute>
+                    // </ProtectedRoute>
                 } />
 
                 <Route exact path={ROUTES.ADMIN} element={

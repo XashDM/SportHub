@@ -1,12 +1,12 @@
 import BigCard from "../../../ui/BigCard"
 import Card from "../../../ui/Card"
-import {useEffect, useRef, useState} from "react"
+import {useEffect, useState} from "react"
 import styles from "../styles/style.module.scss"
 import mainArticlesRequest from "../helpers/mainArticlesRequest"
 import SliderNavigation from "./SliderNavigation"
 
 function MainArticlesSlider() {
-    const [cardsState, setCardsState] = useState([])
+    const [cardsState, setCardsState] = useState(null)
     const [currentCardIdx, setCurrentCardIdx] = useState(0)
     const [intervalId, setIntervalId] = useState(null)
 
@@ -36,13 +36,23 @@ function MainArticlesSlider() {
     }
 
     useEffect( () => {
-        const cards =  mainArticlesRequest()
-        setCardsState(cards)
+
+        setTimeout(async () => {
+            const cards =  await mainArticlesRequest("UA")
+
+            if(cards.length > 5){
+                cards.length = 5
+            }
+            setCardsState(cards)
+
+        },0)
 
         // TODO: start animation when component rendered
         // When component unmount
         return () => stopAutoScroll()
     }, [])
+
+    if(!cardsState) return null
 
     return (
         <div className={styles.container}
@@ -52,6 +62,7 @@ function MainArticlesSlider() {
             <div className={styles.big_card_container}>
                 <BigCard
                     {...cardsState[currentCardIdx]}
+                    {...cardsState[currentCardIdx].info}
                     idx = {currentCardIdx}
                 />
 
@@ -63,9 +74,10 @@ function MainArticlesSlider() {
             </div>
 
             <div className={styles.small_cards_container}>
-                {cardsState.filter((article, index) => index !== currentCardIdx).map((cardObj, idx) => (
+                {cardsState.filter((article, index) => index !== currentCardIdx).map((article, idx) => (
                     <Card
-                        {...cardObj}
+                        {...article}
+                        {...article.info}
                         key={idx}
                         idx={idx+1}
                         onClick={() => console.log("Go to article details!")}
