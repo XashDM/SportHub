@@ -6,87 +6,97 @@ ul{
 }
 .footer
 {
-  position: absolute;
+  display: flex;
+  flex-direction: column;
   width: 100vw;
   height: 30vh;
   left: 0;
-  top: 70vh;
-
-  .top_footer
+  bottom: 0;
+  .footer_div
   {
-    font-size: 11px;
-    position: absolute;
-    left: 18vw;
-    height: 20vh;
-    width: 82vw;
-    border-top: 1px solid rgb(204, 204, 204);
+    display: flex;
+    flex-direction: column;
 
-    .company_info
+    .top_footer
     {
-      position: absolute;
-      left: 0vw;
-      height: 20vh;
-      width: 28vw;
-    }
-    .contributors
-    {
-      position: absolute;
-      left: 28vw;
-      height: 20vh;
-      width: 16vw;
-    }
-    .newsletter
-    {
-      position: absolute;
-      left: 56vw;
-      height: 20vh;
-      width: 26vw;
+      font-size: 11px;
+      display: flex;
+      flex-direction: row-reverse;
+      align-items: stretch;
+      padding-bottom: 2vh;
+      left: 18vw;
+      height: 22vh;
+      width: 100vw;
+      border-top: 1px solid rgb(204, 204, 204);
 
-      .input{
-        @include flex-center;
-        .search_bar
-        {
-         padding-bottom: 23px;
-          width: 58%;
+      .company_info
+      {
+        display: flex;
+        flex-direction: column;
+        left: 0vw;
+        width: 28vw;
+      }
+      .contributors
+      {
+        display: flex;
+        flex-direction: column;
+        left: 28vw;
+        width: 16vw;
+      }
+      .newsletter
+      {
+        display: flex;
+        flex-direction: column;
+        left: 56vw;
+        width: 26vw;
+
+        .input{
+          @include flex-center;
+          display: flex;
+          flex-direction: row;
+          .search_bar
+          {
+           padding-bottom: 23px;
+            width: 58%;
+          }
         }
       }
     }
-  }
-  .bottom_footer
-  {
-    position: absolute;
-    left: 0vw;
-    top:20vh;
-    height: 10vh;
-    width: 100vw;
-    background-color: var(--color-red-regular);
-
-    .logo{
-      position: absolute;
-      left:0;
-      top:0;
-      @include flex-center;
-      width: 18vw;
-      height: 10vh;
-      font-size: 22px;
-      color: white;
-      padding-bottom: 2vh;
-    }
-
-    .copyright
+    .bottom_footer
     {
-      position: sticky;
-      left:70vw;
-      top:0;
-      @include flex-center;
-      width: 30vw;
-      height: 10vh;
-      font-size: 22px;
-      color: white;
-      padding-bottom: 2vh;
-
-      ul{
+      display: flex;
+      left: 0vw;
+      top:20vh;
+      height: 8vh;
+      width: 100vw;
+      background-color: var(--color-red-regular);
+      .logo{
+        display: flex;
+        left:0;
+        top:0;
+        @include flex-center;
+        width: 18vw;
+        height: 10vh;
+        font-size: 22px;
         color: white;
+        padding-bottom: 2vh;
+      }
+
+      .copyright
+      {
+        position: sticky;
+        left:70vw;
+        top:0;
+        @include flex-center;
+        width: 30vw;
+        height: 10vh;
+        font-size: 22px;
+        color: white;
+        padding-bottom: 2vh;
+
+        ul{
+          color: white;
+        }
       }
     }
   }

@@ -1,6 +1,6 @@
 import styles from "../style/style.module.scss"
-import Input from "../../../ui/Input";
-import Button from "../../../ui/Button";
+import Input from "../../../ui/Input"
+import Button from "../../../ui/Button"
 const UserHeader = ({username, userimg}) =>
 {
     return(
@@ -14,12 +14,12 @@ const UserHeader = ({username, userimg}) =>
                     </div>
                     <div className={styles.media}>
                         <span className={styles.share}>Share</span>
-                        <img className={styles.icons} src={process.env.PUBLIC_URL + '/icons/Facebook2.svg'} ></img>
+                        <img className={styles.icons} src={process.env.PUBLIC_URL + '/icons/FacebookWithoutCircle.svg'} ></img>
                         <img className={styles.icons} src={process.env.PUBLIC_URL + '/icons/Twitter.svg'} ></img>
                         <img className={styles.icons} src={process.env.PUBLIC_URL + '/icons/Google+.svg'}  ></img>
                     </div>
                     <div className={styles.auth}>
-                        <img className={styles.profile_img} src={"https://e7.pngegg.com/pngimages/84/165/png-clipart-united-states-avatar-organization-information-user-avatar-service-computer-wallpaper-thumbnail.png"}></img>
+                        <img className={styles.profile_img} src={"/icons/UserPicture.png"}></img>
                         <span className={styles.user_name_text}>Ostap Luskevych</span>
                         <img className={styles.profile_img_icon} src={process.env.PUBLIC_URL + '/icons/Polygon.svg'}></img>
                     </div>
@@ -31,6 +31,6 @@ const UserHeader = ({username, userimg}) =>
                         </select>
                     </div>
                 </header>
-        </>);
+        </>)
 }
 export default UserHeader

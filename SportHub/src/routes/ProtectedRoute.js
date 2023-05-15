@@ -10,7 +10,7 @@ function ProtectedRoute({ roles, children }) {
 
     if (!userData) {
         // User is not authenticated, redirect to login page
-        return <Navigate  to={ROUTES.SIGNUP} />
+        return <Navigate  to={ROUTES.LOGIN} />
     }
 
     if (roles && roles.indexOf(role) === -1) {

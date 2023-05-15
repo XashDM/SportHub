@@ -7,9 +7,11 @@ select::-ms-expand {
   .header{
       width: 100vw;
       height: 12vh;
+      display: flex;
+      align-items: flex-start;
       border-bottom: 1px solid rgb(240, 240, 240);
       .logo{
-        position: absolute;
+        display: flex;
         left:0;
         top:0;
         @include flex-center;
@@ -26,7 +28,7 @@ select::-ms-expand {
         }
       }
       .searchbar{
-          position: absolute;
+        display: flex;  
           left: 18vw;
           top: 0;
           @include flex-center;
@@ -47,7 +49,7 @@ select::-ms-expand {
       }
       .media
       {
-        position: absolute;
+        display: flex;
         left: 43vw;
         top: 0;
         @include flex-center;
@@ -117,7 +119,7 @@ select::-ms-expand {
     }
     .auth
     {
-      position: absolute;
+       display: flex;
       left: 68vw;
       top: 0;
       @include flex-center;
@@ -150,7 +152,7 @@ select::-ms-expand {
     }
     .languages
     {
-      position: absolute;
+       display: flex;
       left: 89vw;
       top: 0;
       @include flex-center;
