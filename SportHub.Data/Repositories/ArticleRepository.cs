@@ -101,4 +101,19 @@ public class ArticleRepository : IArticleRepository
 		}
 	}
 
+	public async Task<IEnumerable<MainArticle>> GetMainArticlesAsync(string language)
+	{
+		using (var connection = _dbConnectionFactory.GetConnection())
+		{
+			connection.Open();
+			var sql = @"SELECT MainArticle.* FROM MainArticle 
+						LEFT JOIN Language langTable ON langTable.ShortTitle = @language
+						WHERE MainArticle.LanguageId = langTable.LanguageId";
+			
+			var mainArticles = await connection.QueryAsync<MainArticle>(sql, new {language});
+
+			return mainArticles;
+		}
+	}
+
 }

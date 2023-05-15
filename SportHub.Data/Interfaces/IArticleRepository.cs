@@ -7,5 +7,7 @@ namespace SportHub.Data.Interfaces
 		Task CreateArticleAsync(Article article);
 		
 		Task<FullArticle> GetArticleAsync(string id);
+		
+		Task<IEnumerable<MainArticle>> GetMainArticlesAsync(string language);
 	}
 }

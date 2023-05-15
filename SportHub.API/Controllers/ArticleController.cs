@@ -61,5 +61,21 @@ namespace SportHub.API.Controllers
 				return BadRequest(ex.Message);
 			}
 		}
+		
+		[HttpGet("MainArticles")]
+		public async Task<IActionResult> GetMainArticlesAsync([FromQuery] string language)
+		{
+			try
+			{
+				var mainArticles = await _articlesService.GetMainArticlesAsync(language);
+				
+				return Ok(mainArticles);
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError(ex.Message);
+				return BadRequest(ex.Message);
+			}
+		}
 	}
 }
