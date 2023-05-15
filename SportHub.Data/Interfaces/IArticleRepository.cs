@@ -6,6 +6,6 @@ namespace SportHub.Data.Interfaces
 	{
 		Task CreateArticleAsync(Article article);
 		
-		Task<Article> GetArticleAsync(int id);
+		Task<FullArticle> GetArticleAsync(string id);
 	}
 }

@@ -29,20 +29,12 @@ namespace SportHub.Business.Implementations
 			await _articleRepository.CreateArticleAsync(article);
 		}
 		
-		public async Task<FullArticle> GetArticleAsync(int id)
+		public async Task<FullArticle> GetArticleAsync(string id)
 		{
 			var article = await _articleRepository.GetArticleAsync(id);
+			
 
-			var fullArticle = new FullArticle
-			{
-				ArticleId = article.ArticleId,
-				PublishingDate = article.PublishingDate,
-			};
-
-			var author = await _userRepository.GetUserByIdAsync(article.AuthorId);
-			fullArticle.Author = author;
-
-			return fullArticle;
+			return article;
 		}
 	}
 }

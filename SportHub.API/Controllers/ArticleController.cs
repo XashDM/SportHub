@@ -38,12 +38,17 @@ namespace SportHub.API.Controllers
 			}
 		}
 		
-		[HttpGet(Name = "Article")]
-		public async Task<IActionResult> GetArticleAsync([FromQuery] int id)
+		[HttpGet(Name = "GetArticle")]
+		public async Task<IActionResult> GetArticleAsync([FromQuery] string id)
 		{
 			try
 			{
 				var article = await _articlesService.GetArticleAsync(id);
+
+				if (article == null)
+				{
+					return NotFound($"Article with id {id} doesn't exists");
+				}
 				var articleResponse = _mapper.Map<FullArticle, ArticleResponse>(article);
 				
 				articleResponse.Author = _mapper.Map<User, UserResponseDto>(article.Author);

@@ -11,7 +11,6 @@ public class ArticleResponse
     public string Team { get; set; }
     public string Location { get; set; }
     public string ImageUrl { get; set; }
-    public string MainText { get; set; }
 
-    public List<ArticleInfo> Infos { get; set; }
+    public List<FullArticleInfo> Infos { get; set; }
 }
