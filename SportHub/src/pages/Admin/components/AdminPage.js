@@ -22,6 +22,9 @@ export default function AdminPage() {
                 case "Languages":
                     setContent(<LanguagesManagement setButtons={setHeaderButtons} />)
                     break
+                case "IA":
+                    setContent(<NavigationSystem/>)
+                    break
                 default:
                     break
             }

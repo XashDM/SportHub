@@ -1,4 +1,4 @@
-import {CategoryList} from "../../../constants/menuItems";
+import {CategoryList} from "../constants/menuItems";
 
 const CategoryRequest = () => {
     return CategoryList
