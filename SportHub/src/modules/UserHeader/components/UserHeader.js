@@ -1,25 +1,25 @@
 import styles from "../style/style.module.scss"
 import Input from "../../../ui/Input"
-import Button from "../../../ui/Button"
+import HeaderContainer from "../../../components/HeaderContainer"
 const UserHeader = ({username, userimg}) =>
 {
     return(
-            <header className={styles.header}>
-                <div className={styles.logo}><span className={styles.logo_text}>Sport Hub</span></div>
+        <HeaderContainer>
+            <div className={styles.header}>
                 <div className={styles.searchbar}>
-                    <img className={styles.img_icon} src={process.env.PUBLIC_URL + '/icons/Magnifying-glass.svg'} ></img>
+                    <img className={styles.img_icon} src={'/icons/Magnifying-glass.svg'} ></img>
                     <Input className={styles.input} placeholder={"Search by"}></Input>
                 </div>
                 <div className={styles.media}>
                     <span className={styles.share}>Share</span>
-                    <img className={styles.icons} src={process.env.PUBLIC_URL + '/icons/FacebookWithoutCircle.svg'} ></img>
-                    <img className={styles.icons} src={process.env.PUBLIC_URL + '/icons/Twitter.svg'} ></img>
-                    <img className={styles.icons} src={process.env.PUBLIC_URL + '/icons/Google+.svg'}  ></img>
+                    <img className={styles.icons} src={'/icons/FacebookWithoutCircle.svg'} ></img>
+                    <img className={styles.icons} src={'/icons/Twitter.svg'} ></img>
+                    <img className={styles.icons} src={'/icons/Google+.svg'}  ></img>
                 </div>
                 <div className={styles.auth}>
                     <img className={styles.profile_img} src={"/icons/UserPicture.png"}></img>
                     <span className={styles.user_name_text}>Ostap Luskevych</span>
-                    <img className={styles.profile_img_icon} src={process.env.PUBLIC_URL + '/icons/Polygon.svg'}></img>
+                    <img className={styles.profile_img_icon} src={'/icons/Polygon.svg'}></img>
                 </div>
                 <div className={styles.languages}>
                     <select className={styles.slect}>
@@ -28,7 +28,8 @@ const UserHeader = ({username, userimg}) =>
                         <option>PL</option>
                     </select>
                 </div>
-            </header>
+            </div>
+        </HeaderContainer>
     )
 }
 export default UserHeader

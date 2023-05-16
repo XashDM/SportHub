@@ -6,10 +6,8 @@ select::-ms-expand {
 
   .header{
       display: flex;
-      align-items: flex-start;
-      width: 100vw;
-      height: 12vh;
-      border-bottom: 1px solid rgb(240, 240, 240);
+      width: 100%;
+      align-items: center;
       .logo{
         display: flex;
         left:0;

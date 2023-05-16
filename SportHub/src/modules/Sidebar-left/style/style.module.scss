@@ -6,6 +6,10 @@ ul
 }
 .sidebar
 {
+  position: absolute;
+  left: 0;
+  top: 12vh;
+
   display: flex;
 
   .sidebar_left
@@ -13,9 +17,6 @@ ul
     align-items: flex-start;
     left: 0;
     top:10vh;
-    height: 70vh;
-    width: 18vw;
-
     .list_of_menu_items
     {
       color: rgb(204, 204, 204);

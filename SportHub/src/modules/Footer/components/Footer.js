@@ -3,8 +3,6 @@ import Input from "../../../ui/Input"
 import Button from "../../../ui/Button"
 function Footer(){
     return(
-        <>
-            <div>
             <footer className={styles.footer}>
                 <div className={styles.footer_div}>
                     <div className={styles.top_footer}>
@@ -52,8 +50,6 @@ function Footer(){
                     </div>
                 </div>
             </footer>
-            </div>
-        </>
-    );
+    )
 }
-export default Footer;
+export default Footer

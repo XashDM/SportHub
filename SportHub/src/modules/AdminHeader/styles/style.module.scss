@@ -1,25 +1,9 @@
 .header {
-  height: 12vh;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: right;
+  width: 100%;
   border-bottom: 1px solid var(--color-light-lines);
-
-  .logo {
-    width: 17.5vw;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: var(--color-red-regular);
-    font-family: var(--font-style-open-sans);
-    border-right: 1px solid var(--color-light-lines);
-
-    .logo_inscription {
-      margin: 0;
-      color: var(--color-light-white);
-      font-size: 28px;
-    }
-  }
 }
 
 .profile_sector {

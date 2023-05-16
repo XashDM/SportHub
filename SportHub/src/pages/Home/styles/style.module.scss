@@ -2,22 +2,9 @@
 
 .container
 {
-  display: flex;
-  flex-direction: column;
-
-  .header
-  {
-    display: flex;
+  .content{
+    margin-left: 10vw;
+    width: 100%;
+    background: #C80515;
   }
-
-  .sidebar
-  {
-    display: flex;
-  }
-
-  .footer
-  {
-    display: flex;
-  }
-
 }

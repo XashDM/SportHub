@@ -6,12 +6,13 @@ ul{
 }
 .footer
 {
+  position: relative;
+  left: 0;
+  bottom: 0;
   display: flex;
   flex-direction: column;
   width: 100vw;
   height: 30vh;
-  left: 0;
-  bottom: 0;
   .footer_div
   {
     display: flex;
@@ -96,6 +97,7 @@ ul{
 
         ul{
           color: white;
+          @include text-bodysemibold();
         }
       }
     }

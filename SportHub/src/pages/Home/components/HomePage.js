@@ -9,9 +9,11 @@ export default function HomePage(){
         <>
             <div className={styles.container}>
                 <Header/>
-                <SidebarLeft></SidebarLeft>
+                <SidebarLeft/>
+                <div className={styles.content}>
+                    <div style={{height: "100vh"}}>content</div>
+                </div>
                 <Footer/>
-                <div style={{background: "red", width: "100%", height: "100%"}}></div>
             </div>
         </>);
 }
