@@ -3,7 +3,7 @@ import SearchLanguagesStyles from '../styles/SearchLanguagesStyles'
 import CheckboxStyles from '../styles/CheckboxStyles'
 import LabelStyles from '../styles/LabelStyles'
 import BoxStyles from '../styles/BoxStyles'
-import CloseIcon from '@mui/icons-material/Close';
+import CloseIcon from '@mui/icons-material/Close'
 
 import { LANGUAGES_CONSTANTS } from '../../../../../constants/LanguagesConstants'
 

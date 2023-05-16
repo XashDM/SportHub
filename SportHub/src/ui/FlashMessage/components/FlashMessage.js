@@ -5,7 +5,7 @@ import CancelIcon from '@mui/icons-material/Cancel'
 
 function FlashMessage({ title, content, open, isSuccess, handleClose }) {
     const action = (
-        <React.Fragment>
+        <>
             <div className={styles.container}>
             {isSuccess ? (
                     <img src={process.env.PUBLIC_URL + '/icons/Success.svg'} alt="Success icon" />
@@ -18,9 +18,9 @@ function FlashMessage({ title, content, open, isSuccess, handleClose }) {
                 </div>
             </div>
             <span className={styles.closeButton} onClick={handleClose}>
-                    <img src={process.env.PUBLIC_URL + '/icons/Close.svg'} alt="Close" />
+                    <img src={'/icons/Close.svg'} alt="Close" />
                 </span>
-        </React.Fragment>
+        </>
     )
 
     return (

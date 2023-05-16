@@ -13,8 +13,6 @@ import deleteLanguageRequest from "../helpers/deleteLanguageRequest"
 
 import {LANGUAGES_CONSTANTS} from "../constants/LanguagesConstants"
 
-import Button from "../../../ui/Button"
-
 
 function LanguagesManagement({setButtons}) {
     const [languages, setLanguages] = useState([])
@@ -124,8 +122,8 @@ function LanguagesManagement({setButtons}) {
                     </thead>
                     <tbody>
                         {languages?.map((language) => (
-                            <tr key={"language"+language.shortTitle}>
-                                <td key={language.shortTitle}>{LANGUAGES_CONSTANTS.find(lang => lang.code === language.shortTitle).label}</td>
+                            <tr key={"language" + language.shortTitle}>
+                                <td key={language.shortTitle}>{LANGUAGES_CONSTANTS.find(lang => lang.code === language.shortTitle.toLowerCase()).label}</td>
                                 <td key={"showhide"+language.shortTitle}>
                                     <div className={styles.show_hide_container}>
                                         <div>

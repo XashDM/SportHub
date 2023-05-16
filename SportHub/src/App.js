@@ -25,9 +25,9 @@ function App() {
                 } />
 
                 <Route exact path={ROUTES.ADMIN} element={
-                    //<ProtectedRoute roles={["admin"]}>
+                    <ProtectedRoute roles={["admin"]}>
                         <AdminPage />
-                    //</ProtectedRoute>
+                    </ProtectedRoute>
                 } />
 
                     <Route exact path={ROUTES.SIGNUP} element={<RegistrationPage/>} />
