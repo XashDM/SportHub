@@ -1,29 +1,19 @@
 import React from "react"
-import {useAuthStore} from "../../../store/useAuthStore"
-import {useNavigate} from "react-router-dom"
-import Button from "../../../ui/Button"
-import {ROUTES} from "../../../routes/routes"
-import {googleLogout} from "@react-oauth/google"
-
+import Footer from "../../../modules/Footer";
+import styles from "../styles/style.module.scss"
+import SidebarLeft from "../../../modules/Sidebar-left/componets/SidebarLeft";
+import Header from "../../../modules/Header";
 
 export default function HomePage(){
-    const { userData, setUserData} = useAuthStore()
-    const navigate = useNavigate()
     return (
         <>
-            {
-                userData?.isAdmin
-                ?
-                    <>
-                        <h1>Hi admin</h1>
-                        <Button onClick={() => navigate(ROUTES.ADMIN)} text={"To admin page"}/>
-                    </>
-                :
-                    <h1>Home, sweet home :)</h1>
-            }
-            <Button text={"LOG OUT"} isOutlined={true} onClick={()=>{setUserData(null)
-                googleLogout()}}/>
-        </>
-    )
-
+            <div className={styles.container}>
+                <Header/>
+                <SidebarLeft/>
+                <div className={styles.content}>
+                    <div style={{height: "100vh"}}>content</div>
+                </div>
+                <Footer/>
+            </div>
+        </>);
 }

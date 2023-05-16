@@ -1,0 +1,10 @@
+@import "src/styles/mixins";
+
+.container
+{
+  .content{
+    margin-left: 10vw;
+    width: 100%;
+    background: #C80515;
+  }
+}
