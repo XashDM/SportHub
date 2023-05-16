@@ -8,7 +8,9 @@ namespace SportHub.Data.Interfaces
 
 		Task<IEnumerable<SubCategory>> GetAllSubCategoriesByCategoryId(int categoryId);
 
-		Task<string> CreateSubCategory(SubCategory subCategory);
+		Task<SubCategory> GetSubCategoriesById(int SubCategoryId);
+
+        Task<string> CreateSubCategory(SubCategory subCategory);
 
 		Task DeleteSubCategoryAsync(string SubCategoryId);
 

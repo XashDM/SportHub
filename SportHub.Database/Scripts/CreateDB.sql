@@ -75,19 +75,24 @@ CREATE TABLE IF NOT EXISTS `SportHub`.`Teams` (
   `TeamId` VARCHAR(45) NOT NULL,
   `TeamName` VARCHAR(45) NOT NULL,
   `TeamDescription` VARCHAR(45) NOT NULL,
+  `SubCategoryId` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`TeamId`),
   UNIQUE INDEX `TeamId_UNIQUE` (`TeamId` ASC) VISIBLE,
-  UNIQUE INDEX `TeamName_UNIQUE` (`TeamName` ASC) VISIBLE)
+  UNIQUE INDEX `TeamName_UNIQUE` (`TeamName` ASC) VISIBLE,
+  INDEX `fk_Teams_SubCategories_idx` (`SubCategoryId` ASC) VISIBLE,
+  CONSTRAINT `fk_Teams_SubCategories`
+    FOREIGN KEY (`SubCategoryId`)
+    REFERENCES `SportHub`.`SubCategories` (`SubCategoryId`)
+    ON DELETE NO ACTION
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS `SportHub`.`Articles` (
   `ArticleId` VARCHAR(45) NOT NULL,
   `PublishingDate` DATETIME NOT NULL DEFAULT now(),
-  `ImageId` INT NOT NULL,
-  `AuthorId` VARCHAR(150) NOT NULL,
+  `AuthorId` VARCHAR(45) NOT NULL,
   `CategoryId` INT NOT NULL,
   `ImageId` VARCHAR(45) NOT NULL,
-  `AuthorId` INT NOT NULL,
   `SubCategoryId` VARCHAR(45) NOT NULL,
   `TeamId` VARCHAR(45) NOT NULL,
   `LocationId` VARCHAR(45) NOT NULL,
@@ -105,8 +110,6 @@ CREATE TABLE IF NOT EXISTS `SportHub`.`Articles` (
     REFERENCES `SportHub`.`Images` (`ImageId`)
     ON DELETE NO ACTION
     ON UPDATE CASCADE,
-  CONSTRAINT `fk_Articles_User`
-    ON UPDATE NO ACTION,
   CONSTRAINT `fk_Articles_UserAccount`
     FOREIGN KEY (`AuthorId`)
     REFERENCES `SportHub`.`User` (`UserId`)

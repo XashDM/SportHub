@@ -36,6 +36,18 @@ public class SubCategoryRepository : ISubCategoryRepository
         }
 	}
 
+    public async Task<SubCategory> GetSubCategoriesById(int SubCategoryId)
+    {
+        using (var connection = _dbConnectionFactory.GetConnection())
+        {
+            connection.Open();
+            var sql = $"SELECT * FROM subcategories WHERE SubCategoryId={SubCategoryId}";
+            var subCategory = await connection.QueryFirstAsync<SubCategory>(sql);
+
+            return subCategory;
+        }
+    }
+
     public async Task<string> CreateSubCategory (SubCategory subCategory)
     {
         using(var connection = _dbConnectionFactory.GetConnection())

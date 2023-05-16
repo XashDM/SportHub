@@ -25,6 +25,13 @@ namespace SportHub.Business.Implementations
 			return subCategories;
 		}
 
+        public async Task<SubCategory> GetSubCategoriesById(int subCategoryId)
+        {
+            var subCategory = await _subCategoryRepository.GetSubCategoriesById(subCategoryId);
+
+            return subCategory;
+        }
+
         public async Task<string> CreateSubCategory(SubCategory subCategory){
 			var NewSubCategoryId = Guid.NewGuid().ToString();
 			subCategory.SubCategoryId = NewSubCategoryId;

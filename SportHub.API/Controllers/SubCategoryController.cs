@@ -33,7 +33,23 @@ namespace SportHub.API.Controllers
             return Ok(subCategories);
         }
 
-		[HttpPost]
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetSubCategoriesByIdAsync([FromRoute] int id)
+		{
+			try
+			{
+				var subCategory = await _subCategoryService.GetSubCategoriesById(id);
+
+				return Ok(subCategory);
+			}
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost]
 		public async Task<IActionResult> CreateNewSubCategory([FromBody] SubCategory subCategory)
 		{
 			try
@@ -62,6 +78,7 @@ namespace SportHub.API.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
 		[HttpPut]
         public async Task<IActionResult> UpdateSubcategory([FromBody]SubCategory subCategory)
 		{
