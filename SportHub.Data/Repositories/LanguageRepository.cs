@@ -23,14 +23,22 @@ namespace SportHub.Data.Repositories
             }
         }
 
-        public async Task AddLanguageAsync(Language language)
+        public async Task AddLanguagesAsync(IEnumerable<Language> languages)
         {
             using (var connection = _dbConnectionFactory.GetConnection())
             {
                 connection.Open();
-                var sql = "INSERT INTO Language (ShortTitle, IsActive) " +
-                    "VALUES (@ShortTitle, @IsActive);";
-                await connection.ExecuteAsync(sql, language);
+                using (var transaction = connection.BeginTransaction())
+                {
+                    var sql = "INSERT INTO Language (LanguageId, ShortTitle, IsActive) " +
+                    "VALUES (@LanguageId, @ShortTitle, @IsActive);";
+                    foreach (var language in languages)
+                    {
+                        // IsActive = 0 because after adding new language it shouldn't activate immediately
+                        await connection.ExecuteAsync(sql, new { LanguageId = language.LanguageId, ShortTitle = language.ShortTitle, IsActive = 0 });
+                    }
+                    transaction.Commit();
+                }
             }
         }
 

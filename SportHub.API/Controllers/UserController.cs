@@ -1,3 +1,4 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SportHub.Business;
@@ -11,22 +12,25 @@ namespace SportHub.Controllers;
 public class UserController : ControllerBase
 {
     private readonly ILogger<UserController> _logger;
-    
     private readonly IUserService _usersService;
+    private readonly IMapper _mapper;
     
-    public UserController(ILogger<UserController> logger, IUserService userService)
+    public UserController(ILogger<UserController> logger, IMapper mapper, IUserService userService)
     {
         _logger = logger;
         _usersService = userService;
+        _mapper = mapper;
     }
 
     [HttpGet("all")]
     [Authorize("AdminPolicy")]    
     public async Task<IActionResult> GetAllUsersAsync()
     {
-        var users = await _usersService.GetUsersAsync();
+        IEnumerable<User> users = await _usersService.GetUsersAsync();
     
-        return Ok(users);
+        var usersDto = _mapper.Map<IEnumerable<UserResponseDto>>(users);
+        
+        return Ok(usersDto);
 
     }
     
@@ -34,21 +38,16 @@ public class UserController : ControllerBase
     [Authorize("AdminPolicy")]    
     public async Task<IActionResult> GetByEmailAsync([FromRoute] string email)
     {
-        var user = await _usersService.GetUserByEmailAsync(email);
+        User user = await _usersService.GetUserByEmailAsync(email);
         
         if (user == null)
         {
             return NotFound("User not found");
         }
+
+        var userDto = _mapper.Map<User, UserResponseDto>(user);
     
-        return Ok(new UserResponseDto
-        {
-            Id = user.Id,
-            Email = user.Email,
-            FirstName = user.FirstName,
-            LastName = user.LastName,
-            IsAdmin = user.IsAdmin
-        });
+        return Ok(userDto);
     }
     
     [HttpGet("Id/{id}")]
@@ -62,23 +61,20 @@ public class UserController : ControllerBase
             return NotFound("User not found");
         }
     
-        return Ok(new UserResponseDto
-        {
-            Id = user.Id,
-            Email = user.Email,
-            FirstName = user.FirstName,
-            LastName = user.LastName,
-            IsAdmin = user.IsAdmin
-        });
+        var userDto = _mapper.Map<User, UserResponseDto>(user);
+        
+        return Ok(userDto);
     }
-    
-    [HttpPost(Name = "InsertUser")]
-    public async Task<IActionResult> InsertUserAsync([FromBody] UserRequestDto user)
+
+    [HttpPut]
+    public async Task<IActionResult> UpdateUserAsync([FromBody] UserUpdateRequestDto userUpdatesDto)
     {
         try
         {
-            await _usersService.InsertOneAsync(user);
-
+            var userUpdates = _mapper.Map<UserUpdateRequestDto, User>(userUpdatesDto);
+            
+            await _usersService.UpdateUserAsync(userUpdates);
+            
             return Ok();
         }
         catch (Exception ex)
@@ -87,26 +83,4 @@ public class UserController : ControllerBase
             return BadRequest(ex.Message);
         }
     }
-    
-    //TODO: ask about it on scrum meeting
-    // public async Task<IActionResult> InsertUserAsync([FromBody] UserRequestDto user)
-    // {
-    //     return await TryCatchAsync(async () => {
-    //         await _usersService.InsertOneAsync(user);
-    //         return Ok();
-    //     });
-    // }
-    //
-    // private async Task<IActionResult> TryCatchAsync(Func<Task<IActionResult>> action)
-    // {
-    //     try
-    //     {
-    //         return await action();
-    //     }
-    //     catch (Exception ex)
-    //     {
-    //         _logger.LogError(ex.Message);
-    //         return BadRequest(ex.Message);
-    //     }
-    // }
 }
