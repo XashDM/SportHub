@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using SportHub.Business;
 using SportHub.Business.Implementations;
+using SportHub.Data.DTO;
 using SportHub.Data.Entities;
 
 namespace SportHub.API.Controllers
@@ -11,11 +13,13 @@ namespace SportHub.API.Controllers
     {
         private readonly ICategoryService _CategoryService;
         private readonly ILogger<CategoryController> _logger;
+        private readonly IMapper _mapper;
 
-        public CategoryController(ICategoryService CategoryService, ILogger<CategoryController> logger)
+        public CategoryController(ICategoryService CategoryService, ILogger<CategoryController> logger,IMapper mapper)
         {
             _CategoryService = CategoryService;
             _logger = logger;
+            _mapper = mapper;
         }
 
         [HttpGet("all")]
@@ -43,10 +47,12 @@ namespace SportHub.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateNewCategory([FromBody] Category category)
+        public async Task<IActionResult> CreateCategoryAsync([FromBody] CategoryCreateDto categoryDto)
         {
             try
             {
+                Category category = _mapper.Map<CategoryCreateDto, Category>(categoryDto);
+
                 var NewCategoryId = await _CategoryService.CreateCategory(category);
                 return Ok(NewCategoryId);
             }

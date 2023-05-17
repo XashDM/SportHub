@@ -29,9 +29,6 @@ namespace SportHub.Business.Implementations
 
         public async Task<string> CreateCategory(Category category)
         {
-            var NewSubCategoryId = Guid.NewGuid().ToString();
-            category.CategoryId = NewSubCategoryId;
-
             return await _CategoryRepository.CreateCategory(category);
         }
 

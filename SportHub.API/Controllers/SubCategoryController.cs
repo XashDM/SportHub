@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using SportHub.Business;
+using SportHub.Data.DTO;
 using SportHub.Data.Entities;
 
 namespace SportHub.API.Controllers
@@ -10,11 +12,13 @@ namespace SportHub.API.Controllers
 	{
 		private readonly ISubCategoryService _subCategoryService;
 		private readonly ILogger<SubCategoryController> _logger;
+        private readonly IMapper _mapper;
 
-		public SubCategoryController(ISubCategoryService subCategoryService, ILogger<SubCategoryController> logger)
+        public SubCategoryController(ISubCategoryService subCategoryService, ILogger<SubCategoryController> logger,IMapper mapper)
 		{
 			_subCategoryService = subCategoryService;
 			_logger = logger;
+			_mapper = mapper;
 		}
 
 		[HttpGet("all")]
@@ -58,11 +62,14 @@ namespace SportHub.API.Controllers
         }
 
         [HttpPost]
-		public async Task<IActionResult> CreateNewSubCategory([FromBody] SubCategory subCategory)
-		{
-			try
+		public async Task<IActionResult> CreateNewSubCategory([FromBody] SubCategoryCreateDto subCategoryDto)
+		{	
+			
+            try
 			{
-				var NewSubCategoryId = await _subCategoryService.CreateSubCategory(subCategory);
+                SubCategory subCategory = _mapper.Map<SubCategoryCreateDto, SubCategory>(subCategoryDto);
+
+                var NewSubCategoryId = await _subCategoryService.CreateSubCategory(subCategory);
                 return Ok(NewSubCategoryId);
             }
             catch (Exception ex)
