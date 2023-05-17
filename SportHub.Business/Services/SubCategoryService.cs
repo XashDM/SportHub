@@ -19,13 +19,13 @@ namespace SportHub.Business.Implementations
 			return subCategories;
 		}
 
-        public async Task<IEnumerable<SubCategory>> GetAllSubCategoriesByCategoryId(int categoryId){
+        public async Task<IEnumerable<SubCategory>> GetAllSubCategoriesByCategoryId(string categoryId){
 			var subCategories = await _subCategoryRepository.GetAllSubCategoriesByCategoryId(categoryId);
 
 			return subCategories;
 		}
 
-        public async Task<SubCategory> GetSubCategoriesById(int subCategoryId)
+        public async Task<SubCategory> GetSubCategoriesById(string subCategoryId)
         {
             var subCategory = await _subCategoryRepository.GetSubCategoriesById(subCategoryId);
 
@@ -43,9 +43,9 @@ namespace SportHub.Business.Implementations
 			await _subCategoryRepository.DeleteSubCategoryAsync(SubCategoryId);
 		}
 
-        public async Task UpdateSubcategory(SubCategory subCategory)
-		{
-			await _subCategoryRepository.UpdateSubcategory(subCategory);
+        public async Task UpdateSubcategory(string SubCategoryId, string SubCategoryName)
+        {
+			await _subCategoryRepository.UpdateSubcategory(SubCategoryId,SubCategoryName);
 		}
     }
 }

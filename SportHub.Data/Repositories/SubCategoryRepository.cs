@@ -25,24 +25,24 @@ public class SubCategoryRepository : ISubCategoryRepository
 		}
 	}
 
-	public async Task<IEnumerable<SubCategory>> GetAllSubCategoriesByCategoryId(int categoryId) {
+	public async Task<IEnumerable<SubCategory>> GetAllSubCategoriesByCategoryId(string categoryId) {
 		using(var connection = _dbConnectionFactory.GetConnection())
 		{
 			connection.Open();
-			var sql = $"SELECT * FROM subcategories WHERE CategoryId={categoryId}";
+			var sql = $"SELECT * FROM subcategories WHERE CategoryId='{categoryId}'";
 			var subCategories = await connection.QueryAsync<SubCategory>(sql);
 
 			return subCategories;
         }
 	}
 
-    public async Task<SubCategory> GetSubCategoriesById(int SubCategoryId)
+    public async Task<SubCategory> GetSubCategoriesById(string SubCategoryId)
     {
         using (var connection = _dbConnectionFactory.GetConnection())
         {
             connection.Open();
-            var sql = $"SELECT * FROM subcategories WHERE SubCategoryId={SubCategoryId}";
-            var subCategory = await connection.QueryFirstAsync<SubCategory>(sql);
+            var sql = $"SELECT * FROM subcategories WHERE SubCategoryId='{SubCategoryId}'";
+            var subCategory = await connection.QueryFirstOrDefaultAsync<SubCategory>(sql);
 
             return subCategory;
         }
@@ -71,13 +71,13 @@ public class SubCategoryRepository : ISubCategoryRepository
         }
     }
 
-    public async Task UpdateSubcategory(SubCategory subCategory)
+    public async Task UpdateSubcategory(string SubCategoryId, string SubCategoryName)
     {
         using (var connection = _dbConnectionFactory.GetConnection())
         {
             connection.Open();
-            var sql = $"UPDATE subcategories SET SubCategoryName = '{subCategory.SubCategoryName}'" +
-                       $"WHERE SubCategoryId = '{subCategory.SubCategoryId}';";
+            var sql = $"UPDATE subcategories SET SubCategoryName = '{SubCategoryName}'" +
+                       $"WHERE SubCategoryId = '{SubCategoryId}';";
             await connection.ExecuteAsync(sql);
 
         }

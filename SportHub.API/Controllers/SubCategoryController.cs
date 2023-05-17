@@ -26,19 +26,27 @@ namespace SportHub.API.Controllers
 		}
 
         [HttpGet("category/{id}")]
-        public async Task<IActionResult> GetSubCategoriesByCategoryAsync([FromRoute] int id)
+        public async Task<IActionResult> GetSubCategoriesByCategoryAsync([FromRoute] string id)
         {
-			var subCategories = await _subCategoryService.GetAllSubCategoriesByCategoryId(id);
+			try
+			{
+                var subCategories = await _subCategoryService.GetAllSubCategoriesByCategoryId(id.ToString());
 
-            return Ok(subCategories);
+                return Ok(subCategories);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return BadRequest(ex.Message);
+            }
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetSubCategoriesByIdAsync([FromRoute] int id)
+        [HttpGet("{SubCategoryId}")]
+        public async Task<IActionResult> GetSubCategoriesByIdAsync([FromRoute] string SubCategoryId)
 		{
 			try
 			{
-				var subCategory = await _subCategoryService.GetSubCategoriesById(id);
+				var subCategory = await _subCategoryService.GetSubCategoriesById(SubCategoryId);
 
 				return Ok(subCategory);
 			}
@@ -79,12 +87,12 @@ namespace SportHub.API.Controllers
             }
         }
 
-		[HttpPut]
-        public async Task<IActionResult> UpdateSubcategory([FromBody]SubCategory subCategory)
+		[HttpPut("{SubCategoryId}")]
+        public async Task<IActionResult> UpdateSubcategory([FromRoute] string SubCategoryId,[FromBody] string SubCategoryName)
 		{
 			try
 			{
-				await _subCategoryService.UpdateSubcategory(subCategory);
+				await _subCategoryService.UpdateSubcategory(SubCategoryId, SubCategoryName);
 				return Ok();
 			}
             catch (Exception ex)
