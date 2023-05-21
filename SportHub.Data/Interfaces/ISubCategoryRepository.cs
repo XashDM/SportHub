@@ -6,15 +6,17 @@ namespace SportHub.Data.Interfaces
 	{
 		Task<IEnumerable<SubCategory>> GetAllSubCategoriesAsync();
 
-		Task<IEnumerable<SubCategory>> GetAllSubCategoriesByCategoryId(string categoryId);
+		Task<IEnumerable<SubCategory>> GetAllSubCategoriesByCategoryIdAsync(string categoryId);
 
-		Task<SubCategory> GetSubCategoriesById(string SubCategoryId);
+		Task<SubCategory> GetSubCategoriesByIdAsync(string SubCategoryId);
 
-        Task<string> CreateSubCategory(SubCategory subCategory);
+        Task<string> CreateSubCategoryAsync(SubCategory subCategory);
 
 		Task DeleteSubCategoryAsync(string SubCategoryId);
 
-		Task UpdateSubcategory(string subCategoryId, string SubCategoryName);
+		Task UpdateSubcategoryAsync(string subCategoryId, string SubCategoryName);
+
+		Task UpdateCategoryOfSubCategoryAsync(string SubCategoryId, string CategoryId);
 
     }
 }

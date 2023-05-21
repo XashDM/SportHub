@@ -35,7 +35,12 @@ namespace SportHub.API.Controllers
         {
             try
             {
-                var category = await _CategoryService.GetCategoryById(id);
+                var category = await _CategoryService.GetCategoryByIdAsync(id);
+
+                if (category == null)
+                {
+                    return NotFound("Category does not exist");
+                }
 
                 return Ok(category);
             }
@@ -53,7 +58,7 @@ namespace SportHub.API.Controllers
             {
                 Category category = _mapper.Map<CategoryCreateDto, Category>(categoryDto);
 
-                var NewCategoryId = await _CategoryService.CreateCategory(category);
+                var NewCategoryId = await _CategoryService.CreateCategoryAsync(category);
                 return Ok(NewCategoryId);
             }
             catch (Exception ex)
@@ -68,6 +73,13 @@ namespace SportHub.API.Controllers
         {
             try
             {
+                var category = await _CategoryService.GetCategoryByIdAsync(CategoryId);
+
+                if (category == null)
+                {
+                    return NotFound("Category does not exist");
+                }
+
                 await _CategoryService.DeleteCategoryAsync(CategoryId);
                 return Ok();
             }
@@ -79,11 +91,18 @@ namespace SportHub.API.Controllers
         }
 
         [HttpPut("{CategoryId}")]
-        public async Task<IActionResult> DeleteCategoryAsync([FromRoute] string CategoryId, [FromBody] string CategoryName)
+        public async Task<IActionResult> UpdateCategoryAsync([FromRoute] string CategoryId, [FromBody] string CategoryName)
         {
             try
             {
-                await _CategoryService.UpdateCategory(CategoryId, CategoryName);
+                var category = await _CategoryService.GetCategoryByIdAsync(CategoryId);
+
+                if (category == null)
+                {
+                    return NotFound("Category does not exist");
+                }
+
+                await _CategoryService.UpdateCategoryAsync(CategoryId, CategoryName);
                 return Ok();
             }
             catch (Exception ex)

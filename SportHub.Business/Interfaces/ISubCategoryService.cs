@@ -6,14 +6,16 @@ namespace SportHub.Business
 	{
 		Task<IEnumerable<SubCategory>> GetAllSubCategoriesAsync();
 
-        Task<IEnumerable<SubCategory>> GetAllSubCategoriesByCategoryId(string categoryId);
+        Task<IEnumerable<SubCategory>> GetAllSubCategoriesByCategoryIdAsync(string categoryId);
 
-        Task<SubCategory> GetSubCategoriesById(string subCategoryId);
+        Task<SubCategory> GetSubCategoriesByIdAsync(string subCategoryId);
 
-        Task<string> CreateSubCategory(SubCategory subCategory);
+        Task<string> CreateSubCategoryAsync(SubCategory subCategory);
 
         Task DeleteSubCategoryAsync(string SubCategoryId);
 
-        Task UpdateSubcategory(string SubCategoryId, string SubCategoryName);
+        Task UpdateSubcategoryAsync(string SubCategoryId, string SubCategoryName);
+
+        Task UpdateCategoryOfSubCategoryAsync(string SubCategoryId, string CategoryId);
     }
 }

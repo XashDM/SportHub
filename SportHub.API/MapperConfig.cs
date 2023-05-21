@@ -35,6 +35,9 @@ namespace SportHub.API
 
             CreateMap<CategoryCreateDto, Category>()
                 .ForMember(dest => dest.CategoryId, opt => opt.MapFrom(src => Guid.NewGuid()));
+
+            CreateMap<TeamCreateDto, Team>()
+                .ForMember(dest => dest.TeamId,opt => opt.MapFrom(src => Guid.NewGuid()));
         }
     }
 }

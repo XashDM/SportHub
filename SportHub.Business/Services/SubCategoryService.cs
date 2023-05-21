@@ -19,31 +19,36 @@ namespace SportHub.Business.Implementations
 			return subCategories;
 		}
 
-        public async Task<IEnumerable<SubCategory>> GetAllSubCategoriesByCategoryId(string categoryId){
-			var subCategories = await _subCategoryRepository.GetAllSubCategoriesByCategoryId(categoryId);
+        public async Task<IEnumerable<SubCategory>> GetAllSubCategoriesByCategoryIdAsync(string categoryId){
+			var subCategories = await _subCategoryRepository.GetAllSubCategoriesByCategoryIdAsync(categoryId);
 
 			return subCategories;
 		}
 
-        public async Task<SubCategory> GetSubCategoriesById(string subCategoryId)
+        public async Task<SubCategory> GetSubCategoriesByIdAsync(string subCategoryId)
         {
-            var subCategory = await _subCategoryRepository.GetSubCategoriesById(subCategoryId);
+            var subCategory = await _subCategoryRepository.GetSubCategoriesByIdAsync(subCategoryId);
 
             return subCategory;
         }
 
-        public async Task<string> CreateSubCategory(SubCategory subCategory){
+        public async Task<string> CreateSubCategoryAsync(SubCategory subCategory){
 			
-			return await _subCategoryRepository.CreateSubCategory(subCategory);
+			return await _subCategoryRepository.CreateSubCategoryAsync(subCategory);
         }
 
         public async Task DeleteSubCategoryAsync(string SubCategoryId) {
 			await _subCategoryRepository.DeleteSubCategoryAsync(SubCategoryId);
 		}
 
-        public async Task UpdateSubcategory(string SubCategoryId, string SubCategoryName)
+        public async Task UpdateSubcategoryAsync(string SubCategoryId, string SubCategoryName)
         {
-			await _subCategoryRepository.UpdateSubcategory(SubCategoryId,SubCategoryName);
+			await _subCategoryRepository.UpdateSubcategoryAsync(SubCategoryId,SubCategoryName);
+		}
+
+        public async Task UpdateCategoryOfSubCategoryAsync(string SubCategoryId, string CategoryId)
+		{
+			await _subCategoryRepository.UpdateCategoryOfSubCategoryAsync(SubCategoryId,CategoryId);
 		}
     }
 }

@@ -25,7 +25,7 @@ public class SubCategoryRepository : ISubCategoryRepository
 		}
 	}
 
-	public async Task<IEnumerable<SubCategory>> GetAllSubCategoriesByCategoryId(string categoryId) {
+	public async Task<IEnumerable<SubCategory>> GetAllSubCategoriesByCategoryIdAsync(string categoryId) {
 		using(var connection = _dbConnectionFactory.GetConnection())
 		{
 			connection.Open();
@@ -36,7 +36,7 @@ public class SubCategoryRepository : ISubCategoryRepository
         }
 	}
 
-    public async Task<SubCategory> GetSubCategoriesById(string SubCategoryId)
+    public async Task<SubCategory> GetSubCategoriesByIdAsync(string SubCategoryId)
     {
         using (var connection = _dbConnectionFactory.GetConnection())
         {
@@ -48,7 +48,7 @@ public class SubCategoryRepository : ISubCategoryRepository
         }
     }
 
-    public async Task<string> CreateSubCategory (SubCategory subCategory)
+    public async Task<string> CreateSubCategoryAsync(SubCategory subCategory)
     {
         using(var connection = _dbConnectionFactory.GetConnection())
         {
@@ -71,13 +71,25 @@ public class SubCategoryRepository : ISubCategoryRepository
         }
     }
 
-    public async Task UpdateSubcategory(string SubCategoryId, string SubCategoryName)
+    public async Task UpdateSubcategoryAsync(string SubCategoryId, string SubCategoryName)
     {
         using (var connection = _dbConnectionFactory.GetConnection())
         {
             connection.Open();
             var sql = $"UPDATE subcategories SET SubCategoryName = '{SubCategoryName}'" +
                        $"WHERE SubCategoryId = '{SubCategoryId}';";
+            await connection.ExecuteAsync(sql);
+
+        }
+    }
+
+    public async Task UpdateCategoryOfSubCategoryAsync(string SubCategoryId, string CategoryId)
+    {
+        using (var connection = _dbConnectionFactory.GetConnection())
+        {
+            connection.Open();
+            var sql = $"UPDATE subcategories SET CategoryId = '{CategoryId}'" +
+                      $"WHERE SubCategoryId = '{SubCategoryId}';";
             await connection.ExecuteAsync(sql);
 
         }

@@ -34,7 +34,7 @@ namespace SportHub.API.Controllers
         {
 			try
 			{
-                var subCategories = await _subCategoryService.GetAllSubCategoriesByCategoryId(id.ToString());
+                var subCategories = await _subCategoryService.GetAllSubCategoriesByCategoryIdAsync(id.ToString());
 
                 return Ok(subCategories);
             }
@@ -50,9 +50,15 @@ namespace SportHub.API.Controllers
 		{
 			try
 			{
-				var subCategory = await _subCategoryService.GetSubCategoriesById(SubCategoryId);
+				var subCategory = await _subCategoryService.GetSubCategoriesByIdAsync(SubCategoryId);
 
-				return Ok(subCategory);
+                if (subCategory == null)
+                {
+                    return NotFound("SubCategory does not exist");
+                }
+
+                return Ok(subCategory);
+
 			}
             catch (Exception ex)
             {
@@ -69,7 +75,7 @@ namespace SportHub.API.Controllers
 			{
                 SubCategory subCategory = _mapper.Map<SubCategoryCreateDto, SubCategory>(subCategoryDto);
 
-                var NewSubCategoryId = await _subCategoryService.CreateSubCategory(subCategory);
+                var NewSubCategoryId = await _subCategoryService.CreateSubCategoryAsync(subCategory);
                 return Ok(NewSubCategoryId);
             }
             catch (Exception ex)
@@ -84,7 +90,14 @@ namespace SportHub.API.Controllers
 		{
 			try
 			{
-				await _subCategoryService.DeleteSubCategoryAsync(SubCategoryId);
+                var subCategory = await _subCategoryService.GetSubCategoriesByIdAsync(SubCategoryId);
+
+                if (subCategory == null)
+                {
+                    return NotFound("SubCategory does not exist");
+                }
+
+                await _subCategoryService.DeleteSubCategoryAsync(SubCategoryId);
 				return Ok();
 			}
             catch (Exception ex)
@@ -99,9 +112,38 @@ namespace SportHub.API.Controllers
 		{
 			try
 			{
-				await _subCategoryService.UpdateSubcategory(SubCategoryId, SubCategoryName);
+                var subCategory = await _subCategoryService.GetSubCategoriesByIdAsync(SubCategoryId);
+
+                if (subCategory == null)
+                {
+                    return NotFound("SubCategory does not exist");
+                }
+
+                await _subCategoryService.UpdateSubcategoryAsync(SubCategoryId, SubCategoryName);
 				return Ok();
 			}
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut("{SubCategoryId}/category")]
+        public async Task<IActionResult> UpdateCategoryOfSubCategoryAsync([FromRoute] string SubCategoryId, [FromBody] string CategoryId)
+        {
+            try
+            {
+                var subCategory = await _subCategoryService.GetSubCategoriesByIdAsync(SubCategoryId);
+
+                if (subCategory == null)
+                {
+                    return NotFound("SubCategory does not exist");
+                }
+
+                await _subCategoryService.UpdateCategoryOfSubCategoryAsync(SubCategoryId, CategoryId);
+                return Ok();
+            }
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);

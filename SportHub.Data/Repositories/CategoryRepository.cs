@@ -25,19 +25,19 @@ public class CategoryRepository : ICategoryRepository
         }
     }
 
-    public async Task<Category> GetCategoryById(string CategoryId)
+    public async Task<Category> GetCategoryByIdAsync(string CategoryId)
     {
         using (var connection = _dbConnectionFactory.GetConnection())
         {
             connection.Open();
-            var sql = $"SELECT * FROM categories WHERE CategoryId={CategoryId}";
-            var category = await connection.QueryFirstAsync<Category>(sql);
+            var sql = $"SELECT * FROM categories WHERE CategoryId='{CategoryId}'";
+            var category = await connection.QueryFirstOrDefaultAsync<Category>(sql);
 
             return category;
         }
     }
 
-    public async Task<string> CreateCategory(Category category)
+    public async Task<string> CreateCategoryAsync(Category category)
     {
         using (var connection = _dbConnectionFactory.GetConnection())
         {
@@ -60,7 +60,7 @@ public class CategoryRepository : ICategoryRepository
         }
     }
 
-    public async Task UpdateCategory(string CategoryId,string CategoryName)
+    public async Task UpdateCategoryAsync(string CategoryId,string CategoryName)
     {
         using (var connection = _dbConnectionFactory.GetConnection())
         {

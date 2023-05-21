@@ -20,16 +20,16 @@ namespace SportHub.Business.Implementations
             return Categories;
         }
 
-        public async Task<Category> GetCategoryById(string CategoryId)
+        public async Task<Category> GetCategoryByIdAsync(string CategoryId)
         {
-            var category = await _CategoryRepository.GetCategoryById(CategoryId);
+            var category = await _CategoryRepository.GetCategoryByIdAsync(CategoryId);
 
             return category;
         }
 
-        public async Task<string> CreateCategory(Category category)
+        public async Task<string> CreateCategoryAsync(Category category)
         {
-            return await _CategoryRepository.CreateCategory(category);
+            return await _CategoryRepository.CreateCategoryAsync(category);
         }
 
         public async Task DeleteCategoryAsync(string CategoryId)
@@ -37,9 +37,9 @@ namespace SportHub.Business.Implementations
             await _CategoryRepository.DeleteCategoryAsync(CategoryId);
         }
 
-        public async Task UpdateCategory(string CategoryId, string CategoryName)
+        public async Task UpdateCategoryAsync(string CategoryId, string CategoryName)
         {
-            await _CategoryRepository.UpdateCategory(CategoryId, CategoryName);
+            await _CategoryRepository.UpdateCategoryAsync(CategoryId, CategoryName);
         }
 
     }
