@@ -11,7 +11,7 @@ namespace SportHub.Database.Config
        public static string uid = "user";
        public static string password = "root";
        public static string port = "5900";
-       public static string scriptFilePath = @"../../../Scripts/CreateDB.sql";
+       public static string scriptFilePath = @"CreateDB.sql";
        public static string connectionString = $"server={server}; port={port}; uid={uid};pwd={password};"; 
     }
 }
