@@ -12,11 +12,13 @@ import PasswordChangePage from "./pages/PasswordReset"
 import PasswordResetPage from "./pages/PasswordChange"
 import { useEffect } from 'react'
 import checkCurrentLanguage from "./helpers/checkCurrentLanguage"
+import { useTranslation } from 'react-i18next'
 
 function App() {
+    const { t, i18n } = useTranslation()
     useEffect(() => {
-        checkCurrentLanguage()
-    }, [])
+        checkCurrentLanguage(i18n)
+    })
     return (
         <GoogleOAuthProvider clientId="1053346154092-0ht8fsk771fsnn1lvd5a94e3r5etphle.apps.googleusercontent.com">
         <BrowserRouter>
@@ -27,9 +29,9 @@ function App() {
                 } />
 
                 <Route exact path={ROUTES.ADMIN} element={
-                    //<ProtectedRoute roles={["admin"]}>
+                    <ProtectedRoute roles={["admin"]}>
                         <AdminPage />
-                    //</ProtectendRoute>
+                    </ProtectendRoute>
                 } />
                     <Route exact path={ROUTES.SIGNUP} element={<RegistrationPage/>} />
                     <Route exact path={ROUTES.PASSWORD_RESET} element={<PasswordResetPage/>} />

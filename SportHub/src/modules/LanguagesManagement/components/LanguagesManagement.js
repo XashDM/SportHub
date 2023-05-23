@@ -34,7 +34,7 @@ function LanguagesManagement({setButtons}) {
         if(typeof(setButtons) == "function"){
             setButtons([{text: t('AdminPage.LanguagesManagement.AddLanguagesBtn'), function: handleOpenPopUpAddLanguages, isOutlined: false}])
         }
-    }, [])
+    }, [languages])
 
     const handleCloseFlashMessage = () => {
         setOpenFlashMessage(false)
@@ -91,6 +91,7 @@ function LanguagesManagement({setButtons}) {
         setFlashContent(t('AdminPage.LanguagesManagement.flashMsg.Success.ContentShowHide'))
         setFlashIsSuccess(true)
         setOpenFlashMessage(true)
+        checkCurrentLanguage()
     }
 
     const handleLanguageDelete = async () => {
