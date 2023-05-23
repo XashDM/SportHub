@@ -38,8 +38,8 @@ namespace SportHub.API.Controllers
 			}
 		}
 		
-		[HttpGet(Name = "GetArticle")]
-		public async Task<IActionResult> GetArticleAsync([FromQuery] string id, string language)
+		[HttpGet(Name = "GetArticleByIdAndLanguage")]
+		public async Task<IActionResult> GetArticleByIdAndLanguageAsync([FromQuery] string id, string language)
 		{
 			try
 			{

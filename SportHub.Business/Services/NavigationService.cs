@@ -12,14 +12,7 @@ public class NavigationService : INavigationService
     {
         _navigationRepository = navigationRepository;
     }
-    
-    public async Task<ImageClass> GetImageById(string id)
-    {
-        var image = await _navigationRepository.GetImageById(id);
 
-        return image;
-    }
-	
     public async Task<Category> GetCategoryBySubCategoryId(string id)
     {
         var category = await _navigationRepository.GetCategoryBySubCategoryId(id);

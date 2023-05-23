@@ -1,8 +1,8 @@
 ﻿namespace SportHub.Data.Entities;
 
-public class ImageClass
+public class Image
 {
 	public string ImageId { get; set; } = null!;
-	public string Image { get; set; } = null!;
+	public string Url { get; set; } = null!;
 	public string Alt { get; set; } = null!;
 }

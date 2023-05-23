@@ -8,13 +8,13 @@ namespace SportHub.Business.Implementations
 	public class ArticleService : IArticleService
 	{
 		private readonly IArticleRepository _articleRepository;
-		private readonly IUserRepository _userRepository;
 		private readonly INavigationService _navigationService;
+		private readonly IImageService _imageService;
 		
-		public ArticleService(IArticleRepository articleRepository, IUserRepository userRepository, INavigationService navigationService)
+		public ArticleService(IArticleRepository articleRepository, INavigationService navigationService, IImageService imageService)
 		{
 			_articleRepository = articleRepository;
-			_userRepository = userRepository;
+			_imageService = imageService;
 			_navigationService = navigationService;
 		}
 
@@ -50,7 +50,7 @@ namespace SportHub.Business.Implementations
 			foreach (var mainArticleData in mainArticlesMetadata)
 			{
 				var article = await _articleRepository.GetArticleByIdAndLanguageAsync(mainArticleData.ArticleId, language);
-				var articleImage = await _navigationService.GetImageById(article.ImageId);
+				var articleImage = await _imageService.GetImageById(article.ImageId);
 				var articleCategory = await _navigationService.GetCategoryBySubCategoryId(article.SubCategoryId);
 				
 				var mainArticleInfo = new MainArticleInfo
@@ -62,7 +62,7 @@ namespace SportHub.Business.Implementations
 					Subtitle = article.Subtitle,
 						
 					Category = articleCategory.CategoryName,
-					ImageUrl = articleImage.Image
+					ImageUrl = articleImage.Url
 				};
 				
 				mainArticles.Add(mainArticleInfo);

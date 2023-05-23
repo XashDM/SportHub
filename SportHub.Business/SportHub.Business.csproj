@@ -26,12 +26,4 @@
     <EmbeddedResource Include="Services\Emails\password-reset-email.html" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Compile Remove="Services\UserService 2.cs" />
-    <Compile Remove="Services\JwtService 2.cs" />
-    <Compile Remove="Services\EmailService 2.cs" />
-    <Compile Remove="Interfaces\IUserService 2.cs" />
-    <Compile Remove="Interfaces\IJwtService 2.cs" />
-  </ItemGroup>
-
 </Project>
