@@ -1,10 +1,12 @@
 import {FormControlLabel} from '@mui/material'
 import SwitchStyles from '../styles/SwitchStyles'
+import { useTranslation } from "react-i18next"
 
 function Switch({ onChange, checked }) {
-    let label = 'Hide'
+    const { t } = useTranslation()
+    let label = t('AdminPage.LanguagesManagement.HideSwitchCaption')
     if (checked) {
-        label = 'Show'
+        label = t('AdminPage.LanguagesManagement.ShowSwitchCaption')
     }
     return (
         <FormControlLabel

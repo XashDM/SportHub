@@ -1,10 +1,11 @@
 import React, {useState} from 'react'
 import styles from "../styles/style.module.scss"
 import VerticalAdminMenuElement from "./VerticalAdminMenuElement"
-import {VERTICAL_MENU_ELEMENTS} from "../constants/VerticalMenuConstants";
+import {VERTICAL_MENU_ELEMENTS} from "../constants/VerticalMenuConstants"
+import { useTranslation } from "react-i18next"
 
 export default function VerticalAdminMenu({currentMenuElement, setCurrentMenuElement}){
-
+    const { t } = useTranslation()
     const [verticalMenuElements, setVerticalMenuElements] = useState(VERTICAL_MENU_ELEMENTS)
 
     return (
@@ -20,7 +21,7 @@ export default function VerticalAdminMenu({currentMenuElement, setCurrentMenuEle
 
                         <VerticalAdminMenuElement
                             name={verticalMenuElement}
-                            hintText={verticalMenuElement}
+                            hintText={t('AdminPage.VerticalAdminMenu.' + verticalMenuElement)}
                             isActive={verticalMenuElement === currentMenuElement}  />
                     </div>
                 })}

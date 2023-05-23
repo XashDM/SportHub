@@ -1,9 +1,10 @@
 import styles from "../style/style.module.scss"
 import Input from "../../../ui/Input"
 import HeaderContainer from "../../../components/HeaderContainer"
+
 const UserHeader = ({username, userimg}) =>
 {
-    return(
+    return (
         <HeaderContainer>
             <div className={styles.header}>
                 <div className={styles.searchbar}>

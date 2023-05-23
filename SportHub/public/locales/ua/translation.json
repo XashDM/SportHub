@@ -1,0 +1,57 @@
+{
+    "Header": {
+        "NotLoginedHeader": {
+            "LoginBtn": "Логін",
+            "SignUpBtn": "Реєстрація",
+            "ShareCaption": "Поділитись",
+            "SearchByCaption": "Шукати за"
+        }
+    },
+    "AdminPage": {
+        "VerticalAdminMenu": {
+            "Surveys": "Опитування",
+            "Banners": "Банери",
+            "Languages": "Мови",
+            "Shares": "Акції",
+            "My users": "Мої користувачі",
+            "IA": "IA",
+            "Teams": "Команди",
+            "News partners": "Новинні партнери",
+            "Advertising": "Реклама"
+        },
+        "LanguagesManagement": {
+            "LanguagesCaption": "МОВИ",
+            "ShowHideCaption": "ПОКАЗАТИ/СХОВАТИ",
+            "ShowSwitchCaption": "Показати",
+            "HideSwitchCaption": "Сховати",
+            "AddLanguagesBtn": "Додати мови",
+            "DeleteLanguageHint": "Видалити мову",
+            "flashMsg": {
+                "Success": {
+                    "Title": "Успіх!",
+                    "ContentAddLanguage": "Було додано нову мову!",
+                    "ContentShowHide": "Було змінено параметр показати/сховати.",
+                    "ContentDeleteLanguage": "Мову було видалено."
+                },
+                "Error": {
+                    "Title": "Помилка!",
+                    "ContentShowHide": "Цю мову не можна приховати.",
+                    "ContentDeleteLanguage": "Цю мову не можна видалити."
+                }
+            },
+            "PopUpAddLanguages": {
+                "AddLanguage": "Додати мову",
+                "CancelBtn": "Відміна",
+                "AddBtn": "Додати",
+                "SelectLanguageCaption": "ОБРАТИ МОВУ"
+            },
+            "PopUpRemovalWarning": {
+                "Title": "Ви збираєтесь видалити цю мову!",
+                "Content": "Ця мова буде видалена з Sports Hub",
+                "AreYouSure": "Ви впевнені?",
+                "CancelBtn": "Відміна",
+                "DeleteBtn": "Видалити"
+            }
+        }
+    }
+}

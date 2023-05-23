@@ -10,8 +10,13 @@ import "./styles/base.scss"
 import {ROUTES} from "./routes/routes"
 import PasswordChangePage from "./pages/PasswordReset"
 import PasswordResetPage from "./pages/PasswordChange"
+import { useEffect } from 'react'
+import checkCurrentLanguage from "./helpers/checkCurrentLanguage"
 
 function App() {
+    useEffect(() => {
+        checkCurrentLanguage()
+    }, [])
     return (
         <GoogleOAuthProvider clientId="1053346154092-0ht8fsk771fsnn1lvd5a94e3r5etphle.apps.googleusercontent.com">
         <BrowserRouter>
@@ -22,9 +27,9 @@ function App() {
                 } />
 
                 <Route exact path={ROUTES.ADMIN} element={
-                    <ProtectedRoute roles={["admin"]}>
+                    //<ProtectedRoute roles={["admin"]}>
                         <AdminPage />
-                    </ProtectedRoute>
+                    //</ProtectendRoute>
                 } />
                     <Route exact path={ROUTES.SIGNUP} element={<RegistrationPage/>} />
                     <Route exact path={ROUTES.PASSWORD_RESET} element={<PasswordResetPage/>} />

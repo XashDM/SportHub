@@ -1,0 +1,57 @@
+{
+    "Header": {
+        "NotLoginedHeader": {
+            "LoginBtn": "Login",
+            "SignUpBtn": "Sign up",
+            "ShareCaption": "Share",
+            "SearchByCaption": "Search by"
+        }
+    },
+    "AdminPage": {
+        "VerticalAdminMenu": {
+            "Surveys": "Surveys",
+            "Banners": "Banners",
+            "Languages": "Languages",
+            "Shares": "Shares",
+            "My users": "My users",
+            "IA": "IA",
+            "Teams": "Teams",
+            "News partners": "News partners",
+            "Advertising": "Advertising"
+        },
+        "LanguagesManagement": {
+            "LanguagesCaption": "LANGUAGES",
+            "ShowHideCaption": "SHOW/HIDE",
+            "ShowSwitchCaption": "Show",
+            "HideSwitchCaption": "Hide",
+            "AddLanguagesBtn": "Add languages",
+            "DeleteLanguageHint": "Delete language",
+            "flashMsg": {
+                "Success": {
+                    "Title": "Success!",
+                    "ContentAddLanguage": "Successfully added new language!",
+                    "ContentShowHide": "Successfully changed language show/hide parameter.",
+                    "ContentDeleteLanguage": "The language is successfully deleted."
+                },
+                "Error": {
+                    "Title": "Error!",
+                    "ContentShowHide": "This language can't be hidden.",
+                    "ContentDeleteLanguage": "This language can't be deleted."
+                }
+            },
+            "PopUpAddLanguages": {
+                "AddLanguage": "Add language",
+                "CancelBtn": "Cancel",
+                "AddBtn": "Add",
+                "SelectLanguageCaption": "SELECT LANGUAGE"
+            },
+            "PopUpRemovalWarning": {
+                "Title": "You are about to delete this language!",
+                "Content": "This language will be deleted from Sports Hub",
+                "AreYouSure": "Are you sure?",
+                "CancelBtn": "Cancel",
+                "DeleteBtn": "Delete"
+            }
+        }
+    }
+}

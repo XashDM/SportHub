@@ -6,9 +6,11 @@ import BoxStyles from '../styles/BoxStyles'
 import CloseIcon from '@mui/icons-material/Close'
 
 import { LANGUAGES_CONSTANTS } from '../../../../../constants/LanguagesConstants'
+import { useTranslation } from "react-i18next"
 
 
 function SearchLanguages({ currentLanguages, selectedLanguages, onSelectedLanguagesChange }) {
+  const { t } = useTranslation()
   const filteredLanguages = LANGUAGES_CONSTANTS.filter(language => {
     return !currentLanguages?.some(lang => lang.shortTitle === language.code);
   })
@@ -44,7 +46,7 @@ function SearchLanguages({ currentLanguages, selectedLanguages, onSelectedLangua
       )}
       renderInput={(params) => (
         <>
-          <LabelStyles>SELECT LANGUAGE</LabelStyles>
+          <LabelStyles>{t('AdminPage.LanguagesManagement.PopUpAddLanguages.SelectLanguageCaption')}</LabelStyles>
           <TextField
             {...params}
             inputProps={{
