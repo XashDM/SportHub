@@ -142,7 +142,7 @@ namespace SportHub.API.Controllers
                 }
 
                 await _TeamsService.DeleteTeamAsync(TeamId);
-                return Ok(_TeamsService.GetTeamByIdAsync(TeamId));
+                return Ok();
             }
             catch (Exception ex)
             {
