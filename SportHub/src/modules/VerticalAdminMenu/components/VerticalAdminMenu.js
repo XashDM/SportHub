@@ -1,25 +1,27 @@
 import React, {useState} from 'react'
 import styles from "../styles/style.module.scss"
 import VerticalAdminMenuElement from "./VerticalAdminMenuElement"
-import {VERTICAL_MENU_ELEMENTS, VERTICAL_MENU_HINTS} from "../../../constants/VerticalMenuConstants";
+import {VERTICAL_MENU_ELEMENTS} from "../constants/VerticalMenuConstants";
 
-export default function VerticalAdminMenu(){
+export default function VerticalAdminMenu({currentMenuElement, setCurrentMenuElement}){
 
     const [verticalMenuElements, setVerticalMenuElements] = useState(VERTICAL_MENU_ELEMENTS)
-    const [hintText, setHintText] = useState(VERTICAL_MENU_HINTS)
-    const [currentVerticalMenuElement, setCurrentVerticalMenuElement] = useState()
 
     return (
         <div>
             <div className={styles.vertical_menu}>
                 {verticalMenuElements.map((verticalMenuElement, index) => {
                     return <div
-                        onClick={() => setCurrentVerticalMenuElement(index)} className={styles.vertical_menu_element}>
+                        key={index}
+                        onClick={() => {
+                            setCurrentMenuElement(verticalMenuElement)
+                        }}
+                        className={styles.vertical_menu_element}>
 
                         <VerticalAdminMenuElement
                             name={verticalMenuElement}
-                            hintText={hintText[index]}
-                            isActive={index === currentVerticalMenuElement}  />
+                            hintText={verticalMenuElement}
+                            isActive={verticalMenuElement === currentMenuElement}  />
                     </div>
                 })}
             </div>

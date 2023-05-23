@@ -1,0 +1,3 @@
+const MAX_MAIN_ARTICLES_AMOUNT = 5
+
+export default  MAX_MAIN_ARTICLES_AMOUNT
