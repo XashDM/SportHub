@@ -1,6 +1,7 @@
-import styles from "../style/style.module.scss"
+import styles from "../styles/style.module.scss"
 import Input from "../../../ui/Input"
 import HeaderContainer from "../../../components/HeaderContainer"
+import SelectLanguage from "../../SelectLanguage"
 
 const UserHeader = ({username, userimg}) =>
 {
@@ -23,11 +24,7 @@ const UserHeader = ({username, userimg}) =>
                     <img className={styles.profile_img_icon} src={'/icons/Polygon.svg'}></img>
                 </div>
                 <div className={styles.languages}>
-                    <select className={styles.slect}>
-                        <option>EN</option>
-                        <option>UA</option>
-                        <option>PL</option>
-                    </select>
+                    <SelectLanguage/>
                 </div>
             </div>
         </HeaderContainer>

@@ -24,14 +24,13 @@ function App() {
         <BrowserRouter>
             <Routes>
                 <Route exact path={ROUTES.HOME} element={
-
                         <HomePage/>
                 } />
 
                 <Route exact path={ROUTES.ADMIN} element={
                     <ProtectedRoute roles={["admin"]}>
                         <AdminPage />
-                    </ProtectendRoute>
+                    </ProtectedRoute>
                 } />
                     <Route exact path={ROUTES.SIGNUP} element={<RegistrationPage/>} />
                     <Route exact path={ROUTES.PASSWORD_RESET} element={<PasswordResetPage/>} />

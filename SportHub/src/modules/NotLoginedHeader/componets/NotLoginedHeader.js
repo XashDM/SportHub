@@ -1,11 +1,10 @@
-import styles from "../style/style.module.scss"
+import styles from "../styles/style.module.scss"
 import Input from "../../../ui/Input"
 import Button from "../../../ui/Button"
 import { useNavigate } from "react-router-dom"
 import HeaderContainer from "../../../components/HeaderContainer"
 import { useTranslation } from "react-i18next"
-import getLanguagesRequest from "../../LanguagesManagement/helpers/getLanguagesRequest"
-import { useEffect, useState } from "react"
+import SelectLanguage from "../../SelectLanguage"
 
 const NotLoginedHeader = () =>
 {
@@ -13,22 +12,6 @@ const NotLoginedHeader = () =>
     const navigate = useNavigate()
     const onClickLoginHandler = () => navigate(`/log-in`)
     const onClickSignUpHandler = () => navigate("/sign-up")
-
-    const [languages, setLanguages] = useState([])
-    const handleLanguagesGet = async () => {
-        const result = await getLanguagesRequest()
-        console.log(result)
-        setLanguages(result.data)
-    }
-    const [currentLanguage, setCurrentLanguage] = useState(localStorage.getItem("i18nextLng"))
-    const handleSetCurrentLanguage = async (event) => {
-        i18n.changeLanguage(event.target.value)
-        setCurrentLanguage(event.target.value)
-    } 
-
-    useEffect(() => {
-        handleLanguagesGet()
-    }, [])
 
     return (
         <HeaderContainer>
@@ -48,15 +31,7 @@ const NotLoginedHeader = () =>
                     <Button text={t('Header.NotLoginedHeader.LoginBtn')} onClick={onClickLoginHandler} isOutlined={true}></Button>
                 </div>
                 <div className={styles.languages}>
-                    <select className={styles.slect} onChange={handleSetCurrentLanguage} value={currentLanguage}>
-                        {languages?.map((language) => (
-                            language.isActive
-                            ?
-                            <option key={language.shortTitle} value={language.shortTitle}>{language.shortTitle.toUpperCase()}</option>
-                            :
-                            <></>
-                        ))}
-                    </select>
+                    <SelectLanguage/>
                 </div>
             </div>
         </HeaderContainer>
