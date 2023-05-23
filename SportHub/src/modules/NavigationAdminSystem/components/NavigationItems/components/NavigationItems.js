@@ -63,6 +63,8 @@ const NavigationItems = ({items,depthLevel}) =>
                                                     key = {submenu.id}
                                                     start={`${items.id}-${items.title}`}
                                                     end = {`${submenu.id}-${submenu.title}`}
+                                                    startAnchor = "right"
+                                                    endAnchor = "left"
                                                     showHead = {false}
                                                     dashness = {true}
                                                     strokeWidth={2}

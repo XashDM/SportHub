@@ -4,13 +4,16 @@
     list-style: none;
     display: none;
     top: 0px;
-}
-
-    .dropdown.show {
+    
+    &.show {
         display: block;
     }
 
-    .dropdown.dropdown_submenu {
+     &.dropdown_submenu {
         position: absolute;
         left: 170px;
     }
+}
+
+
+    

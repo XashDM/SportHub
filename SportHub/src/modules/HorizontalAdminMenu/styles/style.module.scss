@@ -13,21 +13,10 @@
     font-weight: 600;
   }
 
-  .add_new_article_button{
-    background-color: var(--color-red-regular);
-    color: var(--color-light-white);
-    font-size: 12px;
-    padding: 1vh 2vw 1vh 2vw;
-  }
-
-  .add_new_article_button:hover
-  {
-    background-color: var(--color-red-hover);
-    cursor: pointer;
-  }
-
-  .add_new_article_button:focus{
-    background-color: var(--color-red-pressed);
+  .buttons{
+    display: flex;
+    flex-direction: row;
+    gap: 1vw;
   }
 }
 
@@ -73,5 +62,4 @@
     cursor: auto;
   }
 }
-
 

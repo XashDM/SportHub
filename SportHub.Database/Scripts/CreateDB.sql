@@ -87,11 +87,19 @@ CREATE TABLE IF NOT EXISTS `SportHub`.`Teams` (
     ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
+CREATE TABLE IF NOT EXISTS `SportHub`.`Language` (
+  `LanguageId` VARCHAR(150) NOT NULL,
+  `ShortTitle` CHAR(2) NOT NULL,
+  `IsActive` TINYINT UNSIGNED NOT NULL DEFAULT 0,
+  PRIMARY KEY (`LanguageId`),
+  UNIQUE INDEX `LanguageId_UNIQUE` (`LanguageId` ASC) VISIBLE,
+  UNIQUE INDEX `ShortTitle_UNIQUE` (`ShortTitle` ASC) VISIBLE)
+  ENGINE = InnoDB;
+
 CREATE TABLE IF NOT EXISTS `SportHub`.`Articles` (
-  `ArticleId` VARCHAR(45) NOT NULL,
+  `ArticleId` VARCHAR(150) NOT NULL,
   `PublishingDate` DATETIME NOT NULL DEFAULT now(),
-  `AuthorId` VARCHAR(45) NOT NULL,
-  `CategoryId` INT NOT NULL,
+  `AuthorId` VARCHAR(150) NOT NULL,
   `ImageId` VARCHAR(45) NOT NULL,
   `SubCategoryId` VARCHAR(45) NOT NULL,
   `TeamId` VARCHAR(45) NOT NULL,
@@ -101,7 +109,6 @@ CREATE TABLE IF NOT EXISTS `SportHub`.`Articles` (
   PRIMARY KEY (`ArticleId`),
   INDEX `fk_Articles_Images_idx` (`ImageId` ASC) VISIBLE,
   INDEX `fk_Articles_User_idx` (`AuthorId` ASC) VISIBLE,
-  INDEX `fk_Articles_Category_idx` (`CategoryId` ASC) VISIBLE,
   INDEX `fk_Articles_SubCategory_idx` (`SubCategoryId` ASC) VISIBLE,
   INDEX `fk_Articles_Team_idx` (`TeamId` ASC) VISIBLE,
   INDEX `fk_Articles_Location_idx` (`LocationId` ASC) VISIBLE,
@@ -133,8 +140,8 @@ CONSTRAINT `fk_Articles_Location`
 ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS `SportHub`.`ArticleInfos` (
-  `ArticleId` VARCHAR(45) NOT NULL,
-  `LanguageId` INT NOT NULL,
+  `ArticleId` VARCHAR(120) NOT NULL,
+  `LanguageId` VARCHAR(150) NOT NULL,
   `Title` VARCHAR(100) NOT NULL,
   `Subtitle` VARCHAR(100) NOT NULL,
   `MainText` TEXT NOT NULL,

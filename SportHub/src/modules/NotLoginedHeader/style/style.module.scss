@@ -1,0 +1,152 @@
+@import "src/styles/mixins";
+
+select::-ms-expand {
+  display: none;
+}
+
+  .header{
+      display: flex;
+      width: 100%;
+      align-items: center;
+      .logo{
+        display: flex;
+        left:0;
+        top:0;
+        @include flex-center;
+        background: var(--color-red-regular);
+        width: 18vw;
+        height: 12vh;
+        font-size: 22px;
+        color: white;
+
+        .logo_text{
+          &:hover{
+            cursor: pointer;
+          }
+        }
+      }
+      .searchbar{
+
+          display: flex;
+          left: 18vw;
+          top: 0;
+          @include flex-center;
+          background: var(white);
+          width: 25vw;
+          height: 12vh;
+          font-size: 18px;
+          color: rgb(189, 189, 189);
+          border-right: 1px solid rgb(240, 240, 240);
+        &:hover{
+          cursor: pointer;
+        }
+
+        .img_icon{
+          height: 18px;
+          width: 18px;
+        }
+      }
+      .media
+      {
+        display: flex;
+        left: 43vw;
+        top: 0;
+        @include flex-center;
+        background: var(white);
+        width: 25vw;
+        height: 12vh;
+        font-size: 15px;
+        color: rgb(189, 189, 189);
+        border-right: 1px solid rgb(240, 240, 240);
+        .share
+        {
+          &:hover{
+            cursor: pointer;
+          }
+        }
+        .icons{
+          padding-left: 10px;
+          width: 35px;
+          height: 35px;
+          &:hover{
+            cursor: pointer;
+          }
+        }
+
+      }
+    .input
+    {
+      padding-bottom: 20px;
+      width: 20vw;
+      left: 1vw;
+      outline: none;
+      border: none;
+      outline-color: white;
+
+      &:focus, &:hover{
+        outline: none;
+        border: none;
+        outline-color: white;
+      }
+    }
+
+    .btn_signup
+    {
+      display: flex;
+      @include flex-center;
+      padding: 10px;
+      border: none;
+      margin-right: 2vw;
+      color: rgb(216, 38, 52);
+      font-family: sans-serif;
+      font-weight: bolder;
+      background-color: white;
+      font-size: 14px;
+
+
+      &:hover{
+        cursor: pointer;
+        color: white;
+        background-color: rgb(216, 38, 52);
+      }
+    }
+    .auth
+    {
+      display: flex;
+      left: 68vw;
+      top: 0;
+      @include flex-center;
+      background: var(white);
+      width: 21vw;
+      height: 12vh;
+      font-size: 18px;
+      color: rgb(189, 189, 189);
+
+    }
+    .languages
+    {
+      display: flex;
+      left: 89vw;
+      top: 0;
+      @include flex-center;
+      background: var(white);
+      width: 11vw;
+      height: 12vh;
+      font-size: 18px;
+      color: rgb(189, 189, 189);
+
+      .slect{
+        border: none;
+        outline: none;
+        font-weight: bolder;
+        font-family: sans-serif;
+        font-size: 14px;
+
+        &:hover{
+          cursor: pointer;
+          border: none;
+          outline: none;
+        }
+      }
+    }
+    }

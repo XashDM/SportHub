@@ -1,4 +1,4 @@
-import {SubCategoryLists} from "../../../../../constants/menuItems";
+import {SubCategoryLists} from "../../../constants/menuItems";
 
 const SubCategoryRequest = async (id) => {
     return SubCategoryLists[id]
