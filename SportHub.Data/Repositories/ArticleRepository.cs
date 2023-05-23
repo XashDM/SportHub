@@ -33,4 +33,36 @@ public class ArticleRepository : IArticleRepository
 			}
 		}
 	}
+
+	public async Task<LanguageSpecificArticle> GetArticleByIdAndLanguageAsync(string id, string language)
+	{
+		using (var connection = _dbConnectionFactory.GetConnection())
+		{
+			connection.Open();
+			var articleQuery = @"SELECT * FROM Articles 
+								LEFT JOIN `Language` ON Language.ShortTitle = @language
+								LEFT JOIN ArticleInfos ON Articles.ArticleId = ArticleInfos.ArticleId AND ArticleInfos.LanguageId = Language.LanguageId
+								WHERE Articles.ArticleId = @id;";
+
+			var article = await connection.QueryFirstOrDefaultAsync<LanguageSpecificArticle>(articleQuery, new {id, language});
+			
+			return article;
+		}
+	}
+
+	public async Task<IEnumerable<MainArticle>> GetMainArticlesAsync(string language)
+	{
+		using (var connection = _dbConnectionFactory.GetConnection())
+		{
+			connection.Open();
+			var sql = @"SELECT MainArticle.* FROM MainArticle 
+						LEFT JOIN Language langTable ON langTable.ShortTitle = @language
+						WHERE MainArticle.LanguageId = langTable.LanguageId";
+			
+			var mainArticles = await connection.QueryAsync<MainArticle>(sql, new {language});
+
+			return mainArticles;
+		}
+	}
+
 }
