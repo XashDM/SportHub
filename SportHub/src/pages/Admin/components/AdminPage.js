@@ -6,6 +6,8 @@ import VerticalAdminMenu from "../../../modules/VerticalAdminMenu"
 import SECTION_NAMES from "../constants/SectionsNames"
 import AdminMainArticlesSection from "../../../modules/AdminMainArticlesSection"
 import LanguagesManagement from "../../../modules/LanguagesManagement"
+import NavigationSystem from '../../../modules/NavigationAdminSystem'
+
 
 export default function AdminPage() {
     const [selectedMenuElement, setSelectedMenuElement] = useState("Home")
@@ -19,6 +21,9 @@ export default function AdminPage() {
                     break
                 case "Languages":
                     setContent(<LanguagesManagement setButtons={setHeaderButtons} />)
+                    break
+                case "IA":
+                    setContent(<NavigationSystem/>)
                     break
                 default:
                     break

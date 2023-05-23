@@ -1,0 +1,19 @@
+.dropdown {
+    position: absolute;
+    left: 170px;
+    list-style: none;
+    display: none;
+    top: 0px;
+    
+    &.show {
+        display: block;
+    }
+
+     &.dropdown_submenu {
+        position: absolute;
+        left: 170px;
+    }
+}
+
+
+    
