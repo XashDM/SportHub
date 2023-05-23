@@ -1,0 +1,38 @@
+.wrapper {
+  border: 1.5px solid var(--color-dark-field-frame);
+
+
+  .toolbar {
+    border-radius: 0;
+    border-bottom: 1.5px solid var(--color-dark-field-frame);
+    margin: 0;
+    gap: 10px;
+  }
+
+  .toolbar *{
+    border: none;
+    box-shadow: none;
+    color: #B2B2B2;
+
+    &:hover {
+      color: #D72130;
+    }
+  }
+
+  .editor {
+    height: 30vh;
+    padding: 20px;
+    padding-top: 0;
+  }
+
+  .block{
+    border-right: 1.5px solid var(--color-dark-field-frame);
+    .button{
+      &:hover{
+        img {
+          filter: invert(22%) sepia(96%) saturate(2638%) hue-rotate(341deg) brightness(84%) contrast(100%); 
+        }
+      }
+    }
+  }
+}

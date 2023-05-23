@@ -1,0 +1,46 @@
+.container {
+    width: 100%;
+    height: 31vw;
+    position: relative;
+    background-color: #F8F8F8;
+
+    .image_uploader {
+        position: absolute;
+        background-size: cover;
+        background-position: center;
+        background-position-x: center;
+        width: 100%;
+        height: 100%;
+        text-indent: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+        z-index: 1;
+        border: 1.6px dashed #D1D1D1;
+    }
+
+    .with_image{
+        border: none;
+    }
+
+    input::-webkit-file-upload-button {
+        display: none;
+    }
+
+    .add_image {
+        position: absolute;
+        width: 100%;
+        top: 35%;
+        text-align: center;
+
+        .add_image_icon {
+            width: 7.5%;
+        }
+        .add_image_text {
+            margin-top: 20px;
+            font-weight: 700;
+            font-size: 14px;
+            line-height: 150%;
+            color: #D72130;
+        }
+    }
+}

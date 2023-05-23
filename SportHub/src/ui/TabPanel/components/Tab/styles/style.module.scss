@@ -1,0 +1,23 @@
+.tab{
+    border: 1.5px solid var(--color-dark-field-frame);
+    width: auto;
+    padding: 10px 20px;
+    gap: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    &:hover {
+        border: 1.5px solid var(--color-red-regular);
+    }
+    .flag{
+        vertical-align: middle;
+        height: 60%;
+    }
+}
+.active_tab{
+    border: 1.5px solid var(--color-red-regular);
+    color: var(--color-red-regular);
+    &:hover {
+        border-color: var(--color-red-hover);
+    }
+}
