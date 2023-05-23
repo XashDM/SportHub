@@ -8,7 +8,7 @@ namespace SportHub.Database.Config
     class Config
     {
        public static string server = "localhost";
-       public static string uid = "admin";
+       public static string uid = "user";
        public static string password = "root";
        public static string port = "5900";
        public static string scriptFilePath = @"CreateDB.sql";
