@@ -34,68 +34,17 @@ public class ArticleRepository : IArticleRepository
 		}
 	}
 
-	public async Task<FullArticle> GetArticleAsync(string id)
+	public async Task<LanguageSpecificArticle> GetArticleByIdAndLanguageAsync(string id, string language)
 	{
 		using (var connection = _dbConnectionFactory.GetConnection())
 		{
 			connection.Open();
-			var articleQuery = @"SELECT 
-                        a.ArticleId, 
-                        a.PublishingDate, 
-                        u.*, 
-                        c.CategoryName, 
-                        t.TeamName, 
-                        l.LocationName, 
-                        i.Image
-                    FROM Articles a
-                    LEFT JOIN User u ON a.AuthorId = u.UserId
-                    LEFT JOIN SubCategories sc ON a.SubCategoryId = sc.SubCategoryId
-					LEFT JOIN Categories c ON sc.CategoryId = c.CategoryId
-                    LEFT JOIN Teams t ON a.TeamId = t.TeamId
-                    LEFT JOIN Locations l ON a.LocationId = l.LocationId
-                    LEFT JOIN Images i ON a.ImageId = i.ImageId
+			var articleQuery = @"SELECT * FROM Articles 
+								LEFT JOIN `Language` ON Language.ShortTitle = @language
+								LEFT JOIN ArticleInfos ON Articles.ArticleId = ArticleInfos.ArticleId AND ArticleInfos.LanguageId = Language.LanguageId
+								WHERE Articles.ArticleId = @id;";
 
-                    WHERE a.ArticleId = @id;";
-
-			var articles = await connection
-				.QueryAsync<FullArticle, User, string, string, string, string,  FullArticle>(
-					sql: articleQuery,
-					map: (a, u, cat, team, loc, img) =>
-					{
-						a.Author = u;
-						a.Category = cat;
-						a.Team = team;
-						a.Location = loc;
-						a.ImageUrl = img;
-						
-						return a;
-					},
-					param: new { id },
-					splitOn: "UserId,CategoryName,TeamName,LocationName,Image"
-				);
-
-			var article = articles.FirstOrDefault();
-			
-			if (article == null)
-			{
-				return null;
-			}
-			
-			var articleInfoQuery = @"SELECT 
-                        ai.ArticleId,
-                        ai.Title,
-                        ai.SubTitle,
-                        ai.MainText,
-                        lang.ShortTitle as Language
-                    FROM ArticleInfos ai
-                    LEFT JOIN Language lang ON ai.LanguageId = lang.LanguageId
-
-                    WHERE ai.ArticleId = @id;";
-			
-			var articleInfos = await connection
-				.QueryAsync<FullArticleInfo>(articleInfoQuery, new { id });
-			
-			article.Infos = articleInfos;
+			var article = await connection.QueryFirstOrDefaultAsync<LanguageSpecificArticle>(articleQuery, new {id, language});
 			
 			return article;
 		}

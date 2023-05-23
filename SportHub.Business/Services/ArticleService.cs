@@ -1,4 +1,5 @@
-﻿using SportHub.Data.DTO;
+﻿using SportHub.Business.Interfaces;
+using SportHub.Data.DTO;
 using SportHub.Data.Entities;
 using SportHub.Data.Interfaces;
 
@@ -8,11 +9,13 @@ namespace SportHub.Business.Implementations
 	{
 		private readonly IArticleRepository _articleRepository;
 		private readonly IUserRepository _userRepository;
-
-		public ArticleService(IArticleRepository articleRepository, IUserRepository userRepository)
+		private readonly INavigationService _navigationService;
+		
+		public ArticleService(IArticleRepository articleRepository, IUserRepository userRepository, INavigationService navigationService)
 		{
 			_articleRepository = articleRepository;
 			_userRepository = userRepository;
+			_navigationService = navigationService;
 		}
 
 		public async Task CreateArticleAsync(Article article)
@@ -29,13 +32,13 @@ namespace SportHub.Business.Implementations
 			await _articleRepository.CreateArticleAsync(article);
 		}
 		
-		public async Task<FullArticle> GetArticleAsync(string id)
+		public async Task<LanguageSpecificArticle> GetArticleByIdAndLanguageAsync(string id, string language)
 		{
-			var article = await _articleRepository.GetArticleAsync(id);
+			var article = await _articleRepository.GetArticleByIdAndLanguageAsync(id, language);
 			
-
 			return article;
 		}
+
 
 		public async Task<IEnumerable<MainArticleInfo>> GetMainArticlesAsync(string language)
 		{
@@ -46,20 +49,25 @@ namespace SportHub.Business.Implementations
 			
 			foreach (var mainArticleData in mainArticlesMetadata)
 			{
-				var fullArticle = await _articleRepository.GetArticleAsync(mainArticleData.ArticleId);
+				var article = await _articleRepository.GetArticleByIdAndLanguageAsync(mainArticleData.ArticleId, language);
+				var articleImage = await _navigationService.GetImageById(article.ImageId);
+				var articleCategory = await _navigationService.GetCategoryBySubCategoryId(article.SubCategoryId);
 				
 				var mainArticleInfo = new MainArticleInfo
 				{
-					ArticleId = fullArticle.ArticleId,
-					Category = fullArticle.Category,
-					ImageUrl = fullArticle.ImageUrl,
-					PublishingDate = fullArticle.PublishingDate,
-					Info = fullArticle.Infos.FirstOrDefault(info => info.Language == language)
+					ArticleId = article.ArticleId,
+					PublishingDate = article.PublishingDate,
+					MainText = article.MainText,
+					Title = article.Title,
+					Subtitle = article.Subtitle,
+						
+					Category = articleCategory.CategoryName,
+					ImageUrl = articleImage.Image
 				};
 				
 				mainArticles.Add(mainArticleInfo);
 			}
-
+		
 			return mainArticles;
 		}
 	}

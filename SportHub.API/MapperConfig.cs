@@ -8,8 +8,6 @@ namespace SportHub.API
     {
         public MapperConfig()
         {
-            CreateMap<FullArticle, ArticleResponse>();
-            
             CreateMap<User, UserResponseDto>();
             
             CreateMap<User, UserRequestDto>();

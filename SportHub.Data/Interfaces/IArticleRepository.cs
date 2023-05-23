@@ -6,7 +6,7 @@ namespace SportHub.Data.Interfaces
 	{
 		Task CreateArticleAsync(Article article);
 		
-		Task<FullArticle> GetArticleAsync(string id);
+		Task<LanguageSpecificArticle> GetArticleByIdAndLanguageAsync(string id, string language);
 		
 		Task<IEnumerable<MainArticle>> GetMainArticlesAsync(string language);
 	}
