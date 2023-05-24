@@ -5,7 +5,10 @@ import {useState} from "react"
 
 import signUpRequest from "../helpers/signUpRequest"
 import EmailSentContainer from "../../../components/EmailSentContainer"
+import { useTranslation } from "react-i18next"
+
 function SignUpForm(){
+    const { t } = useTranslation()
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [firstName, setFirstName] = useState('')
@@ -30,17 +33,17 @@ function SignUpForm(){
             <div className={styles.container}>
 
                 <div>
-                    <h2>Create Account</h2>
-                    {error && <h3 className={styles.error}>Your account already exist. Log in</h3>}
+                    <h2>{t('AuthContainer.SignUpForm.SignUpFormCaption')}</h2>
+                    {error && <h3 className={styles.error}>{t('AuthContainer.SignUpForm.IncorrectDataText')}</h3>}
                 </div>
 
                 <div className={styles.two_col_container}>
-                    <Input label={"First name"}
+                    <Input label={t('AuthContainer.FirstNameLabel')}
                            placeholder={"Oleh"}
                            error={error}
                            onChange={(event) => setFirstName(event.target.value)}/>
 
-                    <Input label={"Last name"}
+                    <Input label={t('AuthContainer.LastNameLabel')}
                            placeholder={"Doe"}
                            error={error}
                            onChange={(event) => setLastName(event.target.value)}/>
@@ -52,19 +55,19 @@ function SignUpForm(){
                        error={error}
                        onChange={(event) => setEmail(event.target.value)}/>
 
-                <Input label={"Password"}
-                       placeholder={"8 + characters (letters and numbers)"}
+                <Input label={t('AuthContainer.PasswordLabel')}
+                       placeholder={t('AuthContainer.PasswordPlaceholder')}
                        error={error}
                        onChange={(event) => setPassword(event.target.value)}
                 />
 
-                <Button onClick={handleSignUp} text={"SIGN UP"}/>
+                <Button onClick={handleSignUp} text={t('AuthContainer.SignUpBtn')}/>
 
             </div>
             :
             <EmailSentContainer
-                heading={`Check your email ${email}`}
-                sub_heading={"You will receive a letter with activation link"}/>
+                heading={t('AuthContainer.CheckYourEmail') + email}
+                sub_heading={t('AuthContainer.SignUpForm.LetterInfo')}/>
     )
 }
 

@@ -6,9 +6,11 @@ import {useNavigate} from 'react-router-dom'
 import {ROUTES} from "../../../routes/routes"
 import passwordChangeRequest from "../helpers/passwordChangeRequest"
 import { useParams } from "react-router-dom"
+import { useTranslation } from "react-i18next"
 
 
-function ChangePasswordForm(){
+function ChangePasswordForm() {
+    const { t } = useTranslation()
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
     const [errorText, setErrorText] = useState('')
@@ -25,12 +27,12 @@ function ChangePasswordForm(){
             if(result.status === 200){
                 navigate(ROUTES.LOGIN)
             }else{
-                setErrorText("Something went wrong. Please try again later.")
+                setErrorText(t('AuthContainer.ChangePasswordForm.SomethingError'))
                 setError(true)
             }
         }else{
             setError(true)
-            setErrorText("Passwords doesn't match")
+            setErrorText(t('AuthContainer.ChangePasswordForm.MatchError'))
         }
     }
 
@@ -38,22 +40,22 @@ function ChangePasswordForm(){
     return(
             <div className={styles.container}>
                 <div>
-                    <h2 className={styles.heading}>Please enter your new password.</h2>
+                    <h2 className={styles.heading}>{t('AuthContainer.ChangePasswordForm.ChangePasswordFormCaption')}</h2>
                     {error && <h3 className={styles.error}>{errorText}</h3>}
                 </div>
 
-                <Input label={"NEW PASSWORD"}
-                    placeholder={"new password"}
+                <Input label={t('AuthContainer.NewPasswordLabel')}
+                    placeholder={t('AuthContainer.PasswordPlaceholder')}
                     error={error}
                     onChange={(event) => setPassword(event.target.value)}/>
 
-                <Input label={"CONFIRM PASSWORD"}
-                   placeholder={"confirm password"}
+                <Input label={t('AuthContainer.ConfirmPasswordLabel')}
+                   placeholder={t('AuthContainer.PasswordPlaceholder')}
                    error={error}
                    onChange={(event) => setConfirmPassword(event.target.value)}/>
 
-                <Button onClick={handleRequestPasswordButton} text={"SET NEW PASSWORD"}/>
-                <button className={styles.bottom_link} onClick={() => navigate(ROUTES.LOGIN)}>Back to Log In</button>
+                <Button onClick={handleRequestPasswordButton} text={t('AuthContainer.SetNewPasswordBtn')}/>
+                <button className={styles.bottom_link} onClick={() => navigate(ROUTES.LOGIN)}>{t('AuthContainer.BackToLogInBtn')}</button>
             </div>
     )
 }
