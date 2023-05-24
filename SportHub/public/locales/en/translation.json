@@ -1,6 +1,6 @@
 {
     "Header": {
-        "NotLoginedHeader": {
+        "UserHeader": {
             "LoginBtn": "Login",
             "SignUpBtn": "Sign up",
             "ShareCaption": "Share",

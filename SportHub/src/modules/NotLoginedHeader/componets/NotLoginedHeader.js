@@ -18,17 +18,17 @@ const NotLoginedHeader = () =>
             <div className={styles.header}>
                 <div className={styles.searchbar}>
                     <img className={styles.img_icon} src={'/icons/Magnifying-glass.svg'} ></img>
-                    <Input className={styles.input} placeholder={t('Header.NotLoginedHeader.SearchByCaption')}></Input>
+                    <Input className={styles.input} placeholder={t('Header.UserHeader.SearchByCaption')}></Input>
                 </div>
                 <div className={styles.media}>
-                    <span className={styles.share}>{t('Header.NotLoginedHeader.ShareCaption')}</span>
+                    <span className={styles.share}>{t('Header.UserHeader.ShareCaption')}</span>
                     <img className={styles.icons} src={'/icons/FacebookWithoutCircle.svg'} ></img>
                     <img className={styles.icons} src={'/icons/Twitter.svg'} ></img>
                     <img className={styles.icons} src={'/icons/Google+.svg'}  ></img>
                 </div>
                 <div className={styles.auth}>
-                    <button className={styles.btn_signup} onClick={onClickSignUpHandler} value={"Sign up"}>{t('Header.NotLoginedHeader.SignUpBtn')}</button>
-                    <Button text={t('Header.NotLoginedHeader.LoginBtn')} onClick={onClickLoginHandler} isOutlined={true}></Button>
+                    <button className={styles.btn_signup} onClick={onClickSignUpHandler} value={"Sign up"}>{t('Header.UserHeader.SignUpBtn')}</button>
+                    <Button text={t('Header.UserHeader.LoginBtn')} onClick={onClickLoginHandler} isOutlined={true}></Button>
                 </div>
                 <div className={styles.languages}>
                     <SelectLanguage/>

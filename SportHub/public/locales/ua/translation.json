@@ -1,12 +1,12 @@
 {
-    "Header": {
-        "NotLoginedHeader": {
-            "LoginBtn": "Логін",
-            "SignUpBtn": "Реєстрація",
-            "ShareCaption": "Поділитись",
-            "SearchByCaption": "Шукати за"
-        }
-    },
+  "Header": {
+    "UserHeader": {
+      "LoginBtn": "Логін",
+      "SignUpBtn": "Реєстрація",
+      "ShareCaption": "Поділитись",
+      "SearchByCaption": "Шукати за"
+    }
+  },
     "AdminPage": {
         "VerticalAdminMenu": {
             "Surveys": "Опитування",

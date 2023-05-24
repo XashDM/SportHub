@@ -1,19 +1,21 @@
 import styles from "../styles/style.module.scss"
 import Input from "../../../ui/Input"
 import HeaderContainer from "../../../components/HeaderContainer"
+import { useTranslation } from "react-i18next"
 import SelectLanguage from "../../SelectLanguage"
 
 const UserHeader = ({username, userimg}) =>
 {
+    const { t, i18n } = useTranslation()
     return (
         <HeaderContainer>
             <div className={styles.header}>
                 <div className={styles.searchbar}>
                     <img className={styles.img_icon} src={'/icons/Magnifying-glass.svg'} ></img>
-                    <Input className={styles.input} placeholder={"Search by"}></Input>
+                    <Input className={styles.input} placeholder={t('Header.UserHeader.SearchByCaption')}></Input>
                 </div>
                 <div className={styles.media}>
-                    <span className={styles.share}>Share</span>
+                    <span className={styles.share}>{t('Header.UserHeader.ShareCaption')}</span>
                     <img className={styles.icons} src={'/icons/FacebookWithoutCircle.svg'} ></img>
                     <img className={styles.icons} src={'/icons/Twitter.svg'} ></img>
                     <img className={styles.icons} src={'/icons/Google+.svg'}  ></img>
