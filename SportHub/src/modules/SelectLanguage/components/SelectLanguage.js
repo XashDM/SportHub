@@ -1,7 +1,8 @@
-import styles from "../styles/style.module.scss"
 import getLanguagesRequest from "../../LanguagesManagement/helpers/getLanguagesRequest"
 import { useEffect, useState } from "react"
 import { changeLanguage } from "i18next"
+import SelectStyles from "../styles/SelectStyles"
+import MenuItemStyles from "../styles/MenuItemStyles"
 
 export default function SelectLanguage() {
     const [languages, setLanguages] = useState([])
@@ -14,7 +15,7 @@ export default function SelectLanguage() {
     const handleSetCurrentLanguage = async (event) => {
         changeLanguage(event.target.value)
         setCurrentLanguage(event.target.value)
-    } 
+    }
 
     useEffect(() => {
         handleLanguagesGet()
@@ -22,15 +23,19 @@ export default function SelectLanguage() {
 
     return (
         <>
-            <select className={styles.select} onChange={handleSetCurrentLanguage} value={currentLanguage}>
+            <SelectStyles
+                value={currentLanguage}
+                onChange={handleSetCurrentLanguage}
+                autoWidth
+            >
                 {languages?.map((language) => (
                     language.isActive
                         ?
-                        <option key={language.shortTitle} value={language.shortTitle}>{language.shortTitle.toUpperCase()}</option>
+                        <MenuItemStyles key={language.shortTitle} value={language.shortTitle}>{language.shortTitle.toUpperCase()}</MenuItemStyles>
                         :
                         <></>
                 ))}
-            </select>
+            </SelectStyles>
         </>
     )
 }
