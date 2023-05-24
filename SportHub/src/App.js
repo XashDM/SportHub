@@ -1,5 +1,6 @@
 import {BrowserRouter, Route, Routes} from 'react-router-dom'
 import { GoogleOAuthProvider } from '@react-oauth/google'
+
 import RegistrationPage from "./pages/Registration"
 import AuthorizationPage from "./pages/Authorization"
 import HomePage from "./pages/Home"
@@ -23,6 +24,7 @@ function App() {
             <Routes>
                 <Route exact path={ROUTES.HOME} element={
                         <HomePage/>
+                    // </ProtectedRoute>
                 } />
 
                 <Route exact path={ROUTES.ADMIN} element={

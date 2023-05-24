@@ -1,0 +1,22 @@
+.container{
+    width: 62.5vw;
+
+    .small_cards_container{
+        height: 35vh;
+        display: flex;
+        width: 80%;
+        gap: 0.5vw;
+
+        & > *{
+            width: 25%;
+        }
+    }
+
+    .big_card_container{
+        position: relative;
+
+        height: 50vh;
+        display: flex;
+    }
+}
+
