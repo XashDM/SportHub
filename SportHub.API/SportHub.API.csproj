@@ -23,4 +23,19 @@
     <ProjectReference Include="..\SportHub.Data\SportHub.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Remove="global 2.json" />
+    <Content Remove="appsettings 2.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="README 2.md" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="MapperConfig 2.cs" />
+    <Compile Remove="Controllers\UserController 2.cs" />
+    <Compile Remove="Controllers\GoogleAuthorizationController 2.cs" />
+  </ItemGroup>
+
 </Project>
