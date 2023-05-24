@@ -63,3 +63,10 @@
     font-size: 14px;
     line-height: 19px;
 }
+
+@mixin text-cut-lines($amount-of-lines){
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: $amount-of-lines;
+    -webkit-box-orient: vertical;
+}

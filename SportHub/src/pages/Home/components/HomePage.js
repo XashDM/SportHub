@@ -1,8 +1,9 @@
 import React from "react"
 import Footer from "../../../modules/Footer"
 import styles from "../styles/style.module.scss"
-import SidebarLeft from "../../../modules/Sidebar-left/componets/SidebarLeft"
-import Header from "../../../modules/Header"
+import SidebarLeft from "../../../modules/Sidebar-left/componets/SidebarLeft";
+import Header from "../../../modules/Header";
+import MainArticlesSlider from "../../../modules/MainArticlesSlider"
 
 export default function HomePage(){
     return (
@@ -11,7 +12,9 @@ export default function HomePage(){
                 <Header/>
                 <SidebarLeft/>
                 <div className={styles.content}>
-                    <div style={{height: "100vh"}}>content</div>
+                    <span className={styles.bg_all}>ALL</span>
+                    <MainArticlesSlider/>
+                    <span className={styles.bg_news}>NEWS</span>
                 </div>
                 <Footer/>
             </div>

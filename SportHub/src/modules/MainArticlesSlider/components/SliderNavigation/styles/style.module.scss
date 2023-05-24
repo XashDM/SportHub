@@ -1,0 +1,33 @@
+@import "src/styles/mixins";
+.container{
+    position: absolute;
+    bottom: 10%;
+    right: -10%;
+    display: flex;
+
+    .arrow{
+        cursor: pointer;
+
+        &_next{
+            transform: rotate(180deg);
+        }
+    }
+
+    .digits_container{
+        margin: 0 1vw;
+        display: flex;
+        gap: 0.5vw;
+
+        .digit{
+            all: unset;
+
+            @include text-muted-paragraph();
+            @include text-bodysemibold();
+            cursor: pointer;
+        }
+
+        .active{
+            color: var(--color-red-regular);
+        }
+    }
+}
