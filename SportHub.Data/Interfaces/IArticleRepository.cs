@@ -5,5 +5,9 @@ namespace SportHub.Data.Interfaces
 	public interface IArticleRepository
 	{
 		Task CreateArticleAsync(Article article);
+		
+		Task<LanguageSpecificArticle> GetArticleByIdAndLanguageAsync(string id, string language);
+		
+		Task<IEnumerable<MainArticle>> GetMainArticlesAsync(string language);
 	}
 }
