@@ -12,12 +12,10 @@ import PasswordChangePage from "./pages/PasswordReset"
 import PasswordResetPage from "./pages/PasswordChange"
 import { useEffect } from 'react'
 import checkCurrentLanguage from "./helpers/checkCurrentLanguage"
-import { useTranslation } from 'react-i18next'
 
 function App() {
-    const { t, i18n } = useTranslation()
     useEffect(() => {
-        checkCurrentLanguage(i18n)
+        checkCurrentLanguage()
     })
     return (
         <GoogleOAuthProvider clientId="1053346154092-0ht8fsk771fsnn1lvd5a94e3r5etphle.apps.googleusercontent.com">

@@ -16,7 +16,7 @@ import { useTranslation } from "react-i18next"
 import checkCurrentLanguage from "../../../helpers/checkCurrentLanguage"
 
 function LanguagesManagement({setButtons}) {
-    const { t } = useTranslation()
+    const { translate } = useTranslation()
     const [languages, setLanguages] = useState([])
     const [languagesToAdd, setLanguagesToAdd] = useState([])
     const [languageToDelete, setLanguageToDelete] = useState()
@@ -32,7 +32,7 @@ function LanguagesManagement({setButtons}) {
     useEffect(() => {
         handleLanguagesGet()
         if(typeof(setButtons) == "function"){
-            setButtons([{text: t('AdminPage.LanguagesManagement.AddLanguagesBtn'), function: handleOpenPopUpAddLanguages, isOutlined: false}])
+            setButtons([{text: translate('AdminPage.LanguagesManagement.AddLanguagesBtn'), function: handleOpenPopUpAddLanguages, isOutlined: false}])
         }
     }, [languages])
 
@@ -61,8 +61,8 @@ function LanguagesManagement({setButtons}) {
         setLanguagesToAdd([])
         handleLanguagesGet()
         setOpenPopUpAddLanguages(false)
-        setFlashTitle(t('AdminPage.LanguagesManagement.flashMsg.Success.Title'))
-        setFlashContent(t('AdminPage.LanguagesManagement.flashMsg.Success.ContentAddLanguage'))
+        setFlashTitle(translate('AdminPage.LanguagesManagement.flashMsg.Success.Title'))
+        setFlashContent(translate('AdminPage.LanguagesManagement.flashMsg.Success.ContentAddLanguage'))
         setFlashIsSuccess(true)
         setOpenFlashMessage(true)
     }
@@ -74,11 +74,11 @@ function LanguagesManagement({setButtons}) {
 
     const handleToggleSwitch = async (event, shortTitle) => {
         const { checked } = event.target
-        // Don't change switch position if language is 'en' (default) or response isn't Ok
+        // Don'translate change switch position if language is 'en' (default) or response isn'translate Ok
         const result = await editLanguageRequest(shortTitle, checked)
         if ((shortTitle === "en" && !checked) || result.status !== 200) {
-            setFlashTitle(t('AdminPage.LanguagesManagement.flashMsg.Error.Title'))
-            setFlashContent(t('AdminPage.LanguagesManagement.flashMsg.Error.ContentShowHide'))
+            setFlashTitle(translate('AdminPage.LanguagesManagement.flashMsg.Error.Title'))
+            setFlashContent(translate('AdminPage.LanguagesManagement.flashMsg.Error.ContentShowHide'))
             setFlashIsSuccess(false)
             setOpenFlashMessage(true)
             return
@@ -87,19 +87,19 @@ function LanguagesManagement({setButtons}) {
             language.shortTitle === shortTitle ? { ...language, isActive: checked } : language
         )
         setLanguages(updatedLanguages)
-        setFlashTitle(t('AdminPage.LanguagesManagement.flashMsg.Success.Title'))
-        setFlashContent(t('AdminPage.LanguagesManagement.flashMsg.Success.ContentShowHide'))
+        setFlashTitle(translate('AdminPage.LanguagesManagement.flashMsg.Success.Title'))
+        setFlashContent(translate('AdminPage.LanguagesManagement.flashMsg.Success.ContentShowHide'))
         setFlashIsSuccess(true)
         setOpenFlashMessage(true)
         checkCurrentLanguage()
     }
 
     const handleLanguageDelete = async () => {
-        // Don't remove language from list if language is 'en' (default) or response isn't Ok
+        // Don'translate remove language from list if language is 'en' (default) or response isn'translate Ok
         const result = await deleteLanguageRequest(languageToDelete)
         if (languageToDelete === "en" || result.status !== 200) {
-            setFlashTitle(t('AdminPage.LanguagesManagement.flashMsg.Error.Title'))
-            setFlashContent(t('AdminPage.LanguagesManagement.flashMsg.Error.ContentDeleteLanguage'))
+            setFlashTitle(translate('AdminPage.LanguagesManagement.flashMsg.Error.Title'))
+            setFlashContent(translate('AdminPage.LanguagesManagement.flashMsg.Error.ContentDeleteLanguage'))
             setFlashIsSuccess(false)
             setOpenFlashMessage(true)
             return
@@ -107,8 +107,8 @@ function LanguagesManagement({setButtons}) {
         const updatedLanguages = languages.filter((language) => language.shortTitle !== languageToDelete)
         setLanguages(updatedLanguages)
         setOpenPopUpRemovalWarning(false)
-        setFlashTitle(t('AdminPage.LanguagesManagement.flashMsg.Success.Title'))
-        setFlashContent(t('AdminPage.LanguagesManagement.flashMsg.Success.ContentDeleteLanguage'))
+        setFlashTitle(translate('AdminPage.LanguagesManagement.flashMsg.Success.Title'))
+        setFlashContent(translate('AdminPage.LanguagesManagement.flashMsg.Success.ContentDeleteLanguage'))
         setFlashIsSuccess(true)
         setOpenFlashMessage(true)
         checkCurrentLanguage()
@@ -120,8 +120,8 @@ function LanguagesManagement({setButtons}) {
                 <table>
                     <thead>
                         <tr>
-                            <th>{t('AdminPage.LanguagesManagement.LanguagesCaption')}</th>
-                            <th colSpan="2">{t('AdminPage.LanguagesManagement.ShowHideCaption')}</th>
+                            <th>{translate('AdminPage.LanguagesManagement.LanguagesCaption')}</th>
+                            <th colSpan="2">{translate('AdminPage.LanguagesManagement.ShowHideCaption')}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -138,7 +138,7 @@ function LanguagesManagement({setButtons}) {
                                     </div>
                                 </td>
                                 <td key={"delete"+language.shortTitle}>
-                                    <span hint={t('AdminPage.LanguagesManagement.DeleteLanguageHint')}
+                                    <span hint={translate('AdminPage.LanguagesManagement.DeleteLanguageHint')}
                                         direction="down"
                                         onClick={() => { setLanguageToDelete(language.shortTitle); setOpenPopUpRemovalWarning(true) }}>
                                         <img className={styles.trashbin_image}

@@ -5,14 +5,14 @@ import styles from "../styles/style.module.scss"
 import { useTranslation } from "react-i18next"
 
 function PopUpAddLanguages({ open, handleAdd, handleClose, currentLanguages, languagesToAdd, setLanguagesToAdd }) {
-    const { t } = useTranslation()
+    const { translate } = useTranslation()
     return (
         <div>
             <PopUpAddLanguagesStyles
                 open={open}
                 onClose={handleClose}>
                 <div className={styles.container}>
-                    <h1>{t('AdminPage.LanguagesManagement.PopUpAddLanguages.AddLanguage')}</h1>
+                    <h1>{translate('AdminPage.LanguagesManagement.PopUpAddLanguages.AddLanguage')}</h1>
                     <SearchLanguages
                         currentLanguages={currentLanguages}
                         selectedLanguages={languagesToAdd}
@@ -20,8 +20,8 @@ function PopUpAddLanguages({ open, handleAdd, handleClose, currentLanguages, lan
                 </div>
                 <hr></hr>
                 <div className={styles.buttonContainer}>
-                    <Button onClick={handleClose} isOutlined={true} text={t('AdminPage.LanguagesManagement.PopUpAddLanguages.CancelBtn')}></Button>
-                    <Button onClick={handleAdd} text={t('AdminPage.LanguagesManagement.PopUpAddLanguages.AddBtn')}></Button>
+                    <Button onClick={handleClose} isOutlined={true} text={translate('AdminPage.LanguagesManagement.PopUpAddLanguages.CancelBtn')}></Button>
+                    <Button onClick={handleAdd} text={translate('AdminPage.LanguagesManagement.PopUpAddLanguages.AddBtn')}></Button>
                 </div>
             </PopUpAddLanguagesStyles>
         </div>

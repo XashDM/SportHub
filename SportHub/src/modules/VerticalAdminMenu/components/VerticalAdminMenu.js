@@ -5,7 +5,7 @@ import {VERTICAL_MENU_ELEMENTS} from "../constants/VerticalMenuConstants"
 import { useTranslation } from "react-i18next"
 
 export default function VerticalAdminMenu({currentMenuElement, setCurrentMenuElement}){
-    const { t } = useTranslation()
+    const { translate } = useTranslation()
     const [verticalMenuElements, setVerticalMenuElements] = useState(VERTICAL_MENU_ELEMENTS)
 
     return (
@@ -21,7 +21,7 @@ export default function VerticalAdminMenu({currentMenuElement, setCurrentMenuEle
 
                         <VerticalAdminMenuElement
                             name={verticalMenuElement}
-                            hintText={t('AdminPage.VerticalAdminMenu.' + verticalMenuElement)}
+                            hintText={translate('AdminPage.VerticalAdminMenu.' + verticalMenuElement)}
                             isActive={verticalMenuElement === currentMenuElement}  />
                     </div>
                 })}
