@@ -1,0 +1,95 @@
+{
+    "Header": {
+        "UserHeader": {
+            "LoginBtn": "Log in",
+            "SignUpBtn": "Sign up",
+            "ShareCaption": "Share",
+            "SearchByCaption": "Search by"
+        }
+    },
+    "AuthContainer": {
+        "QuestionDont": "Don't have an account?",
+        "QuestionAlready": "Already have an account?",
+        "QuestionForgotPassword": "Forgot password?",
+        "BtnGetStarted": "Get started",
+        "BtnLogIn": "Log in",
+        "FirstNameLabel": "First name",
+        "LastNameLabel": "Last name",
+        "PasswordLabel": "Password",
+        "PasswordPlaceholder": "8 + characters (letters and numbers)",
+        "NewPasswordLabel": "New password",
+        "ConfirmPasswordLabel": "Confirm password",
+        "LogInBtn": "LOG IN",
+        "SignUpBtn": "SIGN UP",
+        "RequestLinkBtn": "REQUEST RESET LINK",
+        "BackToLogInBtn": "Back to Log In",
+        "SetNewPasswordBtn": "SET NEW PASSWORD",
+        "CheckYourEmail": "Check your email",
+        "LoginForm": {
+            "LogInFormCaption": "Log in to Sports Hub",
+            "IncorrectDataText": "Incorrect user email or password. Try again"
+        },
+        "SignUpForm": {
+            "SignUpFormCaption": "Create Account",
+            "IncorrectDataText": "Your account already exist. Log in",
+            "LetterInfo": "You will receive a letter with activation link"
+        },
+        "ForgotPasswordForm": {
+            "IncorrectDataText": "Something went wrong. Try again later",
+            "EnterEmailText": "Enter your email address below and we'll get you back on track.",
+            "LetterInfo": "If there's Sports Hub account linked to this email address, we'll send over instructions to reset your password."
+        },
+        "ChangePasswordForm": {
+            "SomethingError": "Something went wrong. Please try again later.",
+            "MatchError": "Passwords doesn't match",
+            "ChangePasswordFormCaption": "Please enter your new password."
+        }
+    },
+    "AdminPage": {
+        "VerticalAdminMenu": {
+            "Surveys": "Surveys",
+            "Banners": "Banners",
+            "Languages": "Languages",
+            "Shares": "Shares",
+            "MyUsers": "My users",
+            "IA": "IA",
+            "Teams": "Teams",
+            "NewsPartners": "News partners",
+            "Advertising": "Advertising"
+        },
+        "LanguagesManagement": {
+            "LanguagesCaption": "LANGUAGES",
+            "ShowHideCaption": "SHOW/HIDE",
+            "ShowSwitchCaption": "Show",
+            "HideSwitchCaption": "Hide",
+            "AddLanguagesBtn": "Add languages",
+            "DeleteLanguageHint": "Delete language",
+            "flashMsg": {
+                "Success": {
+                    "Title": "Success!",
+                    "ContentAddLanguage": "Successfully added new language!",
+                    "ContentShowHide": "Successfully changed language show/hide parameter.",
+                    "ContentDeleteLanguage": "The language is successfully deleted."
+                },
+                "Error": {
+                    "Title": "Error!",
+                    "ContentShowHide": "This language can't be hidden.",
+                    "ContentDeleteLanguage": "This language can't be deleted."
+                }
+            },
+            "PopUpAddLanguages": {
+                "AddLanguage": "Add language",
+                "CancelBtn": "Cancel",
+                "AddBtn": "Add",
+                "SelectLanguageCaption": "SELECT LANGUAGE"
+            },
+            "PopUpRemovalWarning": {
+                "Title": "You are about to delete this language!",
+                "Content": "This language will be deleted from Sports Hub",
+                "AreYouSure": "Are you sure?",
+                "CancelBtn": "Cancel",
+                "DeleteBtn": "Delete"
+            }
+        }
+    }
+}

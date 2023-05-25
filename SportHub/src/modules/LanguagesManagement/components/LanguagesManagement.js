@@ -12,9 +12,11 @@ import editLanguageRequest from "../helpers/editLanguageRequest"
 import deleteLanguageRequest from "../helpers/deleteLanguageRequest"
 
 import {LANGUAGES_CONSTANTS} from "../constants/LanguagesConstants"
-
+import { useTranslation } from "react-i18next"
+import checkCurrentLanguage from "../../../helpers/checkCurrentLanguage"
 
 function LanguagesManagement({setButtons}) {
+    const { t } = useTranslation()
     const [languages, setLanguages] = useState([])
     const [languagesToAdd, setLanguagesToAdd] = useState([])
     const [languageToDelete, setLanguageToDelete] = useState()
@@ -30,9 +32,9 @@ function LanguagesManagement({setButtons}) {
     useEffect(() => {
         handleLanguagesGet()
         if(typeof(setButtons) == "function"){
-            setButtons([{text: "Add languages", function: handleOpenPopUpAddLanguages, isOutlined: false}])
+            setButtons([{text: t('AdminPage.LanguagesManagement.AddLanguagesBtn'), function: handleOpenPopUpAddLanguages, isOutlined: false}])
         }
-    }, [])
+    }, [languages])
 
     const handleCloseFlashMessage = () => {
         setOpenFlashMessage(false)
@@ -59,8 +61,8 @@ function LanguagesManagement({setButtons}) {
         setLanguagesToAdd([])
         handleLanguagesGet()
         setOpenPopUpAddLanguages(false)
-        setFlashTitle('Success!')
-        setFlashContent('Successfully added new language!')
+        setFlashTitle(t('AdminPage.LanguagesManagement.flashMsg.Success.Title'))
+        setFlashContent(t('AdminPage.LanguagesManagement.flashMsg.Success.ContentAddLanguage'))
         setFlashIsSuccess(true)
         setOpenFlashMessage(true)
     }
@@ -75,8 +77,8 @@ function LanguagesManagement({setButtons}) {
         // Don't change switch position if language is 'en' (default) or response isn't Ok
         const result = await editLanguageRequest(shortTitle, checked)
         if ((shortTitle === "en" && !checked) || result.status !== 200) {
-            setFlashTitle('Error!')
-            setFlashContent("This language can't be hidden.")
+            setFlashTitle(t('AdminPage.LanguagesManagement.flashMsg.Error.Title'))
+            setFlashContent(t('AdminPage.LanguagesManagement.flashMsg.Error.ContentShowHide'))
             setFlashIsSuccess(false)
             setOpenFlashMessage(true)
             return
@@ -85,18 +87,19 @@ function LanguagesManagement({setButtons}) {
             language.shortTitle === shortTitle ? { ...language, isActive: checked } : language
         )
         setLanguages(updatedLanguages)
-        setFlashTitle('Success!')
-        setFlashContent('Successfully changed language show/hide parameter.')
+        setFlashTitle(t('AdminPage.LanguagesManagement.flashMsg.Success.Title'))
+        setFlashContent(t('AdminPage.LanguagesManagement.flashMsg.Success.ContentShowHide'))
         setFlashIsSuccess(true)
         setOpenFlashMessage(true)
+        checkCurrentLanguage()
     }
 
     const handleLanguageDelete = async () => {
         // Don't remove language from list if language is 'en' (default) or response isn't Ok
         const result = await deleteLanguageRequest(languageToDelete)
         if (languageToDelete === "en" || result.status !== 200) {
-            setFlashTitle('Error!')
-            setFlashContent("This language can't be deleted.")
+            setFlashTitle(t('AdminPage.LanguagesManagement.flashMsg.Error.Title'))
+            setFlashContent(t('AdminPage.LanguagesManagement.flashMsg.Error.ContentDeleteLanguage'))
             setFlashIsSuccess(false)
             setOpenFlashMessage(true)
             return
@@ -104,10 +107,11 @@ function LanguagesManagement({setButtons}) {
         const updatedLanguages = languages.filter((language) => language.shortTitle !== languageToDelete)
         setLanguages(updatedLanguages)
         setOpenPopUpRemovalWarning(false)
-        setFlashTitle('Deleted!')
-        setFlashContent('The language is successfully deleted.')
+        setFlashTitle(t('AdminPage.LanguagesManagement.flashMsg.Success.Title'))
+        setFlashContent(t('AdminPage.LanguagesManagement.flashMsg.Success.ContentDeleteLanguage'))
         setFlashIsSuccess(true)
         setOpenFlashMessage(true)
+        checkCurrentLanguage()
     }
 
     return (
@@ -116,8 +120,8 @@ function LanguagesManagement({setButtons}) {
                 <table>
                     <thead>
                         <tr>
-                            <th>LANGUAGES</th>
-                            <th colSpan="2">SHOW/HIDE</th>
+                            <th>{t('AdminPage.LanguagesManagement.LanguagesCaption')}</th>
+                            <th colSpan="2">{t('AdminPage.LanguagesManagement.ShowHideCaption')}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -134,7 +138,7 @@ function LanguagesManagement({setButtons}) {
                                     </div>
                                 </td>
                                 <td key={"delete"+language.shortTitle}>
-                                    <span hint="Delete language"
+                                    <span hint={t('AdminPage.LanguagesManagement.DeleteLanguageHint')}
                                         direction="down"
                                         onClick={() => { setLanguageToDelete(language.shortTitle); setOpenPopUpRemovalWarning(true) }}>
                                         <img className={styles.trashbin_image}
@@ -165,4 +169,4 @@ function LanguagesManagement({setButtons}) {
     )
 }
 
-export default LanguagesManagement;
+export default LanguagesManagement
