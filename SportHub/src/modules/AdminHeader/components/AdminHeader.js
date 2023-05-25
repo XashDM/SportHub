@@ -2,10 +2,14 @@ import React, {useState} from 'react'
 import styles from '../styles/style.module.scss'
 import ProfileSidebar from "./ProfileSidebar"
 import HeaderContainer from "../../../components/HeaderContainer"
+import {useNavigate, useLocation} from "react-router-dom"
+import {ROUTES} from "../../../routes/routes"
 
 export default function AdminHeader(){
 
     const [profileDropdownListActive, setProfileDropdownListActive] = useState(false)
+    const navigate = useNavigate()
+    const location = useLocation()
     return (
         <HeaderContainer>
             <div className={styles.header}>
@@ -13,7 +17,9 @@ export default function AdminHeader(){
 
                     <div className={styles.switch}>
                         <span hint="Switch to user view" direction="down">
-                            <img className={styles.switch_image} src={'/icons/AccountSwitcher.svg'}  alt={""}/>
+                            <img className={styles.switch_image}
+                                 onClick={() => location.pathname === ROUTES.HOME ? navigate(ROUTES.ADMIN) : navigate(ROUTES.HOME)}
+                                 src={'/icons/AccountSwitcher.svg'}  alt={""}/>
                         </span>
                     </div>
 
