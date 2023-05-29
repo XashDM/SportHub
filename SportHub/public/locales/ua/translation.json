@@ -1,0 +1,95 @@
+{
+    "Header": {
+        "UserHeader": {
+            "LoginBtn": "Вхід",
+            "SignUpBtn": "Реєстрація",
+            "ShareCaption": "Поділитись",
+            "SearchByCaption": "Шукати за"
+        }
+    },
+    "AuthContainer": {
+        "QuestionDont": "Не маєте акаунт?",
+        "QuestionAlready": "Уже маєте акаунт?",
+        "QuestionForgotPassword": "Забули пароль?",
+        "BtnGetStarted": "Створити",
+        "BtnLogIn": "Увійти",
+        "FirstNameLabel": "Ім'я",
+        "LastNameLabel": "Прізвище",
+        "PasswordLabel": "Пароль",
+        "PasswordPlaceholder": "8 + символів (літери та цифри)",
+        "NewPasswordLabel": "Новий пароль",
+        "ConfirmPasswordLabel": "Підтвердьте пароль",
+        "LogInBtn": "УВІЙТИ",
+        "SignUpBtn": "ЗАРЕЄСТРУВАТИСЬ",
+        "RequestLinkBtn": "ОТРИМАТИ ПОСИЛАННЯ",
+        "BackToLogInBtn": "Повернутись до входу",
+        "SetNewPasswordBtn": "ЗМІНИТИ ПАРОЛЬ",
+        "CheckYourEmail": "Перевірте ваш email",
+        "LoginForm": {
+            "LogInFormCaption": "Увійти до Sports Hub",
+            "IncorrectDataText": "Неправильний email або пароль. Спробуйте знову"
+        },
+        "SignUpForm": {
+            "SignUpFormCaption": "Створити акаунт",
+            "IncorrectDataText": "Ваш акаунт вже існує. Увійти",
+            "LetterInfo": "Ви отримаєте лист з посиланням активації"
+        },
+        "ForgotPasswordForm": {
+            "IncorrectDataText": "Щось пішло не так. Спробуйте пізніше",
+            "EnterEmailText": "Введіть свій email нижче і ми відновимо ваш пароль.",
+            "LetterInfo": "Якщо є проблеми з акаунтом Sports Hub, приєднаного до цієї email адреси, ми надішлемо вам інструкції для зміни паролю."
+        },
+        "ChangePasswordForm": {
+            "SomethingError": "Щось пішло не так. Спробуйте пізніше",
+            "MatchError": "Паролі не співпадають",
+            "ChangePasswordFormCaption": "Будь ласка введіть ваш новий пароль."
+        }
+    },
+    "AdminPage": {
+        "VerticalAdminMenu": {
+            "Surveys": "Опитування",
+            "Banners": "Банери",
+            "Languages": "Мови",
+            "Shares": "Акції",
+            "MyUsers": "Мої користувачі",
+            "IA": "IA",
+            "Teams": "Команди",
+            "NewsPartners": "Новинні партнери",
+            "Advertising": "Реклама"
+        },
+        "LanguagesManagement": {
+            "LanguagesCaption": "МОВИ",
+            "ShowHideCaption": "ПОКАЗАТИ/СХОВАТИ",
+            "ShowSwitchCaption": "Показати",
+            "HideSwitchCaption": "Сховати",
+            "AddLanguagesBtn": "Додати мови",
+            "DeleteLanguageHint": "Видалити мову",
+            "flashMsg": {
+                "Success": {
+                    "Title": "Успіх!",
+                    "ContentAddLanguage": "Було додано нову мову!",
+                    "ContentShowHide": "Було змінено параметр показати/сховати.",
+                    "ContentDeleteLanguage": "Мову було видалено."
+                },
+                "Error": {
+                    "Title": "Помилка!",
+                    "ContentShowHide": "Цю мову не можна приховати.",
+                    "ContentDeleteLanguage": "Цю мову не можна видалити."
+                }
+            },
+            "PopUpAddLanguages": {
+                "AddLanguage": "Додати мову",
+                "CancelBtn": "Відміна",
+                "AddBtn": "Додати",
+                "SelectLanguageCaption": "ОБРАТИ МОВУ"
+            },
+            "PopUpRemovalWarning": {
+                "Title": "Ви збираєтесь видалити цю мову!",
+                "Content": "Ця мова буде видалена з Sports Hub",
+                "AreYouSure": "Ви впевнені?",
+                "CancelBtn": "Відміна",
+                "DeleteBtn": "Видалити"
+            }
+        }
+    }
+}

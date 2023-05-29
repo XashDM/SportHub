@@ -1,14 +1,15 @@
 import styles from "../styles/style.module.scss"
 import Input from "../../../ui/Input"
 import Button from "../../../ui/Button"
-import {useState} from "react"
-import {useNavigate} from 'react-router-dom'
-import {ROUTES} from "../../../routes/routes"
+import { useState } from "react"
+import { useNavigate } from 'react-router-dom'
+import { ROUTES } from "../../../routes/routes"
 import EmailSentContainer from "../../../components/EmailSentContainer"
 import passwordResetRequest from "../helpers/passwordResetRequest"
+import { useTranslation } from "react-i18next"
 
-
-function ForgotPasswordForm(){
+function ForgotPasswordForm() {
+    const { t } = useTranslation()
     const [email, setEmail] = useState('')
     const [error, setError] = useState(false)
     const [isSent, setIsSent] = useState(false)
@@ -17,37 +18,37 @@ function ForgotPasswordForm(){
         event.preventDefault()
         const result = await passwordResetRequest(email)
 
-        if(result.status === 200){
+        if (result.status === 200) {
             setIsSent(true)
-        }else{
+        } else {
             setError(true)
         }
     }
 
 
-    return(
+    return (
 
         !isSent ?
             <div className={styles.container}>
                 <div>
-                    <h2 className={styles.heading}>Forgot your password?</h2>
-                    {error && <h3 className={styles.error}>Something went wrong. Try again later</h3>}
+                    <h2 className={styles.heading}>{t('AuthContainer.QuestionForgotPassword')}</h2>
+                    {error && <h3 className={styles.error}>{t('AuthContainer.ForgotPasswordForm.IncorrectDataText')}</h3>}
                 </div>
 
-                <p className={styles.text_muted}>Enter your email address below and we'll get you back on track.</p>
+                <p className={styles.text_muted}>{t('AuthContainer.ForgotPasswordForm.EnterEmailText')}</p>
 
-                <Input label={"EMAIL ADRESS"}
-                placeholder={"Email@gmail.com"}
-                error={error}
-                onChange={(event) => setEmail(event.target.value)}/>
+                <Input label={"Email"}
+                    placeholder={"Email@gmail.com"}
+                    error={error}
+                    onChange={(event) => setEmail(event.target.value)} />
 
-                <Button onClick={handleRequestPasswordButton} text={"REQUEST RESET LINK"}/>
-                <button className={styles.bottom_link} onClick={() => navigate(ROUTES.LOGIN)}>Back to Log In</button>
+                <Button onClick={handleRequestPasswordButton} text={t('AuthContainer.RequestLinkBtn')} />
+                <button className={styles.bottom_link} onClick={() => navigate(ROUTES.LOGIN)}>{t('AuthContainer.BackToLogInBtn')}</button>
             </div>
-     :
+            :
             <EmailSentContainer
-                heading={`Check your email ${email}`}
-                sub_heading={"If there's Sports Hub account linked to this email address, we'll send over instructions to reset your password."}/>
+                heading={t('AuthContainer.CheckYourEmail') + email}
+                sub_heading={t('AuthContainer.ForgotPasswordForm.LetterInfo')} />
     )
 }
 
