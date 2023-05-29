@@ -6,19 +6,24 @@ import Xarrow, {Xwrapper,useXarrow} from "react-xarrows";
 const Dropdown = React.lazy(() => import("./Dropdown"))
 
 
-const NavigationItems = ({items,depthLevel}) => 
+const NavigationItems = ({activeCategory,setActiveCategory,activeSubCategory,setActiveSubCategory,activeTeam,setActiveTeam,items,depthLevel}) => 
 {   
     const [,startTransition] = useTransition(); 
     const [load, setLoad] = useState(false);
     const [dropdown, setDropdown] = useState(false);
     const [submenu,setSubmenu] = useState(false)
+    const [isActive,setIsActive] = useState(false)
 
     let ref = useRef();
 
     useEffect(() => {
         const handler = (event) => {
             if (dropdown && ref.current && !ref.current.contains(event.target)) {
-                setDropdown(false);
+                setDropdown(false)
+                setIsActive(false)
+                setActiveCategory(null)
+                setActiveSubCategory(null)
+                setActiveTeam(null)
             }
         };
         document.addEventListener("mousedown", handler);
@@ -34,29 +39,42 @@ const NavigationItems = ({items,depthLevel}) =>
         let data_list;
         if (depthLevel === 0){
             data_list = await SubCategoryRequest(items.id);
+            setIsActive(true)
+            setActiveCategory(items.id)
         }
         else if (depthLevel ===1){
             data_list = await TeamsRequest(items.id);
+            setIsActive(true)
+            setActiveSubCategory(items.id)
+        }
+        else if (depthLevel === 2){
+            setIsActive(true)
+            setActiveTeam(items.id)
         }
        
         setSubmenu(data_list)
-        console.log(submenu)
         setDropdown(true);
         startTransition(() => {
             setLoad(true);
         });
     }
 
+    
+
     return (
-    <li onLoad={useXarrow()} id={`${items.id}-${items.title}`} className={styles.menu_items} ref={ref} onClick={() => Clicking()}>
+    <li onLoad={useXarrow()} id={`${items.id}-${items.title}`} className={styles.menu_items} ref={ref}>
         {
                 <>
-                <button  type="button" aria-haspopup = "menu" aria-expanded = {dropdown ? "true" : "false"}>
+                <button onClick={() => Clicking()} className={isActive ? styles.active : ""}  type="button" aria-haspopup = "menu" aria-expanded = {dropdown ? "true" : "false"}>
                     {items.title} 
                 </button>  
                 {(load && submenu) && (<Xwrapper>
                 <Suspense fallback={'Loading...'}>
-                <Dropdown parent={`${items.id}-${items.title}`} depthLevel={depthLevel} submenus={submenu} dropdown={dropdown}/> 
+                <Dropdown 
+                activeCategory={activeCategory} setActiveCategory={setActiveCategory} 
+                activeSubCategory={activeSubCategory} setActiveSubCategory={setActiveSubCategory} 
+                activeTeam={activeTeam} setActiveTeam={setActiveTeam} 
+                parent={`${items.id}-${items.title}`} depthLevel={depthLevel} submenus={submenu} dropdown={dropdown}/> 
                 <div className={dropdown? styles.show_arrow : styles.hide_arrow}>
                 {   
                     submenu.map((submenu)=>(<Xarrow
