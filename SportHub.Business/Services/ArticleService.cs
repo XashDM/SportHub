@@ -10,7 +10,7 @@ namespace SportHub.Business.Implementations
 		private readonly IArticleRepository _articleRepository;
 		private readonly INavigationService _navigationService;
 		private readonly IImageService _imageService;
-		
+
 		public ArticleService(IArticleRepository articleRepository, INavigationService navigationService, IImageService imageService)
 		{
 			_articleRepository = articleRepository;
@@ -39,7 +39,14 @@ namespace SportHub.Business.Implementations
 			return article;
 		}
 
+		public async Task<LanguageSpecificArticle> GetArticleByArticleIdAndLanguageIdAsync(string articleId,
+			string languageId)
+		{
+			var article = await _articleRepository.GetArticleByArticleIdAndLanguageIdAsync(articleId, languageId);
 
+			return article;
+		}
+		
 		public async Task<IEnumerable<MainArticleInfo>> GetMainArticlesAsync(string language)
 		{
 			var mainArticlesMetadata = await _articleRepository.GetMainArticlesAsync(language);
@@ -69,6 +76,27 @@ namespace SportHub.Business.Implementations
 			}
 		
 			return mainArticles;
+		}
+
+		public async Task<IEnumerable<ArticleForAutocomplete>>
+			GetArticleForAutocompleteByLanguageIdAndPropertyIdAsync(string languageId, string propertyIdName, string propertyId)
+		{
+			IEnumerable<Article> articles = await _articleRepository.GetArticlesByLanguageIdAndPropertyIdAsync(languageId, propertyIdName, propertyId);
+			List<ArticleForAutocomplete> articlesForAutocompletes = new List<ArticleForAutocomplete>();
+
+			foreach (Article article in articles)
+			{
+				ArticleForAutocomplete articleForAutocomplete = new ArticleForAutocomplete();
+				articleForAutocomplete.ArticleId = article.ArticleId;
+
+				if (article.Infos != null && article.Infos.Any())
+					articleForAutocomplete.Title = article.Infos.FirstOrDefault().Title;
+				else
+					articleForAutocomplete.Title = "No title available";
+				articlesForAutocompletes.Add(articleForAutocomplete);
+			}
+
+			return articlesForAutocompletes.AsEnumerable();
 		}
 	}
 }

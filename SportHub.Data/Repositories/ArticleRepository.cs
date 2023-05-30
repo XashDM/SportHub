@@ -49,7 +49,22 @@ public class ArticleRepository : IArticleRepository
 			return article;
 		}
 	}
+	
+	public async Task<LanguageSpecificArticle> GetArticleByArticleIdAndLanguageIdAsync(string articleId, string languageId)
+	{
+		using (var connection = _dbConnectionFactory.GetConnection())
+		{
+			connection.Open();
+			var getArticleByArticleIdAndLanguageIdSql = @"SELECT * FROM Articles 
+								LEFT JOIN `Language` ON Language.LanguageId = @languageId
+								LEFT JOIN ArticleInfos ON Articles.ArticleId = ArticleInfos.ArticleId AND ArticleInfos.LanguageId = Language.LanguageId
+								WHERE Articles.ArticleId = @articleId;";
 
+			var article = await connection.QueryFirstOrDefaultAsync<LanguageSpecificArticle>(getArticleByArticleIdAndLanguageIdSql, new {articleId, languageId});
+			
+			return article;
+		}
+	}
 	public async Task<IEnumerable<MainArticle>> GetMainArticlesAsync(string language)
 	{
 		using (var connection = _dbConnectionFactory.GetConnection())
@@ -65,4 +80,24 @@ public class ArticleRepository : IArticleRepository
 		}
 	}
 
+	public async Task<IEnumerable<Article>> GetArticlesByLanguageIdAndPropertyIdAsync(string languageId, string propertyIdName, string propertyId)
+	{
+		using (var connection = _dbConnectionFactory.GetConnection())
+		{
+			connection.Open();
+			
+			var getArticlesByCategory = $"SELECT * FROM articles where {propertyIdName} = {propertyId}";
+			List<Article> articles = (await connection.QueryAsync<Article>(getArticlesByCategory, new {propertyIdName, propertyId})).ToList();
+
+			for (int articleCount = 0; articleCount < articles.Count(); articleCount++)
+			{
+				string articleId = articles[articleCount].ArticleId;
+				var getArticlesInfoByLanguageId = $"SELECT * FROM articleinfos WHERE ArticleId = {articleId} AND LanguageId = {languageId}";
+				articles[articleCount].Infos = (await connection.QueryAsync<ArticleInfo>(getArticlesInfoByLanguageId)).ToList();
+			}
+			
+			return articles.AsEnumerable();
+		}
+	}
+	
 }

@@ -66,6 +66,21 @@ namespace SportHub.API.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        
+        [HttpGet("category/{categoryId}")]
+        public async Task<IActionResult> GetTeamByCategoryIdAsync([FromRoute] string categoryId)
+        {
+            try
+            {
+                var teams = await _TeamsService.GetTeamsByСategoryIdAsync(categoryId);
+                return Ok(teams);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return BadRequest(ex.Message);
+            }
+        }
 
         [HttpPost]
         public async Task<IActionResult> CreateNewTeamAsync([FromBody] TeamCreateDto teamCreateDto)

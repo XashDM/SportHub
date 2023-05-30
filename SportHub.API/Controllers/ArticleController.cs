@@ -54,6 +54,22 @@ namespace SportHub.API.Controllers
 			}
 		}
 		
+		[HttpGet("~/GetArticleByArticleIdAndLanguageId")]
+		public async Task<IActionResult> GetArticleByArticleIdAndLanguageIdAsync([FromQuery] string articleId, string languageId)
+		{
+			try
+			{
+				var article = await _articlesService.GetArticleByIdAndLanguageAsync(articleId, languageId);
+
+				return Ok(article);
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError(ex.Message);
+				return BadRequest(ex.Message);
+			}
+		}
+		
 		[HttpGet("MainArticles")]
 		public async Task<IActionResult> GetMainArticlesAsync([FromQuery] string language)
 		{
@@ -62,6 +78,54 @@ namespace SportHub.API.Controllers
 				var mainArticles = await _articlesService.GetMainArticlesAsync(language);
 				
 				return Ok(mainArticles);
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError(ex.Message);
+				return BadRequest(ex.Message);
+			}
+		}
+
+		[HttpGet("~/GetArticleByLanguageIdAndCategoryId")]
+		public async Task<IActionResult> GetArticlesForAutocompleteByLanguageIdAndCategoryIdAsync([FromQuery] string languageId, string categoryId)
+		{
+			try
+			{
+				var articlesForAutocomplete = await _articlesService.GetArticleForAutocompleteByLanguageIdAndPropertyIdAsync(languageId, "CategoryId", categoryId);
+				
+				return Ok(articlesForAutocomplete);
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError(ex.Message);
+				return BadRequest(ex.Message);
+			}
+		}
+		
+		[HttpGet("~/GetArticleByLanguageIdAndSubCategoryId")]
+		public async Task<IActionResult> GetArticlesForAutocompleteByLanguageIdAndSubCategoryIdAsync([FromQuery] string languageId, string subCategoryId)
+		{
+			try
+			{
+				var articlesForAutocomplete = await _articlesService.GetArticleForAutocompleteByLanguageIdAndPropertyIdAsync(languageId, "SubCategoryId", subCategoryId);
+				
+				return Ok(articlesForAutocomplete);
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError(ex.Message);
+				return BadRequest(ex.Message);
+			}
+		}
+		
+		[HttpGet("~/GetArticleByLanguageIdAndTeamId")]
+		public async Task<IActionResult> GetArticlesForAutocompleteByLanguageIdAndTeamId([FromQuery] string languageId, string teamId)
+		{
+			try
+			{
+				var articlesForAutocomplete = await _articlesService.GetArticleForAutocompleteByLanguageIdAndPropertyIdAsync(languageId, "TeamId", teamId);
+				
+				return Ok(articlesForAutocomplete);
 			}
 			catch (Exception ex)
 			{
