@@ -1,55 +1,52 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
+import styles from "../styles/style.module.scss"
 import AdminHeader from "../../../modules/AdminHeader"
 import HorizontalAdminMenu from "../../../modules/HorizontalAdminMenu"
 import VerticalAdminMenu from "../../../modules/VerticalAdminMenu"
-import ArticleMenu from "../../../modules/ArticleMenu"
+import SECTION_NAMES from "../constants/SectionsNames"
+import AdminMainArticlesSection from "../../../modules/AdminMainArticlesSection"
+import LanguagesManagement from "../../../modules/LanguagesManagement"
+import NavigationSystem from '../../../modules/NavigationAdminSystem'
+import ArticleMenu from '../../../modules/ArticleMenu'
+
 
 export default function AdminPage() {
-    const languages = [
-        {
-          label: 'English',
-          icon: 'EN.svg',
-          value: 0
-        },
-        {
-          label: 'German',
-          icon: 'DE.svg',
-          value: 1
-        },
-        {
-          label: 'French',
-          icon: 'FR.svg',
-          value: 2
-        }
-    ]
+    const [selectedMenuElement, setSelectedMenuElement] = useState("Home")
+    const [content, setContent] = useState(<AdminMainArticlesSection />)
+    const [headerButtons, setHeaderButtons] = useState([])
 
-    const tabsData = [
-      {
-        alt: "",
-        headline: "",
-        caption: "",
-        content: "<p>English content</p>"
-      },
-      {
-        alt: "cooles Bild",
-        headline: "Überschrift",
-        caption: "Überschrift",
-        content: "<p>German content</p>"
-      },
-      {
-        alt: "photo sympa",
-        headline: "gros titre",
-        caption: "légende",
-        content: "<p>French content</p>"
-      }
-    ]
+    useEffect(() =>{
+            switch (selectedMenuElement){
+                case SECTION_NAMES["Home"]:
+                    setContent(<AdminMainArticlesSection setButtons={setHeaderButtons} />)
+                    break
+                case "Languages":
+                    setContent(<LanguagesManagement setButtons={setHeaderButtons} />)
+                    break
+                case "IA":
+                    setContent(<NavigationSystem/>)
+                    break
+                default:
+                    setContent(<ArticleMenu setButtons={setHeaderButtons} />)
+                    break
+            }
+    }, [selectedMenuElement])
 
     return (
         <div>
-            <AdminHeader />
-            <HorizontalAdminMenu />
-            <VerticalAdminMenu />
-            <ArticleMenu languages={languages} tabsData={tabsData}/>
+                <AdminHeader />
+                <HorizontalAdminMenu currentMenuElement={selectedMenuElement}
+                                        setCurrentMenuElement={setSelectedMenuElement}
+                                        headerButtons={headerButtons}/>
+                <div className={styles.vertical_menu_and_content}>
+                        <VerticalAdminMenu
+                            currentMenuElement={selectedMenuElement}
+                            setCurrentMenuElement={setSelectedMenuElement} />
+                            
+                        <div className={styles.content}>
+                                {content}
+                        </div>
+                </div>
         </div>
     )
 }

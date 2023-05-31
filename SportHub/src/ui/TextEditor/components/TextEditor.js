@@ -8,7 +8,7 @@ import htmlToDraft from 'html-to-draftjs'
 import Label from "../../../ui/Label"
 
 export default function TextEditor({value, onChange, activeTab}) {
-    const [editorState, setEditorState] = useState(value ? EditorState.createWithContent(ContentState.createFromBlockArray(htmlToDraft(value))) : EditorState.createEmpty())
+    const [editorState, setEditorState] = useState(EditorState.createWithContent(ContentState.createFromBlockArray(htmlToDraft(value))))
 
     const onEditorStateChange = (editorState) => {
         setEditorState(editorState)
@@ -19,8 +19,7 @@ export default function TextEditor({value, onChange, activeTab}) {
     const path = process.env.PUBLIC_URL + '/icons/TextEditor/'
 
     useEffect(() => {
-        if(value)
-            setEditorState(EditorState.createWithContent(ContentState.createFromBlockArray(htmlToDraft(value))))
+        setEditorState(EditorState.createWithContent(ContentState.createFromBlockArray(htmlToDraft(value))))
     }, [activeTab])
 
     return (

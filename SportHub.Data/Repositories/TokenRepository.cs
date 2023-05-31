@@ -21,7 +21,7 @@ public class TokenRepository : ITokenRepository
         using (var connection = _dbConnectionFactory.GetConnection())
         {
             connection.Open();
-            var query = "SELECT UserId FROM token WHERE RefreshToken = @token";
+            var query = "SELECT UserId FROM Token WHERE RefreshToken = @token";
             var result = await connection.QueryFirstOrDefaultAsync<string>(query, new { token });
 
             return result;
@@ -33,7 +33,7 @@ public class TokenRepository : ITokenRepository
         using (var connection = _dbConnectionFactory.GetConnection())
         {
             connection.Open();
-            var sql = "DELETE FROM token WHERE refreshToken = @refreshToken";
+            var sql = "DELETE FROM Token WHERE refreshToken = @RefreshToken";
             
             await connection.ExecuteAsync(sql, new { refreshToken=token });
         }
@@ -51,6 +51,18 @@ public class TokenRepository : ITokenRepository
                         ON DUPLICATE KEY UPDATE RefreshToken = @RefreshToken;";
         
             await connection.ExecuteAsync(sql, parameters);
+        }   
+    }
+
+    public async Task<string> GetTokenByUserId(string id)
+    {
+        using (var connection = _dbConnectionFactory.GetConnection())
+        {
+            connection.Open();
+            var query = "SELECT RefreshToken FROM Token WHERE UserId = @id";
+            var result = await connection.QueryFirstOrDefaultAsync<string>(query, new { id });
+
+            return result;
         }   
     }
 }

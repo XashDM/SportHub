@@ -15,5 +15,8 @@
         display: flex;
         flex-direction: row;
         gap: 2vw;
+        .col_element {
+            width: 100%;
+        }
     }
 }

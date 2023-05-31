@@ -1,0 +1,105 @@
+@import "src/styles/mixins";
+ul{
+  list-style: none;
+  color: rgb(162, 162, 162);
+  cursor: pointer;
+}
+.footer
+{
+  position: relative;
+  left: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: 30vh;
+  .footer_div
+  {
+    display: flex;
+    flex-direction: column;
+
+    .top_footer
+    {
+      font-size: 11px;
+      display: flex;
+      flex-direction: row-reverse;
+      align-items: stretch;
+      padding-bottom: 2vh;
+      left: 18vw;
+      height: 22vh;
+      width: 100vw;
+      border-top: 1px solid rgb(204, 204, 204);
+
+      .company_info
+      {
+        display: flex;
+        flex-direction: column;
+        left: 0vw;
+        width: 28vw;
+      }
+      .contributors
+      {
+        display: flex;
+        flex-direction: column;
+        left: 28vw;
+        width: 16vw;
+      }
+      .newsletter
+      {
+        display: flex;
+        flex-direction: column;
+        left: 56vw;
+        width: 26vw;
+
+        .input{
+          @include flex-center;
+          display: flex;
+          flex-direction: row;
+          .search_bar
+          {
+           padding-bottom: 23px;
+            width: 58%;
+          }
+        }
+      }
+    }
+    .bottom_footer
+    {
+      display: flex;
+      left: 0vw;
+      top:20vh;
+      height: 8vh;
+      width: 100vw;
+      background-color: var(--color-red-regular);
+      .logo{
+        display: flex;
+        left:0;
+        top:0;
+        @include flex-center;
+        width: 18vw;
+        height: 10vh;
+        font-size: 22px;
+        color: white;
+        padding-bottom: 2vh;
+      }
+
+      .copyright
+      {
+        position: sticky;
+        left:70vw;
+        top:0;
+        @include flex-center;
+        width: 30vw;
+        height: 10vh;
+        font-size: 22px;
+        color: white;
+        padding-bottom: 2vh;
+
+        ul{
+          color: white;
+          @include text-bodysemibold();
+        }
+      }
+    }
+  }
+}

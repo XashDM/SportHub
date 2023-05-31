@@ -1,6 +1,7 @@
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using SportHub.API;
 using SportHub.Business;
 using SportHub.Business.Implementations;
 using SportHub.Business.Interfaces;
@@ -10,6 +11,9 @@ using SportHub.Data.Interfaces;
 using SportHub.Data.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddAutoMapper(typeof(MapperConfig));
+
 // Add services to the container.
 
 
@@ -18,6 +22,11 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddScoped<IImageRepository, ImageRepository>();
+builder.Services.AddScoped<IImageService, ImageService>();
+
+builder.Services.AddScoped<INavigationRepository, NavigationRepository>();
+builder.Services.AddScoped<INavigationService, NavigationService>();
 
 builder.Services.AddScoped<IArticleRepository, ArticleRepository>();
 builder.Services.AddScoped<IArticleService, ArticleService>();
@@ -27,6 +36,7 @@ builder.Services.AddScoped<ISubCategoryService, SubCategoryService>();
 
 builder.Services.AddScoped<IDbConnectionFactory, DbConnectionFactory>();
 
+builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<ITokenRepository, TokenRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ILanguageRepository, LanguageRepository>();
@@ -67,6 +77,7 @@ builder.Services.AddAuthorization(options =>
     });
 });
 
+builder.Services.AddHttpClient();
 var app = builder.Build();
 
 

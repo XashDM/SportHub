@@ -4,21 +4,19 @@ import Tab from "./Tab"
 import Label from "../../../ui/Label"
 
 
-export default function TabPanel({activeTab, setActiveTab, tabList}){
+export default function TabPanel({activeTab, setActiveTab, languages}){
     const tabChange = (event) => {
         const newTab = Number(event.target.getAttribute("value"))
         setActiveTab(newTab)
     }
 
     const [tabs, setTabs] = useState([])
-
-    const path = process.env.PUBLIC_URL + '/icons/flags/'
     
     useEffect(() => {
-        setTabs(tabList.map((language) => (
-            <Tab key={language.value} value={language.value} handleClick={tabChange} icon={path + language.icon} label={language.label} activeTab={activeTab}/>
+        setTabs(languages.map((language) => (
+            <Tab key={language.value} value={language.value} handleClick={tabChange} icon={process.env.PUBLIC_URL + '/icons/flags/' + language.shortTitle + '.svg'} label={language.shortTitle} activeTab={activeTab}/>
         )))
-    }, [activeTab])
+    }, [activeTab, languages])
 
     return (
         <div>
