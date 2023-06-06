@@ -3,7 +3,11 @@
     justify-content: center;
     align-items: center;
 }
-
+@mixin flex-between(){
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 @mixin text-h1-background-text{
     font-family: var(--font-style-roboto-condensed);
     font-weight: bold;
