@@ -9,8 +9,10 @@ import {useAuthStore} from "../../../store/useAuthStore"
 import {ROUTES} from "../../../routes/routes"
 import GoogleLoginButton from "../../../ui/GoogleLoginButton"
 import {useGoogleLogin} from "@react-oauth/google"
+import { useTranslation } from "react-i18next"
 
 function LoginForm(){
+    const { t } = useTranslation()
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [error, setError] = useState(false)
@@ -76,8 +78,8 @@ function LoginForm(){
         <div className={styles.container}>
 
             <div>
-                <h2>Log in to Sports Hub</h2>
-                {error && <h3 className={styles.error}>Incorrect user email or password. Try again</h3>}
+                <h2>{t('AuthContainer.LoginForm.LogInFormCaption')}</h2>
+                {error && <h3 className={styles.error}>{t('AuthContainer.LoginForm.IncorrectDataText')}</h3>}
             </div>
 
             <GoogleLoginButton
@@ -89,14 +91,14 @@ function LoginForm(){
                    error={error}
                    onChange={(event) => setEmail(event.target.value)}/>
 
-            <Input label={"Password"}
-                   placeholder={"8 + characters (letters and numbers)"}
+            <Input label={t('AuthContainer.PasswordLabel')}
+                   placeholder={t('AuthContainer.PasswordPlaceholder')}
                    error={error} isVisible={false}
                    onClick={() => navigate(ROUTES.PASSWORD_RESET)}
                    onChange={(event) => setPassword(event.target.value)}
             />
 
-            <Button onClick={handleLogin} text={"LOG IN"}/>
+            <Button onClick={handleLogin} text={t('AuthContainer.LogInBtn')}/>
         </div>
     )
 }

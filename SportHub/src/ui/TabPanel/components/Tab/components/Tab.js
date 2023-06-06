@@ -3,7 +3,7 @@ import styles from "../styles/style.module.scss"
 
 export default function Tab({value, handleClick, icon, label, activeTab}){
     return (
-        <div key={value} className={value==activeTab ? styles.tab + ' ' + styles.active_tab: styles.tab} value={value} onClick={handleClick}>
+        <div key={value} className={value===activeTab ? styles.tab + ' ' + styles.active_tab: styles.tab} value={value} onClick={handleClick}>
             <img className={styles.flag} src={icon} value={value} />
             {label}
         </div>

@@ -38,6 +38,15 @@ namespace SportHub.API
                 .ForMember(dest => dest.LanguageId, opt => opt.MapFrom(src => Guid.NewGuid()))
                 .ForMember(dest => dest.ShortTitle, opt => opt.MapFrom(src => src.ShortTitle))
                 .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => false));
+
+            CreateMap<SubCategoryCreateDto, SubCategory>()
+                .ForMember(dest => dest.SubCategoryId, opt => opt.MapFrom(src => Guid.NewGuid()));
+
+            CreateMap<CategoryCreateDto, Category>()
+                .ForMember(dest => dest.CategoryId, opt => opt.MapFrom(src => Guid.NewGuid()));
+
+            CreateMap<TeamCreateDto, Team>()
+                .ForMember(dest => dest.TeamId,opt => opt.MapFrom(src => Guid.NewGuid()));
         }
     }
 }

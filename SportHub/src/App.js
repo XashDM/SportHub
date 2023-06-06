@@ -10,14 +10,18 @@ import "./styles/base.scss"
 import {ROUTES} from "./routes/routes"
 import PasswordChangePage from "./pages/PasswordReset"
 import PasswordResetPage from "./pages/PasswordChange"
+import { useEffect } from 'react'
+import checkCurrentLanguage from "./helpers/checkCurrentLanguage"
 
 function App() {
+    useEffect(() => {
+        checkCurrentLanguage()
+    })
     return (
         <GoogleOAuthProvider clientId="1053346154092-0ht8fsk771fsnn1lvd5a94e3r5etphle.apps.googleusercontent.com">
         <BrowserRouter>
             <Routes>
                 <Route exact path={ROUTES.HOME} element={
-
                         <HomePage/>
                 } />
 

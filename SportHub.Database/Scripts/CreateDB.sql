@@ -75,9 +75,16 @@ CREATE TABLE IF NOT EXISTS `SportHub`.`Teams` (
   `TeamId` VARCHAR(45) NOT NULL,
   `TeamName` VARCHAR(45) NOT NULL,
   `TeamDescription` VARCHAR(45) NOT NULL,
+  `SubCategoryId` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`TeamId`),
   UNIQUE INDEX `TeamId_UNIQUE` (`TeamId` ASC) VISIBLE,
-  UNIQUE INDEX `TeamName_UNIQUE` (`TeamName` ASC) VISIBLE)
+  UNIQUE INDEX `TeamName_UNIQUE` (`TeamName` ASC) VISIBLE,
+  INDEX `fk_Teams_SubCategories_idx` (`SubCategoryId` ASC) VISIBLE,
+  CONSTRAINT `fk_Teams_SubCategories`
+    FOREIGN KEY (`SubCategoryId`)
+    REFERENCES `SportHub`.`SubCategories` (`SubCategoryId`)
+    ON DELETE NO ACTION
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS `SportHub`.`Language` (

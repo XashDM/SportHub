@@ -7,8 +7,12 @@ import ImageUploader from "../../../ui/ImageUploader"
 import AutoComplete from "../../../ui/AutoComplete"
 
 import getLanguagesRequest from "../helpers/getLanguagesRequest"
+import getSubcategoriesRequest from "../helpers/getSubcategoriesRequest"
+import getTeamsRequest from "../helpers/getTeamsRequest"
+import getLocationsRequest from "../helpers/getLocationsRequest"
+import newArticleRequest from "../helpers/newArticleRequest"
 
-export default function ArticleMenu({ category, setButtons }) {
+function ArticleMenu({ setButtons, category }) {
     const [languages, setLanguages] = useState([])
     const [tabData, setTabData] = useState([{ alt: "", headline: "", caption: "", content: "" }])
 
@@ -16,34 +20,68 @@ export default function ArticleMenu({ category, setButtons }) {
 
     const [selectedImage, setSelectedImage] = useState(null)
 
-    const [subCategories, setSubCategories] = useState([])
-    // const [teams, setTeams] = useState([])
-    // const [locations, setLocations] = useState([])
+    const [subcategories, setSubcategories] = useState([{ subcategoryName: "", subcategoryId: "", categoryId: ""}])
+    const [teams, setTeams] = useState([])
+    const [locations, setLocations] = useState([])
 
-    const [currentSubCategory, setCurrentSubCategory] = useState(null)
+    const [currentSubcategory, setCurrentSubcategory] = useState(null)
     const [currentTeam, setCurrentTeam] = useState(null)
     const [currentLocation, setCurrentLocation] = useState(null)
     
-    const [disabled, setDisabled] = useState(currentSubCategory === undefined || currentSubCategory === null)
+    const [disabled, setDisabled] = useState(currentSubcategory === undefined || currentSubcategory === null)
+    const [canBeSaved, setCanBeSaved] = useState(false)
 
     useEffect(() => {
         getLanguages()
+        getLocations()
         if(typeof(setButtons) == "function"){
-            setButtons([{text: "Cancel", function: test, isOutlined: true}, {text: "Save", function: test, isOutlined: false}])
+            setButtons([{text: "Cancel", function: cancelButton, isOutlined: true}, {text: "Save", function: saveButton, isOutlined: false}])
         }
     }, [])
+
+    useEffect(() => {
+        getSubcategories()
+        setCurrentSubcategory(null)
+        setCurrentTeam(null)
+    }, [category])
+
 
     useEffect(() => {
         getTabData()
     }, [languages])
 
     useEffect(() => {
-        setDisabled(currentSubCategory === undefined || currentSubCategory === null)
-    }, [currentSubCategory])
+        setDisabled(currentSubcategory === undefined || currentSubcategory === null)
+        setCurrentTeam(null)
+        getTeams(currentSubcategory?.subCategoryId)
+    }, [currentSubcategory])
 
 
-    const test = () => {
-        console.log(1)
+    const saveButton = () => {
+        console.log(languages)
+        const langId = ["ecf8dae9-6737-47a9-9c75-df17ce718abc", "da6540d5-20ff-403e-9cea-2f32b1098197"]
+        const obj = {
+            ArticleId:  "",
+            AuthorId: "1",
+            ImageId: "1",
+            SubCategoryId: currentSubcategory?.categoryId,
+            TeamId: currentTeam?.teamId,
+            LocationId: currentLocation?.locationId,
+            ShowComments: false,
+            Infos: tabData.map((tab, index) => ({
+                LanguageId: langId[index],
+                Alt: tab.alt,
+                Headline: tab.headline,
+                Caption: tab.caption,
+                Content: tab.content
+            }))
+        }
+        console.log(obj)
+        newArticleRequest(obj)
+    }
+
+    const cancelButton = () => {
+        setCanBeSaved(true)
     }
 
     const getLanguages = async () => {
@@ -56,18 +94,32 @@ export default function ArticleMenu({ category, setButtons }) {
     }
 
     const getTabData = () => {
-        const newTabData = tabData
+        if (languages.length ==! 0) {
+            const newTabData = []
 
-        for (let i = 0; i < languages.length - 1; i++) {
-            newTabData.push({ alt: "", headline: "", caption: "", content: "" })
+            for (let i = 0; i < languages.length; i++) {
+                newTabData.push({ alt: "", headline: "", caption: "", content: "" })
+            }
+
+            setTabData(newTabData)
         }
-        setTabData(newTabData)
+        
     }
 
-    // const getSubCategories = async () => {
-    //     const result = await getSubCategoriesRequest()
-    //     setSubCategories(result.data)
-    // }
+    const getSubcategories = async () => {
+        const result = await getSubcategoriesRequest(category.categoryId)
+        setSubcategories(result.data)
+    }
+
+    const getTeams = async (subcategoryId) => {
+        const result = await getTeamsRequest(subcategoryId)
+        setTeams(result.data)
+    }
+
+    const getLocations = async () => {
+        const result = await getLocationsRequest()
+        setLocations(result.data)
+    }
 
     const inputChange = (event, property) => {
         const newInputValues = [...tabData]
@@ -81,7 +133,6 @@ export default function ArticleMenu({ category, setButtons }) {
         setTabData(newInputValues)
     }
 
-    if (languages.length === 0) return (<div></div>)
     return (
         <div className={styles.container}>
             <TabPanel activeTab={activeTab} setActiveTab={setActiveTab} languages={languages} />
@@ -90,9 +141,9 @@ export default function ArticleMenu({ category, setButtons }) {
                 <div className={styles.col_element}>
                     <AutoComplete
                         label={"subcategory"}
-                        value={currentSubCategory}
-                        setValue={setCurrentSubCategory}
-                        options={subCategories}
+                        value={currentSubcategory}
+                        setValue={setCurrentSubcategory}
+                        options={subcategories}
                         areOptionsObjects={true}
                         optionLable={"subCategoryName"}
                         propertyToCompare={"subCategoryId"} />
@@ -104,10 +155,10 @@ export default function ArticleMenu({ category, setButtons }) {
                         value={currentTeam}
                         setValue={setCurrentTeam}
                         disabled={disabled}
-                        options={subCategories}
+                        options={teams}
                         areOptionsObjects={true}
-                        optionLable={"subCategoryName"}
-                        propertyToCompare={"subCategoryId"} />
+                        optionLable={"teamName"}
+                        propertyToCompare={"teamId"} />
                 </div>
                 <div className={styles.col_element}>
                     <AutoComplete
@@ -115,10 +166,10 @@ export default function ArticleMenu({ category, setButtons }) {
                         value={currentLocation}
                         setValue={setCurrentLocation}
                         disabled={disabled}
-                        options={subCategories}
+                        options={locations}
                         areOptionsObjects={true}
-                        optionLable={"subCategoryName"}
-                        propertyToCompare={"subCategoryId"} />
+                        optionLable={"subcategoryName"}
+                        propertyToCompare={"subcategoryId"} />
                 </div>
             </div>
             <Input label={"ALT.*"}
@@ -140,3 +191,5 @@ export default function ArticleMenu({ category, setButtons }) {
         </div>
     )
 }
+
+export default ArticleMenu

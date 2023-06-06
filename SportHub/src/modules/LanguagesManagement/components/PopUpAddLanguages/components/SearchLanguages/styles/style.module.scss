@@ -1,0 +1,21 @@
+.option {
+    display: flex;
+    align-items: center;
+    font-family: var(--font-style-open-sans);
+    padding: 1vh 0 1vh 1vw;
+    &>img {
+        margin-right: 10px;
+        flex-shrink: 0;
+    }
+    .checkbox {
+        display: flex;
+        margin-left: auto;
+        padding-right: 0;
+    }
+}
+
+.option:hover {
+    background-color: var(--color-red-regular-transparent);
+    color: var(--color-red-regular);
+    cursor: pointer;
+}
