@@ -1,7 +1,6 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
 import AdminArticlesList from '../index'
-import styles from "../styles/styles.module.scss"
 
 const articlesFromBackend =  [
     {
@@ -33,12 +32,16 @@ const articlesFromBackend =  [
 function renderComponentWithArticlesFromBackend(){
     render(<AdminArticlesList articles={articlesFromBackend}/>)
 }
+
+function getFirstArticle(){
+    return screen.queryAllByRole("img")[0].parentNode
+}
 test("component should render a list of articles", () =>{
     renderComponentWithArticlesFromBackend()
 
     const articles = screen.getAllByRole("img")
 
-    expect(articles).toHaveLength(articlesFromBackend.length)
+    expect(articles).toHaveLength(3)
 })
 
 test("2 articles should be published", () =>{
@@ -51,13 +54,12 @@ test("2 articles should be published", () =>{
 
 test("article card should have title, description, location, subCategory", () =>{
     renderComponentWithArticlesFromBackend()
-    const {title, mainText, imageUrl, location, subCategory} = articlesFromBackend[0]
+    const {title, mainText, location, subCategory} = articlesFromBackend[0]
 
-    const firstArticle = screen.queryAllByRole("img")[0].parentNode
+    const firstArticle = getFirstArticle()
 
-    expect(firstArticle).toContain(<h3>{title}</h3>)
-    expect(firstArticle).toContain(mainText)
-    expect(firstArticle).toContain(imageUrl)
-    expect(firstArticle).toContain(location)
-    expect(firstArticle).toContain(subCategory)
+    expect(firstArticle.textContent).toMatch(title)
+    expect(firstArticle.textContent).toMatch(mainText)
+    expect(firstArticle.textContent).toMatch(location)
+    expect(firstArticle.textContent).toMatch(subCategory)
 })

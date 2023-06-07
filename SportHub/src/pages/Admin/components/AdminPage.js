@@ -7,6 +7,7 @@ import SECTION_NAMES from "../constants/SectionsNames"
 import AdminMainArticlesSection from "../../../modules/AdminMainArticlesSection"
 import LanguagesManagement from "../../../modules/LanguagesManagement"
 import NavigationSystem from '../../../modules/NavigationAdminSystem'
+import AdminArticlesList from "../../../modules/AdminArticlesList"
 
 
 export default function AdminPage() {
@@ -16,14 +17,17 @@ export default function AdminPage() {
 
     useEffect(() =>{
             switch (selectedMenuElement){
-                case SECTION_NAMES["Home"]:
-                    setContent(<AdminMainArticlesSection setButtons={setHeaderButtons} />)
-                    break
+                // case SECTION_NAMES["Home"]:
+                //     setContent(<AdminMainArticlesSection setButtons={setHeaderButtons} />)
+                //     break
                 case "Languages":
                     setContent(<LanguagesManagement setButtons={setHeaderButtons} />)
                     break
                 case "IA":
                     setContent(<NavigationSystem/>)
+                    break
+                case SECTION_NAMES["Home"]:
+                    setContent(<AdminArticlesList />)
                     break
                 default:
                     break
