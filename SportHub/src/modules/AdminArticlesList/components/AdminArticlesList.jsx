@@ -1,8 +1,15 @@
-import React from "react"
+import React, {useState} from "react"
 import styles from "../styles/styles.module.scss"
 import HorizontalCard from "./HorizontalCard"
+import AutoComplete from "../../../ui/AutoComplete"
+import OPTIONS from "../../AdminMainArticlesSection/constants/Options"
 
 function AdminArticlesList({}) {
+    const [team, setTeam] = useState()
+    const [subcategory, setSubcategory] = useState()
+    const [isPublished, setIsPublished] = useState()
+    const [currentAutocompleteIdx, setCurrentAutocompleteIdx] = useState(0)
+
     const articles =  [
         {
             imageUrl: "https://api.time.com/wp-content/uploads/2017/03/panda-black-white-study.jpg",
@@ -32,10 +39,30 @@ function AdminArticlesList({}) {
     function convertArticlesToCards(){
         return articles.map((article, idx) => <HorizontalCard {...article} key={idx}/>)
     }
+    function getAutocomplete(value, setter, defaultValue){
+        const options = [{name: defaultValue, id: 1}, ...OPTIONS]
 
+        return (
+            <AutoComplete
+                value={value}
+                setValue={setter}
+                options={options}
+                defaultValue={options[0]}
+                areOptionsObjects={true}
+                optionLable={"name"}
+                propertyToCompare={"id"} />
+        )
+    }
     return (
-        <div className={styles.list_container}>
-        {convertArticlesToCards()}
+        <div className={styles.container}>
+            <div className={styles.options_container}>
+                {getAutocomplete(subcategory, setSubcategory, "All Subcategories")}
+                {getAutocomplete(team, setTeam, "All teams")}
+                {getAutocomplete(isPublished, setIsPublished, "All")}
+            </div>
+            <div className={styles.list_container}>
+                {convertArticlesToCards()}
+            </div>
         </div>
     )
 }

@@ -1,15 +1,34 @@
 @import "src/styles/mixins";
 
-.list_container{
+.container{
     width: 70vw;
-    padding: 2vw;
-    max-height: 100vh;
-
     margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    gap: 5vh;
 
-    overflow-y: scroll;
-    @include thin-scrollbar();
+    & > *:not(:last-child){
+        margin-bottom: 2vh;
+    }
+
+    .options_container{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        & > *{
+            width: 25%;
+        }
+    }
+
+    .list_container{
+        width: 100%;
+        padding: 2vw;
+        max-height: 100vh;
+
+        display: flex;
+        flex-direction: column;
+        gap: 5vh;
+
+        overflow-y: scroll;
+        @include thin-scrollbar();
+    }
+
 }

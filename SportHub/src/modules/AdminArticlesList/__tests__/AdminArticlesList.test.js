@@ -36,30 +36,34 @@ function renderComponentWithArticlesFromBackend(){
 function getFirstArticle(){
     return screen.queryAllByRole("img")[0].parentNode
 }
-test("component should render a list of articles", () =>{
-    renderComponentWithArticlesFromBackend()
+describe("ArticlesList tests", () => {
 
-    const articles = screen.getAllByRole("img")
+    test("component should render a list of articles", () =>{
+        renderComponentWithArticlesFromBackend()
 
-    expect(articles).toHaveLength(3)
-})
+        const articles = screen.getAllByRole("img")
 
-test("2 articles should be published", () =>{
-    renderComponentWithArticlesFromBackend()
+        expect(articles).toHaveLength(3)
+    })
 
-    const publishedArticles = screen.getAllByText("Published")
+    test("2 articles should be published", () =>{
+        renderComponentWithArticlesFromBackend()
 
-    expect(publishedArticles).toHaveLength(2)
-})
+        const publishedArticles = screen.getAllByText("Published")
 
-test("article card should have title, description, location, subCategory", () =>{
-    renderComponentWithArticlesFromBackend()
-    const {title, mainText, location, subCategory} = articlesFromBackend[0]
+        expect(publishedArticles).toHaveLength(2)
+    })
 
-    const firstArticle = getFirstArticle()
+    test("article card should have title, description, location, subCategory", () =>{
+        renderComponentWithArticlesFromBackend()
+        const {title, mainText, location, subCategory} = articlesFromBackend[0]
 
-    expect(firstArticle.textContent).toMatch(title)
-    expect(firstArticle.textContent).toMatch(mainText)
-    expect(firstArticle.textContent).toMatch(location)
-    expect(firstArticle.textContent).toMatch(subCategory)
+        const firstArticle = getFirstArticle()
+        const articleTextContent = firstArticle.textContent
+
+        expect(articleTextContent).toMatch(title)
+        expect(articleTextContent).toMatch(mainText)
+        expect(articleTextContent).toMatch(location)
+        expect(articleTextContent).toMatch(subCategory)
+    })
 })
