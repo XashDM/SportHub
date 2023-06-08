@@ -34,7 +34,7 @@ namespace SportHub.API.Controllers
             {
                 var languages = await _languageService.GetLanguagesAsync();
 
-				return Ok(languages);
+		return Ok(languages);
             }
             catch (Exception ex)
             {
