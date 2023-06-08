@@ -32,10 +32,9 @@ namespace SportHub.API.Controllers
         {
             try
             {
-                IEnumerable<Language> response = await _languageService.GetLanguagesAsync();
-                var languages = _mapper.Map<IEnumerable<LanguageResponse>>(response);
+                var languages = await _languageService.GetLanguagesAsync();
 
-                return Ok(languages);
+				return Ok(languages);
             }
             catch (Exception ex)
             {

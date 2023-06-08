@@ -3,41 +3,50 @@ import styles from "../styles/style.module.scss"
 import Input from "../../../ui/Input"
 import TextEditor from "../../../ui/TextEditor"
 import TabPanel from "../../../ui/TabPanel"
+import Switch from "../../../ui/Switch"
 import ImageUploader from "../../../ui/ImageUploader"
 import AutoComplete from "../../../ui/AutoComplete"
+import { useAuthStore } from "../../../store/useAuthStore"
 
 import getLanguagesRequest from "../helpers/getLanguagesRequest"
 import getSubcategoriesRequest from "../helpers/getSubcategoriesRequest"
 import getTeamsRequest from "../helpers/getTeamsRequest"
 import getLocationsRequest from "../helpers/getLocationsRequest"
 import newArticleRequest from "../helpers/newArticleRequest"
+import Label from "../../../ui/Label"
 
 function ArticleMenu({ setButtons, category }) {
     const [languages, setLanguages] = useState([])
-    const [tabData, setTabData] = useState([{ alt: "", headline: "", caption: "", content: "" }])
+    const [tabData, setTabData] = useState([{ headline: "", caption: "", content: "" }])
+    const [alt, setAlt] = useState("")
 
     const [activeTab, setActiveTab] = useState(0)
 
     const [selectedImage, setSelectedImage] = useState(null)
 
-    const [subcategories, setSubcategories] = useState([{ subcategoryName: "", subcategoryId: "", categoryId: ""}])
+    const [subcategories, setSubcategories] = useState([{ subcategoryName: "", subcategoryId: "", categoryId: "" }])
     const [teams, setTeams] = useState([])
     const [locations, setLocations] = useState([])
 
     const [currentSubcategory, setCurrentSubcategory] = useState(null)
     const [currentTeam, setCurrentTeam] = useState(null)
     const [currentLocation, setCurrentLocation] = useState(null)
-    
+
     const [disabled, setDisabled] = useState(currentSubcategory === undefined || currentSubcategory === null)
     const [canBeSaved, setCanBeSaved] = useState(false)
+
+    const [showComments, setShowComments] = useState(false)
+
+    const authStore = useAuthStore()
 
     useEffect(() => {
         getLanguages()
         getLocations()
-        if(typeof(setButtons) == "function"){
-            setButtons([{text: "Cancel", function: cancelButton, isOutlined: true}, {text: "Save", function: saveButton, isOutlined: false}])
-        }
     }, [])
+
+    useEffect(() => {
+        getTabData()
+    }, [languages])
 
     useEffect(() => {
         getSubcategories()
@@ -45,47 +54,77 @@ function ArticleMenu({ setButtons, category }) {
         setCurrentTeam(null)
     }, [category])
 
-
-    useEffect(() => {
-        getTabData()
-    }, [languages])
-
     useEffect(() => {
         setDisabled(currentSubcategory === undefined || currentSubcategory === null)
         setCurrentTeam(null)
         getTeams(currentSubcategory?.subCategoryId)
     }, [currentSubcategory])
 
+    useEffect(() => {
+        checkIfCanBeSaved()
+    }, [selectedImage, tabData, alt])
+
+    useEffect(() => {
+        if (typeof (setButtons) == "function") {
+            setButtons([
+                { text: "Cancel", function: cancelButton, isOutlined: true },
+                { text: "Save", function: saveButton, isOutlined: false }
+            ])
+        }
+    }, [canBeSaved, currentLocation, currentSubcategory, currentTeam])
+
+    const checkIfCanBeSaved = () => {
+        let filled = true
+        for (let i = 0; i < tabData.length; i++) {
+            if (tabData[i].headline === "" || tabData[i].caption === "" || tabData[i].content === "") {
+                filled = false
+                break
+            }
+        }
+
+        if (selectedImage === null || alt === "") {
+            filled = false
+        }
+
+        setCanBeSaved(filled)
+    }
 
     const saveButton = () => {
-        console.log(languages)
-        const langId = ["ecf8dae9-6737-47a9-9c75-df17ce718abc", "da6540d5-20ff-403e-9cea-2f32b1098197"]
-        const obj = {
-            ArticleId:  "",
-            AuthorId: "1",
-            ImageId: "1",
-            SubCategoryId: currentSubcategory?.categoryId,
+        if (!canBeSaved) {
+            console.log("data not filled")
+            return
+        }
+        console.log("saved")
+        const article = {
+            AuthorId: authStore.userData.userId,
+            SubCategoryId: currentSubcategory?.subCategoryId,
             TeamId: currentTeam?.teamId,
             LocationId: currentLocation?.locationId,
-            ShowComments: false,
-            Infos: tabData.map((tab, index) => ({
-                LanguageId: langId[index],
-                Alt: tab.alt,
-                Headline: tab.headline,
-                Caption: tab.caption,
-                Content: tab.content
+            ShowComments: showComments,
+            Infos: languages.map((language) => ({
+                LanguageId: language.languageId,
+                Title: tabData[language.value].headline,
+                Subtitle: tabData[language.value].caption,
+                MainText: tabData[language.value].content
             }))
         }
-        console.log(obj)
-        newArticleRequest(obj)
+        const image = {
+            Alt: "123",
+        }
+
+        const formData = new FormData();
+        formData.append('file', selectedImage)
+        formData.append('article', JSON.stringify(article))
+        formData.append('image', JSON.stringify(image))
+        newArticleRequest(formData)
     }
 
     const cancelButton = () => {
-        setCanBeSaved(true)
+
     }
 
     const getLanguages = async () => {
-        const result = await getLanguagesRequest()
+        let result = await getLanguagesRequest()
 
         for (let i = 0; i < result.data.length; i++) {
             result.data[i].value = i
@@ -94,16 +133,15 @@ function ArticleMenu({ setButtons, category }) {
     }
 
     const getTabData = () => {
-        if (languages.length ==! 0) {
+        if (languages.length !== 0) {
             const newTabData = []
 
             for (let i = 0; i < languages.length; i++) {
-                newTabData.push({ alt: "", headline: "", caption: "", content: "" })
+                newTabData.push({ headline: "", caption: "", content: "" })
             }
 
             setTabData(newTabData)
         }
-        
     }
 
     const getSubcategories = async () => {
@@ -168,14 +206,14 @@ function ArticleMenu({ setButtons, category }) {
                         disabled={disabled}
                         options={locations}
                         areOptionsObjects={true}
-                        optionLable={"subcategoryName"}
-                        propertyToCompare={"subcategoryId"} />
+                        optionLable={"locationName"}
+                        propertyToCompare={"locationId"} />
                 </div>
             </div>
             <Input label={"ALT.*"}
                 placeholder={"Alternative text for picture"}
-                value={tabData[activeTab].alt}
-                onChange={(event) => inputChange(event, "alt")} />
+                value={alt}
+                onChange={(event) => setAlt(event.target.value)} />
             <Input label={"ARTICLE HEADLINE*"}
                 placeholder={"Name"}
                 value={tabData[activeTab].headline}
@@ -188,6 +226,12 @@ function ArticleMenu({ setButtons, category }) {
                 value={tabData[activeTab].content}
                 onChange={contentChange}
                 activeTab={activeTab} />
+            <div>
+            <Label>SHOW COMMENTS</Label>
+            <Switch
+                checked={showComments}
+                onChange={() => setShowComments(!showComments)} />
+            </div>
         </div>
     )
 }

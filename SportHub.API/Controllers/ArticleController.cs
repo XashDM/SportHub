@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using SportHub.Business;
 using SportHub.Data.DTO;
 using SportHub.Data.Entities;
@@ -24,11 +25,20 @@ namespace SportHub.API.Controllers
 		}
 
 		[HttpPost(Name = "Article")]
-		public async Task<IActionResult> CreateArticleAsync([FromBody] Article article)
+		public async Task<IActionResult> CreateArticleAsync()
 		{
 			try
 			{
-				await _articlesService.CreateArticleAsync(article);
+				var file = Request.Form.Files["file"];
+
+				var articleCreateDto = JsonConvert.DeserializeObject<ArticleCreateDto>(Request.Form["article"]);
+				var article = _mapper.Map<ArticleCreateDto, Article>(articleCreateDto);
+
+				var imageCreateDto = JsonConvert.DeserializeObject<ImageCreateDto>(Request.Form["image"]);
+				var image = _mapper.Map<ImageCreateDto, Image>(imageCreateDto);
+
+				await _articlesService.CreateArticleAsync(article, image, file);
+
 				return Ok();
 			}
 			catch (Exception ex)

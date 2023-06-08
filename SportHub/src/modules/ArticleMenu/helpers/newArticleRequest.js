@@ -7,7 +7,7 @@ const newArticleRequest = async (article) => {
             article,
             {
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'multipart/form-data'
                 }
             })
         console.log(response)

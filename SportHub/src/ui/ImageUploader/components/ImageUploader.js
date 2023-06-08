@@ -1,12 +1,16 @@
 import styles from "../styles/style.module.scss"
 import Label from "../../Label"
+import React, { useState } from "react"
 
 
-export default function ImageUploader({selectedImage, setSelectedImage }) {
+export default function ImageUploader({setSelectedImage }) {
+    const [image, setImage] = useState(null)
+
     const handleImageSelect = (event) => {
         const file = event.target.files[0]
         if (file) {
-            setSelectedImage(URL.createObjectURL(file))
+            setSelectedImage(file)
+            setImage(URL.createObjectURL(file))
             event.target.classList.add(styles.with_image)
         }
     }
@@ -18,7 +22,8 @@ export default function ImageUploader({selectedImage, setSelectedImage }) {
     const handleDrop = (event) => {
         event.preventDefault()
         const file = event.dataTransfer.files[0]
-        setSelectedImage(URL.createObjectURL(file))
+        setSelectedImage(file)
+        setImage(URL.createObjectURL(file))
         event.target.classList.add(styles.with_image)
     }
 
@@ -33,7 +38,7 @@ export default function ImageUploader({selectedImage, setSelectedImage }) {
                     onDragOver={handleDragOver}
                     onDrop={handleDrop}
                     style={{
-                        backgroundImage: `url(${selectedImage})`
+                        backgroundImage: `url(${image})`
                     }}
                     accept=".png, .jpg, .jpeg, .tif"
                 />
