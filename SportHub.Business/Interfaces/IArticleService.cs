@@ -8,5 +8,6 @@ namespace SportHub.Business
 		Task CreateArticleAsync(Article article);
 		Task<LanguageSpecificArticle> GetArticleByIdAndLanguageAsync(string id, string language);
 		Task<IEnumerable<MainArticleInfo>> GetMainArticlesAsync(string language);
+		Task<IEnumerable<FullLanguageSpecificArticle>> GetPageOfArticlesByCategoryAsync(string language, string categoryId, int pageNumber);
 	}
 }
