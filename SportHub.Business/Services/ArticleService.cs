@@ -13,9 +13,10 @@ namespace SportHub.Business.Implementations
 		private readonly ISubCategoryService _subCategoryService;
 		private readonly ILocationService _locationService;
 		private readonly ITeamsService _teamService;
+		private readonly ICategoryService _categoryService;
 		
 		public ArticleService(IArticleRepository articleRepository, INavigationService navigationService, IImageService imageService,
-			ISubCategoryService subCategoryService, ILocationService locationService, ITeamsService teamService)
+			ISubCategoryService subCategoryService, ILocationService locationService, ITeamsService teamService, ICategoryService categoryService)
 		{
 			_articleRepository = articleRepository;
 			_imageService = imageService;
@@ -23,6 +24,7 @@ namespace SportHub.Business.Implementations
 			_subCategoryService = subCategoryService;
 			_locationService = locationService;
 			_teamService = teamService;
+			_categoryService = categoryService;
 		}
 
 		public async Task CreateArticleAsync(Article article)
@@ -56,6 +58,7 @@ namespace SportHub.Business.Implementations
 				var articleLocation = await _locationService.GetLocationByIdAsync(article.LocationId);
 				var articleSubCategory = await _subCategoryService.GetSubCategoriesByIdAsync(article.SubCategoryId);
 				var articleTeam = await _teamService.GetTeamByIdAsync(article.TeamId);
+				var category = await _categoryService.GetCategoryByIdAsync(categoryId);
 				
 				var fullArticle = new FullLanguageSpecificArticle
 				{
@@ -67,10 +70,11 @@ namespace SportHub.Business.Implementations
 					AuthorId = article.AuthorId,
 					Language = language,
 						
-					SubCategory = articleSubCategory.SubCategoryName,
-					ImageUrl = articleImage.Url,
-					Location = articleLocation.LocationName,
-					Team = articleTeam.TeamName
+					SubCategory = articleSubCategory,
+					Image = articleImage,
+					Location = articleLocation,
+					Team = articleTeam,
+					Category = category
 				};
 				
 				pageOfFullArticles.Add(fullArticle);
