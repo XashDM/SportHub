@@ -3,7 +3,7 @@ import React from "react"
 
 export default function HorizontalCard({imageUrl, title, mainText, subCategory, location, isPublished}) {
     return (
-        <div className={styles.card}>
+        <div className={styles.card} role={"card"}>
             <img src={imageUrl} alt={imageUrl} className={styles.image}/>
 
             <div className={styles.text_content_container}>
