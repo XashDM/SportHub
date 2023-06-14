@@ -54,8 +54,37 @@ namespace SportHub.API.Controllers
 			}
 		}
 		
-		[HttpGet("~/GetArticleByArticleIdAndLanguageId")]
-		public async Task<IActionResult> GetArticleByArticleIdAndLanguageIdAsync([FromQuery] string articleId, string languageId)
+				
+		[HttpGet( "~/AllArticlesByFilters")]
+		public async Task<IActionResult> GetArticlesByFiltersAsync([FromQuery] string languageId, string articleId = null, string authorId = null,
+			string categoryId = null, string subcategoryId = null, string teamId = null, string locationId = null, bool? published = null,
+			bool? showComments = null)
+		{
+			try
+			{
+				Dictionary<string, object> parametersDictionary = new Dictionary<string, object>
+				{
+					{"articleId", articleId},
+					{"authorId", authorId},
+					{"categoryId", categoryId},
+					{"subcategoryId", subcategoryId},
+					{"teamId", teamId},
+					{"locationId", locationId},
+					{"published", published},
+					{"showComments", showComments}
+				};
+				var article = await _articlesService.GetAllArticlesByFiltersAsync(languageId, parametersDictionary);
+				return Ok(article);
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError(ex.Message);
+				return BadRequest(ex.Message);
+			}
+		}
+		
+		[HttpGet("ArticleByIdAndLanguageId")]
+		public async Task<IActionResult> GetArticleByIdAndLanguageIdAsync([FromQuery] string articleId, string languageId)
 		{
 			try
 			{
@@ -85,53 +114,52 @@ namespace SportHub.API.Controllers
 				return BadRequest(ex.Message);
 			}
 		}
-
-		[HttpGet("~/GetArticleByLanguageIdAndCategoryId")]
-		public async Task<IActionResult> GetArticlesForAutocompleteByLanguageIdAndCategoryIdAsync([FromQuery] string languageId, string categoryId)
+		
+		[HttpPost("MainArticle")]
+		public async Task<IActionResult> AddMainArticlesAsync([FromBody] IEnumerable<MainArticleRequest> mainArticlesRequests)
 		{
 			try
 			{
-				var articlesForAutocomplete = await _articlesService.GetArticleForAutocompleteByLanguageIdAndPropertyIdAsync(languageId, "CategoryId", categoryId);
-				
-				return Ok(articlesForAutocomplete);
+				var mainArticles = _mapper.Map<IEnumerable<MainArticle>>(mainArticlesRequests);
+				await _articlesService.CreateMainArticlesAsync(mainArticles);
+				return Ok();
 			}
-			catch (Exception ex)
+			catch (Exception exception)
 			{
-				_logger.LogError(ex.Message);
-				return BadRequest(ex.Message);
+				_logger.LogError(exception.Message);
+				return BadRequest(exception.Message);
 			}
 		}
 		
-		[HttpGet("~/GetArticleByLanguageIdAndSubCategoryId")]
-		public async Task<IActionResult> GetArticlesForAutocompleteByLanguageIdAndSubCategoryIdAsync([FromQuery] string languageId, string subCategoryId)
-		{
-			try
-			{
-				var articlesForAutocomplete = await _articlesService.GetArticleForAutocompleteByLanguageIdAndPropertyIdAsync(languageId, "SubCategoryId", subCategoryId);
-				
-				return Ok(articlesForAutocomplete);
-			}
-			catch (Exception ex)
-			{
-				_logger.LogError(ex.Message);
-				return BadRequest(ex.Message);
-			}
-		}
-		
-		[HttpGet("~/GetArticleByLanguageIdAndTeamId")]
-		public async Task<IActionResult> GetArticlesForAutocompleteByLanguageIdAndTeamId([FromQuery] string languageId, string teamId)
-		{
-			try
-			{
-				var articlesForAutocomplete = await _articlesService.GetArticleForAutocompleteByLanguageIdAndPropertyIdAsync(languageId, "TeamId", teamId);
-				
-				return Ok(articlesForAutocomplete);
-			}
-			catch (Exception ex)
-			{
-				_logger.LogError(ex.Message);
-				return BadRequest(ex.Message);
-			}
-		}
+		[HttpGet("MainArticleByLanguageId")]
+            public async Task<IActionResult> GetMainArticlesByLanguageIdAsync([FromQuery] string languageId)
+            {
+                try
+                {
+                    IEnumerable<MainArticle> response = await _articlesService.GetMainArticlesByLanguageIdAsync(languageId);
+                    return Ok(response);
+                }
+                catch (Exception exception)
+                {
+                    _logger.LogError(exception.Message);
+                    return BadRequest(exception.Message);
+                }
+            }
+            
+        [HttpGet("MainArticlesDetails")]
+        public async Task<IActionResult> GetMainArticlesDetailsByLanguageIdAsync([FromQuery] string languageId)
+        {
+            try
+            {
+                IEnumerable<LanguageSpecificArticle> response = await _articlesService.GetMainArticlesDetailsByLanguageIdAsync(languageId);
+                return Ok(response);
+            }
+            catch (Exception exception)
+            {
+                _logger.LogError(exception.Message);
+                return BadRequest(exception.Message);
+            }
+        }
+        
 	}
 }

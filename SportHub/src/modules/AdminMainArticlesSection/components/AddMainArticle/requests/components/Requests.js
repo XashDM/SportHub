@@ -30,7 +30,7 @@ export default class Requests{
     }
     async getArticleByLanguageIdAndCategoryId(languageId, categoryId)  {
         try {
-            const response = await axios.get("https://localhost:7168/GetArticleByLanguageIdAndCategoryId?languageId="+ languageId + "&categoryId=" + categoryId)
+            const response = await axios.get("https://localhost:7168/AllArticlesByFilters?languageId="+ languageId + "&categoryId=" + categoryId)
             return response.data
         } catch (error) {
             return error.code
@@ -39,7 +39,7 @@ export default class Requests{
 
     async getArticleByLanguageIdAndSubCategoryId(languageId, subCategoryId) {
         try {
-            const response = await axios.get("https://localhost:7168/GetArticleByLanguageIdAndSubCategoryId?languageId="+ languageId + "&subCategoryId=" + subCategoryId)
+            const response = await axios.get("https://localhost:7168/AllArticlesByFilters?languageId="+ languageId + "&subCategoryId=" + subCategoryId)
             return response.data
         } catch (error) {
             return error.code
@@ -48,7 +48,7 @@ export default class Requests{
 
     async getArticleByLanguageIdAndTeamId(languageId, teamId) {
         try {
-            const response = await axios.get("https://localhost:7168/GetArticleByLanguageIdAndTeamId?languageId="+ languageId + "&teamId=" + teamId);
+            const response = await axios.get("https://localhost:7168/AllArticlesByFilters?languageId="+ languageId + "&teamId=" + teamId);
             return response.data
         } catch (error) {
             return error.code

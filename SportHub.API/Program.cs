@@ -51,9 +51,6 @@ builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ILanguageService, LanguageService>();
 
-builder.Services.AddScoped<IMainArticlesRepository, MainArticlesRepository>();
-builder.Services.AddScoped<IMainArticlesServices, MainArticlesServices>();
-
 // Add jwt access token validation
 builder.Services.AddAuthentication(options =>
 {

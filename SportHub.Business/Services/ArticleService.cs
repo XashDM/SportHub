@@ -47,6 +47,14 @@ namespace SportHub.Business.Implementations
 			return article;
 		}
 		
+		public async Task<IEnumerable<LanguageSpecificArticle>> GetAllArticlesByFiltersAsync(string languageId, Dictionary<string, object> parametersDictionary)
+		{
+			
+			var articles = await _articleRepository.GetAllArticlesByFiltersAsync(languageId,parametersDictionary);
+			
+			return articles;
+		}
+		
 		public async Task<IEnumerable<MainArticleInfo>> GetMainArticlesAsync(string language)
 		{
 			var mainArticlesMetadata = await _articleRepository.GetMainArticlesAsync(language);
@@ -78,25 +86,28 @@ namespace SportHub.Business.Implementations
 			return mainArticles;
 		}
 
-		public async Task<IEnumerable<ArticleForAutocomplete>>
-			GetArticleForAutocompleteByLanguageIdAndPropertyIdAsync(string languageId, string propertyIdName, string propertyId)
+		public async Task<IEnumerable<MainArticle>> GetMainArticlesByLanguageIdAsync(string languageId)
 		{
-			IEnumerable<Article> articles = await _articleRepository.GetArticlesByLanguageIdAndPropertyIdAsync(languageId, propertyIdName, propertyId);
-			List<ArticleForAutocomplete> articlesForAutocompletes = new List<ArticleForAutocomplete>();
+			var mainArticles = await _articleRepository.GetMainArticlesByLanguageIdAsync(languageId);
 
-			foreach (Article article in articles)
-			{
-				ArticleForAutocomplete articleForAutocomplete = new ArticleForAutocomplete();
-				articleForAutocomplete.ArticleId = article.ArticleId;
-
-				if (article.Infos != null && article.Infos.Any())
-					articleForAutocomplete.Title = article.Infos.FirstOrDefault().Title;
-				else
-					articleForAutocomplete.Title = "No title available";
-				articlesForAutocompletes.Add(articleForAutocomplete);
-			}
-
-			return articlesForAutocompletes.AsEnumerable();
+			return mainArticles;
 		}
+
+		public async Task CreateMainArticlesAsync(IEnumerable<MainArticle> mainArticles)
+		{
+			await _articleRepository.CreateMainArticlesAsync(mainArticles);
+		}
+    
+		public async Task<IEnumerable<LanguageSpecificArticle>> GetMainArticlesDetailsByLanguageIdAsync(string languageId)
+		{
+			List<LanguageSpecificArticle> articles = new List<LanguageSpecificArticle>();
+			IEnumerable<MainArticle> mainArticles = await _articleRepository.GetMainArticlesByLanguageIdAsync(languageId);
+        
+			foreach (var mainArticle in mainArticles)
+				articles.Add(await _articleRepository.GetArticleByArticleIdAndLanguageIdAsync(mainArticle.ArticleId, mainArticle.LanguageId));
+        
+			return articles;
+		}
+		
 	}
 }

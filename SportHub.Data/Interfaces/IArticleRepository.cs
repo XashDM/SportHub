@@ -9,9 +9,13 @@ namespace SportHub.Data.Interfaces
 		Task<LanguageSpecificArticle> GetArticleByIdAndLanguageAsync(string id, string language);
 
 		Task<LanguageSpecificArticle> GetArticleByArticleIdAndLanguageIdAsync(string articleId, string languageId);
+
+		Task<IEnumerable<LanguageSpecificArticle>> GetAllArticlesByFiltersAsync(string languageId, Dictionary<string, object> parametersDictionary);
 		
 		Task<IEnumerable<MainArticle>> GetMainArticlesAsync(string language);
-
-		Task<IEnumerable<Article>> GetArticlesByLanguageIdAndPropertyIdAsync(string languageId, string propertyIdName, string propertyId);
+		
+		Task<IEnumerable<MainArticle>> GetMainArticlesByLanguageIdAsync(string languageId);
+		Task CreateMainArticlesAsync(IEnumerable<MainArticle> mainArticles);
+		Task DeleteAllMainArticlesByLanguageIdAsync(string languageId);
 	}
 }
