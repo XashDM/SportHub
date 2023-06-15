@@ -50,7 +50,7 @@ public class ArticleRepository : IArticleRepository
 		}
 	}
 	
-	public async Task<IEnumerable<LanguageSpecificArticle>> GetAllArticlesByFiltersAsync(string languageId, Dictionary<string, object> parametersDictionary)
+	public async Task<IEnumerable<LanguageSpecificArticle>> GetAllArticlesByFiltersAsync(string languageId, ArticleSearchOptions articleSearchOptions)
 	{
 		using (var connection = _dbConnectionFactory.GetConnection())
 		{
@@ -58,15 +58,15 @@ public class ArticleRepository : IArticleRepository
 			var query = $"SELECT * FROM Articles" +
 			            $" LEFT JOIN ArticleInfos ON Articles.ArticleId = ArticleInfos.ArticleId" +
 			            $" where ArticleInfos.languageId = {languageId}";
-
-			foreach (var key in parametersDictionary.Keys)
+			
+			foreach (var property in articleSearchOptions.GetType().GetProperties())
 			{
-				if (parametersDictionary[key] != null)
+				if (property.GetValue(articleSearchOptions) != null)
 				{
-					query += $" and Articles.{key} = {parametersDictionary[key]}";
+					query += $" and Articles.{property.Name} = {property.GetValue(articleSearchOptions)}";
 				}
 			}
-			
+
 			var articles = await connection.QueryAsync<LanguageSpecificArticle>(query);
 			
 			return articles;

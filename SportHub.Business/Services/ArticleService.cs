@@ -47,10 +47,10 @@ namespace SportHub.Business.Implementations
 			return article;
 		}
 		
-		public async Task<IEnumerable<LanguageSpecificArticle>> GetAllArticlesByFiltersAsync(string languageId, Dictionary<string, object> parametersDictionary)
+		public async Task<IEnumerable<LanguageSpecificArticle>> GetAllArticlesByFiltersAsync(string languageId, ArticleSearchOptions articleSearchOptions)
 		{
 			
-			var articles = await _articleRepository.GetAllArticlesByFiltersAsync(languageId,parametersDictionary);
+			var articles = await _articleRepository.GetAllArticlesByFiltersAsync(languageId, articleSearchOptions);
 			
 			return articles;
 		}

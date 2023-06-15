@@ -62,19 +62,19 @@ namespace SportHub.API.Controllers
 		{
 			try
 			{
-				Dictionary<string, object> parametersDictionary = new Dictionary<string, object>
-				{
-					{"articleId", articleId},
-					{"authorId", authorId},
-					{"categoryId", categoryId},
-					{"subcategoryId", subcategoryId},
-					{"teamId", teamId},
-					{"locationId", locationId},
-					{"published", published},
-					{"showComments", showComments}
-				};
-				var article = await _articlesService.GetAllArticlesByFiltersAsync(languageId, parametersDictionary);
-				return Ok(article);
+				var articles = await _articlesService.GetAllArticlesByFiltersAsync(languageId, 
+					new ArticleSearchOptions
+					{
+						ArticleId = articleId,
+						AuthorId = authorId,
+						CategoryId = categoryId,
+						SubCategoryId = subcategoryId,
+						TeamId = teamId,
+						LocationId = locationId,
+						Published = published,
+						ShowComments = showComments
+					});
+				return Ok(articles);
 			}
 			catch (Exception ex)
 			{
