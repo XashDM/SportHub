@@ -14,5 +14,6 @@ namespace SportHub.Business
 		Task<IEnumerable<MainArticle>> GetMainArticlesByLanguageIdAsync(string languageId);
 		Task CreateMainArticlesAsync(IEnumerable<MainArticle> mainArticles);
 		Task<IEnumerable<LanguageSpecificArticle>> GetMainArticlesDetailsByLanguageIdAsync(string languageId);
+		Task<IEnumerable<FullLanguageSpecificArticle>> GetPageOfArticlesByCategoryAsync(string language, string categoryId, int pageNumber);
 	}
 }

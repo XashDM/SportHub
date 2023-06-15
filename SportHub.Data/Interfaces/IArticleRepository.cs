@@ -13,6 +13,7 @@ namespace SportHub.Data.Interfaces
 		Task<IEnumerable<LanguageSpecificArticle>> GetAllArticlesByFiltersAsync(string languageId, ArticleSearchOptions articleSearchOptions);
 		
 		Task<IEnumerable<MainArticle>> GetMainArticlesAsync(string language);
+		Task<IEnumerable<LanguageSpecificArticle>> GetPageOfArticlesByCategoryAsync(string language, string categoryId, int pageNumber);
 		
 		Task<IEnumerable<MainArticle>> GetMainArticlesByLanguageIdAsync(string languageId);
 		Task CreateMainArticlesAsync(IEnumerable<MainArticle> mainArticles);
