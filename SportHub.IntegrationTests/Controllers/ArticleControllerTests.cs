@@ -1,8 +1,8 @@
 using System.Net;
-using System.Threading.Tasks;
-using NUnit.Framework;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Newtonsoft.Json;
 using SportHub.API;
+using SportHub.Data.Entities;
 
 namespace SportHub.IntegrationTests
 {
@@ -27,7 +27,9 @@ namespace SportHub.IntegrationTests
         }
 
         [Test]
-        [TestCase("en","1", 1)]
+        [TestCase("en","2", 1)]
+        [TestCase("en","2", 2)]
+        [TestCase("ua","1", 1)]
         public async Task CorrectCategory_SearchingForArticles_PackOfArticlesReturned(string language, string categoryId, int pageNumber)
         {
             // Arrange
@@ -37,8 +39,14 @@ namespace SportHub.IntegrationTests
             var response = await _client.GetAsync(requestUri);
 
             // Assert
-            response.EnsureSuccessStatusCode();
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var articles = JsonConvert.DeserializeObject<List<FullLanguageSpecificArticle>>(responseContent);
+            
+            Assert.IsNotNull(articles);
+            Assert.IsInstanceOf<List<FullLanguageSpecificArticle>>(articles);
+            Assert.IsTrue(articles.Count > 0);
         }
         
         [Test]
@@ -55,6 +63,5 @@ namespace SportHub.IntegrationTests
             response.EnsureSuccessStatusCode();
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         }
-
     }
 }
