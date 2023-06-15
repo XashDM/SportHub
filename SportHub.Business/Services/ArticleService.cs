@@ -10,12 +10,21 @@ namespace SportHub.Business.Implementations
 		private readonly IArticleRepository _articleRepository;
 		private readonly INavigationService _navigationService;
 		private readonly IImageService _imageService;
+		private readonly ISubCategoryService _subCategoryService;
+		private readonly ILocationService _locationService;
+		private readonly ITeamsService _teamService;
+		private readonly ICategoryService _categoryService;
 		
-		public ArticleService(IArticleRepository articleRepository, INavigationService navigationService, IImageService imageService)
+		public ArticleService(IArticleRepository articleRepository, INavigationService navigationService, IImageService imageService,
+			ISubCategoryService subCategoryService, ILocationService locationService, ITeamsService teamService, ICategoryService categoryService)
 		{
 			_articleRepository = articleRepository;
 			_imageService = imageService;
 			_navigationService = navigationService;
+			_subCategoryService = subCategoryService;
+			_locationService = locationService;
+			_teamService = teamService;
+			_categoryService = categoryService;
 		}
 
 		public async Task CreateArticleAsync(Article article)
@@ -37,6 +46,42 @@ namespace SportHub.Business.Implementations
 			var article = await _articleRepository.GetArticleByIdAndLanguageAsync(id, language);
 			
 			return article;
+		}
+		public async Task<IEnumerable<FullLanguageSpecificArticle>> GetPageOfArticlesByCategoryAsync(string language, string categoryId, int pageNumber)
+		{
+			var pageOfArticles = await _articleRepository.GetPageOfArticlesByCategoryAsync(language, categoryId, pageNumber);
+			var pageOfFullArticles = new List<FullLanguageSpecificArticle>();
+
+			foreach (var article in pageOfArticles)
+			{
+				var articleImage = await _imageService.GetImageById(article.ImageId);
+				var articleLocation = await _locationService.GetLocationByIdAsync(article.LocationId);
+				var articleSubCategory = await _subCategoryService.GetSubCategoriesByIdAsync(article.SubCategoryId);
+				var articleTeam = await _teamService.GetTeamByIdAsync(article.TeamId);
+				var category = await _categoryService.GetCategoryByIdAsync(categoryId);
+				
+				var fullArticle = new FullLanguageSpecificArticle
+				{
+					ArticleId = article.ArticleId,
+					PublishingDate = article.PublishingDate,
+					MainText = article.MainText,
+					Title = article.Title,
+					Subtitle = article.Subtitle,
+					AuthorId = article.AuthorId,
+					Language = language,
+						
+					SubCategory = articleSubCategory,
+					Image = articleImage,
+					Location = articleLocation,
+					Team = articleTeam,
+					Category = category
+				};
+				
+				pageOfFullArticles.Add(fullArticle);
+
+			}
+
+			return pageOfFullArticles;
 		}
 
 

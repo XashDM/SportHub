@@ -9,5 +9,6 @@ namespace SportHub.Data.Interfaces
 		Task<LanguageSpecificArticle> GetArticleByIdAndLanguageAsync(string id, string language);
 		
 		Task<IEnumerable<MainArticle>> GetMainArticlesAsync(string language);
+		Task<IEnumerable<LanguageSpecificArticle>> GetPageOfArticlesByCategoryAsync(string language, string categoryId, int pageNumber);
 	}
 }
