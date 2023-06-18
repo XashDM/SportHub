@@ -52,8 +52,8 @@ namespace SportHub.API
 
             CreateMap<ArticleInfoCreateDto, ArticleInfo>();
             CreateMap<ArticleCreateDto, Article>();
-			CreateMap<ImageCreateDto, Image>();
-		}
+	    CreateMap<ImageCreateDto, Image>();
+	}
     }
 }
 
