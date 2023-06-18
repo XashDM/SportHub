@@ -1,4 +1,5 @@
-﻿using Dapper;
+﻿using System.IO.Enumeration;
+using Dapper;
 using SportHub.Data.Entities;
 using SportHub.Data.Interfaces;
 
@@ -67,4 +68,26 @@ public class ArticleRepository : IArticleRepository
 		}
 	}
 
+	public async Task<IEnumerable<LanguageSpecificArticle>> GetPageOfArticlesByCategoryAsync(string language, string categoryId, int pageNumber)
+	{
+		var pageSize = 2;
+		using (var connection = _dbConnectionFactory.GetConnection())
+		{
+			connection.Open();
+			var offset = (pageNumber - 1) * pageSize;
+			
+			var articleQuery = @"SELECT * FROM Articles 
+         						LEFT JOIN SubCategories ON SubCategories.SubCategoryId = Articles.SubCategoryId
+         						LEFT JOIN `Language` ON Language.ShortTitle = @language
+								LEFT JOIN ArticleInfos ON Articles.ArticleId = ArticleInfos.ArticleId AND ArticleInfos.LanguageId = Language.LanguageId
+								WHERE SubCategories.CategoryId = @categoryId
+								ORDER BY Articles.ArticleId 
+								LIMIT @pageSize 
+								OFFSET @offset";
+			
+			var pageOfArticles = await connection.QueryAsync<LanguageSpecificArticle>(articleQuery, new {offset, pageSize, categoryId, language});
+
+			return pageOfArticles;
+		}
+	}
 }

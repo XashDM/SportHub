@@ -2,8 +2,9 @@
 
 namespace SportHub.Data.Interfaces
 {
-	public interface ILocationRepository
-	{
+    public interface ILocationRepository
+    {
+        Task<Location> GetLocationByIdAsync(string id);
 		Task<IEnumerable<Location>> GetLocationsAsync();
-	}
+    }
 }
