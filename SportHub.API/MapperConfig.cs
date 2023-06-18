@@ -11,7 +11,9 @@ namespace SportHub.API
             CreateMap<User, UserResponseDto>();
             
             CreateMap<User, UserRequestDto>();
-            
+
+            CreateMap<User, UserListResponse>();
+
             CreateMap<UserRequestDto, User>()
                 .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => Guid.NewGuid()))
                 .ForMember(dest => dest.IsActivated, opt => opt.MapFrom(src => false))
