@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using SportHub.Business.Interfaces;
+﻿using SportHub.Business.Interfaces;
 using SportHub.Data.DTO;
 using SportHub.Data.Entities;
 using SportHub.Data.Interfaces;
@@ -19,7 +18,7 @@ namespace SportHub.Business.Implementations
 			_navigationService = navigationService;
 		}
 
-		public async Task CreateArticleAsync(Article article, Image image, IFormFile file)
+		public async Task CreateArticleAsync(Article article, Image image, string fileName)
 		{
 			var articleId = Guid.NewGuid().ToString();
 
@@ -30,19 +29,11 @@ namespace SportHub.Business.Implementations
 			}
 			article.PublishingDate = DateTime.Now;
 
-			var imageId = Guid.NewGuid().ToString();
-
-			var fileName = imageId + Path.GetExtension(file.FileName);
-			var parentPath = Directory.GetParent(Directory.GetCurrentDirectory());
-			var filePath = Path.Combine(parentPath.FullName, "SportHub.Database\\Images", fileName);
-			using (var stream = new FileStream(filePath, FileMode.Create))
-			{
-				await file.CopyToAsync(stream);
-			}
+			var imageId = fileName.Substring(0, fileName.IndexOf('.'));
 
 			article.ImageId = imageId;
 			image.ImageId = imageId;
-			image.Url = filePath;
+			image.Url = fileName;
 
 			await _articleRepository.CreateArticleAsync(article, image);
 		}

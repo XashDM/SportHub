@@ -7,11 +7,11 @@ import PopUpAddLanguages from "../components/PopUpAddLanguages"
 import { useState, useEffect } from "react"
 
 import addLanguagesRequest from "../helpers/addLanguagesRequest"
-import getLanguagesRequest from "../helpers/getLanguagesRequest"
+import getLanguagesRequest from "../../../helpers/getLanguagesRequest"
 import editLanguageRequest from "../helpers/editLanguageRequest"
 import deleteLanguageRequest from "../helpers/deleteLanguageRequest"
 
-import {LANGUAGES_CONSTANTS} from "../constants/LanguagesConstants"
+import {LANGUAGES_CONSTANTS} from "../../../constants/LanguagesConstants"
 import { useTranslation } from "react-i18next"
 import checkCurrentLanguage from "../../../helpers/checkCurrentLanguage"
 

@@ -7,13 +7,13 @@ import Switch from "../../../ui/Switch"
 import ImageUploader from "../../../ui/ImageUploader"
 import AutoComplete from "../../../ui/AutoComplete"
 import { useAuthStore } from "../../../store/useAuthStore"
+import Label from "../../../ui/Label"
 
-import getLanguagesRequest from "../helpers/getLanguagesRequest"
+import getLanguagesRequest from "../../../helpers/getLanguagesRequest"
 import getSubcategoriesRequest from "../helpers/getSubcategoriesRequest"
 import getTeamsRequest from "../helpers/getTeamsRequest"
 import getLocationsRequest from "../helpers/getLocationsRequest"
 import newArticleRequest from "../helpers/newArticleRequest"
-import Label from "../../../ui/Label"
 
 function ArticleMenu({ setButtons, category }) {
     const [languages, setLanguages] = useState([])

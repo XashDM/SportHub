@@ -18,7 +18,7 @@ function Input({ placeholder, label, onClick, isVisible = true, onChange, value,
             <InputStyles
                 placeholder={placeholder}
                 onChange={onChange}
-                //type= {isVisible ? "text" : "password"}
+                type= {isVisible ? "text" : "password"}
                 value={value}/>
         </FormControl>
     )
