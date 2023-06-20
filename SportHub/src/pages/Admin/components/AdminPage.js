@@ -7,6 +7,7 @@ import SECTION_NAMES from "../constants/SectionsNames"
 import AdminMainArticlesSection from "../../../modules/AdminMainArticlesSection"
 import LanguagesManagement from "../../../modules/LanguagesManagement"
 import NavigationSystem from '../../../modules/NavigationAdminSystem'
+import AdminArticlesList from "../../../modules/AdminArticlesList"
 
 
 export default function AdminPage() {
@@ -26,6 +27,7 @@ export default function AdminPage() {
                     setContent(<NavigationSystem/>)
                     break
                 default:
+                    setContent(<AdminArticlesList />)
                     break
             }
     }, [selectedMenuElement])
