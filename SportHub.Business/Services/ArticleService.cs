@@ -140,7 +140,12 @@ namespace SportHub.Business.Implementations
 
 		public async Task CreateMainArticlesAsync(IEnumerable<MainArticle> mainArticles)
 		{
-			await _articleRepository.CreateMainArticlesAsync(mainArticles);
+			List<MainArticle> mainArticlesList = mainArticles.ToList();
+			for(int mainArticlesCount = 0; mainArticlesCount < mainArticlesList.Count; mainArticlesCount++)
+			{
+				mainArticlesList[mainArticlesCount].MainArticleId = Guid.NewGuid().ToString();
+			}
+			await _articleRepository.CreateMainArticlesAsync(mainArticlesList);
 		}
     
 		public async Task<IEnumerable<LanguageSpecificArticle>> GetMainArticlesDetailsByLanguageIdAsync(string languageId)
