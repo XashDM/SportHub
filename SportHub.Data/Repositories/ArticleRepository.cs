@@ -62,12 +62,25 @@ public class ArticleRepository : IArticleRepository
 			
 			foreach (var property in articleSearchOptions.GetType().GetProperties())
 			{
-				if (property.GetValue(articleSearchOptions) != null)
+				string propertyName = property.Name;
+				object? propertyValue = property.GetValue(articleSearchOptions);
+				
+				if (propertyValue != null && propertyName != "LastArticles" && propertyName != "NumberOfArticles")
 				{
-					query += $" and Articles.{property.Name} = {property.GetValue(articleSearchOptions)}";
+					query += $" and Articles.{propertyName} = {propertyValue}";
 				}
 			}
-
+			
+			if (articleSearchOptions.LastArticles != null)
+			{
+				query += $" ORDER BY PublishingDate ";
+				query += (bool)articleSearchOptions.LastArticles ? $"DESC" : $"ASC";
+			}
+			if (articleSearchOptions.NumberOfArticles != null)
+			{
+				query += $" LIMIT {articleSearchOptions.NumberOfArticles}";
+			}
+			
 			var articles = await connection.QueryAsync<LanguageSpecificArticle>(query);
 			
 			return articles;

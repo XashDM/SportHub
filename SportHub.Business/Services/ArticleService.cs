@@ -14,9 +14,11 @@ namespace SportHub.Business.Implementations
 		private readonly ILocationService _locationService;
 		private readonly ITeamsService _teamService;
 		private readonly ICategoryService _categoryService;
+		private readonly ILanguageService _languageService;
 		
 		public ArticleService(IArticleRepository articleRepository, INavigationService navigationService, IImageService imageService,
-			ISubCategoryService subCategoryService, ILocationService locationService, ITeamsService teamService, ICategoryService categoryService)
+			ISubCategoryService subCategoryService, ILocationService locationService, ITeamsService teamService, ICategoryService categoryService,
+			ILanguageService languageService)
 		{
 			_articleRepository = articleRepository;
 			_imageService = imageService;
@@ -25,6 +27,7 @@ namespace SportHub.Business.Implementations
 			_locationService = locationService;
 			_teamService = teamService;
 			_categoryService = categoryService;
+			_languageService = languageService;
 		}
 
 		public async Task CreateArticleAsync(Article article)
@@ -41,12 +44,21 @@ namespace SportHub.Business.Implementations
 			await _articleRepository.CreateArticleAsync(article);
 		}
 		
-		public async Task<LanguageSpecificArticle> GetArticleByIdAndLanguageAsync(string id, string language)
+		public async Task<FullLanguageSpecificArticle> GetArticleByIdAndLanguageAsync(string id, string language)
 		{
-			var article = await _articleRepository.GetArticleByIdAndLanguageAsync(id, language);
-			
+			var article = await GetFullInfoAboutLanguageSpecificArticleAsync(await _articleRepository.GetArticleByIdAndLanguageAsync(id, language));
+
 			return article;
 		}
+		
+		public async Task<FullLanguageSpecificArticle> GetArticleByIdAndLanguageIdAsync(string articleId,
+			string languageId)
+		{
+			var article = await GetFullInfoAboutLanguageSpecificArticleAsync(await _articleRepository.GetArticleByArticleIdAndLanguageIdAsync(articleId, languageId));
+
+			return article;
+		}
+
 		public async Task<IEnumerable<FullLanguageSpecificArticle>> GetPageOfArticlesByCategoryAsync(string language, string categoryId, int pageNumber)
 		{
 			var pageOfArticles = await _articleRepository.GetPageOfArticlesByCategoryAsync(language, categoryId, pageNumber);
@@ -54,50 +66,24 @@ namespace SportHub.Business.Implementations
 
 			foreach (var article in pageOfArticles)
 			{
-				var articleImage = await _imageService.GetImageById(article.ImageId);
-				var articleLocation = await _locationService.GetLocationByIdAsync(article.LocationId);
-				var articleSubCategory = await _subCategoryService.GetSubCategoriesByIdAsync(article.SubCategoryId);
-				var articleTeam = await _teamService.GetTeamByIdAsync(article.TeamId);
-				var category = await _categoryService.GetCategoryByIdAsync(categoryId);
-				
-				var fullArticle = new FullLanguageSpecificArticle
-				{
-					ArticleId = article.ArticleId,
-					PublishingDate = article.PublishingDate,
-					MainText = article.MainText,
-					Title = article.Title,
-					Subtitle = article.Subtitle,
-					AuthorId = article.AuthorId,
-					Language = language,
-						
-					SubCategory = articleSubCategory,
-					Image = articleImage,
-					Location = articleLocation,
-					Team = articleTeam,
-					Category = category
-				};
-				
-				pageOfFullArticles.Add(fullArticle);
-
+				pageOfFullArticles.Add(await GetFullInfoAboutLanguageSpecificArticleAsync(article));
 			}
 
 			return pageOfFullArticles;
 		}
-
-		public async Task<LanguageSpecificArticle> GetArticleByArticleIdAndLanguageIdAsync(string articleId,
-			string languageId)
-		{
-			var article = await _articleRepository.GetArticleByArticleIdAndLanguageIdAsync(articleId, languageId);
-
-			return article;
-		}
 		
-		public async Task<IEnumerable<LanguageSpecificArticle>> GetAllArticlesByFiltersAsync(string languageId, ArticleSearchOptions articleSearchOptions)
+		public async Task<IEnumerable<FullLanguageSpecificArticle>> GetAllArticlesByFiltersAsync(string languageId, ArticleSearchOptions articleSearchOptions)
 		{
 			
-			var articles = await _articleRepository.GetAllArticlesByFiltersAsync(languageId, articleSearchOptions);
+			var languageSpecificArticles = await _articleRepository.GetAllArticlesByFiltersAsync(languageId, articleSearchOptions);
+
+			List<FullLanguageSpecificArticle> fullLanguageSpecificArticles = new List<FullLanguageSpecificArticle>();
+			foreach (var languageSpecificArticle in languageSpecificArticles)
+			{
+				fullLanguageSpecificArticles.Add(await GetFullInfoAboutLanguageSpecificArticleAsync(languageSpecificArticle));
+			}
 			
-			return articles;
+			return fullLanguageSpecificArticles;
 		}
 		
 		public async Task<IEnumerable<MainArticleInfo>> GetMainArticlesAsync(string language)
@@ -148,16 +134,48 @@ namespace SportHub.Business.Implementations
 			await _articleRepository.CreateMainArticlesAsync(mainArticlesList);
 		}
     
-		public async Task<IEnumerable<LanguageSpecificArticle>> GetMainArticlesDetailsByLanguageIdAsync(string languageId)
+		public async Task<IEnumerable<FullLanguageSpecificArticle>> GetMainArticlesDetailsByLanguageIdAsync(string languageId)
 		{
-			List<LanguageSpecificArticle> articles = new List<LanguageSpecificArticle>();
+			List<FullLanguageSpecificArticle> articles = new List<FullLanguageSpecificArticle>();
 			IEnumerable<MainArticle> mainArticles = await _articleRepository.GetMainArticlesByLanguageIdAsync(languageId);
-        
+
 			foreach (var mainArticle in mainArticles)
-				articles.Add(await _articleRepository.GetArticleByArticleIdAndLanguageIdAsync(mainArticle.ArticleId, mainArticle.LanguageId));
-        
+			{
+				articles.Add(await GetFullInfoAboutLanguageSpecificArticleAsync(
+					await _articleRepository.GetArticleByArticleIdAndLanguageIdAsync(mainArticle.ArticleId, mainArticle.LanguageId)));
+			}
+
 			return articles;
 		}
-		
+
+		private async Task<FullLanguageSpecificArticle> GetFullInfoAboutLanguageSpecificArticleAsync(LanguageSpecificArticle article)
+		{
+			var articleImage = await _imageService.GetImageById(article.ImageId);
+			var articleLocation = await _locationService.GetLocationByIdAsync(article.LocationId);
+			var articleCategory = await _categoryService.GetCategoryByIdAsync(article.CategoryId);
+			var articleSubCategory = await _subCategoryService.GetSubCategoriesByIdAsync(article.SubCategoryId);
+			var articleTeam = await _teamService.GetTeamByIdAsync(article.TeamId);
+			var articleLanguage = await _languageService.GetLanguageByIdAsync(article.LanguageId);
+
+			var fullArticle = new FullLanguageSpecificArticle
+			{
+				ArticleId = article.ArticleId,
+				PublishingDate = article.PublishingDate,
+				MainText = article.MainText,
+				Title = article.Title,
+				Subtitle = article.Subtitle,
+				AuthorId = article.AuthorId,
+				Language = articleLanguage.ShortTitle,
+						
+				SubCategory = articleSubCategory,
+				Image = articleImage,
+				Location = articleLocation,
+				Team = articleTeam,
+				Category = articleCategory
+			};
+			
+			return fullArticle;
+		}
+
 	}
 }
