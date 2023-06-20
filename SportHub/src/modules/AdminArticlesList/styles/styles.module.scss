@@ -29,6 +29,13 @@
 
         overflow-y: scroll;
         @include thin-scrollbar();
+
+        .helper_container{
+            min-height: 110vh;
+            position: relative;
+            background: transparent;
+            pointer-events: none;
+        }
     }
 
 }
