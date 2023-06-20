@@ -84,7 +84,22 @@ namespace SportHub.Business.Implementations
 			return pageOfFullArticles;
 		}
 
+		public async Task<LanguageSpecificArticle> GetArticleByArticleIdAndLanguageIdAsync(string articleId,
+			string languageId)
+		{
+			var article = await _articleRepository.GetArticleByArticleIdAndLanguageIdAsync(articleId, languageId);
 
+			return article;
+		}
+		
+		public async Task<IEnumerable<LanguageSpecificArticle>> GetAllArticlesByFiltersAsync(string languageId, ArticleSearchOptions articleSearchOptions)
+		{
+			
+			var articles = await _articleRepository.GetAllArticlesByFiltersAsync(languageId, articleSearchOptions);
+			
+			return articles;
+		}
+		
 		public async Task<IEnumerable<MainArticleInfo>> GetMainArticlesAsync(string language)
 		{
 			var mainArticlesMetadata = await _articleRepository.GetMainArticlesAsync(language);
@@ -115,5 +130,34 @@ namespace SportHub.Business.Implementations
 		
 			return mainArticles;
 		}
+
+		public async Task<IEnumerable<MainArticle>> GetMainArticlesByLanguageIdAsync(string languageId)
+		{
+			var mainArticles = await _articleRepository.GetMainArticlesByLanguageIdAsync(languageId);
+
+			return mainArticles;
+		}
+
+		public async Task CreateMainArticlesAsync(IEnumerable<MainArticle> mainArticles)
+		{
+			List<MainArticle> mainArticlesList = mainArticles.ToList();
+			for(int mainArticlesCount = 0; mainArticlesCount < mainArticlesList.Count; mainArticlesCount++)
+			{
+				mainArticlesList[mainArticlesCount].MainArticleId = Guid.NewGuid().ToString();
+			}
+			await _articleRepository.CreateMainArticlesAsync(mainArticlesList);
+		}
+    
+		public async Task<IEnumerable<LanguageSpecificArticle>> GetMainArticlesDetailsByLanguageIdAsync(string languageId)
+		{
+			List<LanguageSpecificArticle> articles = new List<LanguageSpecificArticle>();
+			IEnumerable<MainArticle> mainArticles = await _articleRepository.GetMainArticlesByLanguageIdAsync(languageId);
+        
+			foreach (var mainArticle in mainArticles)
+				articles.Add(await _articleRepository.GetArticleByArticleIdAndLanguageIdAsync(mainArticle.ArticleId, mainArticle.LanguageId));
+        
+			return articles;
+		}
+		
 	}
 }
