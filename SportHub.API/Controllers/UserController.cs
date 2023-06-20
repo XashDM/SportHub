@@ -33,7 +33,16 @@ public class UserController : ControllerBase
         return Ok(usersDto);
 
     }
-    
+
+    [HttpGet("users")]
+    [Authorize("AdminPolicy")]
+    public async Task<IActionResult> GetAllUsersListAsync()
+    {
+        IEnumerable<User> users = await _usersService.GetUsersAsync();
+        var usersDto = _mapper.Map<IEnumerable<UserResponseDto>>(users);
+        return Ok(usersDto);
+    }
+
     [HttpGet("Email/{email}")]
     [Authorize("AdminPolicy")]    
     public async Task<IActionResult> GetByEmailAsync([FromRoute] string email)

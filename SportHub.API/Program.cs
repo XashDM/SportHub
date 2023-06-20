@@ -1,7 +1,6 @@
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using SportHub.API;
 using SportHub.Business;
 using SportHub.Business.Implementations;
 using SportHub.Business.Interfaces;
@@ -10,7 +9,12 @@ using SportHub.Data.Factories;
 using SportHub.Data.Interfaces;
 using SportHub.Data.Repositories;
 
-var builder = WebApplication.CreateBuilder(args);
+namespace SportHub.API;
+public class Program
+{
+    public static async Task Main(string[] args)
+    {
+        var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddAutoMapper(typeof(MapperConfig));
 
@@ -21,6 +25,9 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddScoped<ILocationRepository, LocationRepository>();
+builder.Services.AddScoped<ILocationService, LocationService>();
 
 builder.Services.AddScoped<IImageRepository, ImageRepository>();
 builder.Services.AddScoped<IImageService, ImageService>();
@@ -109,3 +116,6 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+    }
+}

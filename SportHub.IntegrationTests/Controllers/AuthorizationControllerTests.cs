@@ -1,6 +1,7 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Moq;
 using MySql.Data.MySqlClient;
@@ -8,14 +9,12 @@ using SportHub.API;
 using SportHub.Business;
 using SportHub.Business.Implementations;
 using SportHub.Controllers;
-using SportHub.Data.Interfaces;
-using SportHub.Data.Repositories;
-using Microsoft.Extensions.Configuration;
-using Mysqlx.Crud;
 using SportHub.Data.DTO;
 using SportHub.Data.Entities;
+using SportHub.Data.Interfaces;
+using SportHub.Data.Repositories;
 
-namespace SportHub.IntegrationTests
+namespace SportHub.IntegrationTests.Controllers
 {
     [TestFixture]
     [SingleThreaded]
