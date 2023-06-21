@@ -3,7 +3,9 @@ import axios from "axios"
 
 const getLanguageRequest = async (shortTitle) => {
     try {
-        const response = await axios.get(`https://localhost:7168/Language/${shortTitle}`, {})
+        const backendHost = process.env.REACT_APP_BACKEND_HOST
+
+        const response = await axios.get(`${backendHost}/Language/${shortTitle}`, {})
         if (response.status === 204) {
             return null
         }
