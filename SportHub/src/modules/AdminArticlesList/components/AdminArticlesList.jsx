@@ -2,7 +2,6 @@ import React, {useEffect, useState} from "react"
 import styles from "../styles/styles.module.scss"
 import HorizontalCard from "./HorizontalCard"
 import AutoComplete from "../../../ui/AutoComplete"
-import OPTIONS from "../../AdminMainArticlesSection/constants/Options"
 import getPageOfArticlesRequest from "../helpers/getPageOfArticlesRequest"
 import {useTranslation} from "react-i18next"
 import InfiniteScroll from "react-infinite-scroll-component"
@@ -62,7 +61,7 @@ function AdminArticlesList({}) {
         ))
     }
     function getAutocomplete(value, setter, defaultValue){
-        const options = [{name: defaultValue, id: 1}, ...OPTIONS]
+        const options = [{name: defaultValue, id: 1}]
 
         return (
             <AutoComplete

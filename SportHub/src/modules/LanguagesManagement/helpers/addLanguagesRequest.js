@@ -7,7 +7,9 @@ const addLanguagesRequest = async (languages) => {
         shortTitle: language.code
     }))
     try {
-        const response = await axios.post('https://localhost:7168/Language',
+        const backendHost = process.env.REACT_APP_BACKEND_HOST
+
+        const response = await axios.post(`${backendHost}/Language`,
             languagesRequest,
             {
                 headers: {

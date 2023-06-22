@@ -3,7 +3,9 @@ import axios from "axios"
 
 const deleteLanguageRequest = async (shortTitle) => {
     try {
-        const response = await axios.delete(`https://localhost:7168/Language/${shortTitle}`, {})
+        const backendHost = process.env.REACT_APP_BACKEND_HOST
+
+        const response = await axios.delete(`${backendHost}/Language/${shortTitle}`, {})
         console.log(response.data)
         return response
     } catch (error) {
