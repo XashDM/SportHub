@@ -1,0 +1,33 @@
+.option {
+  display: flex;
+  align-items: flex-start;
+  font-family: var(--font-style-open-sans);
+  padding: 1vh 1vw 1vh 0;
+  background-color: var(--color-light-white);
+  ul {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+}
+
+.option:hover {
+  background-color: var(--color-light-white);
+  box-shadow: 0 0 1vw var(--color-dark-field-frame);
+  cursor: pointer;
+}
+
+.option ul li:first-child {
+  color: var(--color-dark-secondary-text);
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 0.75rem;
+}
+
+.option ul li:last-child {
+  color: var(--color-dark-text-color);
+  font-size: 16px;
+}
+
+.option ul li:first-child span:last-child {
+  color: var(--color-red-regular);
+}
