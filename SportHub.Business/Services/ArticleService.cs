@@ -47,45 +47,15 @@ namespace SportHub.Business.Implementations
 			
 			return article;
 		}
+		
 		public async Task<IEnumerable<FullLanguageSpecificArticle>> GetPageOfArticlesByCategoryAsync(string language, string categoryId, int pageNumber)
 		{
 			var pageOfArticles = await _articleRepository.GetPageOfArticlesByCategoryAsync(language, categoryId, pageNumber);
-			var pageOfFullArticles = new List<FullLanguageSpecificArticle>();
+            var pageOfFullArticles = await MapToFullLanguageSpecificArticles(pageOfArticles);
+            return pageOfFullArticles;
+        }
 
-			foreach (var article in pageOfArticles)
-			{
-				var articleImage = await _imageService.GetImageById(article.ImageId);
-				var articleLocation = await _locationService.GetLocationByIdAsync(article.LocationId);
-				var articleSubCategory = await _subCategoryService.GetSubCategoriesByIdAsync(article.SubCategoryId);
-				var articleTeam = await _teamService.GetTeamByIdAsync(article.TeamId);
-				var category = await _categoryService.GetCategoryByIdAsync(categoryId);
-				
-				var fullArticle = new FullLanguageSpecificArticle
-				{
-					ArticleId = article.ArticleId,
-					PublishingDate = article.PublishingDate,
-					MainText = article.MainText,
-					Title = article.Title,
-					Subtitle = article.Subtitle,
-					AuthorId = article.AuthorId,
-					Language = language,
-						
-					SubCategory = articleSubCategory,
-					Image = articleImage,
-					Location = articleLocation,
-					Team = articleTeam,
-					Category = category
-				};
-				
-				pageOfFullArticles.Add(fullArticle);
-
-			}
-
-			return pageOfFullArticles;
-		}
-
-		public async Task<LanguageSpecificArticle> GetArticleByArticleIdAndLanguageIdAsync(string articleId,
-			string languageId)
+		public async Task<LanguageSpecificArticle> GetArticleByArticleIdAndLanguageIdAsync(string articleId, string languageId)
 		{
 			var article = await _articleRepository.GetArticleByArticleIdAndLanguageIdAsync(articleId, languageId);
 
@@ -104,32 +74,10 @@ namespace SportHub.Business.Implementations
 		{
 			var mainArticlesMetadata = await _articleRepository.GetMainArticlesAsync(language);
 			mainArticlesMetadata = mainArticlesMetadata.OrderBy(mainArticle => mainArticle.Order);
-			
-			var mainArticles = new List<MainArticleInfo>();
-			
-			foreach (var mainArticleData in mainArticlesMetadata)
-			{
-				var article = await _articleRepository.GetArticleByIdAndLanguageAsync(mainArticleData.ArticleId, language);
-				var articleImage = await _imageService.GetImageById(article.ImageId);
-				var articleCategory = await _navigationService.GetCategoryBySubCategoryId(article.SubCategoryId);
-				
-				var mainArticleInfo = new MainArticleInfo
-				{
-					ArticleId = article.ArticleId,
-					PublishingDate = article.PublishingDate,
-					MainText = article.MainText,
-					Title = article.Title,
-					Subtitle = article.Subtitle,
-						
-					Category = articleCategory.CategoryName,
-					ImageUrl = articleImage.Url
-				};
-				
-				mainArticles.Add(mainArticleInfo);
-			}
-		
-			return mainArticles;
-		}
+            var mainArticleInfos = await MapToMainArticleInfos(mainArticlesMetadata);
+
+            return mainArticleInfos;
+        }
 
 		public async Task<IEnumerable<MainArticle>> GetMainArticlesByLanguageIdAsync(string languageId)
 		{
@@ -158,6 +106,69 @@ namespace SportHub.Business.Implementations
         
 			return articles;
 		}
-		
+	
+		private async Task<IEnumerable<FullLanguageSpecificArticle>> MapToFullLanguageSpecificArticles(IEnumerable<LanguageSpecificArticle> articles)
+        {
+            var fullArticles = new List<FullLanguageSpecificArticle>();
+
+            foreach (var article in articles)
+            {
+                var articleImage = await _imageService.GetImageById(article.ImageId);
+                var articleLocation = await _locationService.GetLocationByIdAsync(article.LocationId);
+                var articleSubCategory = await _subCategoryService.GetSubCategoriesByIdAsync(article.SubCategoryId);
+                var articleTeam = await _teamService.GetTeamByIdAsync(article.TeamId);
+                var category = await _categoryService.GetCategoryByIdAsync(article.CategoryId);
+
+                var fullArticle = new FullLanguageSpecificArticle
+                {
+                    ArticleId = article.ArticleId,
+                    PublishingDate = article.PublishingDate,
+                    MainText = article.MainText,
+                    Title = article.Title,
+                    Subtitle = article.Subtitle,
+                    AuthorId = article.AuthorId,
+                    Language = article.LanguageId,
+
+                    SubCategory = articleSubCategory,
+                    Image = articleImage,
+                    Location = articleLocation,
+                    Team = articleTeam,
+                    Category = category
+                };
+
+                fullArticles.Add(fullArticle);
+
+            }
+
+            return fullArticles;
+        }
+
+        private async Task<IEnumerable<MainArticleInfo>> MapToMainArticleInfos(IEnumerable<MainArticle> mainArticles)
+        {
+            var mainArticleInfos = new List<MainArticleInfo>();
+
+            foreach (var mainArticle in mainArticles)
+            {
+                var article = await _articleRepository.GetArticleByIdAndLanguageAsync(mainArticle.ArticleId, mainArticle.LanguageId);
+                var articleImage = await _imageService.GetImageById(article.ImageId);
+                var articleCategory = await _navigationService.GetCategoryBySubCategoryId(article.SubCategoryId);
+
+                var mainArticleInfo = new MainArticleInfo
+                {
+                    ArticleId = article.ArticleId,
+                    PublishingDate = article.PublishingDate,
+                    MainText = article.MainText,
+                    Title = article.Title,
+                    Subtitle = article.Subtitle,
+
+                    Category = articleCategory.CategoryName,
+                    ImageUrl = articleImage.Url
+                };
+
+                mainArticleInfos.Add(mainArticleInfo);
+            }
+
+            return mainArticleInfos;
+        }
 	}
 }
