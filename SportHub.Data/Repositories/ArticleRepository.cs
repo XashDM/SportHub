@@ -155,20 +155,25 @@ public class ArticleRepository : IArticleRepository
 		using (var connection = _dbConnectionFactory.GetConnection())
 		{
 			connection.Open();
-			var offset = (pageNumber - 1) * pageSize;
 			
 			var articleQuery = @"SELECT * FROM Articles 
          						LEFT JOIN SubCategories ON SubCategories.SubCategoryId = Articles.SubCategoryId
          						LEFT JOIN `Language` ON Language.ShortTitle = @language
 								LEFT JOIN ArticleInfos ON Articles.ArticleId = ArticleInfos.ArticleId AND ArticleInfos.LanguageId = Language.LanguageId
 								WHERE SubCategories.CategoryId = @categoryId
-								ORDER BY Articles.ArticleId 
-								LIMIT @pageSize 
-								OFFSET @offset";
-			
-			var pageOfArticles = await connection.QueryAsync<LanguageSpecificArticle>(articleQuery, new {offset, pageSize, categoryId, language});
+								ORDER BY Articles.PublishingDate DESC";
+
+			articleQuery = await PaginateQuery(articleQuery, pageNumber, pageSize);
+			var pageOfArticles = await connection.QueryAsync<LanguageSpecificArticle>(articleQuery, new { categoryId, language });
 
 			return pageOfArticles;
 		}
 	}
+
+	private async Task<string> PaginateQuery(string query, int pageNumber, int pageSize)
+	{
+        var offset = (pageNumber - 1) * pageSize;
+        var paginatedQuery = query + $" LIMIT {pageSize} OFFSET {offset}";
+        return paginatedQuery;
+    }
 }
