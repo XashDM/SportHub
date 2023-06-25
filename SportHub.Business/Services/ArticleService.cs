@@ -80,7 +80,7 @@ namespace SportHub.Business.Implementations
 		{
 			var mainArticlesMetadata = await _articleRepository.GetMainArticlesAsync(language);
 			mainArticlesMetadata = mainArticlesMetadata.OrderBy(mainArticle => mainArticle.Order);
-            var mainArticleInfos = await MapToMainArticleInfos(mainArticlesMetadata);
+            var mainArticleInfos = await MapToMainArticleInfos(mainArticlesMetadata, language);
 
             return mainArticleInfos;
         }
@@ -149,13 +149,13 @@ namespace SportHub.Business.Implementations
             return fullArticles;
         }
 
-        private async Task<IEnumerable<MainArticleInfo>> MapToMainArticleInfos(IEnumerable<MainArticle> mainArticles)
+        private async Task<IEnumerable<MainArticleInfo>> MapToMainArticleInfos(IEnumerable<MainArticle> mainArticles, string language)
         {
             var mainArticleInfos = new List<MainArticleInfo>();
 
             foreach (var mainArticle in mainArticles)
             {
-                var article = await _articleRepository.GetArticleByIdAndLanguageAsync(mainArticle.ArticleId, mainArticle.LanguageId);
+                var article = await _articleRepository.GetArticleByIdAndLanguageAsync(mainArticle.ArticleId, language);
                 var articleImage = await _imageService.GetImageById(article.ImageId);
                 var articleCategory = await _navigationService.GetCategoryBySubCategoryId(article.SubCategoryId);
 
