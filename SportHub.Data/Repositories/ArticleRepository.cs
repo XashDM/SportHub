@@ -14,7 +14,7 @@ public class ArticleRepository : IArticleRepository
 		_dbConnectionFactory = dbConnectionFactory;
 	}
 
-	public async Task CreateArticleAsync(Article article)
+	public async Task CreateArticleAsync(Article article, Image image)
 	{
 		using (var connection = _dbConnectionFactory.GetConnection())
 		{
@@ -22,11 +22,13 @@ public class ArticleRepository : IArticleRepository
 
 			using (var transaction = connection.BeginTransaction())
 			{
-				var sqlArticle = "INSERT INTO Articles (ArticleId, PublishingDate, AuthorId, SubCategoryId, TeamId, ImageId, LocationId, Published, ShowComments) " +
-				"VALUES (@ArticleId, @PublishingDate, @AuthorId, @SubCategoryId, @TeamId, @ImageId, @LocationId, @Published, @ShowComments)";
+				var sqlImage = "INSERT INTO Images (ImageId, Url, Alt) " +
+					  "VALUES (@ImageId, @Url, @Alt)";
+				var sqlArticle = "INSERT INTO Articles (ArticleId, PublishingDate, AuthorId, CategoryId, SubCategoryId, TeamId, ImageId, LocationId, Published, ShowComments) " +
+				"VALUES (@ArticleId, @PublishingDate, @AuthorId, @CategoryId, @SubCategoryId, @TeamId, @ImageId, @LocationId, @Published, @ShowComments)";
 				var sqlInfos = "INSERT INTO ArticleInfos (LanguageId, ArticleId, Title, Subtitle, MainText) " +
 					  "VALUES (@LanguageId, @ArticleId, @Title, @Subtitle, @MainText)";
-
+				await connection.ExecuteAsync(sqlImage, image, transaction);
 				await connection.ExecuteAsync(sqlArticle, article, transaction);
 				await connection.ExecuteAsync(sqlInfos, article.Infos, transaction);
 

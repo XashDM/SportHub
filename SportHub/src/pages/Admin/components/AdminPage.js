@@ -7,11 +7,13 @@ import SECTION_NAMES from "../constants/SectionsNames"
 import AdminMainArticlesSection from "../../../modules/AdminMainArticlesSection"
 import LanguagesManagement from "../../../modules/LanguagesManagement"
 import NavigationSystem from '../../../modules/NavigationAdminSystem'
+import ArticleMenu from '../../../modules/ArticleMenu'
 import AdminArticlesList from "../../../modules/AdminArticlesList"
 
 
 export default function AdminPage() {
     const [selectedMenuElement, setSelectedMenuElement] = useState("Home")
+    const [selectedCategory, setSelectedCategory] = useState(null)
     const [content, setContent] = useState(<AdminMainArticlesSection />)
     const [headerButtons, setHeaderButtons] = useState([])
 
@@ -27,7 +29,8 @@ export default function AdminPage() {
                     setContent(<NavigationSystem/>)
                     break
                 default:
-                    setContent(<AdminArticlesList />)
+                    // setContent(<AdminArticlesList />)
+                    setContent(<ArticleMenu setButtons={setHeaderButtons} category={selectedCategory}/>)
                     break
             }
     }, [selectedMenuElement])
@@ -37,7 +40,8 @@ export default function AdminPage() {
                 <AdminHeader />
                 <HorizontalAdminMenu currentMenuElement={selectedMenuElement}
                                         setCurrentMenuElement={setSelectedMenuElement}
-                                        headerButtons={headerButtons}/>
+                                        headerButtons={headerButtons}
+                                        setSelectedCategory={setSelectedCategory} />
                 <div className={styles.vertical_menu_and_content}>
                         <VerticalAdminMenu
                             currentMenuElement={selectedMenuElement}

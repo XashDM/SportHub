@@ -27,7 +27,7 @@ namespace SportHub.Business.Implementations
 			_categoryService = categoryService;
 		}
 
-		public async Task CreateArticleAsync(Article article)
+		public async Task CreateArticleAsync(Article article, Image image, string fileName)
 		{
 			var articleId = Guid.NewGuid().ToString();
 
@@ -38,7 +38,13 @@ namespace SportHub.Business.Implementations
 			}
 			article.PublishingDate = DateTime.Now;
 
-			await _articleRepository.CreateArticleAsync(article);
+			var imageId = fileName.Substring(0, fileName.IndexOf('.'));
+
+			article.ImageId = imageId;
+			image.ImageId = imageId;
+			image.Url = fileName;
+
+			await _articleRepository.CreateArticleAsync(article, image);
 		}
 		
 		public async Task<LanguageSpecificArticle> GetArticleByIdAndLanguageAsync(string id, string language)

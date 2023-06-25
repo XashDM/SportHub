@@ -1,6 +1,9 @@
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using SportHub.API;
+using SportHub.API.Infrastructure.Interfaces;
+using SportHub.API.Infrastructure.Services;
 using SportHub.Business;
 using SportHub.Business.Implementations;
 using SportHub.Business.Interfaces;
@@ -37,6 +40,8 @@ builder.Services.AddScoped<INavigationService, NavigationService>();
 
 builder.Services.AddScoped<IArticleRepository, ArticleRepository>();
 builder.Services.AddScoped<IArticleService, ArticleService>();
+
+builder.Services.AddScoped<IImageStorageService, ImageStorageService>();
 
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
