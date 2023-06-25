@@ -48,7 +48,21 @@ public class TeamsRepository : ITeamsRepository
             return teams;
         }
     }
+    
+    public async Task<IEnumerable<Team>> GetTeamsByCategoryIdAsync(string categoryId)
+    {
+        using (var connection = _dbConnectionFactory.GetConnection())
+        {
+            connection.Open();
+            var sql =
+                $"SELECT * FROM Teams t " +
+                $"JOIN Subcategories s ON t.subcategoryId = s.subcategoryId WHERE s.categoryId = {categoryId};";
+            var teams = await connection.QueryAsync<Team>(sql);
 
+            return teams;
+        }
+    }
+    
     public async Task<string> CreateTeamAsync(Team team)
     {
         using (var connection = _dbConnectionFactory.GetConnection())

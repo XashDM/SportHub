@@ -97,6 +97,7 @@ function ArticleMenu({ setButtons, category }) {
         console.log("saved")
         const article = {
             AuthorId: authStore.userData.userId,
+            CategoryId: category.categoryId,
             SubCategoryId: currentSubcategory?.subCategoryId,
             TeamId: currentTeam?.teamId,
             LocationId: currentLocation?.locationId,
@@ -109,7 +110,7 @@ function ArticleMenu({ setButtons, category }) {
             }))
         }
         const image = {
-            Alt: "123",
+            Alt: alt,
         }
 
         const formData = new FormData();

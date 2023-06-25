@@ -28,7 +28,12 @@ namespace SportHub.Business.Implementations
         {
             return await _TeamsRepository.GetTeamsBySubcategoryIdAsync(SubCategoryId);
         }
-
+        
+        public async Task<IEnumerable<Team>> GetTeamsByСategoryIdAsync(string сategoryId)
+        {
+            return await _TeamsRepository.GetTeamsByCategoryIdAsync(сategoryId);
+        }
+        
         public async Task<string> CreateTeamAsync(Team team)
         {
             return await _TeamsRepository.CreateTeamAsync(team);

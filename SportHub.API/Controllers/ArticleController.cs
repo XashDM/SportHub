@@ -75,6 +75,51 @@ namespace SportHub.API.Controllers
 			}
 		}
 		
+				
+		[HttpGet( "~/AllArticlesByFilters")]
+		public async Task<IActionResult> GetArticlesByFiltersAsync([FromQuery] string languageId, string articleId = null, string authorId = null,
+			string categoryId = null, string subcategoryId = null, string teamId = null, string locationId = null, bool? published = null,
+			bool? showComments = null)
+		{
+			try
+			{
+				var articles = await _articlesService.GetAllArticlesByFiltersAsync(languageId, 
+					new ArticleSearchOptions
+					{
+						ArticleId = articleId,
+						AuthorId = authorId,
+						CategoryId = categoryId,
+						SubCategoryId = subcategoryId,
+						TeamId = teamId,
+						LocationId = locationId,
+						Published = published,
+						ShowComments = showComments
+					});
+				return Ok(articles);
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError(ex.Message);
+				return BadRequest(ex.Message);
+			}
+		}
+		
+		[HttpGet("ArticleByIdAndLanguageId")]
+		public async Task<IActionResult> GetArticleByIdAndLanguageIdAsync([FromQuery] string articleId, string languageId)
+		{
+			try
+			{
+				var article = await _articlesService.GetArticleByIdAndLanguageAsync(articleId, languageId);
+
+				return Ok(article);
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError(ex.Message);
+				return BadRequest(ex.Message);
+			}
+		}
+		
 		[HttpGet("MainArticles")]
 		public async Task<IActionResult> GetMainArticlesAsync([FromQuery] string language)
 		{
@@ -90,6 +135,53 @@ namespace SportHub.API.Controllers
 				return BadRequest(ex.Message);
 			}
 		}
+		
+		[HttpPost("MainArticle")]
+		public async Task<IActionResult> AddMainArticlesAsync([FromBody] IEnumerable<MainArticleRequest> mainArticlesRequests)
+		{
+			try
+			{
+				var mainArticles = _mapper.Map<IEnumerable<MainArticle>>(mainArticlesRequests);
+				await _articlesService.CreateMainArticlesAsync(mainArticles);
+				return Ok();
+			}
+			catch (Exception exception)
+			{
+				_logger.LogError(exception.Message);
+				return BadRequest(exception.Message);
+			}
+		}
+		
+		[HttpGet("MainArticleByLanguageId")]
+            public async Task<IActionResult> GetMainArticlesByLanguageIdAsync([FromQuery] string languageId)
+            {
+                try
+                {
+                    IEnumerable<MainArticle> response = await _articlesService.GetMainArticlesByLanguageIdAsync(languageId);
+                    return Ok(response);
+                }
+                catch (Exception exception)
+                {
+                    _logger.LogError(exception.Message);
+                    return BadRequest(exception.Message);
+                }
+            }
+            
+        [HttpGet("MainArticlesDetails")]
+        public async Task<IActionResult> GetMainArticlesDetailsByLanguageIdAsync([FromQuery] string languageId)
+        {
+            try
+            {
+                IEnumerable<LanguageSpecificArticle> response = await _articlesService.GetMainArticlesDetailsByLanguageIdAsync(languageId);
+                return Ok(response);
+            }
+            catch (Exception exception)
+            {
+                _logger.LogError(exception.Message);
+                return BadRequest(exception.Message);
+            }
+        }
+        
 		
 		[HttpGet("GetPageOfArticlesByCategory")]
 		public async Task<IActionResult> GetPageOfArticlesByCategoryAsync([FromQuery] string language, [FromQuery] string categoryId, [FromQuery] int pageNumber)

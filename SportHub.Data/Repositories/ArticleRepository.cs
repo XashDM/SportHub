@@ -24,8 +24,8 @@ public class ArticleRepository : IArticleRepository
 			{
 				var sqlImage = "INSERT INTO Images (ImageId, Url, Alt) " +
 					  "VALUES (@ImageId, @Url, @Alt)";
-				var sqlArticle = "INSERT INTO Articles (ArticleId, PublishingDate, AuthorId, SubCategoryId, TeamId, ImageId, LocationId, Published, ShowComments) " +
-				"VALUES (@ArticleId, @PublishingDate, @AuthorId, @SubCategoryId, @TeamId, @ImageId, @LocationId, @Published, @ShowComments)";
+				var sqlArticle = "INSERT INTO Articles (ArticleId, PublishingDate, AuthorId, CategoryId, SubCategoryId, TeamId, ImageId, LocationId, Published, ShowComments) " +
+				"VALUES (@ArticleId, @PublishingDate, @AuthorId, @CategoryId, @SubCategoryId, @TeamId, @ImageId, @LocationId, @Published, @ShowComments)";
 				var sqlInfos = "INSERT INTO ArticleInfos (LanguageId, ArticleId, Title, Subtitle, MainText) " +
 					  "VALUES (@LanguageId, @ArticleId, @Title, @Subtitle, @MainText)";
 				await connection.ExecuteAsync(sqlImage, image, transaction);
@@ -52,7 +52,45 @@ public class ArticleRepository : IArticleRepository
 			return article;
 		}
 	}
+	
+	public async Task<IEnumerable<LanguageSpecificArticle>> GetAllArticlesByFiltersAsync(string languageId, ArticleSearchOptions articleSearchOptions)
+	{
+		using (var connection = _dbConnectionFactory.GetConnection())
+		{
+			connection.Open();
+			var query = $"SELECT * FROM Articles" +
+			            $" LEFT JOIN ArticleInfos ON Articles.ArticleId = ArticleInfos.ArticleId" +
+			            $" where ArticleInfos.languageId = {languageId}";
+			
+			foreach (var property in articleSearchOptions.GetType().GetProperties())
+			{
+				if (property.GetValue(articleSearchOptions) != null)
+				{
+					query += $" and Articles.{property.Name} = {property.GetValue(articleSearchOptions)}";
+				}
+			}
 
+			var articles = await connection.QueryAsync<LanguageSpecificArticle>(query);
+			
+			return articles;
+		}
+	}
+	
+	public async Task<LanguageSpecificArticle> GetArticleByArticleIdAndLanguageIdAsync(string articleId, string languageId)
+	{
+		using (var connection = _dbConnectionFactory.GetConnection())
+		{
+			connection.Open();
+			var query = @"SELECT * FROM Articles 
+								LEFT JOIN `Language` ON Language.LanguageId = @languageId
+								LEFT JOIN ArticleInfos ON Articles.ArticleId = ArticleInfos.ArticleId AND ArticleInfos.LanguageId = Language.LanguageId
+								WHERE Articles.ArticleId = @articleId;";
+
+			var article = await connection.QueryFirstOrDefaultAsync<LanguageSpecificArticle>(query, new {articleId, languageId});
+			
+			return article;
+		}
+	}
 	public async Task<IEnumerable<MainArticle>> GetMainArticlesAsync(string language)
 	{
 		using (var connection = _dbConnectionFactory.GetConnection())
@@ -65,6 +103,51 @@ public class ArticleRepository : IArticleRepository
 			var mainArticles = await connection.QueryAsync<MainArticle>(sql, new {language});
 
 			return mainArticles;
+		}
+	}
+	
+	public async Task<IEnumerable<MainArticle>> GetMainArticlesByLanguageIdAsync(string languageId)
+	{
+		using (var connection = _dbConnectionFactory.GetConnection())
+		{
+			connection.Open();
+			var query = $"SELECT * FROM MainArticles where LanguageId='{languageId}';";
+			var response = await connection.QueryAsync<MainArticle>(query);
+            
+			return response;
+		}
+	}
+	
+	public async Task CreateMainArticlesAsync(IEnumerable<MainArticle> mainArticles)
+	{
+		using (var connection = _dbConnectionFactory.GetConnection())
+		{
+			connection.Open();
+			using (var transaction = connection.BeginTransaction())
+			{
+				string query;
+				
+				string languageId = mainArticles.First().LanguageId;
+				await DeleteAllMainArticlesByLanguageIdAsync(languageId);
+				
+				foreach (var mainArticle in mainArticles)
+				{
+					query = $"INSERT INTO MainArticles(MainArticleId, ArticleId, LanguageId, `Order`)" +
+					            " VALUES(@MainArticleId, @ArticleId, @LanguageId, @Order);";
+					await connection.ExecuteAsync(query, mainArticle);
+				}
+				transaction.Commit();
+			}
+		}
+	}
+
+	public async Task DeleteAllMainArticlesByLanguageIdAsync(string languageId)
+	{
+		using (var connection = _dbConnectionFactory.GetConnection())
+		{
+			connection.Open();
+			var query = $"DELETE FROM MainArticles WHERE LanguageId='{languageId}';";
+			await connection.ExecuteAsync(query);
 		}
 	}
 
