@@ -12,7 +12,7 @@ namespace SportHub.API.Infrastructure.Services
 			var parentPath = Directory.GetParent(Directory.GetCurrentDirectory());
 			var filePath = Path.Combine(parentPath.FullName, "SportHub\\public\\saved_images", fileName);
 
-			using (var stream = new FileStream(filePath, FileMode.CreateNew))
+			using (var stream = new FileStream(filePath, FileMode.Create))
 			{
 				await file.CopyToAsync(stream);
 			}
