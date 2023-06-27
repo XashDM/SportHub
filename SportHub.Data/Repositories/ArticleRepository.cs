@@ -192,7 +192,8 @@ public class ArticleRepository : IArticleRepository
 									OR c.CategoryName LIKE @findText 
 									OR sc.SubCategoryName LIKE @findText 
 									OR t.TeamName LIKE @findText
-								) AND l.shortTitle = @language 
+								) AND l.shortTitle = @language
+								AND a.Published = true
 								ORDER BY a.PublishingDate DESC";
 
             articleQuery = await PaginateQuery(articleQuery, pageNumber, pageSize);
