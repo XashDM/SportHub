@@ -39,7 +39,7 @@ public class UserController : ControllerBase
     public async Task<IActionResult> GetAllUsersListAsync()
     {
         IEnumerable<User> users = await _usersService.GetUsersAsync();
-        var usersDto = _mapper.Map<IEnumerable<UserResponseDto>>(users);
+        var usersDto = _mapper.Map<IEnumerable<UserListResponse>>(users);
         return Ok(usersDto);
     }
 

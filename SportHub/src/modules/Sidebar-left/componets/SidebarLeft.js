@@ -22,7 +22,7 @@ function SidebarLeft()
                     <ul>
                         <span className={styles.share}>Follow</span>
                         <li><img className={styles.icons} src={'/icons/FacebookWithoutCircle.svg'} ></img>
-                            <img className={styles.icons} src={'/icons/Twitter.svg'} ></img>
+                            <img className={styles.icons} src={''} ></img>
                         </li>
                         <li><img className={styles.icons} src={'/icons/GoogleWithoutCircle.svg'}  ></img>
                             <img className={styles.icons} src={'/icons/YouTube.svg'}  ></img>

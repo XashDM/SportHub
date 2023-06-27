@@ -1,0 +1,149 @@
+$red-color: red;
+$underline-decoration: underline;
+$pointer-cursor: pointer;
+
+.container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  font-family: 'Open Sans', sans-serif;
+
+  .table_container {
+    width: 66.67%;
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-top: 20px;
+    }
+
+    th, td {
+      border-bottom: 1px solid #ccc;
+      box-shadow: 0px 0.5px 1px #ccc;
+      padding: 8px;
+      text-align: right;
+
+      &:first-child {
+        text-align: left;
+        border-left: 1px solid #ccc;
+      }
+
+      &:last-child {
+        text-align: right;
+        border-right: 1px solid #ccc;
+      }
+    }
+
+    th {
+      background-color: #e8e8e8;
+    }
+
+    .table_header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+
+      span {
+        cursor: $pointer-cursor;
+      }
+
+      .search_icon {
+        font-size: 20px;
+        color: black;
+      }
+    }
+
+    select {
+      width: 100%;
+      padding: 5px;
+      border-radius: 3px;
+      outline: none;
+    }
+  }
+
+  .user_info {
+    border: 1px solid #ccc;
+    width: 250px;
+    margin-left: 40px;
+
+    .user_info_header
+    {
+      display: flex;
+      column-gap: 20px;
+
+      .general_info{
+        padding: 17px;
+        display: flex;
+        justify-content: center;
+        margin-bottom: 10px;
+        font-size: 16px;
+        box-shadow: 1px 0.5px 1px #c2c2c2;
+        font-weight: bold;
+      }
+      .teams_info{
+        padding: 17px;
+        display: flex;
+        margin-bottom: 10px;
+        font-size: 16px;
+        font-weight: bold;
+      }
+
+    }
+    .user_photo {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0 auto;
+      position: relative;
+      overflow: hidden;
+
+      .online_indicator {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background-color: green;
+        display: inline-block;
+        position: absolute;
+        bottom: 2px;
+        right: 2px;
+        transform: translate(50%, 50%);
+      }
+
+
+    }
+
+    .user_name {
+      text-align: center;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    .registration_date {
+      text-align: center;
+      margin-top: 5px;
+    }
+
+    .info_button {
+      display: block;
+      margin-top: 10px;
+      text-align: center;
+      text-decoration: none;
+      color: #333;
+      background-color: #eee;
+      padding: 5px;
+      border-radius: 3px;
+    }
+  }
+  .selected {
+    color: $red-color;
+    text-decoration: $underline-decoration;
+  }
+
+  .pointer {
+    cursor: $pointer-cursor;
+  }
+}

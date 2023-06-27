@@ -7,13 +7,12 @@ import SECTION_NAMES from "../constants/SectionsNames"
 import AdminMainArticlesSection from "../../../modules/AdminMainArticlesSection"
 import LanguagesManagement from "../../../modules/LanguagesManagement"
 import NavigationSystem from '../../../modules/NavigationAdminSystem'
-
+import UsersManagment from "../../../modules/UsersManagment";
 
 export default function AdminPage() {
     const [selectedMenuElement, setSelectedMenuElement] = useState("Home")
     const [content, setContent] = useState(<AdminMainArticlesSection />)
     const [headerButtons, setHeaderButtons] = useState([])
-
     useEffect(() =>{
             switch (selectedMenuElement){
                 case SECTION_NAMES["Home"]:
@@ -24,6 +23,9 @@ export default function AdminPage() {
                     break
                 case "IA":
                     setContent(<NavigationSystem/>)
+                    break
+                case "MyUsers":
+                    setContent(<UsersManagment/>)
                     break
                 default:
                     break
