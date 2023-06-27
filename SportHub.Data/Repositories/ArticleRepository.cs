@@ -172,20 +172,19 @@ public class ArticleRepository : IArticleRepository
 		}
 	}
 
-    public async Task<IEnumerable<LanguageSpecificArticle>> GetPageOfSearchArticlesAsync(string language, string findText, int pageNumber, int pageSize)
-    {
+	public async Task<IEnumerable<LanguageSpecificArticle>> GetPageOfSearchArticlesAsync(string language, string findText, int pageNumber, int pageSize)
+	{
 		findText = '%' + findText + '%';
-        using (var connection = _dbConnectionFactory.GetConnection())
-        {
-            connection.Open();
-
-            var articleQuery = @"SELECT * FROM Articles a 
+		using (var connection = _dbConnectionFactory.GetConnection())
+		{
+			connection.Open();
+			var articleQuery = @"SELECT * FROM Articles a 
 								JOIN ArticleInfos ai ON a.ArticleId = ai.ArticleId 
 								JOIN Categories c ON a.CategoryId = c.CategoryId 
 								JOIN Subcategories sc ON a.SubCategoryId = sc.SubCategoryId 
 								JOIN Teams t ON a.TeamId = t.TeamId 
 								JOIN Language l ON ai.LanguageId = l.LanguageId 
-							    WHERE (
+								WHERE (
 									ai.MainText LIKE @findText 
 									OR ai.Title LIKE @findText
 									OR ai.SubTitle LIKE @findText
@@ -196,12 +195,11 @@ public class ArticleRepository : IArticleRepository
 								AND a.Published = true
 								ORDER BY a.PublishingDate DESC";
 
-            articleQuery = await PaginateQuery(articleQuery, pageNumber, pageSize);
-            var pageOfArticles = await connection.QueryAsync<LanguageSpecificArticle>(articleQuery, new { findText, language });
-
-            return pageOfArticles;
-        }
-    }
+			articleQuery = await PaginateQuery(articleQuery, pageNumber, pageSize);
+			var pageOfArticles = await connection.QueryAsync<LanguageSpecificArticle>(articleQuery, new { findText, language });
+			return pageOfArticles;
+		}
+	}
 
     private async Task<string> PaginateQuery(string query, int pageNumber, int pageSize)
 	{
