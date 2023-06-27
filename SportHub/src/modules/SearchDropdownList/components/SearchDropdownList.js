@@ -1,26 +1,45 @@
-import React, { useState } from "react"
-import { Autocomplete, TextField, Box, Paper } from "@mui/material"
+import React, { useEffect, useState } from "react"
+import { TextField, Paper } from "@mui/material"
 import SearchbarStyles from "../styles/SearchbarStyles"
 import styles from "../styles/style.module.scss"
 import { useNavigate } from 'react-router-dom'
 import { ROUTES } from "../../../routes/routes"
+import getSearchArticlesRequest from "../helpers/getSearchArticlesRequest"
 
 const SearchDropdownList = () => {
   const navigate = useNavigate()
+
+  const [currentLanguage, setCurrentLanguage] = useState(localStorage.getItem("i18nextLng"))
+
   const ARTICLES = [
     { id: 1, title: "Soccer" },
     { id: 2, title: "Football" },
     { id: 3, title: "Basketball" }
-  ];
-  const [inputValue, setInputValue] = useState("");
-  const handleInputChange = (event, value) => {
-    setInputValue(value);
-  };
+  ]
+
+  const [articles, setArticles] = useState([])
+
+  const [inputValue, setInputValue] = useState("")
+  const handleInputChange = async (event, value) => {
+    setInputValue(value)
+  }
+
+  const handleArticlesGet = async () => {
+    if (inputValue) {
+      const result = await getSearchArticlesRequest(currentLanguage, inputValue, 1, 3)
+      console.log(result)
+      setArticles(result.data)
+    }
+  }
+
+  useEffect(() => {
+    handleArticlesGet()
+  }, [inputValue])
 
   return (
     <SearchbarStyles
       id="global-searchbar"
-      options={ARTICLES}
+      options={articles}
       freeSolo
       disableClearable
       autoHighlight
@@ -28,23 +47,36 @@ const SearchDropdownList = () => {
       inputValue={inputValue}
       onInputChange={handleInputChange}
       ListboxProps={{ style: { maxHeight: 'none' } }}
-      getOptionLabel={(option) => option.title}
+      getOptionLabel={(option) => `${option.title} ${option.category.categoryName} ${option.subCategory.subCategoryName} ${option.mainText} ${option.team.teamName} ${option.location.locationName}`}
       renderOption={(props, option) => {
         if (!inputValue) {
-          // Перевірка, чи введений текст є порожнім
-          return null; // Повертаємо null, якщо текст порожній
+          return null
         }
+
+        const mainTexts = option.mainText.split(". ")
+        let matchedMainText = null
+        for (let i = 0; i < mainTexts.length; i++) {
+          const mainText = mainTexts[i]
+          if (mainText.toLowerCase().includes(inputValue.toLowerCase())) {
+            matchedMainText = mainText
+            break
+          }
+        }
+        if (!matchedMainText) {
+          matchedMainText = mainTexts[0]
+        }
+
         return (
           <div {...props} onClick={() => navigate(ROUTES.LOGIN)} className={styles.option}>
             <ul>
               <li>
-                <span>Category</span>
+                <span>{option.category.categoryName}</span>
                 <span>{" > "}</span>
-                <span>SubCategory</span>
+                <span>{option.subCategory.subCategoryName}</span>
                 <span>{" > "}</span>
                 <span>{option.title}</span>
               </li>
-              <li><span>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</span></li>
+              <li><span>{matchedMainText}</span></li>
             </ul>
           </div>
         )
@@ -56,7 +88,7 @@ const SearchDropdownList = () => {
           style={{ width: "100%" }}
           inputProps={{
             ...params.inputProps,
-            autoComplete: 'new-password', // disable autocomplete and autofill
+            autoComplete: 'off', // disable autocomplete and autofill
           }}
         />
       )}
