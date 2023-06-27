@@ -19,5 +19,7 @@ namespace SportHub.Data.Interfaces
 		Task<IEnumerable<MainArticle>> GetMainArticlesByLanguageIdAsync(string languageId);
 		Task CreateMainArticlesAsync(IEnumerable<MainArticle> mainArticles);
 		Task DeleteAllMainArticlesByLanguageIdAsync(string languageId);
-	}
+		Task<IEnumerable<LanguageSpecificArticle>> GetPageOfSearchArticlesAsync(string language, string findText, int pageNumber, int pageSize);
+
+    }
 }

@@ -7,7 +7,6 @@ import SECTION_NAMES from "../constants/SectionsNames"
 import AdminMainArticlesSection from "../../../modules/AdminMainArticlesSection"
 import LanguagesManagement from "../../../modules/LanguagesManagement"
 import NavigationSystem from '../../../modules/NavigationAdminSystem'
-import ArticleMenu from '../../../modules/ArticleMenu'
 import AdminArticlesList from "../../../modules/AdminArticlesList"
 
 
@@ -29,8 +28,7 @@ export default function AdminPage() {
                     setContent(<NavigationSystem/>)
                     break
                 default:
-                    // setContent(<AdminArticlesList />)
-                    setContent(<ArticleMenu setButtons={setHeaderButtons} category={selectedCategory}/>)
+                    setContent(<AdminArticlesList setButtons={setHeaderButtons} category={selectedCategory} setContent={setContent}/>)
                     break
             }
     }, [selectedMenuElement])
