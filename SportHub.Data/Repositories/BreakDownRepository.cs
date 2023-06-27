@@ -35,24 +35,32 @@ public class BreakDownRepository : IBreakDownRepository
         }
     }
 
-    public async Task CreateBreakDownsAsync(IEnumerable<BreakDown> breakDowns)
+    public async Task CreateBreakDownsAsync(string languageId, IEnumerable<BreakDown> breakDowns)
     {
+        
         using (var connection = _dbConnectionFactory.GetConnection())
         {
             connection.Open();
+            
             using (var transaction = connection.BeginTransaction())
             {
-                string query;
-				
-                string languageId = breakDowns.First().LanguageId;
-                await DeleteAllBreakDownsAsync(languageId);
-				
-                foreach (var breakDown in breakDowns)
+                
+                if (languageId != null)
                 {
-                    query = $"INSERT INTO BreakDown(BreakDownId, LanguageId, CategoryId, SubCategoryId, TeamId)" +
-                            " VALUES(@BreakDownId, @LanguageId, @CategoryId, @SubCategoryId, @TeamId);";
-                    await connection.ExecuteAsync(query, breakDown);
+                    await DeleteAllBreakDownsAsync(languageId);
+                    
+                    if (breakDowns != null)
+                    {
+                        foreach (var breakDown in breakDowns)
+                        {
+                            var query =
+                                $"INSERT INTO BreakDown(BreakDownId, LanguageId, CategoryId, SubCategoryId, TeamId)" +
+                                " VALUES(@BreakDownId, @LanguageId, @CategoryId, @SubCategoryId, @TeamId);";
+                            await connection.ExecuteAsync(query, breakDown);
+                        }
+                    }
                 }
+                
                 transaction.Commit();
             }
         }

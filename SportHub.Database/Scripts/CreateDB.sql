@@ -181,7 +181,7 @@ CREATE TABLE IF NOT EXISTS `SportHub`.`Comments` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-CREATE TABLE IF NOT EXISTS `SportHub`.`MainArticles` (
+CREATE TABLE IF NOT EXISTS `SportHub`.`MainArticle` (
   `MainArticleId` VARCHAR(36) NOT NULL,
   `ArticleId` VARCHAR(36) NOT NULL,
   `LanguageId` VARCHAR(36) NOT NULL,

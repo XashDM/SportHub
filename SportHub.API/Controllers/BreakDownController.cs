@@ -40,12 +40,12 @@ namespace SportHub.API.Controllers
         }
         
         [HttpPost()]
-        public async Task<IActionResult> CreateBreakDownsAsync([FromBody] IEnumerable<BreakDownRequest> breakDownsRequest)
+        public async Task<IActionResult> CreateBreakDownsAsync([FromQuery] string languageId,[FromBody] IEnumerable<BreakDownRequest> breakDownsRequest)
         {
             try
             {
                 var breakDowns = _mapper.Map<IEnumerable<BreakDown>>(breakDownsRequest);
-                await _breakDownService.CreateBreakDownsAsync(breakDowns);
+                await _breakDownService.CreateBreakDownsAsync(languageId ,breakDowns);
                 return Ok();
             }
             catch (Exception ex)
@@ -56,7 +56,8 @@ namespace SportHub.API.Controllers
         }
         
         [HttpGet("GetArticles")]
-        public async Task<IActionResult> GetBreakDownArticlesAsync([FromQuery] string languageId, bool? lastArticles = null, int? numberOfArticles = null)
+        public async Task<IActionResult> GetBreakDownArticlesAsync([FromQuery] string languageId, bool? lastArticles = null,
+            int? numberOfArticles = null)
         {
             try
             {

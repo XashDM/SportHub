@@ -1,4 +1,5 @@
 using SportHub.Business.Interfaces;
+using SportHub.Data.DTO;
 using SportHub.Data.Entities;
 using SportHub.Data.Interfaces;
 
@@ -8,21 +9,28 @@ public class BreakDownService : IBreakDownService
 {
     private readonly IBreakDownRepository _breakDownRepository;
     private readonly IArticleService _articleService;
+    private readonly ITeamsService _teamsService;
+    private readonly ISubCategoryService _subCategoryService;
+    private readonly ICategoryService _categoryService;
 
-    public BreakDownService(IBreakDownRepository breakDownRepository, IArticleService articleService)
+    public BreakDownService(IBreakDownRepository breakDownRepository, IArticleService articleService, ITeamsService teamsService,
+        ISubCategoryService subCategoryService, ICategoryService categoryService)
     {
         _breakDownRepository = breakDownRepository;
         _articleService = articleService;
+        _teamsService = teamsService;
+        _subCategoryService = subCategoryService;
+        _categoryService = categoryService;
     }
 
-    public async Task CreateBreakDownsAsync(IEnumerable<BreakDown> breakDowns)
+    public async Task CreateBreakDownsAsync(string languageId, IEnumerable<BreakDown> breakDowns)
     {
-        List<BreakDown> breakDownsList = breakDowns.ToList();
-        for(int breakDownsCount = 0; breakDownsCount < breakDownsList.Count; breakDownsCount++)
+        foreach (var breakDown in breakDowns)
         {
-            breakDownsList[breakDownsCount].BreakDownId = Guid.NewGuid().ToString();
+            breakDown.BreakDownId = Guid.NewGuid().ToString();
         }
-        await _breakDownRepository.CreateBreakDownsAsync(breakDownsList);
+
+        await _breakDownRepository.CreateBreakDownsAsync(languageId, breakDowns);
     }
 
     public async Task<IEnumerable<BreakDown>> GetBreakDownsAsync(string languageId)
@@ -30,29 +38,43 @@ public class BreakDownService : IBreakDownService
         return await _breakDownRepository.GetBreakDownsAsync(languageId);
     }
     
-    public async Task<IEnumerable<IEnumerable<FullLanguageSpecificArticle>>> GetBreakDownsArticlesAsync(string languageId, ArticleSearchOptions articleSearchOptions)
+    public async Task<List<BreakDownResponse>> GetBreakDownsArticlesAsync(string languageId, ArticleSearchOptions articleSearchOptions)
     {
         var breakDowns = await GetBreakDownsAsync(languageId);
-
-        List<IEnumerable<FullLanguageSpecificArticle>> articles = new List<IEnumerable<FullLanguageSpecificArticle>>();
+        
+        List<BreakDownResponse> breakDownsResponse = new List<BreakDownResponse>();
         foreach (var breakDown in breakDowns)
         {
             var searchOptions = articleSearchOptions;
+            var groupName = "";
+            
             if (breakDown.TeamId != null)
             {
                 searchOptions.TeamId = breakDown.TeamId;
+                var team = await _teamsService.GetTeamByIdAsync(breakDown.TeamId);
+                groupName = team.TeamName;
             }
             else if (breakDown.SubCategoryId != null)
             {
                 searchOptions.SubCategoryId = breakDown.SubCategoryId;
+                var subcategory = await _subCategoryService.GetSubCategoriesByIdAsync(breakDown.SubCategoryId);
+                groupName = subcategory.SubCategoryName;
             }
             else
             {
                 searchOptions.CategoryId = breakDown.CategoryId;
+                var category = await _categoryService.GetCategoryByIdAsync(breakDown.CategoryId);
+                groupName = category.CategoryName;
             }
-            articles.Add(await _articleService.GetAllArticlesByFiltersAsync(languageId, searchOptions));
+            
+            var breakDownArticles = await _articleService.GetAllArticlesByFiltersAsync(languageId, searchOptions);
+            breakDownsResponse.Add(new BreakDownResponse
+            {
+                GroupName = groupName,
+                Articles = breakDownArticles,
+            });
         }
         
-        return articles;
+        return breakDownsResponse;
     }
 }
