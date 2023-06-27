@@ -198,5 +198,21 @@ namespace SportHub.API.Controllers
 				return BadRequest(ex.Message);
 			}
 		}
-	}
+
+        [HttpGet("GetPageOfSearchArticles")]
+        public async Task<IActionResult> GetPageOfSearchArticlesAsync([FromQuery] string language, [FromQuery] string findText, [FromQuery] int pageNumber, [FromQuery] int pageSize)
+        {
+            try
+            {
+                var pageOfArticles = await _articlesService.GetPageOfSearchArticlesAsync(language, findText, pageNumber, pageSize);
+
+                return Ok(pageOfArticles);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return BadRequest(ex.Message);
+            }
+        }
+    }
 }

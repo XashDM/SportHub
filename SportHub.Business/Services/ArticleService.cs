@@ -61,7 +61,14 @@ namespace SportHub.Business.Implementations
             return pageOfFullArticles;
         }
 
-		public async Task<LanguageSpecificArticle> GetArticleByArticleIdAndLanguageIdAsync(string articleId, string languageId)
+        public async Task<IEnumerable<FullLanguageSpecificArticle>> GetPageOfSearchArticlesAsync(string language, string findText, int pageNumber, int pageSize)
+        {
+            var pageOfArticles = await _articleRepository.GetPageOfSearchArticlesAsync(language, findText, pageNumber, pageSize);
+            var pageOfFullArticles = await MapToFullLanguageSpecificArticles(pageOfArticles);
+            return pageOfFullArticles;
+        }
+
+        public async Task<LanguageSpecificArticle> GetArticleByArticleIdAndLanguageIdAsync(string articleId, string languageId)
 		{
 			var article = await _articleRepository.GetArticleByArticleIdAndLanguageIdAsync(articleId, languageId);
 
