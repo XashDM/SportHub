@@ -5,15 +5,17 @@ import AutoComplete from "../../../ui/AutoComplete"
 import getPageOfArticlesRequest from "../helpers/getPageOfArticlesRequest"
 import {useTranslation} from "react-i18next"
 import InfiniteScroll from "react-infinite-scroll-component"
+import ArticleMenu from "../../ArticleMenu"
+import {PAGE_CONSTANTS} from "../../../constants/PageConstants"
 
-function AdminArticlesList({}) {
+function AdminArticlesList({setContent, category, setButtons}) {
     const [articles, setArticles] = useState([])
     const [team, setTeam] = useState()
     const [subcategory, setSubcategory] = useState()
     const [isPublished, setIsPublished] = useState()
     const [isLoading, setIsLoading] = useState(false)
     const [isLastArticleHaveBeenFetched, setIsLastArticleHaveBeenFetched] = useState(false)
-    const [currentPageNumber, setCurrentPageNumber] = useState(1)
+    const [currentPageNumber, setCurrentPageNumber] = useState(PAGE_CONSTANTS.FIRST_PAGE_NUMBER)
     const { i18n } = useTranslation()
 
     async function fetchData() {
@@ -22,7 +24,12 @@ function AdminArticlesList({}) {
         try {
             setIsLoading(true)
 
-            const pageOfArticles = await getPageOfArticlesRequest(i18n.language, 2, currentPageNumber)
+            const pageOfArticles = await getPageOfArticlesRequest(i18n.language, category?.categoryId || 1, currentPageNumber)
+
+            if(!pageOfArticles){
+                console.error("Error. Request for articles fails")
+                return
+            }
 
             if(pageOfArticles.length === 0){
                 setIsLastArticleHaveBeenFetched(true)
@@ -44,15 +51,24 @@ function AdminArticlesList({}) {
     }
 
     useEffect(() => {
+        if (typeof (setButtons) == "function") {
+            setButtons([
+                { text: "Create article", function: onCreateArticleHandler, isOutlined: false }
+            ])
+        }
+    }, [])
+    useEffect(() => {
+        setArticles([])
+        setCurrentPageNumber(PAGE_CONSTANTS.FIRST_PAGE_NUMBER)
+    }, [category])
+    useEffect(() => {
         if(articles.length !== 0){
             setCurrentPageNumber((prevPageNumber) => prevPageNumber+1)
         }
     }, [articles])
-
     useEffect(() => {
         fetchData()
-    }, [])
-
+    }, [currentPageNumber])
 
     function convertArticlesToCards(){
         return articles.map((article, idx) => (
@@ -73,6 +89,10 @@ function AdminArticlesList({}) {
                 optionLable={"name"}
                 propertyToCompare={"id"} />
         )
+    }
+
+    function onCreateArticleHandler(){
+        setContent(<ArticleMenu setButtons={setButtons} category={category} setContent={setContent}/>)
     }
     return (
         <div className={styles.container}>
