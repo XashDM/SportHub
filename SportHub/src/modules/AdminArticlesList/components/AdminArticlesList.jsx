@@ -6,6 +6,7 @@ import getPageOfArticlesRequest from "../helpers/getPageOfArticlesRequest"
 import {useTranslation} from "react-i18next"
 import InfiniteScroll from "react-infinite-scroll-component"
 import ArticleMenu from "../../ArticleMenu"
+import {PAGE_CONSTANTS} from "../../../constants/PageConstants"
 
 function AdminArticlesList({setContent, category, setButtons}) {
     const [articles, setArticles] = useState([])
@@ -14,7 +15,7 @@ function AdminArticlesList({setContent, category, setButtons}) {
     const [isPublished, setIsPublished] = useState()
     const [isLoading, setIsLoading] = useState(false)
     const [isLastArticleHaveBeenFetched, setIsLastArticleHaveBeenFetched] = useState(false)
-    const [currentPageNumber, setCurrentPageNumber] = useState(1)
+    const [currentPageNumber, setCurrentPageNumber] = useState(PAGE_CONSTANTS.FIRST_PAGE_NUMBER)
     const { i18n } = useTranslation()
 
     async function fetchData() {
@@ -55,11 +56,10 @@ function AdminArticlesList({setContent, category, setButtons}) {
                 { text: "Create article", function: onCreateArticleHandler, isOutlined: false }
             ])
         }
-        setCurrentPageNumber(1)
     }, [])
     useEffect(() => {
         setArticles([])
-        setCurrentPageNumber(1)
+        setCurrentPageNumber(PAGE_CONSTANTS.FIRST_PAGE_NUMBER)
     }, [category])
     useEffect(() => {
         if(articles.length !== 0){
