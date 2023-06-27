@@ -5,8 +5,9 @@ import AutoComplete from "../../../ui/AutoComplete"
 import getPageOfArticlesRequest from "../helpers/getPageOfArticlesRequest"
 import {useTranslation} from "react-i18next"
 import InfiniteScroll from "react-infinite-scroll-component"
+import ArticleMenu from "../../ArticleMenu"
 
-function AdminArticlesList({}) {
+function AdminArticlesList({setContent, category, setButtons}) {
     const [articles, setArticles] = useState([])
     const [team, setTeam] = useState()
     const [subcategory, setSubcategory] = useState()
@@ -22,7 +23,12 @@ function AdminArticlesList({}) {
         try {
             setIsLoading(true)
 
-            const pageOfArticles = await getPageOfArticlesRequest(i18n.language, 2, currentPageNumber)
+            const pageOfArticles = await getPageOfArticlesRequest(i18n.language, category?.categoryId || 1, currentPageNumber)
+
+            if(!pageOfArticles){
+                console.error("Error. Request for articles fails")
+                return
+            }
 
             if(pageOfArticles.length === 0){
                 setIsLastArticleHaveBeenFetched(true)
@@ -44,15 +50,25 @@ function AdminArticlesList({}) {
     }
 
     useEffect(() => {
+        if (typeof (setButtons) == "function") {
+            setButtons([
+                { text: "Create article", function: onCreateArticleHandler, isOutlined: false }
+            ])
+        }
+        setCurrentPageNumber(1)
+    }, [])
+    useEffect(() => {
+        setArticles([])
+        setCurrentPageNumber(1)
+    }, [category])
+    useEffect(() => {
         if(articles.length !== 0){
             setCurrentPageNumber((prevPageNumber) => prevPageNumber+1)
         }
     }, [articles])
-
     useEffect(() => {
         fetchData()
-    }, [])
-
+    }, [currentPageNumber])
 
     function convertArticlesToCards(){
         return articles.map((article, idx) => (
@@ -73,6 +89,10 @@ function AdminArticlesList({}) {
                 optionLable={"name"}
                 propertyToCompare={"id"} />
         )
+    }
+
+    function onCreateArticleHandler(){
+        setContent(<ArticleMenu setButtons={setButtons} category={category} setContent={setContent}/>)
     }
     return (
         <div className={styles.container}>

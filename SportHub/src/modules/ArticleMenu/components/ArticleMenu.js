@@ -14,8 +14,9 @@ import getSubcategoriesRequest from "../helpers/getSubcategoriesRequest"
 import getTeamsRequest from "../helpers/getTeamsRequest"
 import getLocationsRequest from "../helpers/getLocationsRequest"
 import newArticleRequest from "../helpers/newArticleRequest"
+import AdminArticlesList from "../../AdminArticlesList"
 
-function ArticleMenu({ setButtons, category }) {
+function ArticleMenu({ setButtons, category, setContent }) {
     const [languages, setLanguages] = useState([])
     const [tabData, setTabData] = useState([{ headline: "", caption: "", content: "" }])
     const [alt, setAlt] = useState("")
@@ -121,7 +122,7 @@ function ArticleMenu({ setButtons, category }) {
     }
 
     const cancelButton = () => {
-
+        setContent(<AdminArticlesList setButtons={setButtons} category={category} setContent={setContent}/>)
     }
 
     const getLanguages = async () => {
