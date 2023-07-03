@@ -18,10 +18,15 @@ $pointer-cursor: pointer;
     }
 
     th, td {
+      cursor: pointer;
       border-bottom: 1px solid #ccc;
       box-shadow: 0px 0.5px 1px #ccc;
       padding: 8px;
       text-align: right;
+
+      .align_right_active {
+        color: #229D1F;
+      }
 
       &:first-child {
         text-align: left;
@@ -44,13 +49,24 @@ $pointer-cursor: pointer;
       align-items: center;
       margin-bottom: 20px;
 
-      span {
+      .user_admin_header {
+        display: flex;
+        justify-content: space-between;
+        .admin_ch {
+          padding-left: 30px;
+        }
+      }
+
+      span, img {
         cursor: $pointer-cursor;
       }
 
       .search_icon {
         font-size: 20px;
-        color: black;
+        height: 25px;
+        width: 25px;
+        margin-right: 20px;
+        color: #989898;
       }
     }
 
@@ -121,7 +137,23 @@ $pointer-cursor: pointer;
       margin-top: 10px;
       font-weight: bold;
     }
+    .inner_content {
+      padding: 20px;
+      .align_right {
+        margin-left: auto;
+        display: flex;
+        justify-content: space-between;
+        padding-bottom: 18px;
+        padding-left: 1px;
+        .row_name {
+          font-weight: bold;
+        }
 
+        .content_info {
+          padding-right: 0.1vw;
+        }
+      }
+    }
     .registration_date {
       text-align: center;
       margin-top: 5px;
