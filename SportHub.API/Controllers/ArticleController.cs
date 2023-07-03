@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using SportHub.API.Infrastructure.Interfaces;
 using SportHub.Business;
 using SportHub.Data.DTO;
 using SportHub.Data.Entities;
@@ -12,23 +14,42 @@ namespace SportHub.API.Controllers
 	public class ArticleController : ControllerBase
 	{
 		private readonly IArticleService _articlesService;
+		private readonly IImageStorageService _imageStorageService;
 		private readonly ILogger<ArticleController> _logger;
 		private readonly IMapper _mapper;
 
 		public ArticleController(IArticleService articlesService, ILogger<ArticleController> logger,
-			IMapper mapper)
+			IMapper mapper, IImageStorageService imageStorageService)
 		{
 			_articlesService = articlesService;
 			_logger = logger;
 			_mapper = mapper;
+			_imageStorageService = imageStorageService;
 		}
 
 		[HttpPost(Name = "Article")]
-		public async Task<IActionResult> CreateArticleAsync([FromBody] Article article)
+		public async Task<IActionResult> CreateArticleAsync()
 		{
 			try
 			{
-				await _articlesService.CreateArticleAsync(article);
+				var file = Request.Form.Files["file"];
+				var articleJson = Request.Form["article"];
+				var imageJson = Request.Form["image"];
+
+				if (file == null || string.IsNullOrEmpty(articleJson) || string.IsNullOrEmpty(imageJson))
+				{
+					return BadRequest("Missing input data.");
+				}
+
+				var articleCreateDto = JsonConvert.DeserializeObject<ArticleCreateDto>(articleJson);
+				var article = _mapper.Map<ArticleCreateDto, Article>(articleCreateDto);
+
+				var imageCreateDto = JsonConvert.DeserializeObject<ImageCreateDto>(imageJson);
+				var image = _mapper.Map<ImageCreateDto, Image>(imageCreateDto);
+
+				var fileName = await _imageStorageService.SaveImageFile(file);
+				await _articlesService.CreateArticleAsync(article, image, fileName);
+
 				return Ok();
 			}
 			catch (Exception ex)
@@ -37,8 +58,8 @@ namespace SportHub.API.Controllers
 				return BadRequest(ex.Message);
 			}
 		}
-		
-		[HttpGet("GetArticleByIdAndLanguage")]
+
+		[HttpGet(Name = "GetArticleByIdAndLanguage")]
 		public async Task<IActionResult> GetArticleByIdAndLanguageAsync([FromQuery] string id, string language)
 		{
 			try
@@ -179,5 +200,21 @@ namespace SportHub.API.Controllers
 				return BadRequest(ex.Message);
 			}
 		}
-	}
+
+        [HttpGet("GetPageOfSearchArticles")]
+        public async Task<IActionResult> GetPageOfSearchArticlesAsync([FromQuery] string language, [FromQuery] string findText, [FromQuery] int pageNumber, [FromQuery] int pageSize)
+        {
+            try
+            {
+                var pageOfArticles = await _articlesService.GetPageOfSearchArticlesAsync(language, findText, pageNumber, pageSize);
+
+                return Ok(pageOfArticles);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return BadRequest(ex.Message);
+            }
+        }
+    }
 }

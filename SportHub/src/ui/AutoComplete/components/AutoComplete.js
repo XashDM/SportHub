@@ -3,7 +3,7 @@ import TextFieldStyles from "../styles/TextFieldStyles"
 import Autocomplete from '@mui/material/Autocomplete'
 import styles from "../styles/style.module.scss"
 
-export default function AutoComplete({label, disabled, value, setValue, options, areOptionsObjects=false, optionLable=null, propertyToCompare=null, required=false}){
+export default function AutoComplete({label, setValue, disabled, value, areOptionsObjects=false, optionLable=null, propertyToCompare=null, required=false, ...props}){
 
     const [autocompleteValue, setAutocompleteValue] = useState(value)
     useEffect(() => setValue(autocompleteValue), [autocompleteValue])
@@ -13,9 +13,9 @@ export default function AutoComplete({label, disabled, value, setValue, options,
             <div className={styles.content}>
                 <div className={styles.label}>{label}</div>
                 <Autocomplete
+                    {...props}
                     sx = {{ width: "100%"}}
                     disabled = {disabled}
-                    options = {options}
                     value = {value}
                     onChange = {(event, newValue) => {setAutocompleteValue(newValue)}}
                     isOptionEqualToValue={(option, value) =>

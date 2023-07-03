@@ -17,6 +17,11 @@ namespace SportHub.Business.Services
             var location = await _locationRepository.GetLocationByIdAsync(id);
             
             return location;
-        }
-    }
+		}
+
+		public async Task<IEnumerable<Location>> GetLocationsAsync()
+		{
+			return await _locationRepository.GetLocationsAsync();
+		}
+	}
 }

@@ -60,7 +60,11 @@ namespace SportHub.API
             CreateMap<BreakDown, BreakDownRequest>();
             CreateMap<BreakDownRequest, BreakDown>()
                 .ForMember(dest => dest.BreakDownId, opt => opt.MapFrom(src => ""));
-        }
+
+            CreateMap<ArticleInfoCreateDto, ArticleInfo>();
+			CreateMap<ArticleCreateDto, Article>();
+			CreateMap<ImageCreateDto, Image>();
+		}
     }
 }
 

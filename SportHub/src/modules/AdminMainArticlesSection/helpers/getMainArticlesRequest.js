@@ -1,8 +1,9 @@
 import axios from "axios"
 
 const getMainArticlesRequest = async (languageId) => {
+    const backendHost = process.env.REACT_APP_BACKEND_HOST
     try {
-        return await axios.get('https://localhost:7168/Article/MainArticlesDetails?languageId=' + languageId)
+        return await axios.get(`${backendHost}/Article/MainArticlesDetails?languageId=${languageId}`)
     } catch (error) {
         console.log(error)
         return error.code
