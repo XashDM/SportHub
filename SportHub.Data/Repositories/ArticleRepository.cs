@@ -15,7 +15,7 @@ public class ArticleRepository : IArticleRepository
 		_exceptionalColumns = new string[]{"LastArticles", "NumberOfArticles"};
 	}
 
-	public async Task CreateArticleAsync(Article article)
+	public async Task CreateArticleAsync(Article article, Image image)
 	{
 		using (var connection = _dbConnectionFactory.GetConnection())
 		{
@@ -23,12 +23,13 @@ public class ArticleRepository : IArticleRepository
 
 			using (var transaction = connection.BeginTransaction())
 			{
-				var sqlArticle =
-					"INSERT INTO Articles (ArticleId, PublishingDate, AuthorId, SubCategoryId, TeamId, ImageId, LocationId, Published, ShowComments) " +
-					"VALUES (@ArticleId, @PublishingDate, @AuthorId, @SubCategoryId, @TeamId, @ImageId, @LocationId, @Published, @ShowComments)";
+				var sqlImage = "INSERT INTO Images (ImageId, Url, Alt) " +
+				               "VALUES (@ImageId, @Url, @Alt)";
+				var sqlArticle = "INSERT INTO Articles (ArticleId, PublishingDate, AuthorId, CategoryId, SubCategoryId, TeamId, ImageId, LocationId, Published, ShowComments) " +
+				                 "VALUES (@ArticleId, @PublishingDate, @AuthorId, @CategoryId, @SubCategoryId, @TeamId, @ImageId, @LocationId, @Published, @ShowComments)";
 				var sqlInfos = "INSERT INTO ArticleInfos (LanguageId, ArticleId, Title, Subtitle, MainText) " +
 				               "VALUES (@LanguageId, @ArticleId, @Title, @Subtitle, @MainText)";
-
+				await connection.ExecuteAsync(sqlImage, image, transaction);
 				await connection.ExecuteAsync(sqlArticle, article, transaction);
 				await connection.ExecuteAsync(sqlInfos, article.Infos, transaction);
 
@@ -54,8 +55,7 @@ public class ArticleRepository : IArticleRepository
 		}
 	}
 
-	public async Task<IEnumerable<LanguageSpecificArticle>> GetAllArticlesByFiltersAsync(string languageId,
-		ArticleSearchOptions articleSearchOptions)
+	public async Task<IEnumerable<LanguageSpecificArticle>> GetAllArticlesByFiltersAsync(string languageId, ArticleSearchOptions articleSearchOptions)
 	{
 		using (var connection = _dbConnectionFactory.GetConnection())
 		{
@@ -92,8 +92,7 @@ public class ArticleRepository : IArticleRepository
 		}
 	}
 
-	public async Task<LanguageSpecificArticle> GetArticleByArticleIdAndLanguageIdAsync(string articleId,
-		string languageId)
+	public async Task<LanguageSpecificArticle> GetArticleByArticleIdAndLanguageIdAsync(string articleId, string languageId)
 	{
 		using (var connection = _dbConnectionFactory.GetConnection())
 		{
@@ -103,9 +102,7 @@ public class ArticleRepository : IArticleRepository
 								LEFT JOIN ArticleInfos ON Articles.ArticleId = ArticleInfos.ArticleId AND ArticleInfos.LanguageId = Language.LanguageId
 								WHERE Articles.ArticleId = @articleId;";
 
-			var article =
-				await connection.QueryFirstOrDefaultAsync<LanguageSpecificArticle>(query,
-					new { articleId, languageId });
+			var article = await connection.QueryFirstOrDefaultAsync<LanguageSpecificArticle>(query, new { articleId, languageId });
 
 			return article;
 		}
@@ -172,32 +169,56 @@ public class ArticleRepository : IArticleRepository
 		}
 	}
 
-	public async Task<IEnumerable<LanguageSpecificArticle>> GetPageOfArticlesByCategoryAsync(string language,
-		string categoryId, int pageNumber)
+	public async Task<IEnumerable<LanguageSpecificArticle>> GetPageOfArticlesByCategoryAsync(string language, string categoryId, int pageNumber)
 	{
 		var pageSize = 2;
 		using (var connection = _dbConnectionFactory.GetConnection())
 		{
 			connection.Open();
-			var offset = (pageNumber - 1) * pageSize;
-
+			
 			var articleQuery = @"SELECT * FROM Articles 
          						LEFT JOIN SubCategories ON SubCategories.SubCategoryId = Articles.SubCategoryId
          						LEFT JOIN `Language` ON Language.ShortTitle = @language
 								LEFT JOIN ArticleInfos ON Articles.ArticleId = ArticleInfos.ArticleId AND ArticleInfos.LanguageId = Language.LanguageId
 								WHERE SubCategories.CategoryId = @categoryId
-								ORDER BY Articles.ArticleId 
-								LIMIT @pageSize 
-								OFFSET @offset";
+								ORDER BY Articles.PublishingDate DESC";
 
-			var pageOfArticles =
-				await connection.QueryAsync<LanguageSpecificArticle>(articleQuery,
-					new { offset, pageSize, categoryId, language });
+			articleQuery = await PaginateQuery(articleQuery, pageNumber, pageSize);
+			var pageOfArticles = await connection.QueryAsync<LanguageSpecificArticle>(articleQuery, new { categoryId, language });
 
 			return pageOfArticles;
 		}
 	}
+	
+	public async Task<IEnumerable<LanguageSpecificArticle>> GetPageOfSearchArticlesAsync(string language, string findText, int pageNumber, int pageSize)
+	{
+		findText = '%' + findText + '%';
+		using (var connection = _dbConnectionFactory.GetConnection())
+		{
+			connection.Open();
+			var articleQuery = @"SELECT * FROM Articles a 
+								JOIN ArticleInfos ai ON a.ArticleId = ai.ArticleId 
+								JOIN Categories c ON a.CategoryId = c.CategoryId 
+								JOIN Subcategories sc ON a.SubCategoryId = sc.SubCategoryId 
+								JOIN Teams t ON a.TeamId = t.TeamId 
+								JOIN Language l ON ai.LanguageId = l.LanguageId 
+								WHERE (
+									ai.MainText LIKE @findText 
+									OR ai.Title LIKE @findText
+									OR ai.SubTitle LIKE @findText
+									OR c.CategoryName LIKE @findText 
+									OR sc.SubCategoryName LIKE @findText 
+									OR t.TeamName LIKE @findText
+								) AND l.shortTitle = @language
+								AND a.Published = true
+								ORDER BY a.PublishingDate DESC";
 
+			articleQuery = await PaginateQuery(articleQuery, pageNumber, pageSize);
+			var pageOfArticles = await connection.QueryAsync<LanguageSpecificArticle>(articleQuery, new { findText, language });
+			return pageOfArticles;
+		}
+	}
+	
 	private bool IsNotFilterColumn(string propertyName)
 	{
 		foreach (var columnName in _exceptionalColumns)
@@ -209,5 +230,12 @@ public class ArticleRepository : IArticleRepository
 		}
 		
 		return true;
+	}
+	
+	private async Task<string> PaginateQuery(string query, int pageNumber, int pageSize)
+	{
+		var offset = (pageNumber - 1) * pageSize;
+		var paginatedQuery = query + $" LIMIT {pageSize} OFFSET {offset}";
+		return paginatedQuery;
 	}
 }
