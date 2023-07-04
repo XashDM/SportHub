@@ -8,14 +8,14 @@ function ProtectedRoute({ roles, children }) {
     const role = userData?.isAdmin ? 'admin' : 'user'
 
 
-    if (!userData) {
-        // User is not authenticated, redirect to login page
-        return <Navigate  to={ROUTES.LOGIN} />
-    }
+    // if (!userData) {
+    //     // User is not authenticated, redirect to login page
+    //     return <Navigate  to={ROUTES.LOGIN} />
+    // }
 
-    if (roles && roles.indexOf(role) === -1) {
-        return <Navigate  to={ROUTES.HOME} />
-    }
+    // if (roles && roles.indexOf(role) === -1) {
+    //     return <Navigate  to={ROUTES.HOME} />
+    // }
 
     return children
 }
