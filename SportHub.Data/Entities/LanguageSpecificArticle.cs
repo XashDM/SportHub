@@ -4,6 +4,7 @@ public class LanguageSpecificArticle
 {
     public DateTime PublishingDate { get; set; }
     public string AuthorId { get; set; } = null!;
+    public string CategoryId { get; set; } = null!;
     public string SubCategoryId { get; set; } = null!;
     public string TeamId { get; set; } = null!;
     public string LocationId { get; set; } = null!;

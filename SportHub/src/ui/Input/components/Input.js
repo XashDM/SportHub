@@ -1,11 +1,12 @@
 import styles from "../styles/style.module.scss"
 import {FormControl} from "@mui/material"
 import InputStyles from "../styles/InputStyles"
-import Label from "./Label"
 import { useTranslation } from "react-i18next"
+import Label from "../../../ui/Label"
 
-function Input({placeholder, label, onClick, isVisible=true, onChange, ...props}){
+function Input({ placeholder, label, onClick, isVisible = true, onChange, value, ...props}){
     const { t } = useTranslation()
+
     return(
         <FormControl variant="standard" className={styles.form__control} {...props}>
             {onClick != null && (
@@ -17,7 +18,8 @@ function Input({placeholder, label, onClick, isVisible=true, onChange, ...props}
             <InputStyles
                 placeholder={placeholder}
                 onChange={onChange}
-                type= {isVisible ? "text" : "password"}/>
+                type= {isVisible ? "text" : "password"}
+                value={value}/>
         </FormControl>
     )
 }

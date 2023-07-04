@@ -29,6 +29,7 @@
 
   .left_arrow{
     width: 5vw;
+    cursor: pointer;
   }
 
   .section_elements {
@@ -50,11 +51,11 @@
   .right_arrow{
     rotate: 180deg;
     width: 5vw;
+    cursor: pointer;
   }
 
   .arrow path{
     fill: var(--color-red-regular);
-    cursor: pointer;
   }
 
   .arrow_disable path{

@@ -2,6 +2,8 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using SportHub.API;
+using SportHub.API.Infrastructure.Interfaces;
+using SportHub.API.Infrastructure.Services;
 using SportHub.Business;
 using SportHub.Business.Implementations;
 using SportHub.Business.Interfaces;
@@ -10,7 +12,12 @@ using SportHub.Data.Factories;
 using SportHub.Data.Interfaces;
 using SportHub.Data.Repositories;
 
-var builder = WebApplication.CreateBuilder(args);
+namespace SportHub.API;
+public class Program
+{
+    public static async Task Main(string[] args)
+    {
+        var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddAutoMapper(typeof(MapperConfig));
 
@@ -22,6 +29,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddScoped<ILocationRepository, LocationRepository>();
+builder.Services.AddScoped<ILocationService, LocationService>();
+
 builder.Services.AddScoped<IImageRepository, ImageRepository>();
 builder.Services.AddScoped<IImageService, ImageService>();
 
@@ -30,6 +40,8 @@ builder.Services.AddScoped<INavigationService, NavigationService>();
 
 builder.Services.AddScoped<IArticleRepository, ArticleRepository>();
 builder.Services.AddScoped<IArticleService, ArticleService>();
+
+builder.Services.AddScoped<IImageStorageService, ImageStorageService>();
 
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
@@ -109,3 +121,6 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+    }
+}
