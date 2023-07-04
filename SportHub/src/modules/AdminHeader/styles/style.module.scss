@@ -7,7 +7,7 @@
 }
 
 .profile_sector {
-  width: 23vw;
+  width: 55vw;
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
@@ -78,4 +78,20 @@
     font-size: 8px;
     color: var(--color-dark-menu-item);
   }
+}
+
+.searchbar {
+  left: 10vw;
+  display: flex;
+  background: var(white);
+  width: 25vw;
+  height: 12vh;
+  font-size: 18px;
+  align-items: center;
+  color: rgb(189, 189, 189);
+  border-right: 1px solid rgb(240, 240, 240);
+}
+
+.blank {
+  width: 100%;
 }

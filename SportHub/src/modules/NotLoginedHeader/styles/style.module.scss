@@ -28,7 +28,6 @@ select::-ms-expand {
   }
 
   .searchbar {
-
     display: flex;
     background: var(white);
     width: 25vw;
@@ -37,11 +36,6 @@ select::-ms-expand {
     align-items: center;
     color: rgb(189, 189, 189);
     border-right: 1px solid rgb(240, 240, 240);
-
-    .img_icon {
-      height: 18px;
-      width: 18px;
-    }
   }
 
   .media {

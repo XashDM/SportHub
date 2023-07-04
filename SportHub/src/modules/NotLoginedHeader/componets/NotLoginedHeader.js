@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next"
 import SelectLanguage from "../../SelectLanguage"
 import SearchDropdownList from "../../SearchDropdownList/components/SearchDropdownList"
 
-const NotLoginedHeader = () =>
+const NotLoginedHeader = ({setIsContentSearch, setContentSearchValue}) =>
 {
     const { t, i18n } = useTranslation()
     const navigate = useNavigate()
@@ -18,11 +18,7 @@ const NotLoginedHeader = () =>
         <HeaderContainer>
             <div className={styles.header}>
                 <div className={styles.searchbar}>
-                    {
-                    //<img className={styles.img_icon} src={'/icons/Magnifying-glass.svg'} ></img>
-                    //<Input className={styles.input} placeholder={t('Header.UserHeader.SearchByCaption')}></Input>
-                    }
-                    <SearchDropdownList/>
+                    <SearchDropdownList setIsContentSearch={setIsContentSearch} setContentSearchValue={setContentSearchValue}/>
                 </div>
                 <div className={styles.media}>
                     <span className={styles.share}>{t('Header.UserHeader.ShareCaption')}</span>
