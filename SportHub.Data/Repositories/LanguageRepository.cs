@@ -63,6 +63,18 @@ namespace SportHub.Data.Repositories
                 return response;
             }
         }
+        
+        public async Task<Language> GetLanguageById(string id)
+        {
+            using (var connection = _dbConnectionFactory.GetConnection())
+            {
+                connection.Open();
+                var sql = $"SELECT * FROM language WHERE LanguageId='{id}';";
+                var response = await connection.QueryFirstOrDefaultAsync<Language>(sql);
+
+                return response;
+            }
+        }
 
         public async Task<IEnumerable<Language>> GetLanguagesAsync()
         {

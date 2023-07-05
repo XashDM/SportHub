@@ -39,6 +39,13 @@ namespace SportHub.Business.Services
 
             return language;
         }
+        
+        public async Task<Language> GetLanguageByIdAsync(string id)
+        {
+            var language = await _languageRepository.GetLanguageById(id);
+
+            return language;
+        }
 
         public async Task<IEnumerable<Language>> GetLanguagesAsync()
         {
