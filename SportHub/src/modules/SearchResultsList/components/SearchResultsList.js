@@ -10,7 +10,7 @@ import InfiniteScroll from "react-infinite-scroll-component"
 const SearchResultsList = ({ contentSearchValue }) => {
   const navigate = useNavigate()
 
-  const { i18n } = useTranslation()
+  const { t, i18n } = useTranslation()
   const [isLoading, setIsLoading] = useState(false)
   const [isLastArticleHaveBeenFetched, setIsLastArticleHaveBeenFetched] = useState(false)
   const [currentPageNumber, setCurrentPageNumber] = useState(PAGE_CONSTANTS.FIRST_PAGE_NUMBER)
@@ -91,8 +91,7 @@ const SearchResultsList = ({ contentSearchValue }) => {
         next={handleArticlesGet}
         className={styles.list_container}
         hasMore={!isLastArticleHaveBeenFetched}
-        loader={<p>Loading...</p>}
-        endMessage={<p>End of search.</p>}
+        loader={<p>{t('LoadingText')}</p>}
       >
         {contentSearchValue && articles.map((article) => (
           <div key={article.id} onClick={() => navigate(ROUTES.LOGIN)} className={styles.option}>
@@ -131,4 +130,4 @@ const SearchResultsList = ({ contentSearchValue }) => {
   )
 }
 
-export default SearchResultsList;
+export default SearchResultsList

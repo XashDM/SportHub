@@ -5,11 +5,12 @@ import styles from "../styles/style.module.scss"
 import { useNavigate } from 'react-router-dom'
 import { ROUTES } from "../../../routes/routes"
 import getSearchArticlesRequest from "../helpers/getSearchArticlesRequest"
+import { useTranslation } from "react-i18next"
 
 const SearchDropdownList = ({ setIsContentSearch, setContentSearchValue }) => {
   const navigate = useNavigate()
 
-  const [currentLanguage, setCurrentLanguage] = useState(localStorage.getItem("i18nextLng"))
+  const { t, i18n } = useTranslation()
 
   const [articles, setArticles] = useState([])
 
@@ -24,7 +25,7 @@ const SearchDropdownList = ({ setIsContentSearch, setContentSearchValue }) => {
 
   const handleArticlesGet = async () => {
     if (inputValue) {
-      const result = await getSearchArticlesRequest(currentLanguage, inputValue, 1, 3)
+      const result = await getSearchArticlesRequest(i18n.language, inputValue, 1, 3)
       console.log(result)
       setArticles(result.data)
     }
@@ -102,7 +103,7 @@ const SearchDropdownList = ({ setIsContentSearch, setContentSearchValue }) => {
         renderInput={(params) => (
           <TextField
             {...params}
-            placeholder="Search by"
+            placeholder={t('Header.UserHeader.SearchByCaption')}
             style={{ width: "100%" }}
             inputProps={{
               ...params.inputProps,
@@ -134,4 +135,4 @@ const SearchDropdownList = ({ setIsContentSearch, setContentSearchValue }) => {
   )
 }
 
-export default SearchDropdownList;
+export default SearchDropdownList
