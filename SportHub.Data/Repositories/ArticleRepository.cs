@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Data;
 using System.IO.Enumeration;
+using System.Transactions;
 using Dapper;
 using SportHub.Data.Entities;
 using SportHub.Data.Interfaces;
@@ -9,75 +11,77 @@ namespace SportHub.Data.Repositories;
 public class ArticleRepository : IArticleRepository
 {
 	private readonly IDbConnectionFactory _dbConnectionFactory;
+	private readonly IImageRepository _imageRepository;
 
-	public ArticleRepository(IDbConnectionFactory dbConnectionFactory)
+	public ArticleRepository(IDbConnectionFactory dbConnectionFactory, IImageRepository imageRepository)
 	{
 		_dbConnectionFactory = dbConnectionFactory;
+		_imageRepository = imageRepository;
 	}
 
 	public async Task CreateArticleAsync(Article article, Image image)
 	{
-		using (var connection = _dbConnectionFactory.GetConnection())
+		using (TransactionScope scope = new TransactionScope())
 		{
-			connection.Open();
-
-			using (var transaction = connection.BeginTransaction())
+			using (var connection = _dbConnectionFactory.GetConnection())
 			{
-				var sqlImage = "INSERT INTO Images (ImageId, Url, Alt) " +
-					  "VALUES (@ImageId, @Url, @Alt)";
+				await _imageRepository.CreateImageAsync(image);
+				connection.Open();
+
 				var sqlArticle = "INSERT INTO Articles (ArticleId, PublishingDate, AuthorId, CategoryId, SubCategoryId, TeamId, ImageId, LocationId, Published, ShowComments) " +
 				"VALUES (@ArticleId, @PublishingDate, @AuthorId, @CategoryId, @SubCategoryId, @TeamId, @ImageId, @LocationId, @Published, @ShowComments)";
-				var sqlInfos = "INSERT INTO ArticleInfos (LanguageId, ArticleId, Title, Subtitle, MainText) " +
-					  "VALUES (@LanguageId, @ArticleId, @Title, @Subtitle, @MainText)";
-				await connection.ExecuteAsync(sqlImage, image, transaction);
-				await connection.ExecuteAsync(sqlArticle, article, transaction);
-				await connection.ExecuteAsync(sqlInfos, article.Infos, transaction);
 
-				transaction.Commit();
+				await connection.ExecuteAsync(sqlArticle, article);
+				await CreateOrUpdateArticleInfoAsync(article.Infos, article.ArticleId);
 			}
+			scope.Complete();
 		}
 	}
 
 	public async Task UpdateArticleAsync(Article article, Image image)
 	{
-		using (var connection = _dbConnectionFactory.GetConnection())
+		using (TransactionScope scope = new TransactionScope())
 		{
-			connection.Open();
-
-			using (var transaction = connection.BeginTransaction())
+			using (var connection = _dbConnectionFactory.GetConnection())
 			{
-				var sqlImage = "INSERT INTO Images (ImageId, Url, Alt) VALUES (@ImageId, @Url, @Alt)";
+				await _imageRepository.CreateImageAsync(image);
+				connection.Open();
+
 				var sqlArticle = "UPDATE Articles SET PublishingDate = @PublishingDate, AuthorId = @AuthorId, CategoryId = @CategoryId, " +
 					"SubCategoryId = @SubCategoryId, TeamId = @TeamId, ImageId = @ImageId, LocationId = @LocationId, Published = @Published, " +
 					"ShowComments = @ShowComments WHERE ArticleId = @ArticleId";
 
-				var sqlInfosUpdate = "UPDATE ArticleInfos SET Title = @Title, Subtitle = @Subtitle, MainText = @MainText " +
-					 "WHERE LanguageId = @LanguageId AND ArticleId = @ArticleId";
+				await connection.ExecuteAsync(sqlArticle, article);
+				await CreateOrUpdateArticleInfoAsync(article.Infos, article.ArticleId);
+			}
+			scope.Complete();
+		}
+	}
 
-				var sqlInfosCreate = "INSERT INTO ArticleInfos (LanguageId, ArticleId, Title, Subtitle, MainText) " +
-					  "VALUES (@LanguageId, @ArticleId, @Title, @Subtitle, @MainText)";
+	private async Task CreateOrUpdateArticleInfoAsync(List<ArticleInfo> infos, string articleId)
+	{
+		using (var connection = _dbConnectionFactory.GetConnection())
+		{
+			var sqlInfosUpdate = "UPDATE ArticleInfos SET Title = @Title, Subtitle = @Subtitle, MainText = @MainText " +
+			 "WHERE LanguageId = @LanguageId AND ArticleId = @ArticleId";
 
-				var sqlInfosFind = $"SELECT LanguageId FROM articleinfos WHERE ArticleId = '{article.ArticleId}'";
+			var sqlInfosCreate = "INSERT INTO ArticleInfos (LanguageId, ArticleId, Title, Subtitle, MainText) " +
+				  "VALUES (@LanguageId, @ArticleId, @Title, @Subtitle, @MainText)";
 
-				var languageIds = new List<string>(await connection.QueryAsync<string>(sqlInfosFind, transaction));
+			var sqlInfosFind = $"SELECT LanguageId FROM articleinfos WHERE ArticleId = '{articleId}'";
 
-				await connection.ExecuteAsync(sqlImage, image, transaction);
+			var languageIds = new List<string>(await connection.QueryAsync<string>(sqlInfosFind));
 
-				await connection.ExecuteAsync(sqlArticle, article, transaction);
-
-				foreach (ArticleInfo info in article.Infos)
+			foreach (ArticleInfo info in infos)
+			{
+				if (languageIds.Contains(info.LanguageId))
 				{
-					if (languageIds.Contains(info.LanguageId))
-					{
-						await connection.ExecuteAsync(sqlInfosUpdate, info, transaction);
-					}
-					else
-					{
-						await connection.ExecuteAsync(sqlInfosCreate, info, transaction);
-					}
+					await connection.ExecuteAsync(sqlInfosUpdate, info);
 				}
-
-				transaction.Commit();
+				else
+				{
+					await connection.ExecuteAsync(sqlInfosCreate, info);
+				}
 			}
 		}
 	}

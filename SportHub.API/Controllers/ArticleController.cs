@@ -59,7 +59,7 @@ namespace SportHub.API.Controllers
 			}
 		}
 
-		[HttpPatch(Name = "Article")]
+		[HttpPut(Name = "Article")]
 		public async Task<IActionResult> UpdateArticleAsync()
 		{
 			try

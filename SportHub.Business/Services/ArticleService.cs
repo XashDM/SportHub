@@ -60,6 +60,8 @@ namespace SportHub.Business.Implementations
 			article.ImageId = imageId;
 			image.ImageId = imageId;
 			image.Url = fileName;
+
+			await _articleRepository.UpdateArticleAsync(article, image);
 		}
 
 		public async Task<(Article, Image)> GetArticleByIdAsync(string articleId)
