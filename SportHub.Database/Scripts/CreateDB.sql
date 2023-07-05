@@ -181,7 +181,7 @@ CREATE TABLE IF NOT EXISTS `SportHub`.`Comments` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-CREATE TABLE IF NOT EXISTS `SportHub`.`MainArticles` (
+CREATE TABLE IF NOT EXISTS `SportHub`.`MainArticle` (
   `MainArticleId` VARCHAR(36) NOT NULL,
   `ArticleId` VARCHAR(36) NOT NULL,
   `LanguageId` VARCHAR(36) NOT NULL,
@@ -203,3 +203,37 @@ CREATE TABLE IF NOT EXISTS `SportHub`.`MainArticles` (
     ON UPDATE NO ACTION
     )
   ENGINE = InnoDB;
+
+CREATE TABLE IF NOT EXISTS `SportHub`.`BreakDown` (
+    `BreakDownId` VARCHAR(36) NOT NULL,
+    `LanguageId` VARCHAR(36) NOT NULL,
+    `CategoryId` VARCHAR(36) NOT NULL,
+    `SubCategoryId` VARCHAR(36) NULL,
+    `TeamId` VARCHAR(36) NULL,
+    PRIMARY KEY (`BreakDownId`),
+    UNIQUE INDEX `id_UNIQUE` (`BreakDownId` ASC) VISIBLE,
+    INDEX `fk_Language_idx` (`LanguageId` ASC) VISIBLE,
+    INDEX `fk_Category_idx` (`CategoryId` ASC) VISIBLE,
+    INDEX `fk_SubCategory_idx` (`SubCategoryId` ASC) VISIBLE,
+    INDEX `fk_Team_idx` (`TeamId` ASC) VISIBLE,
+    CONSTRAINT `fk_LanguageBreakDown`
+        FOREIGN KEY (`LanguageId`)
+            REFERENCES `SportHub`.`Language` (`LanguageId`)
+            ON DELETE NO ACTION
+            ON UPDATE NO ACTION,
+    CONSTRAINT `fk_Category`
+        FOREIGN KEY (`CategoryId`)
+            REFERENCES `SportHub`.`Categories` (`CategoryId`)
+            ON DELETE NO ACTION
+            ON UPDATE NO ACTION,
+    CONSTRAINT `fk_SubCategory`
+        FOREIGN KEY (`SubCategoryId`)
+            REFERENCES `SportHub`.`SubCategories` (`SubCategoryId`)
+            ON DELETE NO ACTION
+            ON UPDATE NO ACTION,
+    CONSTRAINT `fk_Team`
+        FOREIGN KEY (`TeamId`)
+            REFERENCES `SportHub`.`Teams` (`TeamId`)
+            ON DELETE NO ACTION
+            ON UPDATE NO ACTION)
+    ENGINE = InnoDB;

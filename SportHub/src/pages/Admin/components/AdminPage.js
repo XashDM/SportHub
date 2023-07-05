@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react'
+import { useAtom } from 'jotai'
 import styles from "../styles/style.module.scss"
 import AdminHeader from "../../../modules/AdminHeader"
 import HorizontalAdminMenu from "../../../modules/HorizontalAdminMenu"
@@ -8,6 +9,7 @@ import AdminMainArticlesSection from "../../../modules/AdminMainArticlesSection"
 import LanguagesManagement from "../../../modules/LanguagesManagement"
 import NavigationSystem from '../../../modules/NavigationAdminSystem'
 import AdminArticlesList from "../../../modules/AdminArticlesList"
+import {adminMenuState} from "../../../store/states/adminMenuState";
 
 
 export default function AdminPage() {
@@ -15,22 +17,33 @@ export default function AdminPage() {
     const [selectedCategory, setSelectedCategory] = useState(null)
     const [content, setContent] = useState(<AdminMainArticlesSection />)
     const [headerButtons, setHeaderButtons] = useState([])
+    const [adminMenu, setAdminMenu] = useAtom(adminMenuState)
+
+    useEffect(() => {
+        setAdminMenu((prev) => ({
+            ...prev, setContent: setContent, setButtons: setHeaderButtons
+        }))
+    }, [])
 
     useEffect(() =>{
-            switch (selectedMenuElement){
-                case SECTION_NAMES["Home"]:
-                    setContent(<AdminMainArticlesSection setButtons={setHeaderButtons} />)
-                    break
-                case "Languages":
-                    setContent(<LanguagesManagement setButtons={setHeaderButtons} />)
-                    break
-                case "IA":
-                    setContent(<NavigationSystem/>)
-                    break
-                default:
-                    setContent(<AdminArticlesList setButtons={setHeaderButtons} category={selectedCategory} setContent={setContent}/>)
-                    break
-            }
+        setAdminMenu((prev) => ({
+            ...prev, category: selectedCategory
+        }))
+
+        switch (selectedMenuElement){
+            case SECTION_NAMES["Home"]:
+                setContent(<AdminMainArticlesSection />)
+                break
+            case "Languages":
+                setContent(<LanguagesManagement />)
+                break
+            case "IA":
+                setContent(<NavigationSystem />)
+                break
+            default:
+                setContent(<AdminArticlesList />)
+                break
+        }
     }, [selectedMenuElement])
 
     return (

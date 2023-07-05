@@ -52,6 +52,9 @@ builder.Services.AddScoped<ISubCategoryService, SubCategoryService>();
 builder.Services.AddScoped<ITeamsRepository, TeamsRepository>();
 builder.Services.AddScoped<ITeamsService, TeamsService>();
 
+builder.Services.AddScoped<IBreakDownRepository, BreakDownRepository>();
+builder.Services.AddScoped<IBreakDownService, BreakDownService>();
+
 builder.Services.AddScoped<IDbConnectionFactory, DbConnectionFactory>();
 
 builder.Services.AddScoped<IEmailService, EmailService>();

@@ -7,9 +7,12 @@ import styles from '../styles/style.module.scss'
 import getMainArticlesRequest from "../helpers/getMainArticlesRequest"
 import postMainArticlesRequest from "../helpers/postMainArticlesRequest"
 import getCategoriesRequest from "../helpers/getCategoriesRequest"
+import {useAtom} from "jotai";
+import {adminMenuState} from "../../../store/states/adminMenuState";
 
-export default function AdminMainArticlesSection({setButtons}){
-
+export default function AdminMainArticlesSection(){
+    const [adminMenu, setAdminMenu] = useAtom(adminMenuState)
+    const { setButtons } = adminMenu
     const [startMainArticlesData, setStartMainArticlesData] = useState([])
     const [mainArticlesData, setMainArticlesData] = useState([])
     const [mainArticlesForms, setMainArticlesForms] = useState([])

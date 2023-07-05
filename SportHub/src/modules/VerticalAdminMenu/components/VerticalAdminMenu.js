@@ -11,18 +11,21 @@ export default function VerticalAdminMenu({currentMenuElement, setCurrentMenuEle
     return (
         <div>
             <div className={styles.vertical_menu}>
-                {verticalMenuElements.map((verticalMenuElement, index) => {
+                {verticalMenuElements.map(({label, isDisabled}, index) => {
                     return <div
                         key={index}
                         onClick={() => {
-                            setCurrentMenuElement(verticalMenuElement)
+                            if(!isDisabled){
+                                setCurrentMenuElement(label)
+                            }
                         }}
                         className={styles.vertical_menu_element}>
 
                         <VerticalAdminMenuElement
-                            name={verticalMenuElement}
-                            hintText={t('AdminPage.VerticalAdminMenu.' + verticalMenuElement)}
-                            isActive={verticalMenuElement === currentMenuElement}  />
+                            name={label}
+                            isDisabled={isDisabled}
+                            hintText={t('AdminPage.VerticalAdminMenu.' + label)}
+                            isActive={label === currentMenuElement}  />
                     </div>
                 })}
             </div>
