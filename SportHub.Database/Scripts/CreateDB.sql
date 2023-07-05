@@ -104,7 +104,7 @@ CREATE TABLE IF NOT EXISTS `SportHub`.`Articles` (
   `CategoryId` VARCHAR(36) NOT NULL,
   `SubCategoryId` VARCHAR(36),
   `TeamId` VARCHAR(36),
-  `LocationId` VARCHAR(36) NOT NULL,
+  `LocationId` VARCHAR(36),
   `Published` TINYINT(2) NOT NULL DEFAULT 0,
   `ShowComments` TINYINT(2) NOT NULL DEFAULT 0,
   PRIMARY KEY (`ArticleId`),
