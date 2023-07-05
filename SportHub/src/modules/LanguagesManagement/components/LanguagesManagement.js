@@ -14,8 +14,12 @@ import deleteLanguageRequest from "../helpers/deleteLanguageRequest"
 import {LANGUAGES_CONSTANTS} from "../../../constants/LanguagesConstants"
 import { useTranslation } from "react-i18next"
 import checkCurrentLanguage from "../../../helpers/checkCurrentLanguage"
+import {useAtom} from "jotai";
+import {adminMenuState} from "../../../store/states/adminMenuState";
 
-function LanguagesManagement({setButtons}) {
+function LanguagesManagement() {
+    const [adminMenu, setAdminMenu] = useAtom(adminMenuState)
+    const { setButtons } = adminMenu
     const { t } = useTranslation()
     const [languages, setLanguages] = useState([])
     const [languagesToAdd, setLanguagesToAdd] = useState([])
@@ -131,7 +135,7 @@ function LanguagesManagement({setButtons}) {
                                 <td key={"showhide"+language.shortTitle}>
                                     <div className={styles.show_hide_container}>
                                         <div>
-                                            <Switch 
+                                            <Switch
                                                 checked={language.isActive}
                                                 onChange={(event) => handleToggleSwitch(event, language.shortTitle)} />
                                         </div>
@@ -150,8 +154,8 @@ function LanguagesManagement({setButtons}) {
                         ))}
                     </tbody>
                 </table>
-                <FlashMessage title={flashTitle} 
-                    content={flashContent} 
+                <FlashMessage title={flashTitle}
+                    content={flashContent}
                     open={openFlashMessage}
                     isSuccess={flashIsSuccess}
                     handleClose={handleCloseFlashMessage} />
@@ -162,7 +166,7 @@ function LanguagesManagement({setButtons}) {
                     handleAdd={handleLanguagesAdd}
                     handleClose={handleClosePopUpAddLanguages}
                     languagesToAdd={languagesToAdd}
-                    setLanguagesToAdd={setLanguagesToAdd} 
+                    setLanguagesToAdd={setLanguagesToAdd}
                     currentLanguages={languages}/>
             </div>
         </div>
