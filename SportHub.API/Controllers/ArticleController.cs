@@ -126,7 +126,7 @@ namespace SportHub.API.Controllers
 		[HttpGet( "~/AllArticlesByFilters")]
 		public async Task<IActionResult> GetArticlesByFiltersAsync([FromQuery] string languageId, string articleId = null, string authorId = null,
 			string categoryId = null, string subcategoryId = null, string teamId = null, string locationId = null, bool? published = null,
-			bool? showComments = null)
+			bool? showComments = null, bool? lastArticles = null, int? numberOfArticles = null)
 		{
 			try
 			{
@@ -140,7 +140,9 @@ namespace SportHub.API.Controllers
 						TeamId = teamId,
 						LocationId = locationId,
 						Published = published,
-						ShowComments = showComments
+						ShowComments = showComments,
+						LastArticles = lastArticles,
+						NumberOfArticles = numberOfArticles
 					});
 				return Ok(articles);
 			}
@@ -219,7 +221,7 @@ namespace SportHub.API.Controllers
         {
             try
             {
-                IEnumerable<LanguageSpecificArticle> response = await _articlesService.GetMainArticlesDetailsByLanguageIdAsync(languageId);
+                IEnumerable<FullLanguageSpecificArticle> response = await _articlesService.GetMainArticlesDetailsByLanguageIdAsync(languageId);
                 return Ok(response);
             }
             catch (Exception exception)

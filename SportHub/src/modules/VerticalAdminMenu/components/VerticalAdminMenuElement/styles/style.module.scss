@@ -1,3 +1,7 @@
+.disabled{
+  background: var(--color-light-gray);
+  padding: 4px;
+}
 .active:hover, .inactive:hover {
   cursor: pointer;
 }

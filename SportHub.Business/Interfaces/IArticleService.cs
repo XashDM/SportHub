@@ -8,15 +8,14 @@ namespace SportHub.Business
 		Task CreateArticleAsync(Article article, Image image, string fileName);
 		Task UpdateArticleAsync(Article article, Image image, string fileName);
 		Task<(Article, Image)> GetArticleByIdAsync(string articleId);
-		Task<LanguageSpecificArticle> GetArticleByIdAndLanguageAsync(string id, string language);
-		Task<LanguageSpecificArticle> GetArticleByArticleIdAndLanguageIdAsync(string articleId, string languageId);
-
-		Task<IEnumerable<LanguageSpecificArticle>> GetAllArticlesByFiltersAsync(string languageId, ArticleSearchOptions articleSearchOptions);
+		Task<FullLanguageSpecificArticle> GetArticleByIdAndLanguageAsync(string id, string language);
+		Task<IEnumerable<FullLanguageSpecificArticle>> GetPageOfArticlesByCategoryAsync(string language, string categoryId, int pageNumber);
+		Task<IEnumerable<FullLanguageSpecificArticle>> GetPageOfSearchArticlesAsync(string language, string findText, int pageNumber, int pageSize);
+		Task<FullLanguageSpecificArticle> GetArticleByIdAndLanguageIdAsync(string articleId, string languageId);
+		Task<IEnumerable<FullLanguageSpecificArticle>> GetAllArticlesByFiltersAsync(string languageId, ArticleSearchOptions articleSearchOptions);
 		Task<IEnumerable<MainArticleInfo>> GetMainArticlesAsync(string language);
 		Task<IEnumerable<MainArticle>> GetMainArticlesByLanguageIdAsync(string languageId);
 		Task CreateMainArticlesAsync(IEnumerable<MainArticle> mainArticles);
-		Task<IEnumerable<LanguageSpecificArticle>> GetMainArticlesDetailsByLanguageIdAsync(string languageId);
-		Task<IEnumerable<FullLanguageSpecificArticle>> GetPageOfArticlesByCategoryAsync(string language, string categoryId, int pageNumber);
-		Task<IEnumerable<FullLanguageSpecificArticle>> GetPageOfSearchArticlesAsync(string language, string findText, int pageNumber, int pageSize);
-    }
+		Task<IEnumerable<FullLanguageSpecificArticle>> GetMainArticlesDetailsByLanguageIdAsync(string languageId);
+	}
 }

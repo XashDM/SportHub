@@ -10,4 +10,6 @@ public class ArticleSearchOptions
     public string LocationId { get; set; } = null!;
     public bool? Published { get; set; }
     public bool? ShowComments { get; set; }
+    public bool? LastArticles { get; set; }
+    public int? NumberOfArticles { get; set; }
 }

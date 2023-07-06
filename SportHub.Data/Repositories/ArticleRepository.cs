@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Data;
-using System.IO.Enumeration;
+﻿using System;
 using System.Transactions;
 using Dapper;
 using SportHub.Data.Entities;
@@ -12,10 +10,11 @@ public class ArticleRepository : IArticleRepository
 {
 	private readonly IDbConnectionFactory _dbConnectionFactory;
 	private readonly IImageRepository _imageRepository;
-
+	private readonly string[] _exceptionalColumns;
 	public ArticleRepository(IDbConnectionFactory dbConnectionFactory, IImageRepository imageRepository)
 	{
 		_dbConnectionFactory = dbConnectionFactory;
+		_exceptionalColumns = new string[]{"LastArticles", "NumberOfArticles"};
 		_imageRepository = imageRepository;
 	}
 
@@ -118,12 +117,13 @@ public class ArticleRepository : IArticleRepository
 								LEFT JOIN ArticleInfos ON Articles.ArticleId = ArticleInfos.ArticleId AND ArticleInfos.LanguageId = Language.LanguageId
 								WHERE Articles.ArticleId = @id;";
 
-			var article = await connection.QueryFirstOrDefaultAsync<LanguageSpecificArticle>(articleQuery, new {id, language});
-			
+			var article =
+				await connection.QueryFirstOrDefaultAsync<LanguageSpecificArticle>(articleQuery, new { id, language });
+
 			return article;
 		}
 	}
-	
+
 	public async Task<IEnumerable<LanguageSpecificArticle>> GetAllArticlesByFiltersAsync(string languageId, ArticleSearchOptions articleSearchOptions)
 	{
 		using (var connection = _dbConnectionFactory.GetConnection())
@@ -132,21 +132,35 @@ public class ArticleRepository : IArticleRepository
 			var query = $"SELECT * FROM Articles" +
 			            $" LEFT JOIN ArticleInfos ON Articles.ArticleId = ArticleInfos.ArticleId" +
 			            $" where ArticleInfos.languageId = {languageId}";
-			
+
 			foreach (var property in articleSearchOptions.GetType().GetProperties())
 			{
-				if (property.GetValue(articleSearchOptions) != null)
+				string propertyName = property.Name;
+				object? propertyValue = property.GetValue(articleSearchOptions);
+
+				if (propertyValue != null && IsNotFilterColumn(propertyName))
 				{
-					query += $" and Articles.{property.Name} = {property.GetValue(articleSearchOptions)}";
+					query += $" and Articles.{propertyName} = {propertyValue}";
 				}
 			}
 
+			if (articleSearchOptions.LastArticles != null)
+			{
+				query += " ORDER BY PublishingDate ";
+				query += (bool)articleSearchOptions.LastArticles ? "DESC" : "ASC";
+			}
+
+			if (articleSearchOptions.NumberOfArticles != null)
+			{
+				query += $" LIMIT {articleSearchOptions.NumberOfArticles}";
+			}
+
 			var articles = await connection.QueryAsync<LanguageSpecificArticle>(query);
-			
+
 			return articles;
 		}
 	}
-	
+
 	public async Task<LanguageSpecificArticle> GetArticleByArticleIdAndLanguageIdAsync(string articleId, string languageId)
 	{
 		using (var connection = _dbConnectionFactory.GetConnection())
@@ -157,11 +171,12 @@ public class ArticleRepository : IArticleRepository
 								LEFT JOIN ArticleInfos ON Articles.ArticleId = ArticleInfos.ArticleId AND ArticleInfos.LanguageId = Language.LanguageId
 								WHERE Articles.ArticleId = @articleId;";
 
-			var article = await connection.QueryFirstOrDefaultAsync<LanguageSpecificArticle>(query, new {articleId, languageId});
-			
+			var article = await connection.QueryFirstOrDefaultAsync<LanguageSpecificArticle>(query, new { articleId, languageId });
+
 			return article;
 		}
 	}
+
 	public async Task<IEnumerable<MainArticle>> GetMainArticlesAsync(string language)
 	{
 		using (var connection = _dbConnectionFactory.GetConnection())
@@ -170,25 +185,25 @@ public class ArticleRepository : IArticleRepository
 			var sql = @"SELECT MainArticle.* FROM MainArticle 
 						LEFT JOIN Language langTable ON langTable.ShortTitle = @language
 						WHERE MainArticle.LanguageId = langTable.LanguageId";
-			
-			var mainArticles = await connection.QueryAsync<MainArticle>(sql, new {language});
+
+			var mainArticles = await connection.QueryAsync<MainArticle>(sql, new { language });
 
 			return mainArticles;
 		}
 	}
-	
+
 	public async Task<IEnumerable<MainArticle>> GetMainArticlesByLanguageIdAsync(string languageId)
 	{
 		using (var connection = _dbConnectionFactory.GetConnection())
 		{
 			connection.Open();
-			var query = $"SELECT * FROM MainArticles where LanguageId='{languageId}';";
+			var query = $"SELECT * FROM MainArticle where LanguageId='{languageId}';";
 			var response = await connection.QueryAsync<MainArticle>(query);
-            
+
 			return response;
 		}
 	}
-	
+
 	public async Task CreateMainArticlesAsync(IEnumerable<MainArticle> mainArticles)
 	{
 		using (var connection = _dbConnectionFactory.GetConnection())
@@ -197,16 +212,17 @@ public class ArticleRepository : IArticleRepository
 			using (var transaction = connection.BeginTransaction())
 			{
 				string query;
-				
+
 				string languageId = mainArticles.First().LanguageId;
 				await DeleteAllMainArticlesByLanguageIdAsync(languageId);
-				
+
 				foreach (var mainArticle in mainArticles)
 				{
-					query = $"INSERT INTO MainArticles(MainArticleId, ArticleId, LanguageId, `Order`)" +
-					            " VALUES(@MainArticleId, @ArticleId, @LanguageId, @Order);";
+					query = $"INSERT INTO MainArticle(MainArticleId, ArticleId, LanguageId, `Order`)" +
+					        " VALUES(@MainArticleId, @ArticleId, @LanguageId, @Order);";
 					await connection.ExecuteAsync(query, mainArticle);
 				}
+
 				transaction.Commit();
 			}
 		}
@@ -217,7 +233,7 @@ public class ArticleRepository : IArticleRepository
 		using (var connection = _dbConnectionFactory.GetConnection())
 		{
 			connection.Open();
-			var query = $"DELETE FROM MainArticles WHERE LanguageId='{languageId}';";
+			var query = $"DELETE FROM MainArticle WHERE LanguageId='{languageId}';";
 			await connection.ExecuteAsync(query);
 		}
 	}
@@ -242,7 +258,7 @@ public class ArticleRepository : IArticleRepository
 			return pageOfArticles;
 		}
 	}
-
+	
 	public async Task<IEnumerable<LanguageSpecificArticle>> GetPageOfSearchArticlesAsync(string language, string findText, int pageNumber, int pageSize)
 	{
 		findText = '%' + findText + '%';
@@ -271,11 +287,24 @@ public class ArticleRepository : IArticleRepository
 			return pageOfArticles;
 		}
 	}
-
-    private async Task<string> PaginateQuery(string query, int pageNumber, int pageSize)
+	
+	private bool IsNotFilterColumn(string propertyName)
 	{
-        var offset = (pageNumber - 1) * pageSize;
-        var paginatedQuery = query + $" LIMIT {pageSize} OFFSET {offset}";
-        return paginatedQuery;
-    }
+		foreach (var columnName in _exceptionalColumns)
+		{
+			if (propertyName == columnName)
+			{
+				return false;
+			}
+		}
+		
+		return true;
+	}
+	
+	private async Task<string> PaginateQuery(string query, int pageNumber, int pageSize)
+	{
+		var offset = (pageNumber - 1) * pageSize;
+		var paginatedQuery = query + $" LIMIT {pageSize} OFFSET {offset}";
+		return paginatedQuery;
+	}
 }
