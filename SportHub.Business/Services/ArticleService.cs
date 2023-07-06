@@ -49,7 +49,35 @@ namespace SportHub.Business.Implementations
 
 			await _articleRepository.CreateArticleAsync(article, image);
 		}
-		
+
+		public async Task UpdateArticleAsync(Article article, Image image, string fileName)
+		{
+			var articleId = article.ArticleId;
+
+			foreach (var el in article.Infos)
+			{
+				el.ArticleId = articleId;
+			}
+			var imageId = fileName.Substring(0, fileName.IndexOf('.'));
+
+			article.ImageId = imageId;
+			image.ImageId = imageId;
+			image.Url = fileName;
+
+			await _articleRepository.UpdateArticleAsync(article, image);
+		}
+
+		public async Task<(Article, Image)> GetArticleByIdAsync(string articleId)
+		{
+			var article = await _articleRepository.GetArticleByIdAsync(articleId);
+			if (article == null)
+				throw new Exception("Not found");
+			var image = await _imageService.GetImageById(article.ImageId);
+			(Article article, Image image) result = (article, image);
+
+			return result;
+		}
+
 		public async Task<FullLanguageSpecificArticle> GetArticleByIdAndLanguageAsync(string id, string language)
 		{
 			var article = await MapToFullLanguageSpecificArticles( new []{await _articleRepository.GetArticleByIdAndLanguageAsync(id, language)});

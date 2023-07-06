@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Transactions;
 using Dapper;
 using SportHub.Data.Entities;
 using SportHub.Data.Interfaces;
@@ -8,33 +9,101 @@ namespace SportHub.Data.Repositories;
 public class ArticleRepository : IArticleRepository
 {
 	private readonly IDbConnectionFactory _dbConnectionFactory;
+	private readonly IImageRepository _imageRepository;
 	private readonly string[] _exceptionalColumns;
-	public ArticleRepository(IDbConnectionFactory dbConnectionFactory)
+	public ArticleRepository(IDbConnectionFactory dbConnectionFactory, IImageRepository imageRepository)
 	{
 		_dbConnectionFactory = dbConnectionFactory;
 		_exceptionalColumns = new string[]{"LastArticles", "NumberOfArticles"};
+		_imageRepository = imageRepository;
 	}
 
 	public async Task CreateArticleAsync(Article article, Image image)
 	{
+		using (TransactionScope scope = new TransactionScope())
+		{
+			using (var connection = _dbConnectionFactory.GetConnection())
+			{
+				await _imageRepository.CreateImageAsync(image);
+				connection.Open();
+
+				var sqlArticle = "INSERT INTO Articles (ArticleId, PublishingDate, AuthorId, CategoryId, SubCategoryId, TeamId, ImageId, LocationId, Published, ShowComments) " +
+				"VALUES (@ArticleId, @PublishingDate, @AuthorId, @CategoryId, @SubCategoryId, @TeamId, @ImageId, @LocationId, @Published, @ShowComments)";
+
+				await connection.ExecuteAsync(sqlArticle, article);
+				await CreateOrUpdateArticleInfoAsync(article.Infos, article.ArticleId);
+			}
+			scope.Complete();
+		}
+	}
+
+	public async Task UpdateArticleAsync(Article article, Image image)
+	{
+		using (TransactionScope scope = new TransactionScope())
+		{
+			using (var connection = _dbConnectionFactory.GetConnection())
+			{
+				await _imageRepository.CreateImageAsync(image);
+				connection.Open();
+
+				var sqlArticle = "UPDATE Articles SET PublishingDate = @PublishingDate, AuthorId = @AuthorId, CategoryId = @CategoryId, " +
+					"SubCategoryId = @SubCategoryId, TeamId = @TeamId, ImageId = @ImageId, LocationId = @LocationId, Published = @Published, " +
+					"ShowComments = @ShowComments WHERE ArticleId = @ArticleId";
+
+				await connection.ExecuteAsync(sqlArticle, article);
+				await CreateOrUpdateArticleInfoAsync(article.Infos, article.ArticleId);
+			}
+			scope.Complete();
+		}
+	}
+
+	private async Task CreateOrUpdateArticleInfoAsync(List<ArticleInfo> infos, string articleId)
+	{
+		using (var connection = _dbConnectionFactory.GetConnection())
+		{
+			var sqlInfosUpdate = "UPDATE ArticleInfos SET Title = @Title, Subtitle = @Subtitle, MainText = @MainText " +
+			 "WHERE LanguageId = @LanguageId AND ArticleId = @ArticleId";
+
+			var sqlInfosCreate = "INSERT INTO ArticleInfos (LanguageId, ArticleId, Title, Subtitle, MainText) " +
+				  "VALUES (@LanguageId, @ArticleId, @Title, @Subtitle, @MainText)";
+
+			var sqlInfosFind = $"SELECT LanguageId FROM articleinfos WHERE ArticleId = '{articleId}'";
+
+			var languageIds = new List<string>(await connection.QueryAsync<string>(sqlInfosFind));
+
+			foreach (ArticleInfo info in infos)
+			{
+				if (languageIds.Contains(info.LanguageId))
+				{
+					await connection.ExecuteAsync(sqlInfosUpdate, info);
+				}
+				else
+				{
+					await connection.ExecuteAsync(sqlInfosCreate, info);
+				}
+			}
+		}
+	}
+
+	public async Task<Article> GetArticleByIdAsync(string articleId)
+	{
 		using (var connection = _dbConnectionFactory.GetConnection())
 		{
 			connection.Open();
+			var articleQuery = "SELECT * FROM Articles " +
+								$"WHERE ArticleId = '{articleId}';";
+			var articleInfoQuery = "SELECT * FROM ArticleInfos " +
+								$"WHERE ArticleId = '{articleId}';";
 
-			using (var transaction = connection.BeginTransaction())
+			var article = await connection.QueryFirstOrDefaultAsync<Article>(articleQuery);
+
+			if (article != null)
 			{
-				var sqlImage = "INSERT INTO Images (ImageId, Url, Alt) " +
-				               "VALUES (@ImageId, @Url, @Alt)";
-				var sqlArticle = "INSERT INTO Articles (ArticleId, PublishingDate, AuthorId, CategoryId, SubCategoryId, TeamId, ImageId, LocationId, Published, ShowComments) " +
-				                 "VALUES (@ArticleId, @PublishingDate, @AuthorId, @CategoryId, @SubCategoryId, @TeamId, @ImageId, @LocationId, @Published, @ShowComments)";
-				var sqlInfos = "INSERT INTO ArticleInfos (LanguageId, ArticleId, Title, Subtitle, MainText) " +
-				               "VALUES (@LanguageId, @ArticleId, @Title, @Subtitle, @MainText)";
-				await connection.ExecuteAsync(sqlImage, image, transaction);
-				await connection.ExecuteAsync(sqlArticle, article, transaction);
-				await connection.ExecuteAsync(sqlInfos, article.Infos, transaction);
-
-				transaction.Commit();
+				var articleInfos = await connection.QueryAsync<ArticleInfo>(articleInfoQuery);
+				article.Infos = new List<ArticleInfo>(articleInfos);
 			}
+
+			return article;
 		}
 	}
 

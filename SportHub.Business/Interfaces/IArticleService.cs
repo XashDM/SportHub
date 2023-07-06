@@ -6,6 +6,8 @@ namespace SportHub.Business
 	public interface IArticleService
 	{
 		Task CreateArticleAsync(Article article, Image image, string fileName);
+		Task UpdateArticleAsync(Article article, Image image, string fileName);
+		Task<(Article, Image)> GetArticleByIdAsync(string articleId);
 		Task<FullLanguageSpecificArticle> GetArticleByIdAndLanguageAsync(string id, string language);
 		Task<IEnumerable<FullLanguageSpecificArticle>> GetPageOfArticlesByCategoryAsync(string language, string categoryId, int pageNumber);
 		Task<IEnumerable<FullLanguageSpecificArticle>> GetPageOfSearchArticlesAsync(string language, string findText, int pageNumber, int pageSize);
