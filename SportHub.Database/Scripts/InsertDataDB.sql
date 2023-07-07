@@ -263,27 +263,27 @@ VALUES ('a9596f7b-6a44-4a1e-8f14-4b7a68d3f312', CURRENT_TIMESTAMP, '17442d08-13b
 -- Insert article infos to `ArticleInfos` table
 ----------------------------------------------------------------
 
--- Англійська версія новини про Manchester City
+-- РђРЅРіР»С–Р№СЃСЊРєР° РІРµСЂСЃС–СЏ РЅРѕРІРёРЅРё РїСЂРѕ Manchester City
 INSERT INTO `sporthub`.`articleinfos` (`ArticleId`, `LanguageId`, `Title`, `Subtitle`, `MainText`)
 VALUES ('c695cb5a-971e-4a4f-9b85-62f5d1469763', '0730ca73-567b-44a6-8a6e-e2edac090e2d', 'Manchester City Wins Premier League Title', 'Exciting Victory for Manchester City', 'Manchester City clinched the Premier League title with a stunning performance.');
 
--- Українська версія тієї ж новини про Manchester City
+-- РЈРєСЂР°С—РЅСЃСЊРєР° РІРµСЂСЃС–СЏ С‚С–С”С— Р¶ РЅРѕРІРёРЅРё РїСЂРѕ Manchester City
 INSERT INTO `sporthub`.`articleinfos` (`ArticleId`, `LanguageId`, `Title`, `Subtitle`, `MainText`)
-VALUES ('c695cb5a-971e-4a4f-9b85-62f5d1469763', '30a89530-a01b-48f7-8e39-61ee2b251e1c', 'Манчестер Сіті виграє чемпіонат Англії', 'Захоплива перемога для Манчестер Сіті', 'Манчестер Сіті виборов чемпіонський титул Прем\'єр-ліги захоплюючою грою.');
+VALUES ('c695cb5a-971e-4a4f-9b85-62f5d1469763', '30a89530-a01b-48f7-8e39-61ee2b251e1c', 'РњР°РЅС‡РµСЃС‚РµСЂ РЎС–С‚С– РІРёРіСЂР°С” С‡РµРјРїС–РѕРЅР°С‚ РђРЅРіР»С–С—', 'Р—Р°С…РѕРїР»РёРІР° РїРµСЂРµРјРѕРіР° РґР»СЏ РњР°РЅС‡РµСЃС‚РµСЂ РЎС–С‚С–', 'РњР°РЅС‡РµСЃС‚РµСЂ РЎС–С‚С– РІРёР±РѕСЂРѕРІ С‡РµРјРїС–РѕРЅСЃСЊРєРёР№ С‚РёС‚СѓР» РџСЂРµРј\'С”СЂ-Р»С–РіРё Р·Р°С…РѕРїР»СЋСЋС‡РѕСЋ РіСЂРѕСЋ.');
 
--- Англійська версія новини про виступ NASCAR авто у 24 годинах Леману
+-- РђРЅРіР»С–Р№СЃСЊРєР° РІРµСЂСЃС–СЏ РЅРѕРІРёРЅРё РїСЂРѕ РІРёСЃС‚СѓРї NASCAR Р°РІС‚Рѕ Сѓ 24 РіРѕРґРёРЅР°С… Р›РµРјР°РЅСѓ
 INSERT INTO `sporthub`.`articleinfos` (`ArticleId`, `LanguageId`, `Title`, `Subtitle`, `MainText`)
 VALUES ('a9596f7b-6a44-4a1e-8f54-9b7a68d3f312', '0730ca73-567b-44a6-8a6e-e2edac090e2d', 'NASCAR Cars Shine at 24 Hours of Le Mans', 'Exciting Performance by NASCAR Cars', 'The NASCAR cars showcased their speed and endurance at the prestigious 24 Hours of Le Mans race.');
 
--- Українська версія тієї ж новини про виступ NASCAR авто у 24 годинах Леману
+-- РЈРєСЂР°С—РЅСЃСЊРєР° РІРµСЂСЃС–СЏ С‚С–С”С— Р¶ РЅРѕРІРёРЅРё РїСЂРѕ РІРёСЃС‚СѓРї NASCAR Р°РІС‚Рѕ Сѓ 24 РіРѕРґРёРЅР°С… Р›РµРјР°РЅСѓ
 INSERT INTO `sporthub`.`articleinfos` (`ArticleId`, `LanguageId`, `Title`, `Subtitle`, `MainText`)
-VALUES ('a9596f7b-6a44-4a1e-8f54-9b7a68d3f312', '30a89530-a01b-48f7-8e39-61ee2b251e1c', 'NASCAR Авто показали себе на 24 годинах Ле-Мана', 'Захоплюючий виступ авто NASCAR', 'Автомобілі NASCAR продемонстрували свою швидкість та витривалість на престижній гонці 24 години Ле-Мана.');
+VALUES ('a9596f7b-6a44-4a1e-8f54-9b7a68d3f312', '30a89530-a01b-48f7-8e39-61ee2b251e1c', 'NASCAR РђРІС‚Рѕ РїРѕРєР°Р·Р°Р»Рё СЃРµР±Рµ РЅР° 24 РіРѕРґРёРЅР°С… Р›Рµ-РњР°РЅР°', 'Р—Р°С…РѕРїР»СЋСЋС‡РёР№ РІРёСЃС‚СѓРї Р°РІС‚Рѕ NASCAR', 'РђРІС‚РѕРјРѕР±С–Р»С– NASCAR РїСЂРѕРґРµРјРѕРЅСЃС‚СЂСѓРІР°Р»Рё СЃРІРѕСЋ С€РІРёРґРєС–СЃС‚СЊ С‚Р° РІРёС‚СЂРёРІР°Р»С–СЃС‚СЊ РЅР° РїСЂРµСЃС‚РёР¶РЅС–Р№ РіРѕРЅС†С– 24 РіРѕРґРёРЅРё Р›Рµ-РњР°РЅР°.');
 
--- Англійська версія новини про гонку NASCAR Truck Series у Дайтоні
+-- РђРЅРіР»С–Р№СЃСЊРєР° РІРµСЂСЃС–СЏ РЅРѕРІРёРЅРё РїСЂРѕ РіРѕРЅРєСѓ NASCAR Truck Series Сѓ Р”Р°Р№С‚РѕРЅС–
 INSERT INTO `sporthub`.`articleinfos` (`ArticleId`, `LanguageId`, `Title`, `Subtitle`, `MainText`)
 VALUES ('a9596f7b-6a44-4a1e-8f14-4b7a68d3f312', '0730ca73-567b-44a6-8a6e-e2edac090e2d', 'Exciting NASCAR Truck Series Race at Daytona', 'Thrilling Action and Intense Competition', 'The NASCAR Truck Series race at Daytona delivered an adrenaline-filled experience with thrilling action and intense competition.');
 
--- Українська версія тієї ж новини про гонку NASCAR Truck Series у Дайтоні
+-- РЈРєСЂР°С—РЅСЃСЊРєР° РІРµСЂСЃС–СЏ С‚С–С”С— Р¶ РЅРѕРІРёРЅРё РїСЂРѕ РіРѕРЅРєСѓ NASCAR Truck Series Сѓ Р”Р°Р№С‚РѕРЅС–
 INSERT INTO `sporthub`.`articleinfos` (`ArticleId`, `LanguageId`, `Title`, `Subtitle`, `MainText`)
-VALUES ('a9596f7b-6a44-4a1e-8f14-4b7a68d3f312', '30a89530-a01b-48f7-8e39-61ee2b251e1c', 'Захоплююча гонка NASCAR Truck Series у Дайтоні', 'Екшн і конкуренція на межі', 'Гонка NASCAR Truck Series у Дайтоні принесла захоплюючі емоції з екстремальним екшном та запеклою конкуренцією.');
+VALUES ('a9596f7b-6a44-4a1e-8f14-4b7a68d3f312', '30a89530-a01b-48f7-8e39-61ee2b251e1c', 'Р—Р°С…РѕРїР»СЋСЋС‡Р° РіРѕРЅРєР° NASCAR Truck Series Сѓ Р”Р°Р№С‚РѕРЅС–', 'Р•РєС€РЅ С– РєРѕРЅРєСѓСЂРµРЅС†С–СЏ РЅР° РјРµР¶С–', 'Р“РѕРЅРєР° NASCAR Truck Series Сѓ Р”Р°Р№С‚РѕРЅС– РїСЂРёРЅРµСЃР»Р° Р·Р°С…РѕРїР»СЋСЋС‡С– РµРјРѕС†С–С— Р· РµРєСЃС‚СЂРµРјР°Р»СЊРЅРёРј РµРєС€РЅРѕРј С‚Р° Р·Р°РїРµРєР»РѕСЋ РєРѕРЅРєСѓСЂРµРЅС†С–С”СЋ.');
 
