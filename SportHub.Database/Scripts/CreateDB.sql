@@ -74,7 +74,7 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `SportHub`.`Teams` (
   `TeamId` VARCHAR(36) NOT NULL,
   `TeamName` VARCHAR(45) NOT NULL,
-  `TeamDescription` VARCHAR(45) NOT NULL,
+  `TeamDescription` TEXT NOT NULL,
   `SubCategoryId` VARCHAR(36),
   PRIMARY KEY (`TeamId`),
   UNIQUE INDEX `TeamId_UNIQUE` (`TeamId` ASC) VISIBLE,
