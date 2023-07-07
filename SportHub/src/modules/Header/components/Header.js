@@ -3,7 +3,7 @@ import UserHeader from "../../UserHeader/components/UserHeader"
 import NotLoginedHeader from "../../NotLoginedHeader/componets/NotLoginedHeader"
 import {useAuthStore} from "../../../store/useAuthStore"
 
-export default function Header()
+export default function Header({setIsContentSearch, setContentSearchValue})
 {
     const { userData } = useAuthStore()
     return (
@@ -11,15 +11,15 @@ export default function Header()
             {(()=>{
                 if (userData?.isAdmin)
                 {
-                    return <AdminHeader/>
+                    return <AdminHeader setIsContentSearch={setIsContentSearch} setContentSearchValue={setContentSearchValue} />
                 }
                 else if (userData?.isAdmin === false)
                 {
-                    return <UserHeader/>
+                    return <UserHeader setIsContentSearch={setIsContentSearch} setContentSearchValue={setContentSearchValue} />
                 }
                 else
                 {
-                    return <NotLoginedHeader/>
+                    return <NotLoginedHeader setIsContentSearch={setIsContentSearch} setContentSearchValue={setContentSearchValue} />
                 }
                 }
             )()}
