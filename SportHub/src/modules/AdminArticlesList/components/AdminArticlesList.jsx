@@ -1,14 +1,19 @@
 import React, {useEffect, useState} from "react"
+import {useAtom} from "jotai";
+import InfiniteScroll from "react-infinite-scroll-component"
+import {useTranslation} from "react-i18next"
+
 import styles from "../styles/styles.module.scss"
 import HorizontalCard from "./HorizontalCard"
 import AutoComplete from "../../../ui/AutoComplete"
 import getPageOfArticlesRequest from "../helpers/getPageOfArticlesRequest"
-import {useTranslation} from "react-i18next"
-import InfiniteScroll from "react-infinite-scroll-component"
 import ArticleMenu from "../../ArticleMenu"
 import {PAGE_CONSTANTS} from "../../../constants/PageConstants"
+import {adminMenuState} from "../../../store/states/adminMenuState";
 
-function AdminArticlesList({setContent, category, setButtons}) {
+function AdminArticlesList() {
+    const [adminMenu, setAdminMenu] = useAtom(adminMenuState)
+    const {category, setButtons, setContent} = adminMenu
     const [articles, setArticles] = useState([])
     const [team, setTeam] = useState()
     const [subcategory, setSubcategory] = useState()
@@ -92,7 +97,7 @@ function AdminArticlesList({setContent, category, setButtons}) {
     }
 
     function onCreateArticleHandler(){
-        setContent(<ArticleMenu setButtons={setButtons} category={category} setContent={setContent}/>)
+        setContent(<ArticleMenu />)
     }
     return (
         <div className={styles.container}>

@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react'
+import React, {useEffect, useState} from 'react'
+import { useAtom } from 'jotai'
 import styles from "../styles/style.module.scss"
 import AdminHeader from "../../../modules/AdminHeader"
 import HorizontalAdminMenu from "../../../modules/HorizontalAdminMenu"
@@ -8,6 +9,7 @@ import AdminMainArticlesSection from "../../../modules/AdminMainArticlesSection"
 import LanguagesManagement from "../../../modules/LanguagesManagement"
 import NavigationSystem from '../../../modules/NavigationAdminSystem'
 import AdminArticlesList from "../../../modules/AdminArticlesList"
+import {adminMenuState} from "../../../store/states/adminMenuState";
 import SearchResultsList from '../../../modules/SearchResultsList/components/SearchResultsList'
 
 
@@ -16,18 +18,28 @@ export default function AdminPage() {
     const [selectedCategory, setSelectedCategory] = useState(null)
     const [content, setContent] = useState(<AdminMainArticlesSection />)
     const [headerButtons, setHeaderButtons] = useState([])
-
+    const [adminMenu, setAdminMenu] = useAtom(adminMenuState)
     const [isContentSearch, setIsContentSearch] = useState(false)
     const [contentSearchValue, setContentSearchValue] = useState("")
 
     useEffect(() => {
+        setAdminMenu((prev) => ({
+            ...prev, setContent: setContent, setButtons: setHeaderButtons
+        }))
+    }, [])
+
+    useEffect(() => {
+        setAdminMenu((prev) => ({
+            ...prev, category: selectedCategory
+        }))
+
         switch (selectedMenuElement) {
             case SECTION_NAMES["Home"]:
-                setContent(<AdminMainArticlesSection setButtons={setHeaderButtons} />)
+                setContent(<AdminMainArticlesSection />)
                 setIsContentSearch(false)
                 break
             case "Languages":
-                setContent(<LanguagesManagement setButtons={setHeaderButtons} />)
+                setContent(<LanguagesManagement />)
                 setIsContentSearch(false)
                 break
             case "IA":
@@ -35,10 +47,10 @@ export default function AdminPage() {
                 setIsContentSearch(false)
                 break
             case "Search":
-                setContent(<SearchResultsList contentSearchValue={contentSearchValue}/>)
+                setContent(<SearchResultsList contentSearchValue={contentSearchValue} />)
                 break
             default:
-                setContent(<AdminArticlesList setButtons={setHeaderButtons} category={selectedCategory} setContent={setContent} />)
+                setContent(<AdminArticlesList />)
                 setIsContentSearch(false)
                 break
         }

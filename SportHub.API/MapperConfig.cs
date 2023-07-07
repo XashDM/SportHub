@@ -56,8 +56,12 @@ namespace SportHub.API
                 .ForMember(dest => dest.ArticleId, opt => opt.MapFrom(src => src.ArticleId))
                 .ForMember(dest => dest.LanguageId, opt => opt.MapFrom(src => src.LanguageId))
                 .ForMember(dest => dest.Order, opt => opt.MapFrom(src => src.Order));
+            
+            CreateMap<BreakDown, BreakDownRequest>();
+            CreateMap<BreakDownRequest, BreakDown>()
+                .ForMember(dest => dest.BreakDownId, opt => opt.MapFrom(src => ""));
 
-			CreateMap<ArticleInfoCreateDto, ArticleInfo>();
+            CreateMap<ArticleInfoCreateDto, ArticleInfo>();
 			CreateMap<ArticleCreateDto, Article>();
 			CreateMap<ImageCreateDto, Image>();
 		}

@@ -48,7 +48,11 @@ const SearchDropdownList = ({ setIsContentSearch, setContentSearchValue }) => {
         inputValue={inputValue}
         onInputChange={handleInputChange}
         ListboxProps={{ style: { maxHeight: 'none', transform: 'translateX(-3rem)' } }}
-        getOptionLabel={(option) => `${option.title} ${option.category.categoryName} ${option.subCategory.subCategoryName} ${option.mainText} ${option.team.teamName} ${option.location.locationName}`}
+        getOptionLabel={(option) => `${option.title} 
+                                      ${option.category.categoryName} 
+                                      ${option.subCategory?.subCategoryName || ''} 
+                                      ${option.team?.teamName || ''} 
+                                      ${option.location?.locationName || ''}`}
         renderOption={(props, option) => {
           if (!inputValue || !showSuggestions) {
             return null

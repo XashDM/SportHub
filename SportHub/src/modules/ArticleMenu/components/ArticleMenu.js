@@ -15,8 +15,12 @@ import getTeamsRequest from "../helpers/getTeamsRequest"
 import getLocationsRequest from "../helpers/getLocationsRequest"
 import newArticleRequest from "../helpers/newArticleRequest"
 import AdminArticlesList from "../../AdminArticlesList"
+import {useAtom} from "jotai";
+import {adminMenuState} from "../../../store/states/adminMenuState";
 
-function ArticleMenu({ setButtons, category, setContent }) {
+function ArticleMenu() {
+    const [adminMenu, setAdminMenu] = useAtom(adminMenuState)
+    const {category, setButtons, setContent} = adminMenu
     const [languages, setLanguages] = useState([])
     const [tabData, setTabData] = useState([{ headline: "", caption: "", content: "" }])
     const [alt, setAlt] = useState("")
