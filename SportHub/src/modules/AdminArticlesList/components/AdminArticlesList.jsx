@@ -84,7 +84,8 @@ function AdminArticlesList() {
     function convertArticlesToCards(){
         return articles.map((article, idx) => (
             <HorizontalCard {...article} key={idx} imageUrl={article.image.url}
-                            location={article.location.locationName} subCategory={article.subCategory.subCategoryName}/>
+                            location={article.location?.locationName}
+                            subCategory={article.subCategory?.subCategoryName}/>
         ))
     }
     function getAutocomplete(value, setter, defaultValue){
@@ -118,7 +119,6 @@ function AdminArticlesList() {
                 className={styles.list_container}
                 hasMore={!isLastArticleHaveBeenFetched}
                 loader={<p>Loading...</p>}
-                endMessage={<p>No more data to load.</p>}
             >
                 {convertArticlesToCards()}
             </InfiniteScroll>
