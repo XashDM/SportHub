@@ -23,13 +23,13 @@ function LoginForm(){
 
         const result = await loginRequest(email, password)
 
-        if (result === "ERR_BAD_REQUEST") {
-           setError(true)
-        }else{
+        if (result.user && result.accessToken) {
             setUserData(result.user)
             setAccessToken(result.accessToken)
             setError(false)
             navigate(ROUTES.HOME)
+        }else{
+            setError(true)
         }
     }
     useEffect(() => {
