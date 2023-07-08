@@ -189,7 +189,6 @@ CREATE TABLE IF NOT EXISTS `SportHub`.`MainArticle` (
   `Order` INT NOT NULL,
   PRIMARY KEY (`MainArticleId`),
   UNIQUE INDEX `MainArticleId_UNIQUE` (`MainArticleId` ASC) ,
-  UNIQUE INDEX `ArticleId_UNIQUE` (`ArticleId` ASC) ,
   INDEX `fk_Article_idx` (`ArticleId` ASC) ,
   INDEX `fk_Language_idx` (`LanguageId` ASC) ,
   CONSTRAINT `fk_Article`
