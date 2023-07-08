@@ -19,8 +19,8 @@ VALUES ('testAdminRefreshToken', '17442d08-13b3-49c1-b919-d01ebb2e0251');
 -- Insert languages to `Language` table
 ----------------------------------------------------------------
 
-INSERT INTO `sporthub`.`language` (`LanguageId`0730ca73-567b-44a6-8a6e-e2edac090e2d, `ShortTitle`, `IsActive`)
-VALUES ('', 'en', true);
+INSERT INTO `sporthub`.`language` (`LanguageId`, `ShortTitle`, `IsActive`)
+VALUES ('0730ca73-567b-44a6-8a6e-e2edac090e2d', 'en', true);
 
 INSERT INTO `sporthub`.`language` (`LanguageId`, `ShortTitle`, `IsActive`)
 VALUES ('30a89530-a01b-48f7-8e39-61ee2b251e1c', 'ua', false);
