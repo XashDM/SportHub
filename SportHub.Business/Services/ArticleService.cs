@@ -197,7 +197,7 @@ namespace SportHub.Business.Implementations
 			{
 				var article = await _articleRepository.GetArticleByIdAndLanguageAsync(mainArticle.ArticleId, language);
 				var articleImage = await _imageService.GetImageById(article.ImageId);
-				var articleCategory = await _navigationService.GetCategoryBySubCategoryId(article.SubCategoryId);
+				var articleCategory = await _categoryService.GetCategoryByIdAsync(article.CategoryId);
 
 				var mainArticleInfo = new MainArticleInfo
 				{
