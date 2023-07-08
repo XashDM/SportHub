@@ -66,7 +66,7 @@ function SignUpForm(){
             </div>
             :
             <EmailSentContainer
-                heading={t('AuthContainer.CheckYourEmail') + email}
+                heading={t('AuthContainer.CheckYourEmail') + " " + email}
                 sub_heading={t('AuthContainer.SignUpForm.LetterInfo')}/>
     )
 }
