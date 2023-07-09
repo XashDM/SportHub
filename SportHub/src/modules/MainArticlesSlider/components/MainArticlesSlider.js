@@ -52,7 +52,7 @@ function MainArticlesSlider() {
         return () => stopAutoScroll()
     }, [])
 
-    if(!cardsState) return null
+    if(!cardsState || cardsState.length === 0) return null
 
     return (
         <div className={styles.container}
