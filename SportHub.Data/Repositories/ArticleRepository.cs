@@ -240,16 +240,15 @@ public class ArticleRepository : IArticleRepository
 
 	public async Task<IEnumerable<LanguageSpecificArticle>> GetPageOfArticlesByCategoryAsync(string language, string categoryId, int pageNumber)
 	{
-		var pageSize = 2;
+		var pageSize = 5;
 		using (var connection = _dbConnectionFactory.GetConnection())
 		{
 			connection.Open();
 			
 			var articleQuery = @"SELECT * FROM Articles 
-         						LEFT JOIN SubCategories ON SubCategories.SubCategoryId = Articles.SubCategoryId
          						LEFT JOIN `Language` ON Language.ShortTitle = @language
 								LEFT JOIN ArticleInfos ON Articles.ArticleId = ArticleInfos.ArticleId AND ArticleInfos.LanguageId = Language.LanguageId
-								WHERE SubCategories.CategoryId = @categoryId
+								WHERE CategoryId = @categoryId
 								ORDER BY Articles.PublishingDate DESC";
 
 			articleQuery = await PaginateQuery(articleQuery, pageNumber, pageSize);
