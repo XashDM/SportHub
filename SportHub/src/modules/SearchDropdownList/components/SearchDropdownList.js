@@ -47,8 +47,9 @@ const SearchDropdownList = ({ setIsContentSearch, setContentSearchValue }) => {
         fullWidth
         inputValue={inputValue}
         onInputChange={handleInputChange}
-        ListboxProps={{ style: { maxHeight: 'none', transform: 'translateX(-3rem)' } }}
+        ListboxProps={{ style: { maxHeight: 'none', width: "100%", padding: 0 } }}
         getOptionLabel={(option) => `${option.title} 
+                                      ${option.mainText} 
                                       ${option.category.categoryName} 
                                       ${option.subCategory?.subCategoryName || ''} 
                                       ${option.team?.teamName || ''} 
@@ -63,7 +64,9 @@ const SearchDropdownList = ({ setIsContentSearch, setContentSearchValue }) => {
           for (let i = 0; i < mainTexts.length; i++) {
             const mainText = mainTexts[i]
             if (mainText.toLowerCase().includes(inputValue.toLowerCase())) {
-              matchedMainText = mainText
+              //matchedMainText = mainText
+              const regex = new RegExp(inputValue, "i")
+              matchedMainText = `<span>` + mainText.replace(regex, (match) => `<span class="${styles.highlightedText}">${match}</span>`) + `<span>`
               break
             }
           }
@@ -99,7 +102,7 @@ const SearchDropdownList = ({ setIsContentSearch, setContentSearchValue }) => {
                   <span>{" > "}</span>
                   <span>{option.title}</span>
                 </li>
-                <li><span>{matchedMainText}</span></li>
+                <li dangerouslySetInnerHTML={{ __html: matchedMainText }}></li>
               </ul>
             </div>
           )
@@ -124,15 +127,11 @@ const SearchDropdownList = ({ setIsContentSearch, setContentSearchValue }) => {
           />
         )}
         PaperComponent={({ children }) => (
-          <Paper
-            style={{
-              width: "50vw",
-              maxWidth: "none",
-              marginTop: 3,
-              backgroundColor: "rgba(0, 0, 0, .0)",
-              borderRadius: 0,
-              boxShadow: "none"
-            }}>{children}</Paper>
+          showSuggestions && inputValue && articles.length !== 0 // removing shadows when nothing printed/no results
+            ?
+            <div className={styles.optionsContainer}>{children}</div>
+            :
+            <div>{children}</div>
         )}
       />
     </>
