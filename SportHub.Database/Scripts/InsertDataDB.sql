@@ -4,7 +4,7 @@
 INSERT INTO `SportHub`.`User` (`UserId`, `Email`, `Password`, `FirstName`, `LastName`, `IsAdmin`, `IsActivated`) 
 VALUES ('05689d08-13b3-49c1-b919-d01ebb2e0251', 'testUserEmail@gmail.com', 'testUserPassword', 'Oleh', 'User', '0', '1');
 INSERT INTO `SportHub`.`User` (`UserId`, `Email`, `Password`, `FirstName`, `LastName`, `IsAdmin`, `IsActivated`) 
-VALUES ('17442d08-13b3-49c1-b919-d01ebb2e0251', 'testAdminEmail@gmail.com', 'testAdminPassword', 'Andriy', 'Admin', '1', '1');
+VALUES ('17442d08-13b3-49c1-b919-d01ebb2e0251', 'testAdminEmail@gmail.com', '12f3e4347b22b51fee888de9d2cb2f57c804076735cc63701f88662b5775451c', 'Andriy', 'Admin', '1', '1');
 
 ----------------------------------------------------------------
 -- Insert admin and user refresh tokens to `RefreshToken` table
@@ -287,3 +287,15 @@ VALUES ('a9596f7b-6a44-4a1e-8f14-4b7a68d3f312', '0730ca73-567b-44a6-8a6e-e2edac0
 INSERT INTO `sporthub`.`articleinfos` (`ArticleId`, `LanguageId`, `Title`, `Subtitle`, `MainText`)
 VALUES ('a9596f7b-6a44-4a1e-8f14-4b7a68d3f312', '30a89530-a01b-48f7-8e39-61ee2b251e1c', 'Захоплююча гонка NASCAR Truck Series у Дайтоні', 'Екшн і конкуренція на межі', 'Гонка NASCAR Truck Series у Дайтоні принесла захоплюючі емоції з екстремальним екшном та запеклою конкуренцією.');
 
+----------------------------------------------------------------
+-- Insert MainArtilces to `mainarticle` table
+----------------------------------------------------------------
+
+INSERT INTO mainarticle (MainArticleId, ArticleId, LanguageId, `Order`)
+VALUES 
+(UUID(), 'a9596f7b-6a44-4a1e-8f14-4b7a68d3f312', '0730ca73-567b-44a6-8a6e-e2edac090e2d', 1),
+(UUID(), 'a9596f7b-6a44-4a1e-8f54-9b7a68d3f312', '0730ca73-567b-44a6-8a6e-e2edac090e2d', 2),
+(UUID(), 'c695cb5a-971e-4a4f-9b85-62f5d1469763', '0730ca73-567b-44a6-8a6e-e2edac090e2d', 3),
+(UUID(), 'a9596f7b-6a44-4a1e-8f14-4b7a68d3f312', '30a89530-a01b-48f7-8e39-61ee2b251e1c', 1),
+(UUID(), 'a9596f7b-6a44-4a1e-8f54-9b7a68d3f312', '30a89530-a01b-48f7-8e39-61ee2b251e1c', 2),
+(UUID(), 'c695cb5a-971e-4a4f-9b85-62f5d1469763', '30a89530-a01b-48f7-8e39-61ee2b251e1c', 3);
