@@ -11,7 +11,7 @@ export default function HorizontalCard({imageUrl, title, mainText, subCategory, 
                 <p className={styles.description}>{mainText}</p>
 
                 <div className={styles.space_between_container}>
-                    <p>{subCategory} / {location}</p>
+                    {(subCategory || location) && <p>{subCategory} / {location}</p>}
                     {isPublished && <p className={styles.published}>Published</p>}
                 </div>
             </div>
