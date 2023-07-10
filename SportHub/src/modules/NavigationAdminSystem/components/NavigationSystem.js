@@ -5,9 +5,11 @@ import NavigationItems from "./NavigationItems";
 import AddButton from './AddButton';
 import PopUpAddCategory from './AddCategoryPopUp';
 import PopUpAddSubCategory from './AddCategoryPopUp/components/AddSubCategoryPopUp';
+import PopUpAddTeam from './AddCategoryPopUp/components/AddTeamPopUp';
 import FlashMessage from '../../../ui/FlashMessage';
-import { useNavigationItemsCategories,useNavigationItemsSubCategories } from '../../../store/useNavigationTreeStore';
+import { useNavigationItemsCategories,useNavigationItemsSubCategories,useNavigationItemsTeams } from '../../../store/useNavigationTreeStore';
 import SendNavigationTree from '../helpers/SendNavigationTreeToServer';
+import {Reorder} from "framer-motion";
 
 
 const NavigationSystem = ({setButtons}) => {
@@ -16,6 +18,8 @@ const NavigationSystem = ({setButtons}) => {
     const setCategories = useNavigationItemsCategories((state) => state.setCategory)
     const addCategory = useNavigationItemsCategories((state) => state.addCategory)
     const addSubCategory = useNavigationItemsSubCategories((state) => state.addNewSubCategory)
+    const addTeam = useNavigationItemsTeams((state) => state.addNewTeam)
+
     const [activeCategory,setActiveCategory] = useState(null)
     const [activeSubCategory,setActiveSubCategory] = useState(null)
     const [activeTeam,setActiveTeam] = useState(null)
@@ -27,8 +31,10 @@ const NavigationSystem = ({setButtons}) => {
 
     const [openPopUpAddCategory,setOpenPopUpAddCategory] = useState(false)
     const [openPopUpAddSubCategory,setOpenPopUpAddSubCategory] = useState(false)
+    const [openPopUpAddTeam,setOpenPopUpAddTeam] = useState(false)
 
     const nav_container = useRef(null)
+    const nav_click_area = useRef(null)
 
     const handleCloseFlashMessage = () => {
         setOpenFlashMessage(false)
@@ -50,6 +56,14 @@ const NavigationSystem = ({setButtons}) => {
         setOpenPopUpAddSubCategory(false)
     }
 
+    const handleOpenPopUpAddTeam = () => {
+        setOpenPopUpAddTeam(true)
+    }
+
+    const handleClosePopUpAddTeam = () => {
+        setOpenPopUpAddTeam(false)
+    }
+
     useEffect(() => {
         setButtons([{text: "Save changes", function: handleSendTree, isOutlined: false}])
         const FetchCategories = async () => {
@@ -61,7 +75,8 @@ const NavigationSystem = ({setButtons}) => {
     },[])
 
     const handleAddCategory = (value) => {
-        if (value){
+        let Categorynames = categories.map(element => element.title)
+        if (value && !(Categorynames.includes(value))){
             // AddCategoryRequest(value)
             addCategory(value)
             handleClosePopUpAddCategory()
@@ -69,6 +84,7 @@ const NavigationSystem = ({setButtons}) => {
     }
 
     const handleAddSubCategory = (activeCategory,value) => {
+        console.log(activeCategory)
         if (value && activeCategory){
             // AddCategoryRequest(value)
             addSubCategory(activeCategory,value)
@@ -76,12 +92,24 @@ const NavigationSystem = ({setButtons}) => {
         }
     }
 
+    const handleAddTeam = (activeSubCategory,value) => {
+        if (value && activeSubCategory){
+            addTeam(activeSubCategory,value)
+            handleClosePopUpAddTeam()
+        }
+    }
+
     const handleSendTree = async () =>{
-        await SendNavigationTree()
+        let response = await SendNavigationTree()
+        console.log(response)
+        useNavigationItemsSubCategories.getState().clear()
+        useNavigationItemsTeams.getState().clear()
         setFlashTitle("Saved!")
-        setFlashContent("Success")
+        setFlashContent("The information architecture is successfuly saved!")
         setFlashIsSuccess(true)
         setOpenFlashMessage(true)
+        const categoryList = await CategoryRequest()
+        setCategories(categoryList)
     }
 
 
@@ -90,21 +118,23 @@ return(
 <div className={styles.button_container}>
     <AddButton text={"+ Add category"} onClick={handleOpenPopUpAddCategory}/>
     <AddButton text={"+ Add subcategory"} onClick={handleOpenPopUpAddSubCategory}/>
-    <AddButton text={"+ Add team"}/>
+    <AddButton text={"+ Add team"} onClick={handleOpenPopUpAddTeam}/>
 </div>
 <PopUpAddCategory open={openPopUpAddCategory} handleAdd={handleAddCategory} handleClose={handleClosePopUpAddCategory}/>
 <PopUpAddSubCategory activeCategory={activeCategory} open={openPopUpAddSubCategory} handleAdd={handleAddSubCategory} handleClose={handleClosePopUpAddSubCategory}/>
+<PopUpAddTeam activeSubCategory={activeSubCategory} open={openPopUpAddTeam} handleAdd={handleAddTeam} handleClose={handleClosePopUpAddTeam}/>
 <div ref={nav_container} className={styles.nav_container}>
-    <div className={styles.nav_area}>
+    <div ref={nav_click_area} className={styles.nav_area}>
         <ul className={styles.menus}> 
         {
-            categories.map((menu) => {
+            categories.map((menu,index) => {
                 const depthLevel = 0;
                 return <NavigationItems 
                 activeCategory={activeCategory} setActiveCategory={setActiveCategory} 
                 activeSubCategory={activeSubCategory} setActiveSubCategory={setActiveSubCategory} 
                 activeTeam={activeTeam} setActiveTeam={setActiveTeam} 
-                items={menu} key={menu.id} depthLevel={depthLevel} nav_container={nav_container}/>;
+                items={menu} key={menu.id} depthLevel={depthLevel} nav_container={nav_container} nav_click_area={nav_click_area}
+                index={index}/>;
             })
         }
         </ul>           

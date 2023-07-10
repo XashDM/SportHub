@@ -36,11 +36,30 @@
         font-family: inherit;
         font-weight: inherit;
         border: 1px solid;
-        background-color: transparent;
+        background-color: white;
         cursor: pointer;
         width: 100%;
         padding: 2px;
         text-align: center;
+        z-index: 1;
+        
+
+        .EditThreeDots{
+            position: absolute;
+            top: 18px;
+            right: 4px;
+            z-index: 10;
+        }
+
+        .ActiveEditThreeDots{
+            circle{
+                fill: var(--color-red-hover);
+            }
+        }
+
+        // .EditThreeDots circle{
+        //     fill: var(--color-red-hover);
+        // }
 
         &:hover{
             background-color: #f2f2f2;
