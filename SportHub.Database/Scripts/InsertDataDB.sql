@@ -135,3 +135,16 @@ VALUES ('c695cb5a-971e-4a4f-9b85-62f5d1469763', '0730ca73-567b-44a6-8a6e-e2edac0
 ('a9596f7b-6a44-4a1e-8f14-4b7a68d3f312', '0730ca73-567b-44a6-8a6e-e2edac090e2d', 'Exciting NASCAR Truck Series Race at Daytona', 'Thrilling Action and Intense Competition', 'The NASCAR Truck Series race at Daytona delivered an adrenaline-filled experience with thrilling action and intense competition.'),
 ('a9596f7b-6a44-4a1e-8f14-4b7a68d3f312', '30a89530-a01b-48f7-8e39-61ee2b251e1c', 'Захоплююча гонка NASCAR Truck Series у Дайтоні', 'Екшн і конкуренція на межі', 'Гонка NASCAR Truck Series у Дайтоні принесла захоплюючі емоції з екстремальним екшном та запеклою конкуренцією.');
 
+----------------------------------------------------------------
+-- Insert MainArtilces to `MainArticle` table
+----------------------------------------------------------------
+
+INSERT INTO mainarticle (MainArticleId, ArticleId, LanguageId, `Order`)
+VALUES 
+(UUID(), 'a9596f7b-6a44-4a1e-8f14-4b7a68d3f312', '0730ca73-567b-44a6-8a6e-e2edac090e2d', 1),
+(UUID(), 'a9596f7b-6a44-4a1e-8f54-9b7a68d3f312', '0730ca73-567b-44a6-8a6e-e2edac090e2d', 2),
+(UUID(), 'c695cb5a-971e-4a4f-9b85-62f5d1469763', '0730ca73-567b-44a6-8a6e-e2edac090e2d', 3),
+(UUID(), 'a9596f7b-6a44-4a1e-8f14-4b7a68d3f312', '30a89530-a01b-48f7-8e39-61ee2b251e1c', 1),
+(UUID(), 'a9596f7b-6a44-4a1e-8f54-9b7a68d3f312', '30a89530-a01b-48f7-8e39-61ee2b251e1c', 2),
+(UUID(), 'c695cb5a-971e-4a4f-9b85-62f5d1469763', '30a89530-a01b-48f7-8e39-61ee2b251e1c', 3);
+
