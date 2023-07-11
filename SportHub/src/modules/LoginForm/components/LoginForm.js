@@ -32,13 +32,10 @@ function LoginForm(){
     const handleLogin = async (event) => {
         event.preventDefault()
 
-        const result = await loginRequest(email, password)
+        const response = await loginRequest(email, password)
 
-        setResultDataIfSuccess(result)
+        setResultDataIfSuccess(response.data)
     }
-    useEffect(() => {
-        console.log(userData)
-    }, [userData])
 
     const handleLoginSuccess = async (googleResponse) => {
         // handle successful login

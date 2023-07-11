@@ -36,9 +36,9 @@ function SignUpForm(){
 
         if(!isFormValid()) return
 
-        const result = await signUpRequest({email, password, firstName, lastName})
+        const response = await signUpRequest({email, password, firstName, lastName})
 
-        if (result !== "") {
+        if (response?.status === 200) {
             setIsSent(true)
             setErrorText("")
         }else{
