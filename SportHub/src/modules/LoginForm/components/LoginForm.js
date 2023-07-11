@@ -18,11 +18,8 @@ function LoginForm(){
     const [error, setError] = useState(false)
     const navigate = useNavigate()
     const { userData, setUserData, setAccessToken } = useAuthStore()
-    const handleLogin = async (event) => {
-        event.preventDefault()
-
-        const result = await loginRequest(email, password)
-
+    const isFormFilled = !(email === "" || password === "")
+    function setResultDataIfSuccess(result){
         if (result.user && result.accessToken) {
             setUserData(result.user)
             setAccessToken(result.accessToken)
@@ -31,6 +28,13 @@ function LoginForm(){
         }else{
             setError(true)
         }
+    }
+    const handleLogin = async (event) => {
+        event.preventDefault()
+
+        const result = await loginRequest(email, password)
+
+        setResultDataIfSuccess(result)
     }
     useEffect(() => {
         console.log(userData)
@@ -43,19 +47,10 @@ function LoginForm(){
         try {
             const result = await googleLoginRequest(googleResponse.access_token)
 
-            if (result === "ERR_BAD_REQUEST") {
-                setError(true)
-            }else{
-                setUserData(result.user)
-                setAccessToken(result.accessToken)
-                setError(false)
-                navigate(ROUTES.HOME)
-            }
-
+            setResultDataIfSuccess(result)
         } catch (error) {
             console.error(error)
         }
-
 
         setAccessToken(googleResponse.code)
         setError(false)
@@ -73,7 +68,6 @@ function LoginForm(){
     })
 
 
-
     return(
         <div className={styles.container}>
 
@@ -86,7 +80,7 @@ function LoginForm(){
                 onClick={handleGoogleLogin}
             />
 
-            <Input label={"Email"}
+            <Input label={t('AuthContainer.EmailLabel')}
                    placeholder={"Email@gmail.com"}
                    error={error}
                    onChange={(event) => setEmail(event.target.value)}/>
@@ -98,7 +92,7 @@ function LoginForm(){
                    onChange={(event) => setPassword(event.target.value)}
             />
 
-            <Button onClick={handleLogin} text={t('AuthContainer.LogInBtn')}/>
+            <Button onClick={handleLogin} text={t('AuthContainer.LogInBtn')} disabled={!isFormFilled}/>
         </div>
     )
 }

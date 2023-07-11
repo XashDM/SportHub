@@ -6,6 +6,8 @@ import {useState} from "react"
 import signUpRequest from "../helpers/signUpRequest"
 import EmailSentContainer from "../../../components/EmailSentContainer"
 import { useTranslation } from "react-i18next"
+import isEmailValid from "../../../helpers/validation/validateEmail"
+import isPasswordValid from "../../../helpers/validation/validatePassword"
 
 function SignUpForm(){
     const { t } = useTranslation()
@@ -13,18 +15,34 @@ function SignUpForm(){
     const [password, setPassword] = useState('')
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
-    const [error, setError] = useState(false)
+    const [errorText, setErrorText] = useState("")
     const [isSent, setIsSent] = useState(false)
+    const isFormFilled = !(firstName === "" || lastName === "" || email === "" || password === "")
+
+    function isFormValid(){
+        if(!isEmailValid(email)){
+            setErrorText("AuthContainer.SignUpForm.IncorrectEmail")
+            return false
+        }else if(!isPasswordValid(password)){
+            setErrorText("AuthContainer.SignUpForm.ShortPassword")
+            return false
+        }
+
+        return true
+    }
+
     const handleSignUp = async (event) => {
         event.preventDefault()
 
+        if(!isFormValid()) return
+
         const result = await signUpRequest({email, password, firstName, lastName})
 
-        if (result === "ERR_BAD_REQUEST") {
-           setError(true)
-        }else{
+        if (result !== "") {
             setIsSent(true)
-            setError(false)
+            setErrorText("")
+        }else{
+            setErrorText("AuthContainer.SignUpForm.UnexpectedError")
         }
     }
 
@@ -34,34 +52,34 @@ function SignUpForm(){
 
                 <div>
                     <h2>{t('AuthContainer.SignUpForm.SignUpFormCaption')}</h2>
-                    {error && <h3 className={styles.error}>{t('AuthContainer.SignUpForm.IncorrectDataText')}</h3>}
+                    {errorText && <h3 className={styles.error}>{t(errorText)}</h3>}
                 </div>
 
                 <div className={styles.two_col_container}>
                     <Input label={t('AuthContainer.FirstNameLabel')}
                            placeholder={"Oleh"}
-                           error={error}
+                           error={errorText}
                            onChange={(event) => setFirstName(event.target.value)}/>
 
                     <Input label={t('AuthContainer.LastNameLabel')}
                            placeholder={"Doe"}
-                           error={error}
+                           error={errorText}
                            onChange={(event) => setLastName(event.target.value)}/>
                 </div>
 
 
-                <Input label={"Email"}
+                <Input label={t('AuthContainer.EmailLabel')}
                        placeholder={"JohnDoe@gmail.com"}
-                       error={error}
+                       error={errorText}
                        onChange={(event) => setEmail(event.target.value)}/>
 
                 <Input label={t('AuthContainer.PasswordLabel')}
                        placeholder={t('AuthContainer.PasswordPlaceholder')}
-                       error={error}
+                       error={errorText}
                        onChange={(event) => setPassword(event.target.value)}
                 />
 
-                <Button onClick={handleSignUp} text={t('AuthContainer.SignUpBtn')}/>
+                <Button onClick={handleSignUp} text={t('AuthContainer.SignUpBtn')} disabled={!isFormFilled}/>
 
             </div>
             :

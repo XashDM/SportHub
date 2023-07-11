@@ -17,6 +17,7 @@
         "FirstNameLabel": "First name",
         "LastNameLabel": "Last name",
         "PasswordLabel": "Password",
+        "EmailLabel": "Email",
         "PasswordPlaceholder": "8 + characters (letters and numbers)",
         "NewPasswordLabel": "New password",
         "ConfirmPasswordLabel": "Confirm password",
@@ -32,7 +33,9 @@
         },
         "SignUpForm": {
             "SignUpFormCaption": "Create Account",
-            "IncorrectDataText": "Your account already exist. Log in",
+            "UnexpectedError": "Something went wrong. Check the entered data.",
+            "ShortPassword": "Short password. Check it again !",
+            "IncorrectEmail": "Email is incorrect. Check it again !",
             "LetterInfo": "You will receive a letter with activation link"
         },
         "ForgotPasswordForm": {
