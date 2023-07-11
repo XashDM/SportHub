@@ -11,6 +11,7 @@ import UsersManagment from "../../../modules/UsersManagment";
 
 export default function AdminPage() {
     const [selectedMenuElement, setSelectedMenuElement] = useState("Home")
+    const [selectedCategory, setSelectedCategory] = useState(null)
     const [content, setContent] = useState(<AdminMainArticlesSection />)
     const [headerButtons, setHeaderButtons] = useState([])
     useEffect(() =>{
@@ -28,6 +29,8 @@ export default function AdminPage() {
                     setContent(<UsersManagment/>)
                     break
                 default:
+                     //setContent(<AdminArticlesList />)
+                    //setContent(<ArticleMenu setButtons={setHeaderButtons} category={selectedCategory}/>)
                     break
             }
     }, [selectedMenuElement])
@@ -37,7 +40,8 @@ export default function AdminPage() {
                 <AdminHeader />
                 <HorizontalAdminMenu currentMenuElement={selectedMenuElement}
                                         setCurrentMenuElement={setSelectedMenuElement}
-                                        headerButtons={headerButtons}/>
+                                        headerButtons={headerButtons}
+                                        setSelectedCategory={setSelectedCategory} />
                 <div className={styles.vertical_menu_and_content}>
                         <VerticalAdminMenu
                             currentMenuElement={selectedMenuElement}

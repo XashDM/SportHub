@@ -1,4 +1,5 @@
-﻿using Dapper;
+﻿using System.IO.Enumeration;
+using Dapper;
 using SportHub.Data.Entities;
 using SportHub.Data.Interfaces;
 
@@ -13,7 +14,7 @@ public class ArticleRepository : IArticleRepository
 		_dbConnectionFactory = dbConnectionFactory;
 	}
 
-	public async Task CreateArticleAsync(Article article)
+	public async Task CreateArticleAsync(Article article, Image image)
 	{
 		using (var connection = _dbConnectionFactory.GetConnection())
 		{
@@ -21,11 +22,13 @@ public class ArticleRepository : IArticleRepository
 
 			using (var transaction = connection.BeginTransaction())
 			{
-				var sqlArticle = "INSERT INTO Articles (ArticleId, PublishingDate, AuthorId, SubCategoryId, TeamId, ImageId, LocationId, Published, ShowComments) " +
-				"VALUES (@ArticleId, @PublishingDate, @AuthorId, @SubCategoryId, @TeamId, @ImageId, @LocationId, @Published, @ShowComments)";
+				var sqlImage = "INSERT INTO Images (ImageId, Url, Alt) " +
+					  "VALUES (@ImageId, @Url, @Alt)";
+				var sqlArticle = "INSERT INTO Articles (ArticleId, PublishingDate, AuthorId, CategoryId, SubCategoryId, TeamId, ImageId, LocationId, Published, ShowComments) " +
+				"VALUES (@ArticleId, @PublishingDate, @AuthorId, @CategoryId, @SubCategoryId, @TeamId, @ImageId, @LocationId, @Published, @ShowComments)";
 				var sqlInfos = "INSERT INTO ArticleInfos (LanguageId, ArticleId, Title, Subtitle, MainText) " +
 					  "VALUES (@LanguageId, @ArticleId, @Title, @Subtitle, @MainText)";
-
+				await connection.ExecuteAsync(sqlImage, image, transaction);
 				await connection.ExecuteAsync(sqlArticle, article, transaction);
 				await connection.ExecuteAsync(sqlInfos, article.Infos, transaction);
 
@@ -49,7 +52,45 @@ public class ArticleRepository : IArticleRepository
 			return article;
 		}
 	}
+	
+	public async Task<IEnumerable<LanguageSpecificArticle>> GetAllArticlesByFiltersAsync(string languageId, ArticleSearchOptions articleSearchOptions)
+	{
+		using (var connection = _dbConnectionFactory.GetConnection())
+		{
+			connection.Open();
+			var query = $"SELECT * FROM Articles" +
+			            $" LEFT JOIN ArticleInfos ON Articles.ArticleId = ArticleInfos.ArticleId" +
+			            $" where ArticleInfos.languageId = {languageId}";
+			
+			foreach (var property in articleSearchOptions.GetType().GetProperties())
+			{
+				if (property.GetValue(articleSearchOptions) != null)
+				{
+					query += $" and Articles.{property.Name} = {property.GetValue(articleSearchOptions)}";
+				}
+			}
 
+			var articles = await connection.QueryAsync<LanguageSpecificArticle>(query);
+			
+			return articles;
+		}
+	}
+	
+	public async Task<LanguageSpecificArticle> GetArticleByArticleIdAndLanguageIdAsync(string articleId, string languageId)
+	{
+		using (var connection = _dbConnectionFactory.GetConnection())
+		{
+			connection.Open();
+			var query = @"SELECT * FROM Articles 
+								LEFT JOIN `Language` ON Language.LanguageId = @languageId
+								LEFT JOIN ArticleInfos ON Articles.ArticleId = ArticleInfos.ArticleId AND ArticleInfos.LanguageId = Language.LanguageId
+								WHERE Articles.ArticleId = @articleId;";
+
+			var article = await connection.QueryFirstOrDefaultAsync<LanguageSpecificArticle>(query, new {articleId, languageId});
+			
+			return article;
+		}
+	}
 	public async Task<IEnumerable<MainArticle>> GetMainArticlesAsync(string language)
 	{
 		using (var connection = _dbConnectionFactory.GetConnection())
@@ -64,5 +105,77 @@ public class ArticleRepository : IArticleRepository
 			return mainArticles;
 		}
 	}
+	
+	public async Task<IEnumerable<MainArticle>> GetMainArticlesByLanguageIdAsync(string languageId)
+	{
+		using (var connection = _dbConnectionFactory.GetConnection())
+		{
+			connection.Open();
+			var query = $"SELECT * FROM MainArticles where LanguageId='{languageId}';";
+			var response = await connection.QueryAsync<MainArticle>(query);
+            
+			return response;
+		}
+	}
+	
+	public async Task CreateMainArticlesAsync(IEnumerable<MainArticle> mainArticles)
+	{
+		using (var connection = _dbConnectionFactory.GetConnection())
+		{
+			connection.Open();
+			using (var transaction = connection.BeginTransaction())
+			{
+				string query;
+				
+				string languageId = mainArticles.First().LanguageId;
+				await DeleteAllMainArticlesByLanguageIdAsync(languageId);
+				
+				foreach (var mainArticle in mainArticles)
+				{
+					query = $"INSERT INTO MainArticles(MainArticleId, ArticleId, LanguageId, `Order`)" +
+					            " VALUES(@MainArticleId, @ArticleId, @LanguageId, @Order);";
+					await connection.ExecuteAsync(query, mainArticle);
+				}
+				transaction.Commit();
+			}
+		}
+	}
 
+	public async Task DeleteAllMainArticlesByLanguageIdAsync(string languageId)
+	{
+		using (var connection = _dbConnectionFactory.GetConnection())
+		{
+			connection.Open();
+			var query = $"DELETE FROM MainArticles WHERE LanguageId='{languageId}';";
+			await connection.ExecuteAsync(query);
+		}
+	}
+
+	public async Task<IEnumerable<LanguageSpecificArticle>> GetPageOfArticlesByCategoryAsync(string language, string categoryId, int pageNumber)
+	{
+		var pageSize = 2;
+		using (var connection = _dbConnectionFactory.GetConnection())
+		{
+			connection.Open();
+			
+			var articleQuery = @"SELECT * FROM Articles 
+         						LEFT JOIN SubCategories ON SubCategories.SubCategoryId = Articles.SubCategoryId
+         						LEFT JOIN `Language` ON Language.ShortTitle = @language
+								LEFT JOIN ArticleInfos ON Articles.ArticleId = ArticleInfos.ArticleId AND ArticleInfos.LanguageId = Language.LanguageId
+								WHERE SubCategories.CategoryId = @categoryId
+								ORDER BY Articles.PublishingDate DESC";
+
+			articleQuery = await PaginateQuery(articleQuery, pageNumber, pageSize);
+			var pageOfArticles = await connection.QueryAsync<LanguageSpecificArticle>(articleQuery, new { categoryId, language });
+
+			return pageOfArticles;
+		}
+	}
+
+	private async Task<string> PaginateQuery(string query, int pageNumber, int pageSize)
+	{
+        var offset = (pageNumber - 1) * pageSize;
+        var paginatedQuery = query + $" LIMIT {pageSize} OFFSET {offset}";
+        return paginatedQuery;
+    }
 }

@@ -35,7 +35,7 @@ public class UserController : ControllerBase
     }
 
     [HttpGet("users")]
-    [Authorize("AdminPolicy")]
+    //[Authorize("AdminPolicy")]
     public async Task<IActionResult> GetAllUsersListAsync()
     {
         IEnumerable<User> users = await _usersService.GetUsersAsync();
@@ -81,9 +81,9 @@ public class UserController : ControllerBase
         try
         {
             var userUpdates = _mapper.Map<UserUpdateRequestDto, User>(userUpdatesDto);
-            
+
             await _usersService.UpdateUserAsync(userUpdates);
-            
+    
             return Ok();
         }
         catch (Exception ex)

@@ -17,165 +17,174 @@ $pointer-cursor: pointer;
       margin-top: 20px;
     }
 
-    th, td {
+    th,
+    td {
       cursor: pointer;
       border-bottom: 1px solid #ccc;
       box-shadow: 0px 0.5px 1px #ccc;
       padding: 8px;
-      text-align: right;
 
       .align_right_active {
         color: #229D1F;
       }
 
-      &:first-child {
-        text-align: left;
-        border-left: 1px solid #ccc;
-      }
-
-      &:last-child {
-        text-align: right;
-        border-right: 1px solid #ccc;
-      }
     }
+  }
 
-    th {
-      background-color: #e8e8e8;
-    }
+  .table_header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 10px;
 
-    .table_header {
+    .user_admin_header {
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      margin-bottom: 20px;
 
-      .user_admin_header {
-        display: flex;
-        justify-content: space-between;
-        .admin_ch {
-          padding-left: 30px;
+      span {
+        margin-right: 20px;
+        font-weight: bold;
+        font-size: 14px;
+        line-height: 16px;
+        text-transform: uppercase;
+        cursor: pointer;
+      }
+
+      .active {
+        color: $red-color;
+        text-decoration: $underline-decoration;
+      }
+    }
+
+    .search_input_wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+
+      .search_input {
+        padding: 4px 28px 4px 12px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 14px;
+        line-height: 16px;
+        color: #333;
+        width: 200px;
+        transition: width 0.3s ease-in-out;
+
+        &:focus {
+          width: 240px;
         }
       }
 
-      span, img {
+      .search_close {
+        position: absolute;
+        top: 50%;
+        right: 8px;
+        transform: translateY(-50%);
+        border: none;
+        background: transparent;
         cursor: $pointer-cursor;
-      }
 
-      .search_icon {
-        font-size: 20px;
-        height: 25px;
-        width: 25px;
-        margin-right: 20px;
-        color: #989898;
+        &:focus {
+          outline: none;
+        }
+
+        img {
+          width: 14px;
+          height: 14px;
+        }
       }
     }
 
-    select {
-      width: 100%;
-      padding: 5px;
-      border-radius: 3px;
-      outline: none;
+    .admin_ch {
+      font-weight: bold;
+      font-size: 14px;
+      line-height: 16px;
+      text-transform: uppercase;
+      cursor: pointer;
+
+
+      &:hover {
+        color: $red-color;
+        text-decoration: $underline-decoration;
+      }
+    }
+
+    .search_icon {
+      width: 18px;
+      height: 18px;
+      cursor: $pointer-cursor;
+
+      &:hover {
+        opacity: 0.8;
+      }
     }
   }
 
   .user_info {
-    border: 1px solid #ccc;
-    width: 250px;
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    font-size: 16px;
     margin-left: 40px;
+    border: 1px solid lightgray;
+    padding: 20px;
 
-    .user_info_header
-    {
-      display: flex;
-      column-gap: 20px;
-
-      .general_info{
-        padding: 17px;
-        display: flex;
-        justify-content: center;
-        margin-bottom: 10px;
-        font-size: 16px;
-        box-shadow: 1px 0.5px 1px #c2c2c2;
-        font-weight: bold;
-      }
-      .teams_info{
-        padding: 17px;
-        display: flex;
-        margin-bottom: 10px;
-        font-size: 16px;
-        font-weight: bold;
-      }
-
-    }
-    .user_photo {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
+    .user_info_header {
       display: flex;
       justify-content: center;
-      align-items: center;
-      margin: 0 auto;
-      position: relative;
-      overflow: hidden;
+      margin-bottom: 20px;
 
-      .online_indicator {
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
-        background-color: green;
-        display: inline-block;
-        position: absolute;
-        bottom: 2px;
-        right: 2px;
-        transform: translate(50%, 50%);
+      .general_info,
+      .teams_info {
+        margin-right: 20px;
+        font-weight: bold;
+        font-size: 14px;
+        line-height: 16px;
+        text-transform: uppercase;
+        cursor: pointer;
       }
 
+      .teams_info {
+        color: #ccc;
+        cursor: not-allowed;
+      }
+    }
 
+    .user_photo {
+      margin-bottom: 10px;
+      width: 80px;
+      height: 80px;
     }
 
     .user_name {
-      text-align: center;
-      margin-top: 10px;
       font-weight: bold;
+      fontsize: 18px;
+      margin-bottom: 10px;
     }
-    .inner_content {
-      padding: 20px;
-      .align_right {
-        margin-left: auto;
-        display: flex;
-        justify-content: space-between;
-        padding-bottom: 18px;
-        padding-left: 1px;
-        .row_name {
-          font-weight: bold;
-        }
 
-        .content_info {
-          padding-right: 0.1vw;
-        }
+    .inner_content {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+
+      .align_right {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        margin-bottom: 5px;
+      }
+
+      .row_name {
+        font-weight: bold;
+        margin-right: 10px;
+      }
+
+      .content_info {
+        color: #999;
       }
     }
-    .registration_date {
-      text-align: center;
-      margin-top: 5px;
-    }
-
-    .info_button {
-      display: block;
-      margin-top: 10px;
-      text-align: center;
-      text-decoration: none;
-      color: #333;
-      background-color: #eee;
-      padding: 5px;
-      border-radius: 3px;
-    }
-  }
-  .selected {
-    color: $red-color;
-    text-decoration: $underline-decoration;
-  }
-
-  .pointer {
-    cursor: $pointer-cursor;
   }
 }

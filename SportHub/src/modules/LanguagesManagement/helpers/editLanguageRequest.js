@@ -3,7 +3,8 @@ import axios from "axios"
 
 const editLanguageRequest = async (shortTitle, isActive) => {
     try {
-        const response = await axios.put(`https://localhost:7168/Language/${shortTitle}`,
+        const backendHost = process.env.REACT_APP_BACKEND_HOST
+        const response = await axios.put(`${backendHost}/Language/${shortTitle}`,
             isActive,
             {
                 headers: {

@@ -5,7 +5,7 @@ import LabelStyles from '../styles/LabelStyles'
 import CloseIcon from '@mui/icons-material/Close'
 import styles from "../styles/style.module.scss"
 
-import { LANGUAGES_CONSTANTS } from '../../../../../constants/LanguagesConstants'
+import { LANGUAGES_CONSTANTS } from '../../../../../../../constants/LanguagesConstants'
 import { useTranslation } from "react-i18next"
 
 
