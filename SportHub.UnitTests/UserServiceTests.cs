@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.Extensions.Configuration;
 using Moq;
 using SportHub.API;
 using SportHub.Business;
@@ -11,6 +12,7 @@ namespace SportHub.UnitTests
     public class UserServiceTests
     {
         private User _testUser;
+        private IConfiguration _configuration;
         private IMapper _mapper;
         private UserService _userService;
         private Mock<IUserRepository> _userRepositoryMock;
@@ -26,6 +28,7 @@ namespace SportHub.UnitTests
             });
             
             _mapper = new Mapper(config);
+            _configuration = CreateConfiguration();
 
             _userRepositoryMock = new Mock<IUserRepository>();
             _jwtServiceMock = new Mock<IJwtService>();
@@ -45,7 +48,7 @@ namespace SportHub.UnitTests
             _userRepositoryMock.Setup(foo => foo.GetUserByEmailAsync(It.IsAny<string>()).Result)
                 .Returns((string email) => email == "testUserEmail@gmail.com" ? _testUser : null);
             
-            _userService = new UserService(_userRepositoryMock.Object, _mapper, 
+            _userService = new UserService(_configuration,_userRepositoryMock.Object, _mapper, 
                 _jwtServiceMock.Object, _emailServiceMock.Object);
 
         }
@@ -184,6 +187,16 @@ namespace SportHub.UnitTests
             Assert.IsNotNull(result);
             Assert.IsInstanceOf<string>(result);
         }
+        
+        private IConfiguration CreateConfiguration()
+        {
+            
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath(Path.Combine(AppContext.BaseDirectory, "../../../../SportHub.API"))
+                .AddJsonFile("appsettings.json", optional: true)
+                .Build();
 
+            return configuration;
+        }
     }
 }
