@@ -35,7 +35,7 @@ public class UserController : ControllerBase
     }
 
     [HttpGet("users")]
-    //[Authorize("AdminPolicy")]
+    [Authorize("AdminPolicy")]
     public async Task<IActionResult> GetAllUsersListAsync()
     {
         IEnumerable<User> users = await _usersService.GetUsersAsync();
