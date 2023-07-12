@@ -3,7 +3,8 @@ import axios from "axios"
 
 const getLocationsRequest = async () => {
     try {
-        const response = await axios.get(`https://localhost:7168/Location/all`)
+        const backendHost = process.env.REACT_APP_BACKEND_HOST
+        const response = await axios.get(`${backendHost}/Location/all`)
         if (response.status === 204) {
             return null
         }
