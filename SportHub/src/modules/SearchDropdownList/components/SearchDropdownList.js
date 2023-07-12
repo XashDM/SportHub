@@ -57,7 +57,8 @@ const SearchDropdownList = ({ setIsContentSearch, setContentSearchValue }) => {
         onInputChange={handleInputChange}
         ListboxProps={{ style: { maxHeight: 'none', width: "100%", padding: 0 } }}
         getOptionLabel={(option) => `${option.title} 
-                                      ${option.mainText} 
+                                      ${option.mainText}
+                                      ${option.subtitle}  
                                       ${option.category.categoryName} 
                                       ${option.subCategory?.subCategoryName || ''} 
                                       ${option.team?.teamName || ''} 
@@ -125,9 +126,11 @@ const SearchDropdownList = ({ setIsContentSearch, setContentSearchValue }) => {
               onKeyDown: (e) => {
                 if (e.key === 'Enter') {
                   e.stopPropagation()
-                  setShowSuggestions(false)
-                  setContentSearchValue(inputValue)
-                  setIsContentSearch(true)
+                  if (inputValue.trim()) {
+                    setShowSuggestions(false)
+                    setContentSearchValue(inputValue)
+                    setIsContentSearch(true)
+                  } 
                 }
               },
             }}
