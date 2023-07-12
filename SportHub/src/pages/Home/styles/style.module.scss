@@ -1,33 +1,20 @@
 @import "src/styles/mixins";
 
-.container
-{
-  .content{
-    min-height: 88vh;
-    margin-left: 17.5vw;
-    margin-bottom: 20vh;
-    position: relative;
+%bg-text {
+  position: absolute;
+  @include text-h1-background-text();
+  transform: rotate(90deg);
+  color: var(--color-dark-field-frame);
+}
 
-    %bg-text{
-      position: absolute;
-      @include text-h1-background-text();
-      transform: rotate(90deg);
-      color: var(--color-dark-field-frame);
-    }
-    .bg_all{
-      @extend %bg-text;
-      left: -9vw;
-      top: 5vh;
-    }
+.bg_all {
+  @extend %bg-text;
+  left: -9vw;
+  top: 5vh;
+}
 
-    .bg_news{
-      @extend %bg-text;
-      right: 10vw;
-      top: 60vh;
-    }
-
-    .searchResultsBlock > * {
-      margin: 0;
-    }
-  }
+.bg_news {
+  @extend %bg-text;
+  right: 10vw;
+  top: 60vh;
 }
