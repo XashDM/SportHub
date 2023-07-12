@@ -54,9 +54,8 @@ const SearchResultsList = ({ contentSearchValue }) => {
     for (let i = 0; i < mainTexts.length; i++) {
       const text = mainTexts[i]
       if (text.toLowerCase().includes(contentSearchValue.toLowerCase())) {
-        //matchedMainText = text
         const regex = new RegExp(contentSearchValue, "i")
-        matchedMainText = `<span>` + text.replace(regex, (match) => `<span class="${styles.highlightedText}">${match}</span>`) + `<span>`
+        matchedMainText = `<span>` + text.replace(regex, (match) => `<span class="${styles.highlightedText}">${match}</span>`) + `</span>`
         break
       }
     }

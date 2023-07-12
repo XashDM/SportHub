@@ -18,17 +18,25 @@ const SearchDropdownList = ({ setIsContentSearch, setContentSearchValue }) => {
   const [showSuggestions, setShowSuggestions] = useState(true)
   const handleInputChange = async (event, value) => {
     if (!showSuggestions) {
-      setShowSuggestions(true);
+      setShowSuggestions(true)
     }
     setInputValue(value)
   }
 
   const handleArticlesGet = async () => {
-    if (inputValue) {
-      const result = await getSearchArticlesRequest(i18n.language, inputValue, 1, 3)
+    if (inputValue.trim()) { // preventing error when first symbol is space
+      const result = await getSearchArticlesRequest(i18n.language, inputValue, 1, 2)
       console.log(result)
       setArticles(result.data)
     }
+  }
+
+  const showDropdownShadows = (children) => {
+    // removing shadows when nothing printed/no results
+    if (showSuggestions && inputValue && articles.length !== 0) {
+      return <div className={styles.optionsContainer}>{children}</div>
+    }
+    return <div>{children}</div>
   }
 
   useEffect(() => {
@@ -64,9 +72,8 @@ const SearchDropdownList = ({ setIsContentSearch, setContentSearchValue }) => {
           for (let i = 0; i < mainTexts.length; i++) {
             const mainText = mainTexts[i]
             if (mainText.toLowerCase().includes(inputValue.toLowerCase())) {
-              //matchedMainText = mainText
               const regex = new RegExp(inputValue, "i")
-              matchedMainText = `<span>` + mainText.replace(regex, (match) => `<span class="${styles.highlightedText}">${match}</span>`) + `<span>`
+              matchedMainText = `<span>` + mainText.replace(regex, (match) => `<span class="${styles.highlightedText}">${match}</span>`) + `</span>`
               break
             }
           }
@@ -127,11 +134,7 @@ const SearchDropdownList = ({ setIsContentSearch, setContentSearchValue }) => {
           />
         )}
         PaperComponent={({ children }) => (
-          showSuggestions && inputValue && articles.length !== 0 // removing shadows when nothing printed/no results
-            ?
-            <div className={styles.optionsContainer}>{children}</div>
-            :
-            <div>{children}</div>
+          showDropdownShadows(children)
         )}
       />
     </>
