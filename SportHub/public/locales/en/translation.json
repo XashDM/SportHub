@@ -1,4 +1,5 @@
 {
+    "LoadingText": "Loading...",
     "Header": {
         "UserHeader": {
             "LoginBtn": "Log in",

@@ -240,16 +240,15 @@ public class ArticleRepository : IArticleRepository
 
 	public async Task<IEnumerable<LanguageSpecificArticle>> GetPageOfArticlesByCategoryAsync(string language, string categoryId, int pageNumber)
 	{
-		var pageSize = 2;
+		var pageSize = 5;
 		using (var connection = _dbConnectionFactory.GetConnection())
 		{
 			connection.Open();
 			
 			var articleQuery = @"SELECT * FROM Articles 
-         						LEFT JOIN SubCategories ON SubCategories.SubCategoryId = Articles.SubCategoryId
          						LEFT JOIN `Language` ON Language.ShortTitle = @language
 								LEFT JOIN ArticleInfos ON Articles.ArticleId = ArticleInfos.ArticleId AND ArticleInfos.LanguageId = Language.LanguageId
-								WHERE SubCategories.CategoryId = @categoryId
+								WHERE CategoryId = @categoryId
 								ORDER BY Articles.PublishingDate DESC";
 
 			articleQuery = await PaginateQuery(articleQuery, pageNumber, pageSize);
@@ -268,8 +267,8 @@ public class ArticleRepository : IArticleRepository
 			var articleQuery = @"SELECT * FROM Articles a 
 								JOIN ArticleInfos ai ON a.ArticleId = ai.ArticleId 
 								JOIN Categories c ON a.CategoryId = c.CategoryId 
-								JOIN Subcategories sc ON a.SubCategoryId = sc.SubCategoryId 
-								JOIN Teams t ON a.TeamId = t.TeamId 
+								LEFT JOIN Subcategories sc ON a.SubCategoryId = sc.SubCategoryId 
+								LEFT JOIN Teams t ON a.TeamId = t.TeamId
 								JOIN Language l ON ai.LanguageId = l.LanguageId 
 								WHERE (
 									ai.MainText LIKE @findText 
