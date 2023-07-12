@@ -3,7 +3,8 @@ import axios from "axios"
 
 const getTeamsRequest = async (subcategoryId) => {
     try {
-        const response = await axios.get(`https://localhost:7168/Teams/subcategory/${subcategoryId}`, {})
+        const backendHost = process.env.REACT_APP_BACKEND_HOST
+        const response = await axios.get(`${backendHost}/Teams/subcategory/${subcategoryId}`, {})
         if (response.status === 204) {
             return null
         }

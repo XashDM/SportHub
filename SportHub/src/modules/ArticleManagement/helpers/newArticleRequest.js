@@ -1,10 +1,11 @@
 import axios from "axios"
 
 
-const newArticleRequest = async (article) => {
+const newArticleRequest = async (articleForm) => {
     try {
-        const response = await axios.post('https://localhost:7168/Article',
-            article,
+        const backendHost = process.env.REACT_APP_BACKEND_HOST
+        const response = await axios.post(`${backendHost}/Article`,
+        articleForm,
             {
                 headers: {
                     'Content-Type': 'multipart/form-data'

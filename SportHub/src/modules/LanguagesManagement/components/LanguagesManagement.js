@@ -1,7 +1,7 @@
 import styles from "../styles/style.module.scss"
 import Switch from "../../../ui/Switch"
 import FlashMessage from "../../../ui/FlashMessage"
-import PopUpRemovalWarning from "../components/PopUpRemovalWarning"
+import PopUpRemovalWarning from "../../../ui/PopUpRemovalWarning"
 import PopUpAddLanguages from "../components/PopUpAddLanguages"
 
 import { useState, useEffect } from "react"
@@ -160,8 +160,10 @@ function LanguagesManagement() {
                     isSuccess={flashIsSuccess}
                     handleClose={handleCloseFlashMessage} />
                 <PopUpRemovalWarning open={openPopUpRemovalWarning}
-                    handleDelete={handleLanguageDelete}
-                    handleClose={handleClosePopUpRemovalWarning} />
+                    handleAction={handleLanguageDelete}
+                    handleCancel={handleClosePopUpRemovalWarning}
+                    icon={"PopUpRemovalWarningTrashBin.svg"}
+                    section={"LanguagesManagement"} />
                 <PopUpAddLanguages open={openPopUpAddLanguages}
                     handleAdd={handleLanguagesAdd}
                     handleClose={handleClosePopUpAddLanguages}

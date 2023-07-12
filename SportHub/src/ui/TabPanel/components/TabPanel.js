@@ -14,7 +14,7 @@ export default function TabPanel({activeTab, setActiveTab, languages}){
     
     useEffect(() => {
         setTabs(languages.map((language) => (
-            <Tab key={language.value} value={language.value} handleClick={tabChange} icon={process.env.PUBLIC_URL + '/icons/flags/' + language.shortTitle + '.svg'} label={language.shortTitle} activeTab={activeTab}/>
+            <Tab key={language.value} value={language.value} handleClick={tabChange} icon={process.env.PUBLIC_URL + '/icons/flags/' + language.shortTitle + '.svg'} label={language.shortTitle} activeTab={activeTab} isActive={language.isActive}/>
         )))
     }, [activeTab, languages])
 

@@ -7,7 +7,7 @@ import styles from "../styles/styles.module.scss"
 import HorizontalCard from "./HorizontalCard"
 import AutoComplete from "../../../ui/AutoComplete"
 import getPageOfArticlesRequest from "../helpers/getPageOfArticlesRequest"
-import ArticleMenu from "../../ArticleMenu"
+import ArticleManagement from "../../ArticleManagement"
 import {PAGE_CONSTANTS} from "../../../constants/PageConstants"
 import {adminMenuState} from "../../../store/states/adminMenuState";
 
@@ -78,7 +78,8 @@ function AdminArticlesList() {
     function convertArticlesToCards(){
         return articles.map((article, idx) => (
             <HorizontalCard {...article} key={idx} imageUrl={article.image.url}
-                            location={article.location.locationName} subCategory={article.subCategory.subCategoryName}/>
+                            location={article.location.locationName} subCategory={article.subCategory.subCategoryName} 
+                            onClick={() => setContent(<ArticleManagement articleId={article.articleId}/>)}/>
         ))
     }
     function getAutocomplete(value, setter, defaultValue){
@@ -97,7 +98,7 @@ function AdminArticlesList() {
     }
 
     function onCreateArticleHandler(){
-        setContent(<ArticleMenu />)
+        setContent(<ArticleManagement />)
     }
     return (
         <div className={styles.container}>
