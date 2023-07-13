@@ -158,7 +158,7 @@ function UsersManagement() {
     };
 
     const filteredUsers = showAdmins
-        ? users.filter((user) => user.isAdmin)
+        ? users.filter((user) => user.isAdmin && handleSearch(user))
         : users.filter(handleSearch);
 
     const displayedUsers = filteredUsers.slice(
@@ -465,7 +465,9 @@ function UsersManagement() {
                                             <Select
                                                 id={`changeUserStatus_${user.userId}`}
                                                 defaultValue={user.isActivated ? "block" : "activate"}
-                                                onChange={(event) => handleChangeAction(event, user)}
+                                                onChange={(event) =>
+                                                    handleChangeAction(event, user)
+                                                }
                                                 sx={selectStyles[user.userId]}
                                             >
                                                 <MenuItem value="block">Block</MenuItem>
@@ -508,17 +510,12 @@ function UsersManagement() {
                             {renderAdminPaginationButtons()}
                             <Button
                                 variant="contained"
-                                disabled={
-                                    currentPage === totalPages ||
-                                    totalPages === 0 ||
-                                    currentPage === admins / pageSize
-                                }
+                                disabled={currentPage === totalPages || admins === 0}
                                 onClick={handleNextPage}
                                 sx={{
                                     backgroundColor: "#D72130",
                                     color:
-                                        currentPage === totalPages ||
-                                        currentPage === admins / pageSize
+                                        currentPage === totalPages || admins === 0
                                             ? "#D72130"
                                             : "#FFFFFF",
                                     minWidth: 30,
@@ -548,14 +545,11 @@ function UsersManagement() {
                             {renderPaginationButtons()}
                             <Button
                                 variant="contained"
-                                disabled={
-                                    currentPage === totalPages || totalPages === 0
-                                }
+                                disabled={currentPage === totalPages || totalPages === 0}
                                 onClick={handleNextPage}
                                 sx={{
                                     backgroundColor: "#D72130",
-                                    color:
-                                        currentPage === totalPages ? "#D72130" : "#FFFFFF",
+                                    color: currentPage === totalPages ? "#D72130" : "#FFFFFF",
                                     minWidth: 30,
                                     maxHeight: 32,
                                     margin: "0 5px",
