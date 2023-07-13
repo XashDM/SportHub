@@ -14,6 +14,8 @@ import {Reorder} from "framer-motion";
 
 const NavigationSystem = ({setButtons}) => {
     // const [categories,setCategories] = useState([])
+    const teams = useNavigationItemsTeams((state) => state.teams)
+    const subcategories = useNavigationItemsSubCategories((state => state.subcategories))
     const categories = useNavigationItemsCategories((state) => state.categories)
     const setCategories = useNavigationItemsCategories((state) => state.setCategory)
     const addCategory = useNavigationItemsCategories((state) => state.addCategory)
@@ -84,8 +86,13 @@ const NavigationSystem = ({setButtons}) => {
     }
 
     const handleAddSubCategory = (activeCategory,value) => {
-        console.log(activeCategory)
-        if (value && activeCategory){
+        let Subcategorynames = []
+        for (let category in subcategories){
+            for (let subcategorytitle of subcategories[category].map(x => x.title)){
+                Subcategorynames.push(subcategorytitle)
+            }
+        }
+        if (value && activeCategory && !(Subcategorynames.includes(value))){
             // AddCategoryRequest(value)
             addSubCategory(activeCategory,value)
             handleClosePopUpAddSubCategory()
@@ -93,7 +100,13 @@ const NavigationSystem = ({setButtons}) => {
     }
 
     const handleAddTeam = (activeSubCategory,value) => {
-        if (value && activeSubCategory){
+        let Teamnames = []
+        for (let subcategory in teams){
+            for (let subcategorytitle of teams[subcategory].map(x => x.title)){
+                Teamnames.push(subcategorytitle)
+            }
+        }
+        if (value && activeSubCategory && !(Teamnames.includes(value))){
             addTeam(activeSubCategory,value)
             handleClosePopUpAddTeam()
         }
@@ -120,31 +133,41 @@ return(
     <AddButton text={"+ Add subcategory"} onClick={handleOpenPopUpAddSubCategory}/>
     <AddButton text={"+ Add team"} onClick={handleOpenPopUpAddTeam}/>
 </div>
+
 <PopUpAddCategory open={openPopUpAddCategory} handleAdd={handleAddCategory} handleClose={handleClosePopUpAddCategory}/>
 <PopUpAddSubCategory activeCategory={activeCategory} open={openPopUpAddSubCategory} handleAdd={handleAddSubCategory} handleClose={handleClosePopUpAddSubCategory}/>
 <PopUpAddTeam activeSubCategory={activeSubCategory} open={openPopUpAddTeam} handleAdd={handleAddTeam} handleClose={handleClosePopUpAddTeam}/>
+
 <div ref={nav_container} className={styles.nav_container}>
     <div ref={nav_click_area} className={styles.nav_area}>
         <ul className={styles.menus}> 
         {
             categories.map((menu,index) => {
-                const depthLevel = 0;
-                return <NavigationItems 
-                activeCategory={activeCategory} setActiveCategory={setActiveCategory} 
-                activeSubCategory={activeSubCategory} setActiveSubCategory={setActiveSubCategory} 
-                activeTeam={activeTeam} setActiveTeam={setActiveTeam} 
-                items={menu} key={menu.id} depthLevel={depthLevel} nav_container={nav_container} nav_click_area={nav_click_area}
-                index={index}/>;
+                const depthLevel = 0
+                return <NavigationItems     activeCategory={activeCategory} 
+                                            setActiveCategory={setActiveCategory} 
+                                            activeSubCategory={activeSubCategory} 
+                                            setActiveSubCategory={setActiveSubCategory} 
+                                            activeTeam={activeTeam} 
+                                            setActiveTeam={setActiveTeam} 
+                                            items={menu} 
+                                            key={menu.id} 
+                                            depthLevel={depthLevel} 
+                                            nav_container={nav_container} 
+                                            nav_click_area={nav_click_area}
+                                            index={index}/>
             })
         }
         </ul>           
     </div>
 </div>
+
 <FlashMessage   title={flashTitle} 
                 content={flashContent} 
                 open={openFlashMessage}
                 isSuccess={flashIsSuccess}
                 handleClose={handleCloseFlashMessage} />
+
 </div>
 )
 };

@@ -9,7 +9,7 @@ const SendNavigationTreeRequest = async (Categories,SubCategories,Teams) => {
     }
     console.log(body)
     if (Categories.length!=0 || SubCategories.length!=0 || Teams.length!=0){
-        const response = await axios.post("https://localhost:7168/NavigationTree/create",body,{
+        const response = await axios.post("https://localhost:7168/NavigationTree/append",body,{
         headers: {
             'Content-Type': 'application/json'
         }   

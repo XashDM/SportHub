@@ -4,7 +4,7 @@ namespace SportHub.Business
 {
     public interface INavigationTreeService
     {
-        public Task CreateByNavigationTree(NavigationTree navigationTree);
+        public Task AppendNavigationTree(NavigationTree navigationTree);
 
     }
 }

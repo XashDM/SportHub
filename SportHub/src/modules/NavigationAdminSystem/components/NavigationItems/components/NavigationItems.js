@@ -12,9 +12,9 @@ const Dropdown = React.lazy(() => import("./Dropdown"))
 
 const NavigationItems = ({activeCategory,setActiveCategory,activeSubCategory,setActiveSubCategory,activeTeam,setActiveTeam,items,depthLevel,nav_container,nav_click_area,index}) => 
 {   
-    const [,startTransition] = useTransition(); 
-    const [load, setLoad] = useState(false);
-    const [dropdown, setDropdown] = useState(false);
+    const [,startTransition] = useTransition()
+    const [load, setLoad] = useState(false)
+    const [dropdown, setDropdown] = useState(false)
     const [submenu,setSubmenu] = useState(false)
     const [isActive,setIsActive] = useState(false)
     const [showEdit,setShowEdit] = useState(false)
@@ -73,10 +73,10 @@ const NavigationItems = ({activeCategory,setActiveCategory,activeSubCategory,set
             setActiveTeam(items.id)
         }
 
-        setDropdown(true);
-        setShowEdit(true);
+        setDropdown(true)
+        setShowEdit(true)
         startTransition(() => {
-            setLoad(true);
+            setLoad(true)
         });
     }
 
@@ -113,12 +113,19 @@ const NavigationItems = ({activeCategory,setActiveCategory,activeSubCategory,set
                 {(load && submenu) && (
                 <Xwrapper>
                 <Suspense fallback={'Loading...'}>
-                <Dropdown 
-                activeCategory={activeCategory} setActiveCategory={setActiveCategory} 
-                activeSubCategory={activeSubCategory} setActiveSubCategory={setActiveSubCategory} 
-                activeTeam={activeTeam} setActiveTeam={setActiveTeam} 
-                parent={`${items.id}-${items.title}`} depthLevel={depthLevel} submenus={submenu} dropdown={dropdown} 
-                nav_container={nav_container} nav_click_area={nav_click_area} CategoryIndex={index}/> 
+                <Dropdown   activeCategory={activeCategory} 
+                            setActiveCategory={setActiveCategory} 
+                            activeSubCategory={activeSubCategory} 
+                            setActiveSubCategory={setActiveSubCategory} 
+                            activeTeam={activeTeam} 
+                            setActiveTeam={setActiveTeam} 
+                            parent={`${items.id}-${items.title}`} 
+                            depthLevel={depthLevel} 
+                            submenus={submenu} 
+                            dropdown={dropdown} 
+                            nav_container={nav_container} 
+                            nav_click_area={nav_click_area} 
+                            CategoryIndex={index}/> 
                 <div className={dropdown? styles.show_arrow : styles.hide_arrow}>
                 {   
                     submenu.map((submenu)=>(<Xarrow

@@ -37,7 +37,7 @@
     "zustand": "^4.3.7"
   },
   "scripts": {
-    "start": "set HTTPS=true&&set SSL_CRT_FILE=C:/Users/Admin/AppData/Roaming/ASP.NET/https/cert.crt&&set SSL_KEY_FILE=C:/Users/Admin/AppData/Roaming/ASP.NET/https/cert.key&&react-scripts start",
+    "start": "set HTTPS=true && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
