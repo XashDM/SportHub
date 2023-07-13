@@ -11,6 +11,8 @@ namespace SportHub.Business
 
         Task<IEnumerable<Team>> GetTeamsBySubcategoryIdAsync(string SubCategoryId);
 
+        Task<IEnumerable<Team>> GetTeamsByСategoryIdAsync(string сategoryId);
+
         Task<string> CreateTeamAsync(Team team);
 
         Task UpdateTeamAsync(string TeamId, TeamChangeDto teamChange);

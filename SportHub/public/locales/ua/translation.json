@@ -1,4 +1,5 @@
 {
+    "LoadingText": "Завантаження...",
     "Header": {
         "UserHeader": {
             "LoginBtn": "Вхід",
@@ -16,6 +17,7 @@
         "FirstNameLabel": "Ім'я",
         "LastNameLabel": "Прізвище",
         "PasswordLabel": "Пароль",
+        "EmailLabel": "Пошта",
         "PasswordPlaceholder": "8 + символів (літери та цифри)",
         "NewPasswordLabel": "Новий пароль",
         "ConfirmPasswordLabel": "Підтвердьте пароль",
@@ -27,11 +29,13 @@
         "CheckYourEmail": "Перевірте ваш email",
         "LoginForm": {
             "LogInFormCaption": "Увійти до Sports Hub",
-            "IncorrectDataText": "Неправильний email або пароль. Спробуйте знову"
+            "IncorrectDataText": "Неправильна пошта або пароль. Спробуйте знову"
         },
         "SignUpForm": {
             "SignUpFormCaption": "Створити акаунт",
-            "IncorrectDataText": "Ваш акаунт вже існує. Увійти",
+            "UnexpectedError": "Щось пішло не так. Перевірте введені дані ще раз !",
+            "ShortPassword": "Занадто короткий пароль !",
+            "IncorrectEmail": "Пошту введено неправильно !",
             "LetterInfo": "Ви отримаєте лист з посиланням активації"
         },
         "ForgotPasswordForm": {

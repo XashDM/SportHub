@@ -1,6 +1,7 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Moq;
 using MySql.Data.MySqlClient;
@@ -8,14 +9,12 @@ using SportHub.API;
 using SportHub.Business;
 using SportHub.Business.Implementations;
 using SportHub.Controllers;
-using SportHub.Data.Interfaces;
-using SportHub.Data.Repositories;
-using Microsoft.Extensions.Configuration;
-using Mysqlx.Crud;
 using SportHub.Data.DTO;
 using SportHub.Data.Entities;
+using SportHub.Data.Interfaces;
+using SportHub.Data.Repositories;
 
-namespace SportHub.IntegrationTests
+namespace SportHub.IntegrationTests.Controllers
 {
     [TestFixture]
     [SingleThreaded]
@@ -30,6 +29,7 @@ namespace SportHub.IntegrationTests
         private IEmailService _emailService;
         private IMapper _mapper;
         private IConfiguration _configuration;
+        private string _frontendUrl;
         
         private User _testUser;
         private UserRequestDto _testUserRequestDto;
@@ -43,6 +43,7 @@ namespace SportHub.IntegrationTests
             _loggerMock = new Mock<ILogger<AuthController>>();
             _jwtLoggerMock = new Mock<ILogger<JwtService>>();
             _configuration = CreateConfiguration();
+            _frontendUrl = _configuration.GetSection("Frontend")["Url"];
             _mapper = CreateMapper();
             _emailService = CreateEmailService();
             _jwtService = CreateJwtService();
@@ -106,7 +107,7 @@ namespace SportHub.IntegrationTests
 
             Assert.IsTrue(actualResult is RedirectResult);
             RedirectResult redirectResult = actualResult as RedirectResult;
-            Assert.AreEqual("http://localhost:3000/log-in", redirectResult.Url);
+            Assert.AreEqual($"{_frontendUrl}/log-in", redirectResult.Url);
         }
         
         [Test, Order(3)]
@@ -214,7 +215,7 @@ namespace SportHub.IntegrationTests
                 .Returns(new MySqlConnection("server=localhost;database=SportHub;user=root;password=rootadmin2022"));
             
             var userRepository = new UserRepository(connectionFactoryMock.Object);
-            var userService = new UserService(userRepository, _mapper, _jwtService, _emailService);
+            var userService = new UserService(_configuration, userRepository, _mapper, _jwtService, _emailService);
 
             return userService;
         }

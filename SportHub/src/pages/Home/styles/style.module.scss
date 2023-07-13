@@ -3,6 +3,7 @@
 .container
 {
   .content{
+    min-height: 88vh;
     margin-left: 17.5vw;
     margin-bottom: 20vh;
     position: relative;
@@ -23,6 +24,10 @@
       @extend %bg-text;
       right: 10vw;
       top: 60vh;
+    }
+
+    .searchResultsBlock > * {
+      margin: 0;
     }
   }
 }

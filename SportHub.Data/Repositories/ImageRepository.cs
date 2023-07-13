@@ -26,4 +26,16 @@ public class ImageRepository : IImageRepository
 			return image;
 		}
 	}
+
+	public async Task CreateImageAsync(Image image)
+	{
+		using (var connection = _dbConnectionFactory.GetConnection())
+		{
+			connection.Open();
+
+			var sqlImage = "INSERT INTO Images (ImageId, Url, Alt) VALUES (@ImageId, @Url, @Alt)";
+
+			await connection.ExecuteAsync(sqlImage, image);
+		}
+	}
 }

@@ -1,0 +1,41 @@
+@import "src/styles/mixins";
+
+.container{
+    width: 70vw;
+    margin: 0 auto;
+
+    & > *:not(:last-child){
+        margin-bottom: 2vh;
+    }
+
+    .options_container{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        & > *{
+            width: 25%;
+        }
+    }
+
+    .list_container{
+        width: 100%;
+        padding: 2vw;
+        max-height: 100vh;
+
+        display: flex;
+        flex-direction: column;
+        gap: 5vh;
+
+        overflow-y: scroll;
+        @include thin-scrollbar();
+
+        .helper_container{
+            min-height: 110vh;
+            position: relative;
+            background: transparent;
+            pointer-events: none;
+        }
+    }
+
+}

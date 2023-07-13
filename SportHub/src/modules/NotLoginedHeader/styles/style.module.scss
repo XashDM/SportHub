@@ -28,26 +28,14 @@ select::-ms-expand {
   }
 
   .searchbar {
-
     display: flex;
-    left: 18vw;
-    top: 0;
-    @include flex-center;
     background: var(white);
     width: 25vw;
     height: 12vh;
     font-size: 18px;
+    align-items: center;
     color: rgb(189, 189, 189);
     border-right: 1px solid rgb(240, 240, 240);
-
-    &:hover {
-      cursor: pointer;
-    }
-
-    .img_icon {
-      height: 18px;
-      width: 18px;
-    }
   }
 
   .media {
