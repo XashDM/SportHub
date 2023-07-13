@@ -4,11 +4,17 @@ import {useEffect, useState} from "react"
 import styles from "../styles/style.module.scss"
 import mainArticlesRequest from "../helpers/mainArticlesRequest"
 import SliderNavigation from "./SliderNavigation"
+import {useTranslation} from "react-i18next"
 
 function MainArticlesSlider() {
     const [cardsState, setCardsState] = useState(null)
     const [currentCardIdx, setCurrentCardIdx] = useState(0)
     const [intervalId, setIntervalId] = useState(null)
+    const { i18n } = useTranslation()
+
+    function noArticlesFromBackend(){
+        return !cardsState || cardsState.length === 0
+    }
 
     function startAutoScroll(){
         if(intervalId === null){
@@ -29,7 +35,6 @@ function MainArticlesSlider() {
             setIntervalId(id)
         }
     }
-
     function stopAutoScroll(){
         clearInterval(intervalId)
         setIntervalId(null)
@@ -38,7 +43,7 @@ function MainArticlesSlider() {
     useEffect( () => {
 
         setTimeout(async () => {
-            const cards =  await mainArticlesRequest("UA")
+            const cards =  await mainArticlesRequest(i18n.language)
 
             if(cards.length > 5){
                 cards.length = 5
@@ -52,7 +57,7 @@ function MainArticlesSlider() {
         return () => stopAutoScroll()
     }, [])
 
-    if(!cardsState || cardsState.length === 0) return null
+    if(noArticlesFromBackend()) return null
 
     return (
         <div className={styles.container}
