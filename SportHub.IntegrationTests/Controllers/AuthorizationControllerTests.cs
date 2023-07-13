@@ -29,6 +29,7 @@ namespace SportHub.IntegrationTests.Controllers
         private IEmailService _emailService;
         private IMapper _mapper;
         private IConfiguration _configuration;
+        private string _frontendUrl;
         
         private User _testUser;
         private UserRequestDto _testUserRequestDto;
@@ -42,6 +43,7 @@ namespace SportHub.IntegrationTests.Controllers
             _loggerMock = new Mock<ILogger<AuthController>>();
             _jwtLoggerMock = new Mock<ILogger<JwtService>>();
             _configuration = CreateConfiguration();
+            _frontendUrl = _configuration.GetSection("Frontend")["Url"];
             _mapper = CreateMapper();
             _emailService = CreateEmailService();
             _jwtService = CreateJwtService();
@@ -105,7 +107,7 @@ namespace SportHub.IntegrationTests.Controllers
 
             Assert.IsTrue(actualResult is RedirectResult);
             RedirectResult redirectResult = actualResult as RedirectResult;
-            Assert.AreEqual("http://localhost:3000/log-in", redirectResult.Url);
+            Assert.AreEqual($"{_frontendUrl}/log-in", redirectResult.Url);
         }
         
         [Test, Order(3)]
@@ -213,7 +215,7 @@ namespace SportHub.IntegrationTests.Controllers
                 .Returns(new MySqlConnection("server=localhost;database=SportHub;user=root;password=rootadmin2022"));
             
             var userRepository = new UserRepository(connectionFactoryMock.Object);
-            var userService = new UserService(userRepository, _mapper, _jwtService, _emailService);
+            var userService = new UserService(_configuration, userRepository, _mapper, _jwtService, _emailService);
 
             return userService;
         }
