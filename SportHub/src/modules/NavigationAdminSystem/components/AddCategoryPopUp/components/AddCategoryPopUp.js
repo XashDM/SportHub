@@ -1,9 +1,9 @@
-import PopUpAddCategoryStyles from "../styles/AddCategoryPopUpStyles";
-import Button from "../../../../../ui/Button";
+import PopUpAddCategoryStyles from "../styles/AddCategoryPopUpStyles"
+import Button from "../../../../../ui/Button"
 import styles from "../styles/style.module.scss"
-import { useState } from "react";
-import Input from "../../../../../ui/Input/components/Input";
-import { useNavigationItemsCategories } from "../../../../../store/useNavigationTreeStore";
+import { useState } from "react"
+import Input from "../../../../../ui/Input/components/Input"
+import { useNavigationItemsCategories } from "../../../../../store/useNavigationTreeStore"
 
 function PopUpAddCategory({ open, handleAdd, handleClose}) {
     const [value,setValue] = useState("")

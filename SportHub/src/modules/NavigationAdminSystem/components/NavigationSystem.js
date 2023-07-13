@@ -1,19 +1,23 @@
-import React,{useEffect, useState, useRef} from 'react';
+import React,{useEffect, useState, useRef} from 'react'
 import styles from "../styles/style.module.scss"
 import CategoryRequest from "../helpers/CategoryRequest"
-import NavigationItems from "./NavigationItems";
-import AddButton from './AddButton';
-import PopUpAddCategory from './AddCategoryPopUp';
-import PopUpAddSubCategory from './AddCategoryPopUp/components/AddSubCategoryPopUp';
-import PopUpAddTeam from './AddCategoryPopUp/components/AddTeamPopUp';
-import FlashMessage from '../../../ui/FlashMessage';
-import { useNavigationItemsCategories,useNavigationItemsSubCategories,useNavigationItemsTeams } from '../../../store/useNavigationTreeStore';
-import SendNavigationTree from '../helpers/SendNavigationTreeToServer';
-import {Reorder} from "framer-motion";
+import NavigationItems from "./NavigationItems"
+import AddButton from './AddButton'
+import PopUpAddCategory from './AddCategoryPopUp'
+import PopUpAddSubCategory from './AddCategoryPopUp/components/AddSubCategoryPopUp'
+import PopUpAddTeam from './AddCategoryPopUp/components/AddTeamPopUp'
+import FlashMessage from '../../../ui/FlashMessage'
+import { useNavigationItemsCategories,useNavigationItemsSubCategories,useNavigationItemsTeams } from '../../../store/useNavigationTreeStore'
+import SendNavigationTree from '../helpers/SendNavigationTreeToServer'
+import { useAtom } from 'jotai'
+import { adminMenuState } from '../../../store/states/adminMenuState'
 
 
-const NavigationSystem = ({setButtons}) => {
-    // const [categories,setCategories] = useState([])
+const NavigationSystem = () => {
+
+    const [adminMenu, setAdminMenu] = useAtom(adminMenuState)
+    const { setButtons } = adminMenu
+
     const teams = useNavigationItemsTeams((state) => state.teams)
     const subcategories = useNavigationItemsSubCategories((state => state.subcategories))
     const categories = useNavigationItemsCategories((state) => state.categories)

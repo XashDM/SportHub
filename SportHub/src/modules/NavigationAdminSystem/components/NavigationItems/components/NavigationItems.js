@@ -1,11 +1,11 @@
-import React,{useState,useTransition,useEffect,useRef,Suspense} from "react";
-import styles from "../styles/style.module.scss";
-import SubCategoryRequest from "../helpers/RequestsSubCategories";
-import TeamsRequest from "../helpers/RequestTeam";
-import Xarrow, {Xwrapper,useXarrow} from "react-xarrows";
-import { useNavigationItemsSubCategories,useNavigationItemsTeams } from "../../../../../store/useNavigationTreeStore";
-import EditMenu from "./EditMenu";
-import { ReactSVG } from "react-svg";
+import React,{useState,useTransition,useEffect,useRef,Suspense} from "react"
+import styles from "../styles/style.module.scss"
+import SubCategoryRequest from "../helpers/RequestsSubCategories"
+import TeamsRequest from "../helpers/RequestTeam"
+import Xarrow, {Xwrapper,useXarrow} from "react-xarrows"
+import { useNavigationItemsSubCategories,useNavigationItemsTeams } from "../../../../../store/useNavigationTreeStore"
+import EditMenu from "./EditMenu"
+import { ReactSVG } from "react-svg"
 
 const Dropdown = React.lazy(() => import("./Dropdown"))
 
@@ -38,17 +38,17 @@ const NavigationItems = ({activeCategory,setActiveCategory,activeSubCategory,set
                 setActiveTeam(null)
             }
         };
-        document.addEventListener("mousedown", handler);
-        document.addEventListener("touchstart", handler);
+        document.addEventListener("mousedown", handler)
+        document.addEventListener("touchstart", handler)
         return () => {
-            document.removeEventListener("mousedown", handler);
-            document.removeEventListener("touchstart", handler);
+            document.removeEventListener("mousedown", handler)
+            document.removeEventListener("touchstart", handler)
             
         };
     },[dropdown]);
 
     const Clicking = async ()=>{
-        let data_list;
+        let data_list
         if (depthLevel === 0){
             if (!subCategories[items.id]){
                 data_list = await SubCategoryRequest(items.id);
