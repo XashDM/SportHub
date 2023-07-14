@@ -24,7 +24,7 @@ export default function Tab({ value, handleClick, label, activeTab, isActive }) 
     flagCode = flagCode ? flagCode : label;
     return (
         <div key={value} className={value === activeTab ? styles.tab + ' ' + styles.active_tab : styles.tab} value={value} onClick={handleClick}>
-            <img className={styles.flag} src={`https://flagcdn.com/w20/${flagCode.toLowerCase()}.png`} value={value} />
+            <img className={styles.flag} src={`https://flagcdn.com/${flagCode.toLowerCase()}.svg`} value={value} />
             {languageName}
             {isActive ? null : <div className={styles.hidden} >hidden </div>}
         </div>
