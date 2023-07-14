@@ -6,13 +6,29 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    text-transform: uppercase;
+    position: relative;
+    font-family: var(--font-style-open-sans);
+    color: #2B2F43;
     &:hover {
         border: 1.5px solid var(--color-red-regular);
+        .hidden{
+            color: #F8F8F8;
+            background-color: var(--color-red-regular);
+        }
     }
     .flag{
         vertical-align: middle;
-        height: 60%;
+        height: 15px;
+    }
+    .hidden{
+        position: absolute;
+        padding: 3px 10px;
+        border-radius: 5px;
+        color: #434C5D;
+        font-size: 12px;
+        right: 10px;
+        top: -10px;
+        background-color: var(--color-dark-field-frame);
     }
 }
 .active_tab{
@@ -20,5 +36,9 @@
     color: var(--color-red-regular);
     &:hover {
         border-color: var(--color-red-hover);
+    }
+    .hidden{
+        color: #F8F8F8;
+        background-color: var(--color-red-regular);
     }
 }
