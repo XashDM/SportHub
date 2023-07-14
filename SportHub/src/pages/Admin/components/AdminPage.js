@@ -5,17 +5,17 @@ import AdminHeader from "../../../modules/AdminHeader"
 import HorizontalAdminMenu from "../../../modules/HorizontalAdminMenu"
 import VerticalAdminMenu from "../../../modules/VerticalAdminMenu"
 import SECTION_NAMES from "../constants/SectionsNames"
-import AdminMainArticlesSection from "../../../modules/AdminMainArticlesSection"
+import MainArticlesConfigurator from "../../../modules/AdminHomeSection/components/MainArtcilesConfigurator"
 import LanguagesManagement from "../../../modules/LanguagesManagement"
 import NavigationSystem from '../../../modules/NavigationAdminSystem'
 import AdminArticlesList from "../../../modules/AdminArticlesList"
 import {adminMenuState} from "../../../store/states/adminMenuState";
-
+import AdminHomeSection from "../../../modules/AdminHomeSection"
 
 export default function AdminPage() {
     const [selectedMenuElement, setSelectedMenuElement] = useState("Home")
     const [selectedCategory, setSelectedCategory] = useState(null)
-    const [content, setContent] = useState(<AdminMainArticlesSection />)
+    const [content, setContent] = useState(<MainArticlesConfigurator />)
     const [headerButtons, setHeaderButtons] = useState([])
     const [adminMenu, setAdminMenu] = useAtom(adminMenuState)
 
@@ -32,7 +32,7 @@ export default function AdminPage() {
 
         switch (selectedMenuElement){
             case SECTION_NAMES["Home"]:
-                setContent(<AdminMainArticlesSection />)
+                setContent(<AdminHomeSection />)
                 break
             case "Languages":
                 setContent(<LanguagesManagement />)

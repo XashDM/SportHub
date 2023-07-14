@@ -10,4 +10,6 @@ public interface IBreakDownService
 
     Task<List<BreakDownResponse>> GetBreakDownsArticlesAsync(string languageId,
         ArticleSearchOptions articleSearchOptions);
+
+    Task<List<BreakDownDetailsDTO>> GetBreakDownsDetailsAsync(string languageId);
 }

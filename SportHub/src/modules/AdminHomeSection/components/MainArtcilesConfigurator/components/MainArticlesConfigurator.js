@@ -1,24 +1,18 @@
 import React, {useEffect, useState} from 'react'
 import AddMainArticle from "./AddMainArticle"
-import CapsuleLable from "../../../ui/CapsuleLable"
-import FlashMessage from "../../../ui/FlashMessage"
+import CapsuleLable from "../../../../../ui/CapsuleLable"
+import FlashMessage from "../../../../../ui/FlashMessage"
 import MAX_MAIN_ARTICLES_AMOUNT from "../constants/MaxMainArticlesAmount"
 import styles from '../styles/style.module.scss'
 import getMainArticlesRequest from "../helpers/getMainArticlesRequest"
 import postMainArticlesRequest from "../helpers/postMainArticlesRequest"
-import getCategoriesRequest from "../helpers/getCategoriesRequest"
-import {useAtom} from "jotai";
-import {adminMenuState} from "../../../store/states/adminMenuState";
 
-export default function AdminMainArticlesSection(){
-    const [adminMenu, setAdminMenu] = useAtom(adminMenuState)
-    const { setButtons } = adminMenu
+export default function MainArticlesConfigurator({setSaveMainArticles, setCancelMainArticle, categories}){
+
     const [startMainArticlesData, setStartMainArticlesData] = useState([])
     const [mainArticlesData, setMainArticlesData] = useState([])
     const [mainArticlesForms, setMainArticlesForms] = useState([])
     const [languageId, setLanguageId] = useState("0")
-
-    const [categoriesOption, setCategoriesOption] = useState([])
 
     const [fleshMessageIsOpen, setFleshMessageIsOpen] = useState(false)
     const handleCloseFleshMessage = () => setFleshMessageIsOpen(false)
@@ -28,22 +22,21 @@ export default function AdminMainArticlesSection(){
     const GetMainArticles = async () => {
         const mainArticles = await getMainArticlesRequest(languageId)
         let articles = []
-        for (let article in mainArticles.data){
-            const data = mainArticles.data[article]
-            articles[data.order] = {
-                order: data.order,
+        for (let articleCount in mainArticles.data){
+            const data = mainArticles.data[articleCount]
+            articles[articleCount] = {
                 isLastMainArticle: null,
                 category: {
-                    categoryId: data.categoryId,
-                    categoryName: data.categoryName
+                    categoryId: data.category.categoryId,
+                    categoryName: data.category.categoryName
                 },
                 subcategory: {
-                    subCategoryId: data.subCategoryId,
-                    subCategoryName: data.subCategoryName
+                    subCategoryId: data.subCategory.subCategoryId,
+                    subCategoryName: data.subCategory.subCategoryName
                 },
                 team: {
-                    teamId: data.teamId,
-                    teamName: data.teamName,
+                    teamId: data.team.teamId,
+                    teamName: data.team.teamName,
                 },
                 article: {
                     articleId: data.articleId,
@@ -55,20 +48,16 @@ export default function AdminMainArticlesSection(){
         setStartMainArticlesData(articles)
     }
 
-    const GetCategories = async () => {
-        const res = await getCategoriesRequest()
-        setCategoriesOption(res)
-    }
-
     const SaveChanges = () => {
         try {
             let jsonPostRequest = []
-            for (let articleCount = 0; articleCount < mainArticlesData.length; articleCount++)
+            for (let articleCount = 0; articleCount < mainArticlesData.length; articleCount++) {
                 jsonPostRequest.push({
-                    order: mainArticlesData[articleCount].order,
-                    articleId: (mainArticlesData[articleCount].article.articleId) + "",
-                    languageId: languageId
+                    "order": mainArticlesData[articleCount].order,
+                    "articleId": (mainArticlesData[articleCount].article.articleId) + "",
+                    "languageId": languageId
                 })
+            }
 
             postMainArticlesRequest(jsonPostRequest)
             setFleshMessageIsSuccessful(true)
@@ -80,7 +69,7 @@ export default function AdminMainArticlesSection(){
         setFleshMessageIsOpen(true)
     }
 
-    const CancelChanges = () =>{
+    const CancelChanges = () => {
         setMainArticlesData(startMainArticlesData)
     }
 
@@ -126,7 +115,7 @@ export default function AdminMainArticlesSection(){
             newMainArticlesForms[articleFormsCount] = (<AddMainArticle {...mainArticlesProps}
                                                                        key={articleFormsCount}
                                                                        languageId={languageId}
-                                                                       categoriesOptions={categoriesOption}
+                                                                       categoriesOptions={categories}
                                                                        AddNewMainArticle={AddNewMainArticle}
                                                                        DeleteMainArticle={DeleteMainArticle}
                                                                        SaveData={SaveChangedOption} />)
@@ -140,21 +129,20 @@ export default function AdminMainArticlesSection(){
         setMainArticlesForms([])
     }, [languageId])
 
-    useEffect(() =>{
-        if(typeof(setButtons) == "function"){
-                setButtons([{text: "Cancel", function: CancelChanges, isOutlined: true},
-                    {text: "Save changes", function: SaveChanges, isOutlined: false}])
-        }
-    })
-
     useEffect( () => {
-        GetCategories()
         GetMainArticles()
     }, [])
 
     useEffect(() => {
         GenerateArticlesForms()
     }, [mainArticlesData])
+
+    useEffect(() => {
+        if(typeof(setSaveMainArticles) == "function" && typeof(setCancelMainArticle) == "function") {
+            setSaveMainArticles({function: SaveChanges})
+            setCancelMainArticle({function: CancelChanges})
+        }
+    }, [mainArticlesData, languageId])
 
     return (
         <div>
@@ -168,8 +156,10 @@ export default function AdminMainArticlesSection(){
 
                 {mainArticlesData.length === 0
                     ?
-                    <div className={styles.add_one_more_article} onClick={() => AddNewMainArticle()}>
-                        + Add main article
+                    <div className={styles.add_one_more_article}>
+                        <div className={styles.click_box} onClick={() => AddNewMainArticle()}>
+                            + Add main article
+                        </div>
                     </div>
                     : null}
 

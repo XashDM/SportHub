@@ -77,4 +77,34 @@ public class BreakDownService : IBreakDownService
         
         return breakDownsResponse;
     }
+
+    public async Task<List<BreakDownDetailsDTO>> GetBreakDownsDetailsAsync(string languageId)
+    {
+        IEnumerable<BreakDown> breakDowns = await GetBreakDownsAsync(languageId);
+        
+        List<BreakDownDetailsDTO> breakDownDetails = new List<BreakDownDetailsDTO>();
+        foreach (var breakDown in breakDowns)
+        {
+            breakDownDetails.Add(await MapToBreakDownsDetails(breakDown));
+        }
+
+        return breakDownDetails;
+    }
+
+    private async Task<BreakDownDetailsDTO> MapToBreakDownsDetails(BreakDown breakDown)
+    {
+        BreakDownDetailsDTO breakDownDetails = new BreakDownDetailsDTO();
+
+        breakDownDetails.Category = await _categoryService.GetCategoryByIdAsync(breakDown.CategoryId);
+        if (breakDown.SubCategoryId != null)
+        {
+            breakDownDetails.SubCategory = await _subCategoryService.GetSubCategoriesByIdAsync(breakDown.SubCategoryId);
+        }
+        if (breakDown.TeamId != null)
+        {
+            breakDownDetails.Team = await _teamsService.GetTeamByIdAsync(breakDown.TeamId);
+        }
+
+        return breakDownDetails;
+    }
 }

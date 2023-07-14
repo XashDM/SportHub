@@ -1,0 +1,3 @@
+import BreakdownSectionConfigurator from "./components/BreakdownSectionConfigurator"
+
+export default BreakdownSectionConfigurator

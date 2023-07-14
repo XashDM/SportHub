@@ -38,7 +38,7 @@ function MainArticlesSlider() {
     useEffect( () => {
 
         setTimeout(async () => {
-            const cards =  await mainArticlesRequest("UA")
+            const cards =  await mainArticlesRequest("en")
 
             if(cards.length > 5){
                 cards.length = 5
