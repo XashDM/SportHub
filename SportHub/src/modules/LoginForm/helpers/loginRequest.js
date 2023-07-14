@@ -12,10 +12,10 @@ const loginRequest = async (email, password) => {
         })
 
         console.log(response.data)
-        return response.data
+        return response
     } catch (error) {
         console.error(error)
-        return error.code
+        return error.response
     }
 }
 

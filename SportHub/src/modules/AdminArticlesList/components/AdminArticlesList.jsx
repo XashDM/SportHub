@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react"
-import {useAtom} from "jotai";
+import {useAtom} from "jotai"
 import InfiniteScroll from "react-infinite-scroll-component"
 import {useTranslation} from "react-i18next"
 
@@ -9,7 +9,7 @@ import AutoComplete from "../../../ui/AutoComplete"
 import getPageOfArticlesRequest from "../helpers/getPageOfArticlesRequest"
 import ArticleManagement from "../../ArticleManagement"
 import {PAGE_CONSTANTS} from "../../../constants/PageConstants"
-import {adminMenuState} from "../../../store/states/adminMenuState";
+import {adminMenuState} from "../../../store/states/adminMenuState"
 
 function AdminArticlesList() {
     const [adminMenu, setAdminMenu] = useAtom(adminMenuState)
@@ -22,6 +22,7 @@ function AdminArticlesList() {
     const [isLastArticleHaveBeenFetched, setIsLastArticleHaveBeenFetched] = useState(false)
     const [currentPageNumber, setCurrentPageNumber] = useState(PAGE_CONSTANTS.FIRST_PAGE_NUMBER)
     const { i18n } = useTranslation()
+    const [shouldFetchData, setShouldFetchData] = useState(false)
 
     async function fetchData() {
         if (isLoading) return
@@ -65,21 +66,27 @@ function AdminArticlesList() {
     useEffect(() => {
         setArticles([])
         setCurrentPageNumber(PAGE_CONSTANTS.FIRST_PAGE_NUMBER)
+        setShouldFetchData(true)
     }, [category])
     useEffect(() => {
         if(articles.length !== 0){
             setCurrentPageNumber((prevPageNumber) => prevPageNumber+1)
+            setShouldFetchData(true)
         }
     }, [articles])
     useEffect(() => {
-        fetchData()
-    }, [currentPageNumber])
+        if(shouldFetchData){
+            fetchData()
+            setShouldFetchData(false)
+        }
+    }, [shouldFetchData])
 
     function convertArticlesToCards(){
         return articles.map((article, idx) => (
             <HorizontalCard {...article} key={idx} imageUrl={article.image.url}
-                            location={article.location.locationName} subCategory={article.subCategory.subCategoryName} 
-                            onClick={() => setContent(<ArticleManagement articleId={article.articleId}/>)}/>
+                            location={article.location?.locationName}
+                            subCategory={article.subCategory?.subCategoryName}
+                            onClick={() => setContent(<ArticleManagement articleId={article.articleId} />)}/>
         ))
     }
     function getAutocomplete(value, setter, defaultValue){
@@ -113,7 +120,6 @@ function AdminArticlesList() {
                 className={styles.list_container}
                 hasMore={!isLastArticleHaveBeenFetched}
                 loader={<p>Loading...</p>}
-                endMessage={<p>No more data to load.</p>}
             >
                 {convertArticlesToCards()}
             </InfiniteScroll>

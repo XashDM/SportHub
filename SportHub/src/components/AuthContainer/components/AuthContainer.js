@@ -19,7 +19,8 @@ function AuthContainer({isLogIn, children}){
     }
     return(
         <div className={styles.container}>
-           <div className={styles.img_container} style={isLogIn ? {} : {filter: "brightness(70%)"}}>
+           <div className={styles.img_container}>
+               <img className={`${styles.img} ${isLogIn && styles.img__darken}`} src="/images/SportBanner.png" alt="SportBanner"/>
                <div className={styles.logo}>Sport Hub</div>
            </div>
            <div className={styles.form_container}>
