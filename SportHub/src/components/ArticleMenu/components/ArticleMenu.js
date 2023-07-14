@@ -14,9 +14,10 @@ import {adminMenuState} from "../../../store/states/adminMenuState"
 import AdminArticlesList from "../../../modules/AdminArticlesList"
 
 import getLanguagesRequest from "../../../helpers/getLanguagesRequest"
-import getSubcategoriesRequest from "../../../components/ArticleMenu/helpers/getSubcategoriesRequest"
-import getTeamsRequest from "../../../components/ArticleMenu/helpers/getTeamsRequest"
-import getLocationsRequest from "../../../components/ArticleMenu/helpers/getLocationsRequest"
+import getSubcategoriesRequest from "../helpers/getSubcategoriesRequest"
+import getTeamsRequest from "../helpers/getTeamsRequest"
+import getLocationsRequest from "../helpers/getLocationsRequest"
+import articleCanBeSaved from "../helpers/articleCanBeSaved"
 
 function ArticleMenu({ article = null, image = null, request }) {
     const [adminMenu, setAdminMenu] = useAtom(adminMenuState)
@@ -70,7 +71,7 @@ function ArticleMenu({ article = null, image = null, request }) {
     }, [currentSubcategory])
 
     useEffect(() => {
-        checkIfCanBeSaved()
+        setCanBeSaved(articleCanBeSaved(tabData, selectedImage, alt))
     }, [selectedImage, tabData, alt])
 
     useEffect(() => {
@@ -109,22 +110,6 @@ function ArticleMenu({ article = null, image = null, request }) {
             setImageURL(process.env.PUBLIC_URL + image.url)
         }
     }, [image])
-
-    const checkIfCanBeSaved = () => {
-        let filled = true
-        for (let i = 0; i < tabData.length; i++) {
-            if (tabData[i]?.headline.length === 0 || tabData[i]?.caption.length === 0 || tabData[i]?.content.length === 0) {
-                filled = false
-                break
-            }
-        }
-
-        if (selectedImage === null || alt === "") {
-            filled = false
-        }
-
-        setCanBeSaved(filled)
-    }
 
     const saveButton = () => {
         if (!canBeSaved) {

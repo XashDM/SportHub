@@ -9,7 +9,7 @@ import Label from "../../../ui/Label"
 
 export default function TextEditor({value = "", onChange, activeTab}) {
     const [editorState, setEditorState] = useState(EditorState.createWithContent(ContentState.createFromBlockArray(htmlToDraft(value))))
-    const [textWasSet, setTextWasSet] = useState(false)
+    const [isTextSet, setIsTextSet] = useState(false)
 
     const onEditorStateChange = (editorState) => {
         setEditorState(editorState)
@@ -24,9 +24,9 @@ export default function TextEditor({value = "", onChange, activeTab}) {
     }, [activeTab])
 
     useEffect(() => {
-        if (!textWasSet && value !== "") {
+        if (!isTextSet && value !== "") {
             setEditorState(EditorState.createWithContent(ContentState.createFromBlockArray(htmlToDraft(value))))
-            setTextWasSet(true)
+            setIsTextSet(true)
         }
     }, [value])
 
