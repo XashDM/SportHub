@@ -29,7 +29,7 @@ const NavigationItems = ({activeCategory,setActiveCategory,activeSubCategory,set
     const deletedTeams = useNavigationItemsTeams(state => state.deleted)
 
     let ref = useRef();
-    console.log(items)
+   
     useEffect(() => {
         const handler = (event) => {
             if (dropdown && ref.current && !ref.current.contains(event.target) && nav_container.current.contains(event.target)) {
