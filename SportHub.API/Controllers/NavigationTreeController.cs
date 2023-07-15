@@ -34,7 +34,35 @@ namespace SportHub.API.Controllers
             { 
                 return BadRequest(ex.Message);
             }
-            return Ok(navigationTree.Teams);
+            return Ok();
+        }
+
+        [HttpDelete("delete")]
+        public async Task<IActionResult> DeleteFromNavigationTree([FromBody] NavigationTreeDeleteDTO navigationTree)
+        {
+            try
+            {
+                await _NavigationTreeService.DeleteFromNavigationTree(navigationTree);
+            }
+            catch (Exception ex) 
+            {
+                return BadRequest(ex.Message);
+            }
+            return Ok();
+        }
+
+        [HttpPut("hide")]
+        public async Task<IActionResult> HideNavigationTreeElements([FromBody] NavigationTreeHideDTO navigationTree)
+        {
+            try
+            {
+                await _NavigationTreeService.HideNavigationTree(navigationTree);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            return Ok();
         }
     }
 }

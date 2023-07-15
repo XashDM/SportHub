@@ -1,4 +1,5 @@
-﻿using SportHub.Data.Entities;
+﻿using SportHub.Data.DTO;
+using SportHub.Data.Entities;
 using SportHub.Data.Interfaces;
 using SportHub.Data.Repositories;
 
@@ -52,6 +53,45 @@ namespace SportHub.Business.Implementations
             }
 
             await _NavigationTreeRepository.AppendNavigationTree(navigationTree);
+        }
+
+        public async Task DeleteFromNavigationTree(NavigationTreeDeleteDTO navigationTree)
+        {
+            try
+            {            
+                CheckId(navigationTree.Categories);
+
+                CheckId(navigationTree.SubCategories);
+            
+                CheckId(navigationTree.Teams);        
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+            await _NavigationTreeRepository.DeleteFromNavigationTree(navigationTree);
+        }
+
+        public async Task HideNavigationTree(NavigationTreeHideDTO navigationTree)
+        {
+            try 
+            {
+                List<string> categoryId = navigationTree.Categories.Select(x => x.id).ToList();
+                CheckId(categoryId);
+
+                List<string> subCategoryId = navigationTree.SubCategories.Select(x => x.id).ToList();
+                CheckId(subCategoryId);
+
+                List<string> TeamId = navigationTree.Teams.Select(x => x.id).ToList();
+                CheckId(TeamId);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+            await _NavigationTreeRepository.HideNavigationTree(navigationTree);
         }
 
         private void CheckId(List<string> allId) 
