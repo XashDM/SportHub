@@ -3,7 +3,8 @@ import axios from "axios"
 
 const getSubcategoriesRequest = async (categoryId) => {
     try {
-        const response = await axios.get(`https://localhost:7168/SubCategory/category/${categoryId}`, {})
+        const backendHost = process.env.REACT_APP_BACKEND_HOST
+        const response = await axios.get(`${backendHost}/SubCategory/category/${categoryId}`, {})
         if (response.status === 204) {
             return null
         }
