@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const SubCategoryRequest = async (id) => {
-    const preListSubCategory = (await axios.get(`https://localhost:7168/SubCategory/category/${id}`))["data"]
+    const backendHost = process.env.REACT_APP_BACKEND_HOST
+    const preListSubCategory = (await axios.get(`${backendHost}/SubCategory/category/${id}`))["data"]
     const SubCategoryLists = []
     for (let i of preListSubCategory){
         i.id = i.subCategoryId

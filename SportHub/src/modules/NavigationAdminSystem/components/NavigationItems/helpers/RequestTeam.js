@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const TeamsRequest = async (id) => {
-    const preListTeams = (await axios.get(`https://localhost:7168/Teams/subcategory/${id}`))["data"]
+    const backendHost = process.env.REACT_APP_BACKEND_HOST
+    const preListTeams = (await axios.get(`${backendHost}/Teams/subcategory/${id}`))["data"]
     const TeamsLists = []
     for (let i of preListTeams){
         i.id = i.teamId

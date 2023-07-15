@@ -6,6 +6,7 @@ import Xarrow, {Xwrapper,useXarrow} from "react-xarrows"
 import { useNavigationItemsSubCategories,useNavigationItemsTeams } from "../../../../../store/useNavigationTreeStore"
 import EditMenu from "./EditMenu"
 import { ReactSVG } from "react-svg"
+import { useSetAtom } from "jotai"
 
 const Dropdown = React.lazy(() => import("./Dropdown"))
 
@@ -17,15 +18,18 @@ const NavigationItems = ({activeCategory,setActiveCategory,activeSubCategory,set
     const [dropdown, setDropdown] = useState(false)
     const [submenu,setSubmenu] = useState(false)
     const [isActive,setIsActive] = useState(false)
+    const [isHidden,setIsHidden] = useState(items.isHidden)
     const [showEdit,setShowEdit] = useState(false)
     const [showEditMenu,setShowEditMenu] = useState(false)
     const subCategories = useNavigationItemsSubCategories(state => state.subcategories)
     const addSubCategory = useNavigationItemsSubCategories(state => state.addSubCategory)
+    const deletedSubCategory = useNavigationItemsSubCategories(state => state.deleted)
     const teams = useNavigationItemsTeams(state => state.teams)
     const addTeams = useNavigationItemsTeams(state => state.addTeam)
+    const deletedTeams = useNavigationItemsTeams(state => state.deleted)
 
     let ref = useRef();
-
+    console.log(items)
     useEffect(() => {
         const handler = (event) => {
             if (dropdown && ref.current && !ref.current.contains(event.target) && nav_container.current.contains(event.target)) {
@@ -81,13 +85,16 @@ const NavigationItems = ({activeCategory,setActiveCategory,activeSubCategory,set
     }
 
     useEffect(()=>{
-        setSubmenu(subCategories[items.id])
-    },[activeCategory,subCategories[items.id],subCategories])
+        if(depthLevel === 0){
+            setSubmenu(subCategories[items.id])
+        }
+    },[activeCategory,subCategories[items.id],subCategories,deletedSubCategory])
 
     useEffect(()=>{
-        setSubmenu(teams[items.id])
-    },[teams[items.id]])
-
+        if(depthLevel === 1){
+            setSubmenu(teams[items.id])
+        }
+    },[teams[items.id],deletedTeams])
 
     let showEditMouseEnterFunct = () => {
         if (isActive){
@@ -101,6 +108,8 @@ const NavigationItems = ({activeCategory,setActiveCategory,activeSubCategory,set
         }
     }
 
+    useEffect(()=>{setIsHidden(items.isHidden)},[items.isHidden])
+
     return (
     <li onLoad={useXarrow()} id={`${items.id}-${items.title}`} className={styles.menu_items} ref={ref}>
         {
@@ -108,7 +117,8 @@ const NavigationItems = ({activeCategory,setActiveCategory,activeSubCategory,set
                 <button onMouseEnter={showEditMouseEnterFunct} onMouseLeave={showEditMouseLeaveFunct} onClick={() => Clicking()} className={isActive ? styles.active : ""}  type="button" aria-haspopup = "menu" aria-expanded = {dropdown ? "true" : "false"}>
                     {items.title} 
                     {showEdit && <ReactSVG onClick={() => setShowEditMenu(!showEditMenu)} className={showEditMenu ? `${styles.EditThreeDots} ${styles.ActiveEditThreeDots}`:`${styles.EditThreeDots}`} src={process.env.PUBLIC_URL + "/icons/"+ "EditThreeDots" + ".svg"} />}
-                    {showEditMenu && <EditMenu setShowEditMenu={setShowEditMenu} itemId={items.id}/>} 
+                    {showEditMenu && <EditMenu item={items} setShowEditMenu={setShowEditMenu} itemId={items.id} depthLevel={depthLevel}/>} 
+                    {isHidden && <div className={styles.HiddenTag}>hidden</div>}
                 </button>  
                 {(load && submenu) && (
                 <Xwrapper>
