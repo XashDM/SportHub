@@ -20,20 +20,59 @@ function UsersManagement() {
     const [pageSize, setPageSize] = useState(10);
     const [totalPages, setTotalPages] = useState(0);
     const [loading, setLoading] = useState(false);
+    const adminTotalPages = Math.ceil(admins / pageSize);
 
+    const paginationButtonArrows = {
+        backgroundColor: "#D72130",
+        color: "#FFFFFF",
+        minWidth: 30,
+        maxHeight: 32,
+        margin: "0 5px",
+    }
+    const paginationButtonArrowsBack = {
+        backgroundColor: "#D72130",
+        color:
+            currentPage === adminTotalPages || admins === 0
+                ? "#D72130"
+                : "#FFFFFF",
+        minWidth: 30,
+        maxHeight: 32,
+        margin: "0 5px",
+    }
+    const paginationButton = {
+        backgroundColor: "#D72130",
+        minWidth: 30,
+        maxHeight: 32,
+        margin: "0 5px",
+        color: currentPage === 1 ? "#D72130" : "#FFFFFF",
+    }
+    const paginationButtonUnchanged = {
+        backgroundColor: "#D72130",
+        minWidth: 30,
+        maxHeight: 32,
+        margin: "0 5px",
+    }
+    const paginationButtonIth= (i) => {
+        return (
+            {
+                backgroundColor: "#D72130",
+                color: currentPage === i ? "#D72130" : "#FFFFFF",
+                minWidth: 30,
+                maxHeight: 32,
+                margin: "0 5px",
+            }
+        );
+    }
     useEffect(() => {
         handleUsersGet();
     }, [currentPage, showAdmins]);
-
     useEffect(() => {
         countAdminSize();
     }, [users]);
-
     useEffect(() => {
         setInitialUsersCount(users.length);
         setInitialSelectStyles();
     }, [users]);
-
     const handleUsersGet = async () => {
         setLoading(true);
         try {
@@ -46,14 +85,12 @@ function UsersManagement() {
             setLoading(false);
         }
     };
-
     const countAdminSize = () => {
         if (users && users.length) {
             const counter = users.filter((user) => user.isAdmin === true).length;
             setAdmins(counter);
         }
     };
-
     const setInitialSelectStyles = () => {
         const initialStyles = users.reduce((styles, user) => {
             const userStyles = {};
@@ -75,23 +112,19 @@ function UsersManagement() {
         }, {});
         setSelectStyles(initialStyles);
     };
-
     const handleShowUserInfo = (user) => {
         setSelectedUser(user);
     };
-
     const handleShowAdmins = () => {
         setShowAdmins(true);
         setShowSearch(false);
         setCurrentPage(1);
     };
-
     const handleShowAllUsers = () => {
         setShowAdmins(false);
         setShowSearch(false);
         setCurrentPage(1);
     };
-
     const handleChangeAction = (event, user) => {
         const action = event.target.value;
         const updatedUsers = users.map((u) => {
@@ -117,7 +150,6 @@ function UsersManagement() {
         };
         setSelectStyles(updatedStyles);
     };
-
     const getSelectStyles = (action, isActivated) => {
         if (action === "activate") {
             return {
@@ -137,51 +169,41 @@ function UsersManagement() {
             };
         }
     };
-
     const handleSearchInputChange = (event) => {
         setSearchInput(event.target.value);
     };
-
     const handleSearchClick = () => {
         setShowSearch(true);
     };
-
     const handleSearchClose = () => {
         setShowSearch(false);
         setSearchInput("");
     };
-
     const handleSearch = (user) => {
         const fullName = `${user.firstName} ${user.lastName}`.toLowerCase();
         const searchValue = searchInput.toLowerCase();
         return fullName.includes(searchValue);
     };
-
     const filteredUsers = showAdmins
         ? users.filter((user) => user.isAdmin && handleSearch(user))
         : users.filter(handleSearch);
-
     const displayedUsers = filteredUsers.slice(
         (currentPage - 1) * pageSize,
         currentPage * pageSize
     );
-
     const handlePageChange = (page) => {
         setCurrentPage(page);
     };
-
     const handlePreviousPage = () => {
         if (currentPage > 1) {
             setCurrentPage((prevPage) => prevPage - 1);
         }
     };
-
     const handleNextPage = () => {
         if (currentPage <= totalPages) {
             setCurrentPage((prevPage) => prevPage + 1);
         }
     };
-
     const renderPaginationButtons = () => {
         const pageButtons = [];
         const startPage = Math.max(1, currentPage - 2);
@@ -193,13 +215,7 @@ function UsersManagement() {
                     variant={currentPage === 1 ? "outlined" : "contained"}
                     disabled={currentPage === 1}
                     onClick={() => handlePageChange(1)}
-                    sx={{
-                        backgroundColor: "#D72130",
-                        color: currentPage === 1 ? "#D72130" : "#FFFFFF",
-                        minWidth: 30,
-                        maxHeight: 32,
-                        margin: "0 5px",
-                    }}
+                    sx={paginationButton}
                 >
                     1
                 </Button>
@@ -210,7 +226,7 @@ function UsersManagement() {
                         key={-1}
                         variant="contained"
                         disabled
-                        sx={{ backgroundColor: "#D72130", minWidth: 30, maxHeight: 32 }}
+                        sx={paginationButtonUnchanged}
                     >
                         ...
                     </Button>
@@ -225,13 +241,7 @@ function UsersManagement() {
                     variant={currentPage === i ? "outlined" : "contained"}
                     disabled={currentPage === i}
                     onClick={() => handlePageChange(i)}
-                    sx={{
-                        backgroundColor: "#D72130",
-                        color: currentPage === i ? "#D72130" : "#FFFFFF",
-                        minWidth: 30,
-                        maxHeight: 32,
-                        margin: "0 5px",
-                    }}
+                    sx={paginationButtonIth(i)}
                 >
                     {i}
                 </Button>
@@ -245,7 +255,7 @@ function UsersManagement() {
                         key={-2}
                         variant="contained"
                         disabled
-                        sx={{ backgroundColor: "#D72130", minWidth: 30, maxHeight: 32 }}
+                        sx={paginationButtonUnchanged}
                     >
                         ...
                     </Button>
@@ -257,13 +267,7 @@ function UsersManagement() {
                     variant={currentPage === totalPages ? "outlined" : "contained"}
                     disabled={currentPage === totalPages}
                     onClick={() => handlePageChange(totalPages)}
-                    sx={{
-                        backgroundColor: "#D72130",
-                        color: currentPage === totalPages ? "#D72130" : "#FFFFFF",
-                        minWidth: 30,
-                        maxHeight: 32,
-                        margin: "0 5px",
-                    }}
+                    sx={paginationButtonIth(totalPages)}
                 >
                     {totalPages}
                 </Button>
@@ -272,14 +276,11 @@ function UsersManagement() {
 
         return pageButtons;
     };
-
     const renderAdminPaginationButtons = () => {
         const adminPageButtons = [];
         const adminTotalPages = Math.ceil(admins / pageSize);
-
         const adminStartPage = Math.max(1, currentPage - 2);
         const adminEndPage = Math.min(adminStartPage + 4, adminTotalPages);
-
         if (adminStartPage > 1) {
             adminPageButtons.push(
                 <Button
@@ -287,13 +288,7 @@ function UsersManagement() {
                     variant={currentPage === 1 ? "outlined" : "contained"}
                     disabled={currentPage === 1}
                     onClick={() => handlePageChange(1)}
-                    sx={{
-                        backgroundColor: "#D72130",
-                        color: currentPage === 1 ? "#D72130" : "#FFFFFF",
-                        minWidth: 30,
-                        maxHeight: 32,
-                        margin: "0 5px",
-                    }}
+                    sx={paginationButton}
                 >
                     1
                 </Button>
@@ -304,7 +299,7 @@ function UsersManagement() {
                         key={-1}
                         variant="contained"
                         disabled
-                        sx={{ backgroundColor: "#D72130", minWidth: 30, maxHeight: 32 }}
+                        sx={paginationButtonUnchanged}
                     >
                         ...
                     </Button>
@@ -319,13 +314,7 @@ function UsersManagement() {
                     variant={currentPage === i ? "outlined" : "contained"}
                     disabled={currentPage === i}
                     onClick={() => handlePageChange(i)}
-                    sx={{
-                        backgroundColor: "#D72130",
-                        color: currentPage === i ? "#D72130" : "#FFFFFF",
-                        minWidth: 30,
-                        maxHeight: 32,
-                        margin: "0 5px",
-                    }}
+                    sx={paginationButtonIth(i)}
                 >
                     {i}
                 </Button>
@@ -339,7 +328,7 @@ function UsersManagement() {
                         key={-2}
                         variant="contained"
                         disabled
-                        sx={{ backgroundColor: "#D72130", minWidth: 30, maxHeight: 32 }}
+                        sx={paginationButtonUnchanged}
                     >
                         ...
                     </Button>
@@ -351,13 +340,7 @@ function UsersManagement() {
                     variant={currentPage === adminTotalPages ? "outlined" : "contained"}
                     disabled={currentPage === adminTotalPages}
                     onClick={() => handlePageChange(adminTotalPages)}
-                    sx={{
-                        backgroundColor: "#D72130",
-                        color: currentPage === adminTotalPages ? "#D72130" : "#FFFFFF",
-                        minWidth: 30,
-                        maxHeight: 32,
-                        margin: "0 5px",
-                    }}
+                    sx={paginationButtonIth(adminTotalPages)}
                 >
                     {adminTotalPages}
                 </Button>
@@ -365,25 +348,23 @@ function UsersManagement() {
         }
         return adminPageButtons;
     };
-
     return (
         <div className={styles.container}>
             <div className={styles.table_container}>
                 <div className={styles.table_header}>
                     <div className={styles.user_admin_header}>
-            <span
-                className={!showAdmins ? styles.active : ""}
-                onClick={handleShowAllUsers}
-            >
-              USERS ({initialUsersCount})
-            </span>
+                        <span
+                            className={!showAdmins ? styles.active : ""}
+                            onClick={handleShowAllUsers}
+                        >
+                          USERS ({initialUsersCount})
+                        </span>
                         <span
                             className={showAdmins ? styles.active : ""}
                             onClick={handleShowAdmins}
                         >
-              ADMINS ({admins})
-            </span>
-
+                          ADMINS ({admins})
+                        </span>
                         {!showSearch ? (
                             <></>
                         ) : (
@@ -497,31 +478,16 @@ function UsersManagement() {
                                 variant="contained"
                                 disabled={currentPage === 1}
                                 onClick={handlePreviousPage}
-                                sx={{
-                                    backgroundColor: "#D72130",
-                                    color: "#FFFFFF",
-                                    minWidth: 30,
-                                    maxHeight: 32,
-                                    margin: "0 5px",
-                                }}
+                                sx={paginationButtonArrows}
                             >
                                 &lt;
                             </Button>
                             {renderAdminPaginationButtons()}
                             <Button
                                 variant="contained"
-                                disabled={currentPage === totalPages || admins === 0}
+                                disabled={currentPage === adminTotalPages || admins === 0}
                                 onClick={handleNextPage}
-                                sx={{
-                                    backgroundColor: "#D72130",
-                                    color:
-                                        currentPage === totalPages || admins === 0
-                                            ? "#D72130"
-                                            : "#FFFFFF",
-                                    minWidth: 30,
-                                    maxHeight: 32,
-                                    margin: "0 5px",
-                                }}
+                                sx={paginationButtonArrowsBack}
                             >
                                 &gt;
                             </Button>
@@ -532,13 +498,7 @@ function UsersManagement() {
                                 variant="contained"
                                 disabled={currentPage === 1}
                                 onClick={handlePreviousPage}
-                                sx={{
-                                    backgroundColor: "#D72130",
-                                    color: "#FFFFFF",
-                                    minWidth: 30,
-                                    maxHeight: 32,
-                                    margin: "0 5px",
-                                }}
+                                sx={paginationButtonArrows}
                             >
                                 &lt;
                             </Button>
@@ -547,13 +507,7 @@ function UsersManagement() {
                                 variant="contained"
                                 disabled={currentPage === totalPages || totalPages === 0}
                                 onClick={handleNextPage}
-                                sx={{
-                                    backgroundColor: "#D72130",
-                                    color: currentPage === totalPages ? "#D72130" : "#FFFFFF",
-                                    minWidth: 30,
-                                    maxHeight: 32,
-                                    margin: "0 5px",
-                                }}
+                                sx={paginationButtonArrowsBack}
                             >
                                 &gt;
                             </Button>
