@@ -1,20 +1,15 @@
+import { Link } from "react-router-dom";
 import styles from "../styles/style.module.scss"
-import { ROUTES } from "../../../routes/routes"
-import { useNavigate } from "react-router-dom"
 
-function HeaderContainer({ children }) {
-    const navigate = useNavigate()
-
-    const handleRedirectHome = async () => {
-        navigate(ROUTES.HOME)
-    }
-
-    return (
+function HeaderContainer({children}){
+    return(
         <div className={styles.container}>
-            <div className={styles.logo} onClick={handleRedirectHome}>
+            <Link to="/" className={styles.logo}>
                 <span className={styles.logo_text}>Sport Hub</span>
-            </div>
-            {children}
+            </Link>
+
+               {children}
+
         </div>
     )
 }
