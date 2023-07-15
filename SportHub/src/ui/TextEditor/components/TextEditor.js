@@ -7,8 +7,9 @@ import draftToHtml from 'draftjs-to-html'
 import htmlToDraft from 'html-to-draftjs'
 import Label from "../../../ui/Label"
 
-export default function TextEditor({value, onChange, activeTab}) {
+export default function TextEditor({value = "", onChange, activeTab}) {
     const [editorState, setEditorState] = useState(EditorState.createWithContent(ContentState.createFromBlockArray(htmlToDraft(value))))
+    const [isTextSet, setIsTextSet] = useState(false)
 
     const onEditorStateChange = (editorState) => {
         setEditorState(editorState)
@@ -21,6 +22,13 @@ export default function TextEditor({value, onChange, activeTab}) {
     useEffect(() => {
         setEditorState(EditorState.createWithContent(ContentState.createFromBlockArray(htmlToDraft(value))))
     }, [activeTab])
+
+    useEffect(() => {
+        if (!isTextSet && value !== "") {
+            setEditorState(EditorState.createWithContent(ContentState.createFromBlockArray(htmlToDraft(value))))
+            setIsTextSet(true)
+        }
+    }, [value])
 
     return (
         <div>

@@ -1,5 +1,6 @@
 using System.ComponentModel.Design;
 using AutoMapper;
+using Microsoft.Extensions.Configuration;
 using SportHub.Data.Entities;
 using SportHub.Data.DTO;
 using SportHub.Data.Interfaces;
@@ -12,14 +13,16 @@ namespace SportHub.Business.Implementations
         private readonly IMapper _mapper;
         private readonly IEmailService _emailService;
         private readonly IJwtService _jwtService;
+        private readonly string  _frontendUrl;
         
-        public UserService(IUserRepository userRepository, IMapper mapper, 
+        public UserService(IConfiguration config, IUserRepository userRepository, IMapper mapper, 
             IJwtService jwtService, IEmailService emailService)
         {
             _userRepository = userRepository;
             _mapper = mapper;
             _jwtService = jwtService;
             _emailService = emailService;
+            _frontendUrl = config.GetSection("Frontend")["Url"];
         }
         
         public async Task<IEnumerable<User>> GetUsersAsync()
@@ -140,7 +143,7 @@ namespace SportHub.Business.Implementations
                 
                 var activationToken = _jwtService.GenerateActivationToken(insertedUser);
                 
-                string activationLink = $"http://localhost:3000/password-change/{activationToken}";
+                string activationLink = $"{_frontendUrl}/password-change/{activationToken}";
                 
                 _emailService.SendPasswordResetLinkAsync(email, activationLink);
                 

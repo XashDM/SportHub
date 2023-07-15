@@ -9,10 +9,11 @@ const signUpRequest = async (user) => {
         const response = await axios.post(`${backendHost}/Auth/register`,
             {...user, password: hashPassword(user.password)})
 
-        console.log(response.data)
+        console.log(response)
+        return response
     } catch (error) {
         console.error(error)
-        return error.code
+        return error.response
     }
 }
 

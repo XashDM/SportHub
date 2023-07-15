@@ -5,6 +5,7 @@ import HeaderContainer from "../../../components/HeaderContainer"
 import { useNavigate, useLocation } from "react-router-dom"
 import { ROUTES } from "../../../routes/routes"
 import SearchDropdownList from '../../SearchDropdownList/components/SearchDropdownList'
+import SelectLanguage from "../../SelectLanguage"
 
 export default function AdminHeader({ setIsContentSearch, setContentSearchValue }) {
 
@@ -19,7 +20,6 @@ export default function AdminHeader({ setIsContentSearch, setContentSearchValue 
                 </div>
                 <div className={styles.blank}></div>
                 <div className={styles.profile_sector}>
-
                     <div className={styles.switch}>
                         <span hint="Switch to user view" direction="down">
                             <img className={styles.switch_image}
@@ -27,11 +27,9 @@ export default function AdminHeader({ setIsContentSearch, setContentSearchValue 
                                 src={'/icons/AccountSwitcher.svg'} alt={""} />
                         </span>
                     </div>
-
                     <div className={styles.mini_profile} onClick={() => setProfileDropdownListActive(!profileDropdownListActive)}>
                         <div className={styles.mini_profile_wrapper}>
                             <img className={styles.profile_picture} src="https://images.pexels.com/photos/14306688/pexels-photo-14306688.jpeg" alt={""} />
-
                             <div className={styles.profile_info} >
                                 <div className={styles.profile_labels}>
                                     <div className={styles.name_surname_label}>
@@ -44,6 +42,9 @@ export default function AdminHeader({ setIsContentSearch, setContentSearchValue 
                             <ProfileSidebar active={profileDropdownListActive} />
                         </div>
                     </div>
+                </div>
+                <div className={styles.languages}>
+                    <SelectLanguage />
                 </div>
             </div>
         </HeaderContainer>
