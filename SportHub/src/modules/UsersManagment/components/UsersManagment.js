@@ -21,7 +21,6 @@ function UsersManagement() {
     const [totalPages, setTotalPages] = useState(0);
     const [loading, setLoading] = useState(false);
     const adminTotalPages = Math.ceil(admins / pageSize);
-
     const paginationButtonArrows = {
         backgroundColor: "#D72130",
         color: "#FFFFFF",
@@ -430,16 +429,6 @@ function UsersManagement() {
                                 <td>
                                     {showAdmins ? (
                                         <>
-                                            <Select
-                                                id={`changeAdminStatus_${user.userId}`}
-                                                defaultValue="removeFromAdmin"
-                                                sx={selectStyles[user.userId]}
-                                            >
-                                                <MenuItem value="removeFromAdmin">
-                                                    Remove from Admin
-                                                </MenuItem>
-                                                <MenuItem value="delete">Delete</MenuItem>
-                                            </Select>
                                         </>
                                     ) : (
                                         <>
@@ -533,5 +522,4 @@ function UsersManagement() {
         </div>
     );
 }
-
 export default UsersManagement;
