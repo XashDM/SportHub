@@ -6,6 +6,7 @@ import getSearchArticlesRequest from "../../SearchDropdownList/helpers/getSearch
 import { PAGE_CONSTANTS } from "../../../constants/PageConstants"
 import { useTranslation } from "react-i18next"
 import InfiniteScroll from "react-infinite-scroll-component"
+import * as DOMPurify from 'dompurify'
 
 const SearchResultsList = ({ contentSearchValue }) => {
   const navigate = useNavigate()
@@ -123,7 +124,7 @@ const SearchResultsList = ({ contentSearchValue }) => {
                   <span>{" > "}</span>
                   <span>{article.title}</span>
                 </li>
-                <li dangerouslySetInnerHTML={{ __html: getMatchedMainText(article.mainText) }}></li>
+                <li dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(getMatchedMainText(article.mainText)) }}></li>
               </ul>
             </div>
           </div>

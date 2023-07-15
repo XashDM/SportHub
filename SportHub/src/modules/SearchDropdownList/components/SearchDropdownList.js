@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import { ROUTES } from "../../../routes/routes"
 import getSearchArticlesRequest from "../helpers/getSearchArticlesRequest"
 import { useTranslation } from "react-i18next"
+import * as DOMPurify from 'dompurify'
 
 const SearchDropdownList = ({ setIsContentSearch, setContentSearchValue }) => {
   const navigate = useNavigate()
@@ -25,7 +26,9 @@ const SearchDropdownList = ({ setIsContentSearch, setContentSearchValue }) => {
 
   const handleArticlesGet = async () => {
     if (inputValue.trim()) { // preventing error when first symbol is space
-      const result = await getSearchArticlesRequest(i18n.language, inputValue, 1, 2)
+      const pageNumber = 1 // first because need to suggest last articles
+      const pageSize = 2
+      const result = await getSearchArticlesRequest(i18n.language, inputValue, pageNumber, pageSize)
       console.log(result)
       setArticles(result.data)
     }
@@ -110,7 +113,7 @@ const SearchDropdownList = ({ setIsContentSearch, setContentSearchValue }) => {
                   <span>{" > "}</span>
                   <span>{option.title}</span>
                 </li>
-                <li dangerouslySetInnerHTML={{ __html: matchedMainText }}></li>
+                <li dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(matchedMainText) }}></li>
               </ul>
             </div>
           )
@@ -130,7 +133,7 @@ const SearchDropdownList = ({ setIsContentSearch, setContentSearchValue }) => {
                     setShowSuggestions(false)
                     setContentSearchValue(inputValue)
                     setIsContentSearch(true)
-                  } 
+                  }
                 }
               },
             }}
