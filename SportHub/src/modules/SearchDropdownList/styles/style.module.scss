@@ -1,4 +1,15 @@
+.optionsContainer {
+  max-height: 100%;
+  transform: translateX(-3.75vw) translateY(1.75vh);
+  width: 49.925vw;
+  background-color: var(--color-light-white);
+  border-radius: 0;
+  box-shadow: 0 0.5vw 1vw 0.5vw rgba($color: #d4d9e2, $alpha: 0.5);
+}
+
 .option {
+  z-index: 0;
+  position: relative;
   display: flex;
   align-items: flex-start;
   font-family: var(--font-style-open-sans);
@@ -11,6 +22,8 @@
 }
 
 .option:hover {
+  z-index: 1;
+  position: relative;
   background-color: var(--color-light-white);
   box-shadow: 0 0 1vw var(--color-dark-field-frame);
   cursor: pointer;
@@ -36,4 +49,8 @@
   margin-left: 2rem;
   height: 1rem;
   width: 1rem;
+}
+
+.highlightedText {
+  font-weight: bold;
 }

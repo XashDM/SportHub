@@ -1,8 +1,11 @@
+.container {
+  padding: 1vw;
+}
+
 .resultsBlock {
   margin: auto;
   width: 75%;
-
-
+  
   .resultsCount {
     display: flex;
     align-items: center;
@@ -18,7 +21,6 @@
   }
 
   .option {
-    margin-top: 1rem;
     width: 100%;
     display: flex;
     align-items: center;
@@ -53,4 +55,8 @@
   .option ul li:first-child span:last-child {
     color: var(--color-red-regular);
   }
+}
+
+.highlightedText {
+  font-weight: bold;
 }

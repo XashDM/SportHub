@@ -6,6 +6,7 @@ import getSearchArticlesRequest from "../../SearchDropdownList/helpers/getSearch
 import { PAGE_CONSTANTS } from "../../../constants/PageConstants"
 import { useTranslation } from "react-i18next"
 import InfiniteScroll from "react-infinite-scroll-component"
+import * as DOMPurify from 'dompurify'
 
 const SearchResultsList = ({ contentSearchValue }) => {
   const navigate = useNavigate()
@@ -54,7 +55,8 @@ const SearchResultsList = ({ contentSearchValue }) => {
     for (let i = 0; i < mainTexts.length; i++) {
       const text = mainTexts[i]
       if (text.toLowerCase().includes(contentSearchValue.toLowerCase())) {
-        matchedMainText = text
+        const regex = new RegExp(contentSearchValue, "i")
+        matchedMainText = `<span>` + text.replace(regex, (match) => `<span class="${styles.highlightedText}">${match}</span>`) + `</span>`
         break
       }
     }
@@ -94,35 +96,37 @@ const SearchResultsList = ({ contentSearchValue }) => {
         loader={<p>{t('LoadingText')}</p>}
       >
         {contentSearchValue && articles.map((article) => (
-          <div key={article.id} onClick={() => navigate(ROUTES.LOGIN)} className={styles.option}>
-            <ul>
-              <li>
-                <span>{article.category.categoryName}</span>
-                {
-                  article.subCategory
-                    ?
-                    <>
-                      <span>{" > "}</span>
-                      <span>{article.subCategory.subCategoryName}</span>
-                    </>
-                    :
-                    <></>
-                }
-                {
-                  article.team
-                    ?
-                    <>
-                      <span>{" > "}</span>
-                      <span>{article.team.teamName}</span>
-                    </>
-                    :
-                    <></>
-                }
-                <span>{" > "}</span>
-                <span>{article.title}</span>
-              </li>
-              <li><span>{getMatchedMainText(article.mainText)}</span></li>
-            </ul>
+          <div className={styles.container}>
+            <div key={article.id} onClick={() => navigate(ROUTES.LOGIN)} className={styles.option}>
+              <ul>
+                <li>
+                  <span>{article.category.categoryName}</span>
+                  {
+                    article.subCategory
+                      ?
+                      <>
+                        <span>{" > "}</span>
+                        <span>{article.subCategory.subCategoryName}</span>
+                      </>
+                      :
+                      <></>
+                  }
+                  {
+                    article.team
+                      ?
+                      <>
+                        <span>{" > "}</span>
+                        <span>{article.team.teamName}</span>
+                      </>
+                      :
+                      <></>
+                  }
+                  <span>{" > "}</span>
+                  <span>{article.title}</span>
+                </li>
+                <li dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(getMatchedMainText(article.mainText)) }}></li>
+              </ul>
+            </div>
           </div>
         ))}
       </InfiniteScroll>
