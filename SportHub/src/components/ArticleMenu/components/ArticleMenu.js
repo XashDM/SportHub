@@ -14,7 +14,6 @@ import {adminMenuState} from "../../../store/states/adminMenuState"
 import AdminArticlesList from "../../../modules/AdminArticlesList"
 
 import getLanguagesRequest from "../../../helpers/getLanguagesRequest"
-import downloadImageByUrl from "../../../helpers/downloadImageByUrl"
 import getSubcategoriesRequest from "../helpers/getSubcategoriesRequest"
 import getTeamsRequest from "../helpers/getTeamsRequest"
 import getLocationsRequest from "../helpers/getLocationsRequest"
@@ -146,9 +145,6 @@ function ArticleMenu({ article = null, image = null, request }) {
                 newImage.Url = image.url
                 newImage.ImageId = image.imageId
             }
-            console.log(selectedImage)
-            console.log(newArticleData)
-            console.log(newImage)
 
             const formData = new FormData()
             formData.append('file', selectedImage)
