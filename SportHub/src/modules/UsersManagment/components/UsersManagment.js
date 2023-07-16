@@ -2,10 +2,12 @@ import React, { useState, useEffect } from "react";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import Button from "@mui/material/Button";
+import {TextField} from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 import getUsersRequest from "../helpers/getUsersRequest";
 import putUsersStatusRequest from "../helpers/putUsersStatusRequest";
 import styles from "../styles/style.module.scss";
+import {useAuthStore} from "../../../store/useAuthStore";
 
 function UsersManagement() {
     const [users, setUsers] = useState([]);
@@ -21,6 +23,8 @@ function UsersManagement() {
     const [totalPages, setTotalPages] = useState(0);
     const [loading, setLoading] = useState(false);
     const adminTotalPages = Math.ceil(admins / pageSize);
+    const { userData } = useAuthStore()
+
     const paginationButtonArrows = {
         backgroundColor: "#D72130",
         color: "#FFFFFF",
@@ -364,31 +368,44 @@ function UsersManagement() {
                         >
                           ADMINS ({admins})
                         </span>
-                        {!showSearch ? (
-                            <></>
-                        ) : (
-                            <div className={styles.search_input_wrapper}>
-                                <input
-                                    type="text"
-                                    value={searchInput}
-                                    onChange={handleSearchInputChange}
-                                    className={styles.search_input}
-                                    placeholder="Search..."
-                                />
-                                <button
-                                    className={styles.search_close}
-                                    onClick={handleSearchClose}
-                                >
-                                    <img
-                                        src={"/icons/Close.svg"}
-                                        alt="Close"
-                                        width="14"
-                                        height="14"
-                                    />
-                                </button>
-                            </div>
-                        )}
                     </div>
+                    {!showSearch ? (
+                        <></>
+                    ) : (
+                        <div className={styles.search_input_wrapper}>
+                            <TextField
+                                id="outlined-basic"
+                                type="text"
+                                value={searchInput}
+                                onChange={handleSearchInputChange}
+                                className={styles.search_input}
+                                placeholder="Type a user name here"
+                                InputProps={{
+                                    startAdornment: (
+                                        <img
+                                            className={styles.search_icon}
+                                            src={"/icons/Magnifying-glass.svg"}
+                                            alt="Search"
+                                            width="20"
+                                            height="20"
+                                        />
+                                    ),
+                                }}
+                            />
+                            <Button
+                                className={styles.search_close}
+                                onClick={handleSearchClose}
+                            >
+                                <img
+                                    src={"/icons/Close.svg"}
+                                    alt="Close"
+                                    width="14"
+                                    height="14"
+                                />
+                            </Button>
+                        </div>
+                    )}
+
                     {!showSearch && (
                         <img
                             src={"/icons/Magnifying-glass.svg"}
@@ -411,13 +428,16 @@ function UsersManagement() {
                         displayedUsers.map((user) => (
                             <tr key={user.id} onClick={() => handleShowUserInfo(user)}>
                                 <td className="align-left">
-                                    <img
-                                        src={"/icons/User.svg"}
-                                        alt="User"
-                                        width="30"
-                                        height="30"
-                                    />
-                                    {user.firstName} {user.lastName}
+                                    <div className={styles.user_profile}>
+                                        <img
+                                            className={styles.user_profile_photo}
+                                            src={"/icons/User.svg"}
+                                            alt="User"
+                                        />
+                                        <div className={styles.user_profile_text}>
+                                            {user.firstName} {user.lastName}
+                                        </div>
+                                    </div>
                                 </td>
                                 <td className="align-right">
                                     {user.isActivated ? (
