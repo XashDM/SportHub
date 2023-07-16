@@ -12,6 +12,8 @@ import PasswordChangePage from "./pages/PasswordReset"
 import PasswordResetPage from "./pages/PasswordChange"
 import { useEffect } from 'react'
 import checkCurrentLanguage from "./helpers/checkCurrentLanguage"
+import SearchArticlesPage from './pages/SearchArticles'
+import Article from "./pages/Article"
 
 function App() {
     useEffect(() => {
@@ -24,6 +26,8 @@ function App() {
                 <Route exact path={ROUTES.HOME} element={
                         <HomePage/>
                 } />
+                <Route exact path={ROUTES.SEARCH} element={<SearchArticlesPage/>} />
+                <Route exact path={ROUTES.ARTICLE} element={<Article/>} />
 
                 <Route exact path={ROUTES.ADMIN} element={
                     // <ProtectedRoute roles={["admin"]}>

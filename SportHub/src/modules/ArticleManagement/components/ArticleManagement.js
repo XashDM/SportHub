@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import ArticleMenu from "../../../components/ArticleMenu"
 
-import getArticleRequest from "../helpers/getArticleRequest"
+import getArticleRequest from "../../../helpers/getArticleRequest"
 import updateArticleRequest from "../helpers/updateArticleRequest"
 import newArticleRequest from "../helpers/newArticleRequest"
 

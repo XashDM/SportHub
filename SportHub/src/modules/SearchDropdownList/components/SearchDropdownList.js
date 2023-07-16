@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import { ROUTES } from "../../../routes/routes"
 import getSearchArticlesRequest from "../helpers/getSearchArticlesRequest"
 import { useTranslation } from "react-i18next"
+import * as DOMPurify from 'dompurify'
 
 const SearchDropdownList = ({ setIsContentSearch, setContentSearchValue }) => {
   const navigate = useNavigate()
@@ -18,17 +19,27 @@ const SearchDropdownList = ({ setIsContentSearch, setContentSearchValue }) => {
   const [showSuggestions, setShowSuggestions] = useState(true)
   const handleInputChange = async (event, value) => {
     if (!showSuggestions) {
-      setShowSuggestions(true);
+      setShowSuggestions(true)
     }
     setInputValue(value)
   }
 
   const handleArticlesGet = async () => {
-    if (inputValue) {
-      const result = await getSearchArticlesRequest(i18n.language, inputValue, 1, 3)
+    if (inputValue.trim()) { // preventing error when first symbol is space
+      const pageNumber = 1 // first because need to suggest last articles
+      const pageSize = 2
+      const result = await getSearchArticlesRequest(i18n.language, inputValue, pageNumber, pageSize)
       console.log(result)
       setArticles(result.data)
     }
+  }
+
+  const showDropdownShadows = (children) => {
+    // removing shadows when nothing printed/no results
+    if (showSuggestions && inputValue && articles.length !== 0) {
+      return <div className={styles.optionsContainer}>{children}</div>
+    }
+    return <div>{children}</div>
   }
 
   useEffect(() => {
@@ -47,8 +58,10 @@ const SearchDropdownList = ({ setIsContentSearch, setContentSearchValue }) => {
         fullWidth
         inputValue={inputValue}
         onInputChange={handleInputChange}
-        ListboxProps={{ style: { maxHeight: 'none', transform: 'translateX(-3rem)' } }}
+        ListboxProps={{ style: { maxHeight: 'none', width: "100%", padding: 0 } }}
         getOptionLabel={(option) => `${option.title} 
+                                      ${option.mainText}
+                                      ${option.subtitle}  
                                       ${option.category.categoryName} 
                                       ${option.subCategory?.subCategoryName || ''} 
                                       ${option.team?.teamName || ''} 
@@ -63,7 +76,8 @@ const SearchDropdownList = ({ setIsContentSearch, setContentSearchValue }) => {
           for (let i = 0; i < mainTexts.length; i++) {
             const mainText = mainTexts[i]
             if (mainText.toLowerCase().includes(inputValue.toLowerCase())) {
-              matchedMainText = mainText
+              const regex = new RegExp(inputValue, "i")
+              matchedMainText = `<span>` + mainText.replace(regex, (match) => `<span class="${styles.highlightedText}">${match}</span>`) + `</span>`
               break
             }
           }
@@ -99,7 +113,7 @@ const SearchDropdownList = ({ setIsContentSearch, setContentSearchValue }) => {
                   <span>{" > "}</span>
                   <span>{option.title}</span>
                 </li>
-                <li><span>{matchedMainText}</span></li>
+                <li dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(matchedMainText) }}></li>
               </ul>
             </div>
           )
@@ -115,24 +129,18 @@ const SearchDropdownList = ({ setIsContentSearch, setContentSearchValue }) => {
               onKeyDown: (e) => {
                 if (e.key === 'Enter') {
                   e.stopPropagation()
-                  setShowSuggestions(false)
-                  setContentSearchValue(inputValue)
-                  setIsContentSearch(true)
+                  if (inputValue.trim()) {
+                    setShowSuggestions(false)
+                    setContentSearchValue(inputValue)
+                    setIsContentSearch(true)
+                  }
                 }
               },
             }}
           />
         )}
         PaperComponent={({ children }) => (
-          <Paper
-            style={{
-              width: "50vw",
-              maxWidth: "none",
-              marginTop: 3,
-              backgroundColor: "rgba(0, 0, 0, .0)",
-              borderRadius: 0,
-              boxShadow: "none"
-            }}>{children}</Paper>
+          showDropdownShadows(children)
         )}
       />
     </>

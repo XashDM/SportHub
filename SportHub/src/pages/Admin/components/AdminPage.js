@@ -11,7 +11,7 @@ import NavigationSystem from '../../../modules/NavigationAdminSystem'
 import AdminArticlesList from "../../../modules/AdminArticlesList"
 import {adminMenuState} from "../../../store/states/adminMenuState";
 import SearchResultsList from '../../../modules/SearchResultsList/components/SearchResultsList'
-
+import UsersManagment from "../../../modules/UsersManagment/components/UsersManagment";
 
 export default function AdminPage() {
     const [selectedMenuElement, setSelectedMenuElement] = useState("Home")
@@ -48,6 +48,9 @@ export default function AdminPage() {
                 break
             case "Search":
                 setContent(<SearchResultsList contentSearchValue={contentSearchValue} />)
+                break
+            case "MyUsers":
+                setContent(<UsersManagment/>)
                 break
             default:
                 setContent(<AdminArticlesList />)
