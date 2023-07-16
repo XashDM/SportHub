@@ -11,7 +11,7 @@ export default function UserBreakdownSection(){
     const [breakdownSection, setBreakdownSection] = useState()
     const { i18n } = useTranslation()
 
-    const SetBreakDowns = async (languageId, lastArticles, numberOfArticles) => {
+    const GetBreakDowns = async (languageId, lastArticles, numberOfArticles) => {
         const response = await getBreakdowns(languageId, lastArticles, numberOfArticles)
         setBreakDowns(response.data)
     }
@@ -26,8 +26,8 @@ export default function UserBreakdownSection(){
     }
 
     useEffect(() => {
-        SetBreakDowns(i18n.language, constants.LAST_ARTICLES, constants.NUMBER_OF_ARTICLES)
-    }, [])
+        GetBreakDowns(i18n.language, constants.LAST_ARTICLES, constants.NUMBER_OF_ARTICLES)
+    }, [i18n.language])
 
     useEffect(() => {
         SetBreakdownsSection(breakdowns)

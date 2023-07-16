@@ -9,5 +9,5 @@ public interface IBreakDownService
     Task<IEnumerable<BreakDown>> GetBreakDownsByLanguageIdAsync(string languageId);
     Task<IEnumerable<BreakDown>> GetBreakDownsByLanguageAsync(string language);
     Task<List<BreakDownResponse>> GetBreakDownsArticlesAsync(string language, ArticleSearchOptions articleSearchOptions);
-    Task<List<BreakDownDetailsDTO>> GetBreakDownsDetailsAsync(string languageId);
+    Task<List<NavigationTree>> GetBreakDownsDetailsAsync(string languageId);
 }

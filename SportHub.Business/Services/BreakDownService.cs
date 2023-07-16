@@ -87,33 +87,34 @@ public class BreakDownService : IBreakDownService
         return breakDownsResponse;
     }
 
-    public async Task<List<BreakDownDetailsDTO>> GetBreakDownsDetailsAsync(string languageId)
+    public async Task<List<NavigationTree>> GetBreakDownsDetailsAsync(string languageId)
     {
         IEnumerable<BreakDown> breakDowns = await GetBreakDownsByLanguageIdAsync(languageId);
-        
-        List<BreakDownDetailsDTO> breakDownDetails = new List<BreakDownDetailsDTO>();
+
+        List<NavigationTree> navigationTrees = new List<NavigationTree>();
         foreach (var breakDown in breakDowns)
         {
-            breakDownDetails.Add(await MapToBreakDownsDetails(breakDown));
+            navigationTrees.Add(await MapToNavigationTree(breakDown));
         }
 
-        return breakDownDetails;
+        return navigationTrees;
     }
 
-    private async Task<BreakDownDetailsDTO> MapToBreakDownsDetails(BreakDown breakDown)
+    private async Task<NavigationTree> MapToNavigationTree(BreakDown breakDown)
     {
-        BreakDownDetailsDTO breakDownDetails = new BreakDownDetailsDTO();
+        NavigationTree navigationTree = new NavigationTree();
 
-        breakDownDetails.Category = await _categoryService.GetCategoryByIdAsync(breakDown.CategoryId);
+        navigationTree.Categories = new List<Category>(){await _categoryService.GetCategoryByIdAsync(breakDown.CategoryId)};
+
         if (breakDown.SubCategoryId != null)
         {
-            breakDownDetails.SubCategory = await _subCategoryService.GetSubCategoriesByIdAsync(breakDown.SubCategoryId);
+            navigationTree.SubCategories = new List<SubCategory>(){await _subCategoryService.GetSubCategoriesByIdAsync(breakDown.SubCategoryId)};
         }
         if (breakDown.TeamId != null)
         {
-            breakDownDetails.Team = await _teamsService.GetTeamByIdAsync(breakDown.TeamId);
+            navigationTree.Teams = new List<Team>(){await _teamsService.GetTeamByIdAsync(breakDown.TeamId)};
         }
 
-        return breakDownDetails;
+        return navigationTree;
     }
 }

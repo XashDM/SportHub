@@ -19,10 +19,12 @@ export default function BreakdownSectionConfigurator({setSaveBreakdown, setCance
             breakdowns[breakdownsCount] = {
                 order: null,
                 isLastBreakDown: null,
-                category: data.category,
-                subcategory: data.subCategory,
-                team: data.team
+                category: data.categories[0],
             }
+
+            data.subCategories !== null ? breakdowns[breakdownsCount].subcategory = data.subCategories[0] : breakdowns[breakdownsCount].subcategory = null
+            data.teams !== null ? breakdowns[breakdownsCount].team = data.teams[0] : breakdowns[breakdownsCount].team = null
+
         }
         setBreakDownsData(breakdowns)
         setStartBreakDownData(breakdowns)
@@ -63,7 +65,9 @@ export default function BreakdownSectionConfigurator({setSaveBreakdown, setCance
 
     const DeleteBreakDown = (index) => {
         const newBreakDownData = [...breakDownsData]
-        breakDownsData.splice(index, 1)
+        console.log("delete " + index)
+        newBreakDownData.splice(index, 1)
+        console.log(newBreakDownData)
         setBreakDownsData(newBreakDownData);
     }
 
