@@ -1,0 +1,215 @@
+$red-color: red;
+$underline-decoration: underline;
+$pointer-cursor: pointer;
+
+.container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  font-family: 'Open Sans', sans-serif;
+
+  .table_container {
+    width: 66.67%;
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-top: 20px;
+    }
+
+    th,
+    td {
+      cursor: pointer;
+      border-bottom: 1px solid #ccc;
+      box-shadow: 0px 0.5px 1px #ccc;
+      padding: 8px;
+      .user_profile_status{
+        margin-left: 40px;
+        display: flex;
+        justify-content: center;
+      }
+
+      .align_right_active {
+        color: #229D1F;
+        display: flex;
+        justify-content: center;
+      }
+
+      .user_profile{
+        display: flex;
+        flex-direction: row;
+        font-size: 17px;
+        font-family: 'Open Sans', sans-serif;
+        .user_profile_photo {
+          width: 40px;
+          height: 40px;
+        }
+
+        .user_profile_text{
+          padding-left: 10px;
+          padding-top: 8px;
+        }
+
+
+      }
+    }
+  }
+
+  .table_header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 10px;
+
+    .user_admin_header {
+      display: flex;
+      align-items: center;
+
+      span {
+        margin-right: 20px;
+        font-weight: bold;
+        font-size: 14px;
+        line-height: 16px;
+        text-transform: uppercase;
+        cursor: pointer;
+      }
+
+      .active {
+        color: $red-color;
+        text-decoration: $underline-decoration;
+      }
+    }
+
+    .search_input_wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+      margin-left: auto;
+
+      .search_input {
+        font-size: 14px;
+        line-height: 5px;
+        color: #333;
+        width: 450px;
+        transition: width 0.3s ease-in-out;
+
+
+        &:focus {
+          width: 240px;
+          outline: none;
+        }
+      }
+
+      .search_close {
+        position: absolute;
+        top: 50%;
+        right: 8px;
+        transform: translateY(-50%);
+        border: none;
+        background: transparent;
+        cursor: $pointer-cursor;
+
+        &:focus {
+          outline: none;
+        }
+
+        img {
+          width: 14px;
+          height: 14px;
+        }
+      }
+    }
+
+    .admin_ch {
+      font-weight: bold;
+      font-size: 14px;
+      line-height: 16px;
+      text-transform: uppercase;
+      cursor: pointer;
+
+
+      &:hover {
+        color: $red-color;
+        text-decoration: $underline-decoration;
+      }
+    }
+
+    .search_icon {
+      width: 20px;
+      height: 20px;
+      cursor: $pointer-cursor;
+      margin-right: 2vw;
+
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+  }
+
+  .user_info {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    font-size: 16px;
+    margin-left: 40px;
+    border: 1px solid lightgray;
+    padding: 20px;
+
+    .user_info_header {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+
+      .general_info,
+      .teams_info {
+        margin-right: 20px;
+        font-weight: bold;
+        font-size: 14px;
+        line-height: 16px;
+        text-transform: uppercase;
+        cursor: pointer;
+      }
+
+      .teams_info {
+        color: #ccc;
+        cursor: not-allowed;
+      }
+    }
+
+    .user_photo {
+      margin-bottom: 10px;
+      width: 80px;
+      height: 80px;
+    }
+
+    .user_name {
+      font-weight: bold;
+      fontsize: 18px;
+      margin-bottom: 10px;
+    }
+
+    .inner_content {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+
+      .align_right {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        margin-bottom: 5px;
+      }
+
+      .row_name {
+        font-weight: bold;
+        margin-right: 10px;
+      }
+
+      .content_info {
+        color: #999;
+      }
+    }
+  }
+}

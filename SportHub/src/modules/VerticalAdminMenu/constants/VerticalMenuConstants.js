@@ -3,7 +3,7 @@ export const VERTICAL_MENU_ELEMENTS = [
     {label: "Banners", isDisabled: true},
     {label: "Languages", isDisabled: false},
     {label: "Shares", isDisabled: true},
-    {label: "MyUsers", isDisabled: true},
+    {label: "MyUsers", isDisabled: false},
     {label: "IA", isDisabled: false},
     {label: "Teams", isDisabled: true},
     {label: "NewsPartners", isDisabled: true},
