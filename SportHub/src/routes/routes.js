@@ -6,4 +6,5 @@ export const ROUTES = {
     PASSWORD_RESET: "/password-reset",
     PASSWORD_CHANGE: "/password-change/:token",
     SEARCH: "/search/:searchValue",
+    ARTICLE: "/article/:articleId",
 }
