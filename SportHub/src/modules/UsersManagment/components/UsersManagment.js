@@ -102,13 +102,13 @@ function UsersManagement() {
             if (user.isActivated) {
                 userStyles.color = "#67BA64";
                 userStyles.backgroundColor = "#DFECDD";
-                userStyles.minWidth = 120;
+                userStyles.minWidth = 180;
                 userStyles.maxHeight = 32;
                 userStyles.textAlign = "center";
             } else {
                 userStyles.color = "#7F8380";
                 userStyles.backgroundColor = "#D4D9E2";
-                userStyles.minWidth = 120;
+                userStyles.minWidth = 180;
                 userStyles.maxHeight = 32;
                 userStyles.textAlign = "center";
             }
@@ -445,8 +445,16 @@ function UsersManagement() {
                     <thead>
                     <tr>
                         <th className="align-left">NAME</th>
-                        <th>STATUS</th>
-                        <th>ACTION</th>
+                        <th>
+                            <div className={styles.user_profile_status}>
+                                STATUS
+                            </div>
+                        </th>
+                        <th>
+                            <div className={styles.user_profile_status}>
+                                ACTION
+                            </div>
+                        </th>
                     </tr>
                     </thead>
                     <tbody>
@@ -466,32 +474,36 @@ function UsersManagement() {
                                     </div>
                                 </td>
                                 <td className="align-right">
-                                    {user.isActivated ? (
-                                        <span className={styles.align_right_active}>Active</span>
-                                    ) : (
-                                        <span>Blocked</span>
-                                    )}
+                                    <div className={styles.user_profile_status}>
+                                        {user.isActivated ? (
+                                            <span className={styles.align_right_active}>Active</span>
+                                        ) : (
+                                            <span>Blocked</span>
+                                        )}
+                                    </div>
                                 </td>
                                 <td>
-                                    {showAdmins ? (
-                                        <></>
-                                    ) : (
-                                        <>
-                                            {userData && user.userId === userData.userId ? (
-                                                <span>Disabled</span>
-                                            ) : (
-                                                <Select
-                                                    id={`changeUserStatus_${user.userId}`}
-                                                    value={user.isActivated ? "activate" : "block"}
-                                                    onChange={(event) => handleChangeAction(event, user)}
-                                                    sx={selectStyles[user.userId]}
-                                                >
-                                                    <MenuItem value="block">Block</MenuItem>
-                                                    <MenuItem value="activate">Activate</MenuItem>
-                                                </Select>
-                                            )}
-                                        </>
-                                    )}
+                                    <div className={styles.user_profile_status}>
+                                        {showAdmins ? (
+                                            <></>
+                                        ) : (
+                                            <>
+                                                {userData && user.userId === userData.userId ? (
+                                                    <span>Disabled</span>
+                                                ) : (
+                                                    <Select
+                                                        id={`changeUserStatus_${user.userId}`}
+                                                        value={user.isActivated ? "activate" : "block"}
+                                                        onChange={(event) => handleChangeAction(event, user)}
+                                                        sx={selectStyles[user.userId]}
+                                                    >
+                                                        <MenuItem value="block">Block</MenuItem>
+                                                        <MenuItem value="activate">Activate</MenuItem>
+                                                    </Select>
+                                                )}
+                                            </>
+                                        )}
+                                    </div>
                                 </td>
                             </tr>
                         ))

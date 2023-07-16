@@ -23,9 +23,18 @@ $pointer-cursor: pointer;
       border-bottom: 1px solid #ccc;
       box-shadow: 0px 0.5px 1px #ccc;
       padding: 8px;
+      .user_profile_status{
+        margin-left: 40px;
+        display: flex;
+        justify-content: center;
+      }
+
       .align_right_active {
         color: #229D1F;
+        display: flex;
+        justify-content: center;
       }
+
       .user_profile{
         display: flex;
         flex-direction: row;
@@ -40,6 +49,8 @@ $pointer-cursor: pointer;
           padding-left: 10px;
           padding-top: 8px;
         }
+
+
       }
     }
   }
