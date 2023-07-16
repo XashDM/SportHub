@@ -152,7 +152,7 @@ function ArticleMenu({ article = null, image = null, request }) {
             formData.append('article', JSON.stringify(newArticleData))
             formData.append('image', JSON.stringify(newImage))
             request(formData)
-            setContent(<AdminArticlesList />)
+            window.location.reload()
         }
     }
 
