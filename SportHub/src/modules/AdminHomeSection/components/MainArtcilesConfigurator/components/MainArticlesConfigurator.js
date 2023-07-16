@@ -1,86 +1,58 @@
 import React, {useEffect, useState} from 'react'
 import AddMainArticle from "./AddMainArticle"
-import CapsuleLable from "../../../ui/CapsuleLable"
-import FlashMessage from "../../../ui/FlashMessage"
+import CapsuleLable from "../../../../../ui/CapsuleLable"
 import MAX_MAIN_ARTICLES_AMOUNT from "../constants/MaxMainArticlesAmount"
 import styles from '../styles/style.module.scss'
 import getMainArticlesRequest from "../helpers/getMainArticlesRequest"
 import postMainArticlesRequest from "../helpers/postMainArticlesRequest"
-import getCategoriesRequest from "../helpers/getCategoriesRequest"
-import {useAtom} from "jotai";
-import {adminMenuState} from "../../../store/states/adminMenuState";
 
-export default function AdminMainArticlesSection(){
-    const [adminMenu, setAdminMenu] = useAtom(adminMenuState)
-    const { setButtons } = adminMenu
+export default function MainArticlesConfigurator({setSaveMainArticles, setCancelMainArticle, language, setFleshMessageIsSuccessful, categories = []}){
+
     const [startMainArticlesData, setStartMainArticlesData] = useState([])
     const [mainArticlesData, setMainArticlesData] = useState([])
     const [mainArticlesForms, setMainArticlesForms] = useState([])
-    const [languageId, setLanguageId] = useState("0")
-
-    const [categoriesOption, setCategoriesOption] = useState([])
-
-    const [fleshMessageIsOpen, setFleshMessageIsOpen] = useState(false)
-    const handleCloseFleshMessage = () => setFleshMessageIsOpen(false)
-
-    const [fleshMessageIsSuccessful, setFleshMessageIsSuccessful] = useState(true)
 
     const GetMainArticles = async () => {
-        const mainArticles = await getMainArticlesRequest(languageId)
-        let articles = []
-        for (let article in mainArticles.data){
-            const data = mainArticles.data[article]
-            articles[data.order] = {
-                order: data.order,
+        const mainArticles = await getMainArticlesRequest(language?.languageId)
+        const articles = []
+        setMainArticlesData([])
+        for(let articleCount = 0; articleCount < mainArticles.data?.length; articleCount++){
+            const data = mainArticles.data[articleCount]
+            articles.push({
                 isLastMainArticle: null,
-                category: {
-                    categoryId: data.categoryId,
-                    categoryName: data.categoryName
-                },
-                subcategory: {
-                    subCategoryId: data.subCategoryId,
-                    subCategoryName: data.subCategoryName
-                },
-                team: {
-                    teamId: data.teamId,
-                    teamName: data.teamName,
-                },
+                category: data.category,
+                subcategory: data.subCategory,
+                team: data.team,
                 article: {
                     articleId: data.articleId,
                     title: data.title
                 }
-            }
+            })
         }
+
         setMainArticlesData(articles)
         setStartMainArticlesData(articles)
     }
 
-    const GetCategories = async () => {
-        const res = await getCategoriesRequest()
-        setCategoriesOption(res)
-    }
-
     const SaveChanges = () => {
         try {
-            let jsonPostRequest = []
-            for (let articleCount = 0; articleCount < mainArticlesData.length; articleCount++)
-                jsonPostRequest.push({
-                    order: mainArticlesData[articleCount].order,
-                    articleId: (mainArticlesData[articleCount].article.articleId) + "",
-                    languageId: languageId
+            let request = []
+            for (let articleCount = 0; articleCount < mainArticlesData.length; articleCount++) {
+                request.push({
+                    "order": mainArticlesData[articleCount].order,
+                    "articleId": (mainArticlesData[articleCount].article.articleId) + "",
+                    "languageId": language?.languageId
                 })
-
-            postMainArticlesRequest(jsonPostRequest)
-            setFleshMessageIsSuccessful(true)
+            }
+            postMainArticlesRequest(request)
             setStartMainArticlesData(mainArticlesData)
         }
         catch (error){
             setFleshMessageIsSuccessful(false)
         }
-        setFleshMessageIsOpen(true)
     }
 
-    const CancelChanges = () =>{
+    const CancelChanges = () => {
         setMainArticlesData(startMainArticlesData)
     }
 
@@ -125,8 +97,8 @@ export default function AdminMainArticlesSection(){
             const mainArticlesProps = mainArticlesData[articleFormsCount]
             newMainArticlesForms[articleFormsCount] = (<AddMainArticle {...mainArticlesProps}
                                                                        key={articleFormsCount}
-                                                                       languageId={languageId}
-                                                                       categoriesOptions={categoriesOption}
+                                                                       language={language}
+                                                                       categoriesOptions={categories}
                                                                        AddNewMainArticle={AddNewMainArticle}
                                                                        DeleteMainArticle={DeleteMainArticle}
                                                                        SaveData={SaveChangedOption} />)
@@ -136,47 +108,32 @@ export default function AdminMainArticlesSection(){
     }
 
     useEffect(() => {
-        setMainArticlesData([])
-        setMainArticlesForms([])
-    }, [languageId])
-
-    useEffect(() =>{
-        if(typeof(setButtons) == "function"){
-                setButtons([{text: "Cancel", function: CancelChanges, isOutlined: true},
-                    {text: "Save changes", function: SaveChanges, isOutlined: false}])
-        }
-    })
-
-    useEffect( () => {
-        GetCategories()
         GetMainArticles()
-    }, [])
+    }, [language])
 
     useEffect(() => {
+        if(typeof(setSaveMainArticles) == "function" && typeof(setCancelMainArticle) == "function") {
+            setSaveMainArticles({function: SaveChanges})
+            setCancelMainArticle({function: CancelChanges})
+        }
         GenerateArticlesForms()
-    }, [mainArticlesData])
+    }, [mainArticlesData, language])
 
     return (
         <div>
             <div className={styles.content}>
 
-                <FlashMessage title={fleshMessageIsSuccessful ? "Changes saved" : "Changes are not saved"}
-                              content={fleshMessageIsSuccessful ? "Main articles are successfully saved." : "Main articles are not saved."}
-                              isSuccess={fleshMessageIsSuccessful} open={fleshMessageIsOpen} handleClose={handleCloseFleshMessage}/>
-
                 <CapsuleLable label={"MAIN ARTICLES"}/>
-
                 {mainArticlesData.length === 0
                     ?
-                    <div className={styles.add_one_more_article} onClick={() => AddNewMainArticle()}>
-                        + Add main article
+                    <div className={styles.add_one_more_article}>
+                        <div className={styles.click_box} onClick={() => AddNewMainArticle()}>
+                            + Add main article
+                        </div>
                     </div>
                     : null}
 
-                {mainArticlesForms.map((form) => {
-                    return form
-                })}
-
+                {mainArticlesForms}
             </div>
         </div>
     )

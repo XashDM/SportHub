@@ -28,7 +28,23 @@ namespace SportHub.API.Controllers
         {
             try
             {
-                var breakDowns = await _breakDownService.GetBreakDownsAsync(languageId);
+                var breakDowns = await _breakDownService.GetBreakDownsByLanguageIdAsync(languageId);
+
+                return Ok(breakDowns);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return BadRequest(ex.Message);
+            }
+        }
+        
+        [HttpGet("~/GetBreakdownsByLanguage")]
+        public async Task<IActionResult> GetBreakDownsByLanguageAsync([FromQuery] string language)
+        {
+            try
+            {
+                var breakDowns = await _breakDownService.GetBreakDownsByLanguageAsync(language);
 
                 return Ok(breakDowns);
             }
@@ -40,12 +56,12 @@ namespace SportHub.API.Controllers
         }
         
         [HttpPost()]
-        public async Task<IActionResult> CreateBreakDownsAsync([FromQuery] string languageId,[FromBody] IEnumerable<BreakDownRequest> breakDownsRequest)
+        public async Task<IActionResult> CreateBreakDownsAsync([FromQuery] string languageId, [FromBody] IEnumerable<BreakDownRequest> breakDownsRequest)
         {
             try
             {
                 var breakDowns = _mapper.Map<IEnumerable<BreakDown>>(breakDownsRequest);
-                await _breakDownService.CreateBreakDownsAsync(languageId ,breakDowns);
+                await _breakDownService.CreateBreakDownsAsync(languageId, breakDowns);
                 return Ok();
             }
             catch (Exception ex)
@@ -56,17 +72,32 @@ namespace SportHub.API.Controllers
         }
         
         [HttpGet("GetArticles")]
-        public async Task<IActionResult> GetBreakDownArticlesAsync([FromQuery] string languageId, bool? lastArticles = null,
+        public async Task<IActionResult> GetBreakDownArticlesAsync([FromQuery] string language, bool? lastArticles = null,
             int? numberOfArticles = null)
         {
             try
             {
-                var articles = await _breakDownService.GetBreakDownsArticlesAsync(languageId,
+                var articles = await _breakDownService.GetBreakDownsArticlesAsync(language,
                     new ArticleSearchOptions{
                     LastArticles = lastArticles,
                     NumberOfArticles = numberOfArticles});
 
                 return Ok(articles);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return BadRequest(ex.Message);
+            }
+        }
+        
+        [HttpGet("GetDetails")]
+        public async Task<IActionResult> GetBreakDownDetailsAsync([FromQuery] string languageId)
+        {
+            try
+            {
+                var result = await _breakDownService.GetBreakDownsDetailsAsync(languageId);
+                return Ok(result);
             }
             catch (Exception ex)
             {
