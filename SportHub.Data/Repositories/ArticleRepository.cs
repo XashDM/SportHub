@@ -132,7 +132,7 @@ public class ArticleRepository : IArticleRepository
 			var query = $"SELECT * FROM Articles" +
 			            $" LEFT JOIN ArticleInfos ON Articles.ArticleId = ArticleInfos.ArticleId" +
 			            $" where ArticleInfos.languageId = \"{languageId}\"";
-			
+
 			foreach (var property in articleSearchOptions.GetType().GetProperties())
 			{
 				string propertyName = property.Name;

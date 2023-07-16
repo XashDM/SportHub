@@ -6,5 +6,6 @@ public interface IBreakDownRepository
 { 
     Task CreateBreakDownsAsync(string languageId, IEnumerable<BreakDown> breakDowns);
     Task DeleteAllBreakDownsAsync(string languageId);
-    Task<IEnumerable<BreakDown>> GetBreakDownsAsync(string languageId);
+    Task<IEnumerable<BreakDown>> GetBreakDownsByLanguageIdAsync(string languageId);
+    Task<IEnumerable<BreakDown>> GetBreakDownsByLanguageAsync(string language);
 }
