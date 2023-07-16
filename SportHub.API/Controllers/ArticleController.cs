@@ -263,5 +263,22 @@ namespace SportHub.API.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpGet("GetNumberOfSearchArticles")]
+        public async Task<IActionResult> GetNumberOfSearchArticlesAsync([FromQuery] string language, [FromQuery] string findText)
+        {
+            try
+            {
+                var response = await _articlesService.GetNumberOfSearchArticlesAsync(language, findText);
+                var numberOfArticles = _mapper.Map<SearchArticlesCount, SearchArticlesCountDto>(response);
+
+                return Ok(numberOfArticles);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

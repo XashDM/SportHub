@@ -7,6 +7,7 @@ import { PAGE_CONSTANTS } from "../../../constants/PageConstants"
 import { useTranslation } from "react-i18next"
 import InfiniteScroll from "react-infinite-scroll-component"
 import * as DOMPurify from 'dompurify'
+import getNumberOfArticlesRequest from "../helpers/getNumberOfArticlesRequest"
 
 const SearchResultsList = ({ contentSearchValue }) => {
   const navigate = useNavigate()
@@ -20,6 +21,7 @@ const SearchResultsList = ({ contentSearchValue }) => {
   const [refreshSearch, setRefreshSearch] = useState(false)
 
   const [articles, setArticles] = useState([])
+  const [numberOfArticles, setNumberOfArticles] = useState()
 
   const handleArticlesGet = async () => {
     if (isLoading) return
@@ -33,6 +35,8 @@ const SearchResultsList = ({ contentSearchValue }) => {
         console.error("Error. Request for articles fails")
         return
       }
+      const responseNumber = await getNumberOfArticlesRequest(i18n.language, contentSearchValue)
+      setNumberOfArticles(responseNumber.data.count)
       if (pageOfArticles.length === 0) {
         setIsLastArticleHaveBeenFetched(true)
         return
@@ -86,7 +90,7 @@ const SearchResultsList = ({ contentSearchValue }) => {
 
     <div className={styles.resultsBlock}>
       <div key={"resultsCount"} className={styles.resultsCount}>
-        <h2>{contentSearchValue + " (" + articles.length + ")"}</h2>
+        <h2>{contentSearchValue + " (" + numberOfArticles + ")"}</h2>
       </div>
       <InfiniteScroll
         dataLength={articles.length}
