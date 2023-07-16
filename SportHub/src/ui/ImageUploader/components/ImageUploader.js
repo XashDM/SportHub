@@ -3,25 +3,13 @@ import Label from "../../Label"
 import React, { useState, useEffect } from "react"
 
 export default function ImageUploader({ selectedImage, setSelectedImage, fileUrl }) {
-    const [imageUrl, setImageUrl] = useState(null)
-
-    const downloadImageByUrl = async (url) => {
-        const response = await fetch(url)
-        const blob = await response.blob()            
-        setImageUrl(URL.createObjectURL(blob))
-    }
+    const [imageUrl, setImageUrl] = useState(fileUrl ? fileUrl : null)
 
     useEffect(() => {
         if (selectedImage instanceof Blob){
             setImageUrl(URL.createObjectURL(selectedImage))
         }
     }, [selectedImage])
-
-    useEffect(() => {
-        if (fileUrl) {
-            downloadImageByUrl(fileUrl)
-        }
-    }, [fileUrl])
 
     const handleImageSelect = (event) => {
         const file = event.target.files[0]
