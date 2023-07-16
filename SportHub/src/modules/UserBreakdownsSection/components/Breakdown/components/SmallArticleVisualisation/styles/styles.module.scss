@@ -1,0 +1,52 @@
+.content{
+  width: 27vw;
+  height: 12.5vh;
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  border: var(--color-light-lines) 1px solid;
+
+  .image{
+    width: 11vw;
+    object-fit:cover;
+  }
+
+  .text{
+    width: 16vw;
+    display: flex;
+    flex-direction: column;
+    padding: 1vh 1vw 1vh 1vw;
+    background-color: var(--color-light-white);
+    overflow: hidden;
+
+    .main_text{
+      color: var(--color-dark-black);
+      font-weight: bold;
+    }
+
+    .sub_text{
+      color: var(--color-dark-secondary-text);
+    }
+
+    .arrow{
+      display: none;
+    }
+
+    .arrow path{
+        fill: var(--color-red-regular);
+      }
+  }
+}
+
+.content:hover{
+  cursor: pointer;
+  box-shadow: 0 0 11px rgba(33,33,33,.2);
+}
+
+.content:hover .arrow{
+  display: block;
+  position: absolute;
+  bottom: 0;
+  right: 0.5vw;
+  transform: rotate(180deg);
+}

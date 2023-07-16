@@ -3,11 +3,14 @@
   margin-right: auto;
   width: fit-content;
 
-  .add_one_more_article{
+  .add_one_more_breakdown{
     margin-left: 2vw;
     color: var(--color-red-regular);
     text-decoration: underline;
-    cursor: pointer;
+
+    .click_box{
+      width: fit-content;
+      cursor: pointer;
+    }
   }
 }
-
