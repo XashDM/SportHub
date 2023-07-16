@@ -82,7 +82,7 @@ function ArticleMenu({ article = null, image = null, request }) {
                 { text: "Save", function: saveButton, isOutlined: false }
             ])
         }
-    }, [canBeSaved, currentLocation, currentSubcategory, currentTeam])
+    }, [canBeSaved, currentLocation, currentSubcategory, currentTeam, tabData, selectedImage, alt, showComments])
 
     useEffect(() => {
         if (subcategories.length !== 0 && article !== null && article?.subCategoryId) {
@@ -146,6 +146,9 @@ function ArticleMenu({ article = null, image = null, request }) {
                 newImage.Url = image.url
                 newImage.ImageId = image.imageId
             }
+            console.log(selectedImage)
+            console.log(newArticleData)
+            console.log(newImage)
 
             const formData = new FormData()
             formData.append('file', selectedImage)
