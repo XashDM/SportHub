@@ -94,6 +94,23 @@
                 "CancelBtn": "Cancel",
                 "DeleteBtn": "Delete"
             }
+        },
+        "ArticleMenuCancel": {
+            "PopUpRemovalWarning": {
+                "Title": "You are about to discard the changes!",
+                "Content": "Entered information will be missed!",
+                "AreYouSure": "Are you sure?",
+                "CancelBtn": "No",
+                "DeleteBtn": "Yes"
+            }
+        },
+        "ArticleMenuMissingData": {
+            "PopUpRemovalWarning": {
+                "Title": "Hey, you missed something",
+                "Content": "Please make sure you have this page translated in all languages that are available on the site. You always can turn off language if you don't want to support it on the Sport Hub. Go to Site Languages. ",
+                "AreYouSure": "",
+                "DeleteBtn": "Ok, got it"
+            }
         }
     }
 }
