@@ -1,72 +1,56 @@
 import React, {useEffect, useState} from 'react'
 import AddMainArticle from "./AddMainArticle"
 import CapsuleLable from "../../../../../ui/CapsuleLable"
-import FlashMessage from "../../../../../ui/FlashMessage"
 import MAX_MAIN_ARTICLES_AMOUNT from "../constants/MaxMainArticlesAmount"
 import styles from '../styles/style.module.scss'
 import getMainArticlesRequest from "../helpers/getMainArticlesRequest"
 import postMainArticlesRequest from "../helpers/postMainArticlesRequest"
 
-export default function MainArticlesConfigurator({setSaveMainArticles, setCancelMainArticle, categories}){
+export default function MainArticlesConfigurator({setSaveMainArticles, setCancelMainArticle, language, setFleshMessageIsSuccessful, categories = []}){
 
     const [startMainArticlesData, setStartMainArticlesData] = useState([])
     const [mainArticlesData, setMainArticlesData] = useState([])
     const [mainArticlesForms, setMainArticlesForms] = useState([])
-    const [languageId, setLanguageId] = useState("0")
-
-    const [fleshMessageIsOpen, setFleshMessageIsOpen] = useState(false)
-    const handleCloseFleshMessage = () => setFleshMessageIsOpen(false)
-
-    const [fleshMessageIsSuccessful, setFleshMessageIsSuccessful] = useState(true)
 
     const GetMainArticles = async () => {
-        const mainArticles = await getMainArticlesRequest(languageId)
-        let articles = []
-        for (let articleCount in mainArticles.data){
+        const mainArticles = await getMainArticlesRequest(language?.languageId)
+        const articles = []
+        setMainArticlesData([])
+        for(let articleCount = 0; articleCount < mainArticles.data?.length; articleCount++){
             const data = mainArticles.data[articleCount]
-            articles[articleCount] = {
+            articles.push({
                 isLastMainArticle: null,
-                category: {
-                    categoryId: data.category.categoryId,
-                    categoryName: data.category.categoryName
-                },
-                subcategory: {
-                    subCategoryId: data.subCategory.subCategoryId,
-                    subCategoryName: data.subCategory.subCategoryName
-                },
-                team: {
-                    teamId: data.team.teamId,
-                    teamName: data.team.teamName,
-                },
+                category: data.category,
+                subcategory: data.subCategory,
+                team: data.team,
                 article: {
                     articleId: data.articleId,
                     title: data.title
                 }
-            }
+            })
         }
+
         setMainArticlesData(articles)
         setStartMainArticlesData(articles)
     }
 
     const SaveChanges = () => {
         try {
-            let jsonPostRequest = []
+            let request = []
             for (let articleCount = 0; articleCount < mainArticlesData.length; articleCount++) {
-                jsonPostRequest.push({
+                request.push({
                     "order": mainArticlesData[articleCount].order,
                     "articleId": (mainArticlesData[articleCount].article.articleId) + "",
-                    "languageId": languageId
+                    "languageId": language?.languageId
                 })
             }
-
-            postMainArticlesRequest(jsonPostRequest)
-            setFleshMessageIsSuccessful(true)
+            console.log(request)
+            postMainArticlesRequest(request)
             setStartMainArticlesData(mainArticlesData)
         }
         catch (error){
             setFleshMessageIsSuccessful(false)
         }
-        setFleshMessageIsOpen(true)
     }
 
     const CancelChanges = () => {
@@ -114,7 +98,7 @@ export default function MainArticlesConfigurator({setSaveMainArticles, setCancel
             const mainArticlesProps = mainArticlesData[articleFormsCount]
             newMainArticlesForms[articleFormsCount] = (<AddMainArticle {...mainArticlesProps}
                                                                        key={articleFormsCount}
-                                                                       languageId={languageId}
+                                                                       language={language}
                                                                        categoriesOptions={categories}
                                                                        AddNewMainArticle={AddNewMainArticle}
                                                                        DeleteMainArticle={DeleteMainArticle}
@@ -125,35 +109,22 @@ export default function MainArticlesConfigurator({setSaveMainArticles, setCancel
     }
 
     useEffect(() => {
-        setMainArticlesData([])
-        setMainArticlesForms([])
-    }, [languageId])
-
-    useEffect( () => {
         GetMainArticles()
-    }, [])
-
-    useEffect(() => {
-        GenerateArticlesForms()
-    }, [mainArticlesData])
+    }, [language])
 
     useEffect(() => {
         if(typeof(setSaveMainArticles) == "function" && typeof(setCancelMainArticle) == "function") {
             setSaveMainArticles({function: SaveChanges})
             setCancelMainArticle({function: CancelChanges})
         }
-    }, [mainArticlesData, languageId])
+        GenerateArticlesForms()
+    }, [mainArticlesData, language])
 
     return (
         <div>
             <div className={styles.content}>
 
-                <FlashMessage title={fleshMessageIsSuccessful ? "Changes saved" : "Changes are not saved"}
-                              content={fleshMessageIsSuccessful ? "Main articles are successfully saved." : "Main articles are not saved."}
-                              isSuccess={fleshMessageIsSuccessful} open={fleshMessageIsOpen} handleClose={handleCloseFleshMessage}/>
-
                 <CapsuleLable label={"MAIN ARTICLES"}/>
-
                 {mainArticlesData.length === 0
                     ?
                     <div className={styles.add_one_more_article}>
@@ -163,10 +134,7 @@ export default function MainArticlesConfigurator({setSaveMainArticles, setCancel
                     </div>
                     : null}
 
-                {mainArticlesForms.map((form) => {
-                    return form
-                })}
-
+                {mainArticlesForms}
             </div>
         </div>
     )

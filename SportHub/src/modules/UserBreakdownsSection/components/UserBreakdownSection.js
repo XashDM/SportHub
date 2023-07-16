@@ -3,12 +3,13 @@ import BreakDown from "./Breakdown"
 import {useEffect, useState} from "react"
 import getBreakdowns from "../helpers/getBreakdowns"
 import constants from "../constants/constants"
+import {useTranslation} from "react-i18next"
 
 export default function UserBreakdownSection(){
 
     const [breakdowns, setBreakDowns] = useState([])
-    const [languageId, setLanguageId] = useState("0")
     const [breakdownSection, setBreakdownSection] = useState()
+    const { i18n } = useTranslation()
 
     const SetBreakDowns = async (languageId, lastArticles, numberOfArticles) => {
         const response = await getBreakdowns(languageId, lastArticles, numberOfArticles)
@@ -25,7 +26,7 @@ export default function UserBreakdownSection(){
     }
 
     useEffect(() => {
-        SetBreakDowns(languageId, constants.LAST_ARTICLES, constants.NUMBER_OF_ARTICLES)
+        SetBreakDowns(i18n.language, constants.LAST_ARTICLES, constants.NUMBER_OF_ARTICLES)
     }, [])
 
     useEffect(() => {
@@ -35,6 +36,5 @@ export default function UserBreakdownSection(){
     return(<div>
         <CapsuleLable label={"BREAKDOWNS"} />
         {breakdownSection}
-
     </div>)
 }

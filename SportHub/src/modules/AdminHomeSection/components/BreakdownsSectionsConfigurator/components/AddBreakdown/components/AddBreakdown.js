@@ -4,28 +4,25 @@ import styles from "../../../../MainArtcilesConfigurator/components/AddMainArtic
 import AutoComplete from "../../../../../../../ui/AutoComplete"
 
 export default function AddBreakdown({order = null, category = null, categoriesOptions = [], subcategory = null,
-                                         team = null, languageId, isLastBreakDown, AddNewBreakDown, DeleteBreakDown, SaveData}){
+                                         team = null, language, isLastBreakDown, AddNewBreakDown, DeleteBreakDown, SaveData}){
     const request = new Requests();
 
     const [currentOrder, setCurrentOrder] = useState(order)
 
     const [currentCategory, setCurrentCategory] = useState(category)
-    useEffect(() => setCurrentCategory(category), [category])
 
     const [subcategoriesOptions, setSubcategoriesOptions] = useState([])
     const [currentSubcategory, setCurrentSubcategory] = useState(subcategory)
-    useEffect(() => setCurrentSubcategory(subcategory), [subcategory])
 
     const [teamsOptions, setTeamsOptions] = useState([])
     const [currentTeam, setCurrentTeam] = useState(team)
-    useEffect(() => setCurrentTeam(team), [team])
 
     const [disabled, setDisabled] = useState(currentCategory === undefined || currentCategory === null)
 
     const GetDataAfterChoosingCategory = async () => {
         if(currentCategory !== null) {
-            setSubcategoriesOptions(await request.getSubCategories(currentCategory?.categoryId))
-            setTeamsOptions(await request.getTeamsByCategoryId(currentCategory?.categoryId))
+            setSubcategoriesOptions(await request.getSubCategories(category?.categoryId))
+            setTeamsOptions(await request.getTeamsByCategoryId(category?.categoryId))
         }
     }
 
@@ -60,11 +57,11 @@ export default function AddBreakdown({order = null, category = null, categoriesO
             setCurrentTeam(team)
         }
 
-    }, [currentCategory])
+    }, [category])
 
     useEffect(() => {
         GetDataAfterChoosingCategory()
-    }, [])
+    }, [language])
 
     return (
         <div>

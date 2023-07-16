@@ -9,7 +9,6 @@ export default function BreakDown({groupName, articles}){
     const [smallArticles, setSmallArticles] = useState([])
 
     const SetArticles = (groupName, articles) => {
-        console.log(articles)
         if(articles.length !== 0) {
             setBigArticle(<BigArticleVisualisation groupName={groupName} article={articles[0]}/>)
         }

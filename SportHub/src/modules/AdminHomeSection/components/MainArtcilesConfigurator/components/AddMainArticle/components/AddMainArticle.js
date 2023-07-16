@@ -4,27 +4,22 @@ import styles from "../styles/style.module.scss"
 import Requests from "../requests"
 
 export default function AddMainArticle({order = null, category = null, categoriesOptions = [], subcategory = null,
-                                           team = null, article= null, languageId, isLastMainArticle,
+                                           team = null, article= null, language, isLastMainArticle,
                                            AddNewMainArticle, DeleteMainArticle, SaveData}){
 
     const request = new Requests();
-
     const [currentOrder, setCurrentOrder] = useState(order)
 
     const [currentCategory, setCurrentCategory] = useState(category)
-    useEffect(() => setCurrentCategory(category), [category])
 
     const [subcategoriesOptions, setSubcategoriesOptions] = useState([])
     const [currentSubcategory, setCurrentSubcategory] = useState(subcategory)
-    useEffect(() => setCurrentSubcategory(subcategory), [subcategory])
 
     const [teamsOptions, setTeamsOptions] = useState([])
     const [currentTeam, setCurrentTeam] = useState(team)
-    useEffect(() => setCurrentTeam(team), [team])
 
     const [articlesOptions, setArticlesOptions] = useState([])
     const [currentArticle, setCurrentArticle] = useState(article)
-    useEffect(() => setCurrentArticle(article), [article])
 
     const [disabled, setDisabled] = useState(currentCategory === undefined || currentCategory === null)
 
@@ -32,19 +27,19 @@ export default function AddMainArticle({order = null, category = null, categorie
         if(currentCategory !== null) {
             setSubcategoriesOptions(await request.getSubCategories(currentCategory?.categoryId))
             setTeamsOptions(await request.getTeamsByCategoryId(currentCategory?.categoryId))
-            setArticlesOptions(await request.getArticleByLanguageIdAndCategoryId(languageId, currentCategory?.categoryId))
+            setArticlesOptions(await request.getArticleByLanguageIdAndCategoryId(language?.languageId, currentCategory?.categoryId))
         }
     }
 
     const GetDataAfterChoosingSubCategory = async () => {
         if(currentSubcategory !== null) {
             setTeamsOptions(await request.getTeamBySubCategoryId(currentSubcategory?.subCategoryId))
-            setArticlesOptions(await request.getArticleByLanguageIdAndSubCategoryId(languageId, currentSubcategory?.subCategoryId))
+            setArticlesOptions(await request.getArticleByLanguageIdAndSubCategoryId(language?.languageId, currentSubcategory?.subCategoryId))
         }
     }
 
     const GetDataAfterChoosingTeam = async () => {
-        if (currentTeam !== null) setArticlesOptions(await request.getArticleByLanguageIdAndTeamId(languageId, currentTeam?.teamId))
+        if (currentTeam !== null) setArticlesOptions(await request.getArticleByLanguageIdAndTeamId(language?.languageId, currentTeam?.teamId))
     }
 
     useEffect(() => {
@@ -52,28 +47,20 @@ export default function AddMainArticle({order = null, category = null, categorie
     }, [currentOrder, currentCategory, currentSubcategory, currentTeam, currentArticle])
 
     useEffect(() => {
-        GetDataAfterChoosingTeam()
-
-        setCurrentArticle(null)
-
-        if(currentTeam === team){
-            setCurrentArticle(article)
-        }
-
-    }, [currentTeam])
+        if(currentCategory?.categoryId !== category?.categoryId) setCurrentCategory(category)
+    }, [category])
 
     useEffect(() => {
-        GetDataAfterChoosingSubCategory()
+        if(currentSubcategory?.subCategoryId !== subcategory?.subCategoryId) setCurrentSubcategory(subcategory)
+    }, [subcategory])
 
-        setCurrentTeam(null)
-        setCurrentArticle(null)
+    useEffect(() => {
+        if(currentTeam?.teamId !== team?.teamId) setCurrentTeam(team)
+    }, [team])
 
-        if(currentSubcategory === subcategory){
-            setCurrentTeam(team)
-            setCurrentArticle(article)
-        }
-
-    }, [currentSubcategory])
+    useEffect(() => {
+        if(currentArticle?.articleId !== article?.articleId) setCurrentArticle(article)
+    }, [article])
 
     useEffect(() => {
         GetDataAfterChoosingCategory()
@@ -92,8 +79,31 @@ export default function AddMainArticle({order = null, category = null, categorie
     }, [currentCategory])
 
     useEffect(() => {
-        GetDataAfterChoosingCategory()
-    }, [])
+        if(currentSubcategory?.subCategoryName === undefined) GetDataAfterChoosingCategory()
+        else GetDataAfterChoosingSubCategory()
+
+        setCurrentTeam(null)
+        setCurrentArticle(null)
+
+        if(currentSubcategory === subcategory){
+            setCurrentTeam(team)
+            setCurrentArticle(article)
+        }
+
+    }, [currentSubcategory])
+
+    useEffect(() => {
+        if(currentTeam?.teamName === undefined) GetDataAfterChoosingSubCategory()
+        else GetDataAfterChoosingTeam()
+
+
+        setCurrentArticle(null)
+
+        if(currentTeam === team)
+            setCurrentArticle(article)
+
+    }, [currentTeam])
+
 
     return (
         <div>
@@ -104,7 +114,7 @@ export default function AddMainArticle({order = null, category = null, categorie
                             label={"CATEGORY*"}
                             value={category}
                             setValue={setCurrentCategory}
-                            options={categoriesOptions}//{categoriesOptions}
+                            options={categoriesOptions}
                             areOptionsObjects={true}
                             optionLable={"categoryName"}
                             propertyToCompare={"categoryId"} />
@@ -127,7 +137,7 @@ export default function AddMainArticle({order = null, category = null, categorie
                             setValue={setCurrentTeam}
                             disabled={disabled}
                             options={teamsOptions}
-                            areOptionsObjects={true}
+                            areOptionsObjects={typeof(team) === "object"}
                             optionLable={"teamName"}
                             propertyToCompare={"teamId"} />
                     </div>

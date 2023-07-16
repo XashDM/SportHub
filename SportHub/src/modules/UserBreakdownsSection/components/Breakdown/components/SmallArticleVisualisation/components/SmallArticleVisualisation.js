@@ -5,7 +5,7 @@ export default function SmallArticleVisualisation({article}){
 
     return(<div>
         <div className={styles.content}>
-            <img className={styles.image} src={"https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg"} />
+            <img className={styles.image} src={article.image.url} />
             <div className={styles.text}>
                 <div className={styles.main_text}>{article.title}</div>
                 <div className={styles.sub_text}>{article.mainText}</div>

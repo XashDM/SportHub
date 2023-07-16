@@ -12,15 +12,17 @@ public class BreakDownService : IBreakDownService
     private readonly ITeamsService _teamsService;
     private readonly ISubCategoryService _subCategoryService;
     private readonly ICategoryService _categoryService;
+    private readonly ILanguageService _languageService;
 
     public BreakDownService(IBreakDownRepository breakDownRepository, IArticleService articleService, ITeamsService teamsService,
-        ISubCategoryService subCategoryService, ICategoryService categoryService)
+        ISubCategoryService subCategoryService, ICategoryService categoryService, ILanguageService languageService)
     {
         _breakDownRepository = breakDownRepository;
         _articleService = articleService;
         _teamsService = teamsService;
         _subCategoryService = subCategoryService;
         _categoryService = categoryService;
+        _languageService = languageService;
     }
 
     public async Task CreateBreakDownsAsync(string languageId, IEnumerable<BreakDown> breakDowns)
@@ -33,14 +35,19 @@ public class BreakDownService : IBreakDownService
         await _breakDownRepository.CreateBreakDownsAsync(languageId, breakDowns);
     }
 
-    public async Task<IEnumerable<BreakDown>> GetBreakDownsAsync(string languageId)
+    public async Task<IEnumerable<BreakDown>> GetBreakDownsByLanguageIdAsync(string languageId)
     {
-        return await _breakDownRepository.GetBreakDownsAsync(languageId);
+        return await _breakDownRepository.GetBreakDownsByLanguageIdAsync(languageId);
     }
     
-    public async Task<List<BreakDownResponse>> GetBreakDownsArticlesAsync(string languageId, ArticleSearchOptions articleSearchOptions)
+    public async Task<IEnumerable<BreakDown>> GetBreakDownsByLanguageAsync(string language)
     {
-        var breakDowns = await GetBreakDownsAsync(languageId);
+        return await _breakDownRepository.GetBreakDownsByLanguageAsync(language);
+    }
+    
+    public async Task<List<BreakDownResponse>> GetBreakDownsArticlesAsync(string language, ArticleSearchOptions articleSearchOptions)
+    {
+        var breakDowns = await GetBreakDownsByLanguageAsync(language);
         
         List<BreakDownResponse> breakDownsResponse = new List<BreakDownResponse>();
         foreach (var breakDown in breakDowns)
@@ -66,7 +73,9 @@ public class BreakDownService : IBreakDownService
                 var category = await _categoryService.GetCategoryByIdAsync(breakDown.CategoryId);
                 groupName = category.CategoryName;
             }
-            
+
+
+            string languageId = (await _languageService.GetLanguageByTitleAsync(language)).LanguageId;
             var breakDownArticles = await _articleService.GetAllArticlesByFiltersAsync(languageId, searchOptions);
             breakDownsResponse.Add(new BreakDownResponse
             {
@@ -80,7 +89,7 @@ public class BreakDownService : IBreakDownService
 
     public async Task<List<BreakDownDetailsDTO>> GetBreakDownsDetailsAsync(string languageId)
     {
-        IEnumerable<BreakDown> breakDowns = await GetBreakDownsAsync(languageId);
+        IEnumerable<BreakDown> breakDowns = await GetBreakDownsByLanguageIdAsync(languageId);
         
         List<BreakDownDetailsDTO> breakDownDetails = new List<BreakDownDetailsDTO>();
         foreach (var breakDown in breakDowns)

@@ -32,7 +32,21 @@
     cursor: pointer;
   }
 
-  .section_elements {
+  .left_arrow_disabled{
+    width: 5vw;
+    cursor: auto;
+  }
+
+  .section_elements{
+    position: relative;
+    display: flex;
+    overflow-x: hidden;
+    padding: 0;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .section_elements_scrolled {
     position: relative;
     display: flex;
     overflow-x: hidden;
@@ -54,13 +68,19 @@
     cursor: pointer;
   }
 
+  .right_arrow_disabled{
+    rotate: 180deg;
+    width: 5vw;
+    cursor: auto;
+  }
+
   .arrow path{
     fill: var(--color-red-regular);
   }
 
   .arrow_disable path{
     fill: var(--color-red-disabled);
-    cursor: auto;
+    cursor: default;
   }
 }
 

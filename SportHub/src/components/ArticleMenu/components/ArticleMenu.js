@@ -124,7 +124,7 @@ function ArticleMenu({ article = null, image = null, request }) {
                 LocationId: currentLocation?.locationId,
                 ShowComments: showComments,
                 Infos: languages.map((language) => ({
-                    LanguageId: language?.languageId,
+                    LanguageId: language?.language,
                     Title: tabData[language.value]?.headline,
                     Subtitle: tabData[language.value]?.caption,
                     MainText: tabData[language.value]?.content
@@ -186,7 +186,7 @@ function ArticleMenu({ article = null, image = null, request }) {
         for (let i = 0; i < languages.length; i++) {
             newTabData.push({ headline: "", caption: "", content: "" })
 
-            const info = article?.infos.find(info => info.languageId === languages[i].languageId)
+            const info = article?.infos.find(info => info.language === languages[i].language)
             if (info) {
                 newTabData[i].headline = info.title
                 newTabData[i].caption = info.subtitle

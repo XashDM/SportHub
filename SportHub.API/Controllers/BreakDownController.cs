@@ -28,7 +28,23 @@ namespace SportHub.API.Controllers
         {
             try
             {
-                var breakDowns = await _breakDownService.GetBreakDownsAsync(languageId);
+                var breakDowns = await _breakDownService.GetBreakDownsByLanguageIdAsync(languageId);
+
+                return Ok(breakDowns);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return BadRequest(ex.Message);
+            }
+        }
+        
+        [HttpGet("~/GetBreakdownsByLanguage")]
+        public async Task<IActionResult> GetBreakDownsByLanguageAsync([FromQuery] string language)
+        {
+            try
+            {
+                var breakDowns = await _breakDownService.GetBreakDownsByLanguageAsync(language);
 
                 return Ok(breakDowns);
             }
@@ -56,12 +72,12 @@ namespace SportHub.API.Controllers
         }
         
         [HttpGet("GetArticles")]
-        public async Task<IActionResult> GetBreakDownArticlesAsync([FromQuery] string languageId, bool? lastArticles = null,
+        public async Task<IActionResult> GetBreakDownArticlesAsync([FromQuery] string language, bool? lastArticles = null,
             int? numberOfArticles = null)
         {
             try
             {
-                var articles = await _breakDownService.GetBreakDownsArticlesAsync(languageId,
+                var articles = await _breakDownService.GetBreakDownsArticlesAsync(language,
                     new ArticleSearchOptions{
                     LastArticles = lastArticles,
                     NumberOfArticles = numberOfArticles});

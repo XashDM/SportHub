@@ -7,6 +7,7 @@ import {adminMenuState} from "../../../store/states/adminMenuState"
 import getCategoriesRequest from "../helpers/getCategoriesRequest"
 import TabPanel from "../../../ui/TabPanel"
 import getLanguagesRequest from "../../../helpers/getLanguagesRequest"
+import FlashMessage from "../../../ui/FlashMessage"
 
 export default function AdminHomeSection(){
 
@@ -25,6 +26,10 @@ export default function AdminHomeSection(){
     const [languages, setLanguages] = useState([])
     const [activeTab, setActiveTab] = useState(0)
 
+    const [fleshMessageIsOpen, setFleshMessageIsOpen] = useState(false)
+    const handleCloseFleshMessage = () => setFleshMessageIsOpen(false)
+
+    const [fleshMessageIsSuccessful, setFleshMessageIsSuccessful] = useState(true)
 
     const GetCategories = async () => {
         const categories = await getCategoriesRequest()
@@ -43,15 +48,16 @@ export default function AdminHomeSection(){
     const GetHomePage = (categories, language) => {
         setHomePage(<div className={styles.content}>
             <MainArticlesConfigurator setSaveMainArticles = {setSaveMainArticles} setCancelMainArticle = {setCancelMainArticle}
-                                      categories={categories} language={language}/>
+                                      categories={categories} language={language} setFleshMessageIsSuccessful={setFleshMessageIsSuccessful}/>
             <BreakdownSectionConfigurator setSaveBreakdown = {setSaveBreakdown} setCancelBreakdown = {setCancelBreakdown}
-                                          categories={categories} language={language}/>
+                                          categories={categories} language={language} setFleshMessageIsSuccessful={setFleshMessageIsSuccessful}/>
         </div>)
     }
 
     const Save = () =>{
         saveMainArticles.function()
         saveBreakdown.function()
+        setFleshMessageIsOpen(true)
     }
 
     const Cancel = () => {
@@ -75,8 +81,15 @@ export default function AdminHomeSection(){
         GetHomePage(categories, languages[activeTab])
     }, [categories, languages, activeTab])
 
-    return(<div>
+    return(<div className={styles.content}>
+
+        <FlashMessage title={fleshMessageIsSuccessful ? "Changes saved" : "Changes are not saved"}
+                      content={fleshMessageIsSuccessful ? "All successfully saved." : "Nothing saved."}
+                      isSuccess={fleshMessageIsSuccessful} open={fleshMessageIsOpen} handleClose={handleCloseFleshMessage}/>
+
+        <div className={styles.tabs}>
         <TabPanel activeTab={activeTab} setActiveTab={setActiveTab} languages={languages} />
+        </div>
         {homePage}
     </div>)
 }

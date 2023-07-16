@@ -8,12 +8,21 @@ import getCategoriesRequest from "../helpers/getCategoriesRequest"
 
 export default function HorizontalAdminMenu({currentMenuElement, setCurrentMenuElement, headerButtons, setSelectedCategory}){
 
-    const [listOfSections, setListOfSections] = useState(['Home'])
+    const [listOfSections, setListOfSections] = useState([])
 
+    const [leftArrow, setLeftArrow] = useState()
+    const [sectionElementsForm, setSectionElementsForm] = useState()
+    const [rightArrow, setRightArrow] = useState()
+
+    const [isBiggerThanWindowWidth, setIsBiggerThanWindowWidth] = useState(false)
     const [canScrollLeft, setCanScrollLeft] = useState(false)
     const [canScrollRight, setCanScrollRight] = useState(true)
 
     const sectionElements = useRef(null)
+
+    const CheckIsBiggerThanWindowWidth = () => {
+        setIsBiggerThanWindowWidth(sectionElements.current?.offsetWidth + window.innerWidth * 20 / 100 > window.innerWidth)
+    }
 
     const scroll = (scrollOffsetVW) => {
         const scrollPixel = window.innerWidth * scrollOffsetVW / 100
@@ -22,10 +31,60 @@ export default function HorizontalAdminMenu({currentMenuElement, setCurrentMenuE
         sectionElements.current.scrollLeft + scrollPixel > 0 ? setCanScrollLeft(true) : setCanScrollLeft(false)
         sectionElements.current.scrollLeft + sectionElements.current.offsetWidth + scrollPixel < sectionElements.current.scrollWidth ? setCanScrollRight(true) : setCanScrollRight(false)
     }
-    
+
+    const GetLeftArrow = () => {
+        if(isBiggerThanWindowWidth) {
+            setLeftArrow(<div className={canScrollLeft ? styles.left_arrow : styles.left_arrow_disabled}
+                              onClick={() => scroll(-20)}>
+                <ReactSVG src={process.env.PUBLIC_URL + '/icons/Arrow.svg'}
+                          className={canScrollLeft ? styles.arrow : styles.arrow_disable}/>
+            </div>)
+        }
+        else{
+            setLeftArrow(null)
+        }
+    }
+
+    const GetSectionElementsForm = () => {
+        setSectionElementsForm(<div ref={sectionElements} className={isBiggerThanWindowWidth ? styles.section_elements_scrolled : styles.section_elements}>
+            {listOfSections.map((section, index) => {
+                return <div key={index} onClick={() => {setCurrentMenuElement(section.categoryName); setSelectedCategory(section)}}
+                            className={styles.horizontal_menu_element}>
+                    <HorizontalAdminMenuElement name={section.categoryName} active={section.categoryName === currentMenuElement}  />
+                </div>
+            })}
+        </div>)
+    }
+
+    const GetRightArrow = () => {
+        if(isBiggerThanWindowWidth) {
+            setRightArrow(<div className={canScrollRight ? styles.right_arrow : styles.right_arrow_disabled}
+                               onClick={() => scroll(20)}>
+                                <ReactSVG src={process.env.PUBLIC_URL + '/icons/Arrow.svg'}
+                          className={canScrollRight ? styles.arrow : styles.arrow_disable}/>
+            </div>)
+        }
+        else{
+            setRightArrow(null)
+        }
+    }
+
     useEffect(() => {
         getCategories()
     }, [])
+
+    useEffect(() => {
+        GetSectionElementsForm()
+    }, [sectionElements, canScrollLeft, canScrollRight])
+
+    useEffect(() => {
+        CheckIsBiggerThanWindowWidth()
+    }, [sectionElements, sectionElementsForm])
+
+    useEffect(() => {
+        GetLeftArrow()
+        GetRightArrow()
+    }, [isBiggerThanWindowWidth, canScrollLeft, canScrollRight])
 
     const getCategories = async () => {
         const result = await getCategoriesRequest()
@@ -49,23 +108,9 @@ export default function HorizontalAdminMenu({currentMenuElement, setCurrentMenuE
             </div>
 
             <div className={styles.horizontal_menu}>
-                <div className={"left-arrow"} onClick={() => scroll(-20)}>
-                    <ReactSVG src={process.env.PUBLIC_URL + '/icons/Arrow.svg'}
-                              className={canScrollLeft ? styles.arrow : styles.arrow_disable}/>
-                </div>
-
-                <div ref={sectionElements} className={styles.section_elements}>
-                    {listOfSections.map((section, index) => {
-                        return <div key={index} onClick={() => {setCurrentMenuElement(section.categoryName); setSelectedCategory(section)}}
-                                    className={styles.horizontal_menu_element}>
-                            <HorizontalAdminMenuElement name={section.categoryName} active={section.categoryName === currentMenuElement}  />
-                        </div>
-                    })}
-                </div>
-                <div className={styles.right_arrow} onClick={() => scroll(20)}>
-                    <ReactSVG src={process.env.PUBLIC_URL + '/icons/Arrow.svg'}
-                              className={canScrollRight ? styles.arrow : styles.arrow_disable} />
-                </div>
+                {leftArrow}
+                {sectionElementsForm}
+                {rightArrow}
             </div>
         </div>
     )

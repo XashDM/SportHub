@@ -5,18 +5,18 @@ import AddBreakdown from "./AddBreakdown"
 import getBreakdownsRequest from "../helpers/getBreakdownsRequest"
 import postBreakdownsRequest from "../helpers/postBreakdownsRequest"
 
-export default function BreakdownSectionConfigurator({setSaveBreakdown, setCancelBreakdown, language, categories = []}){
+export default function BreakdownSectionConfigurator({setSaveBreakdown, setCancelBreakdown, language, setFleshMessageIsSuccessful, categories = []}){
 
     const [startBreakDownData, setStartBreakDownData] = useState([])
     const [breakDownsData, setBreakDownsData] = useState([])
     const [breakDownsForm, setBreakDownsForm] = useState([])
-    const [languageId, setLanguageId] = useState()
 
     const GetBreakdowns = async () => {
-        const request = await getBreakdownsRequest(languageId)
+        const request = await getBreakdownsRequest(language?.languageId)
         let breakdowns = []
-        for (let breakdownsCount in request.data){
+        for (let breakdownsCount = 0; breakdownsCount < request.data?.length; breakdownsCount++){
             const data = request.data[breakdownsCount]
+            console.log(breakdownsCount)
             breakdowns[breakdownsCount] = {
                 order: null,
                 isLastBreakDown: null,
@@ -25,6 +25,7 @@ export default function BreakdownSectionConfigurator({setSaveBreakdown, setCance
                 team: data.team
             }
         }
+        console.log(breakdowns)
         setBreakDownsData(breakdowns)
         setStartBreakDownData(breakdowns)
     }
@@ -32,23 +33,20 @@ export default function BreakdownSectionConfigurator({setSaveBreakdown, setCance
     const SaveBreakdowns = () => {
         try {
             let jsonPostRequest = []
-            console.log(breakDownsData.length)
             for (let breakdownsCounter = 0; breakdownsCounter < breakDownsData.length; breakdownsCounter++) {
                 jsonPostRequest.push({
-                    languageId: languageId,
+                    languageId: language?.languageId,
                     categoryId: breakDownsData[breakdownsCounter].category.categoryId,
-                    subCategoryId: breakDownsData[breakdownsCounter].subCategory?.subCategoryId,
+                    subCategoryId: breakDownsData[breakdownsCounter].subcategory?.subCategoryId,
                     teamId: breakDownsData[breakdownsCounter].team?.teamId
                 })
             }
-            postBreakdownsRequest(languageId, jsonPostRequest)
-            //setFleshMessageIsSuccessful(true)
-            //setStartMainArticlesData(breakDownsData)
+            postBreakdownsRequest(language?.languageId, jsonPostRequest)
+            setStartBreakDownData(breakDownsData)
         }
         catch (error){
-           // setFleshMessageIsSuccessful(false)
+            setFleshMessageIsSuccessful(false)
         }
-        //setFleshMessageIsOpen(true)
     }
 
     const CancelBreakdowns = () => {
@@ -72,13 +70,13 @@ export default function BreakdownSectionConfigurator({setSaveBreakdown, setCance
     }
 
     const SaveChangedOption = (order, category, subcategory, team) => {
-        const newbreakDownData = [...breakDownsData]
+        const newBreakDownData = [...breakDownsData]
 
-        newbreakDownData[order].category = category
-        newbreakDownData[order].subcategory = subcategory
-        newbreakDownData[order].team = team
+        newBreakDownData[order].category = category
+        newBreakDownData[order].subcategory = subcategory
+        newBreakDownData[order].team = team
 
-        setBreakDownsData(newbreakDownData)
+        setBreakDownsData(newBreakDownData)
     }
 
     const GenerateBreakdownsForms = () => {
@@ -93,7 +91,7 @@ export default function BreakdownSectionConfigurator({setSaveBreakdown, setCance
             const breakdownsProps = breakDownsData[breakdownsFormsCount]
             newBreakdownsForms[breakdownsFormsCount] = (<AddBreakdown {...breakdownsProps}
                                                                      key={breakdownsFormsCount}
-                                                                     languageId={languageId}
+                                                                     language={language}
                                                                       categoriesOptions={categories}
                                                                       AddNewBreakDown={AddNewBreakDown}
                                                                       DeleteBreakDown={DeleteBreakDown}
@@ -104,23 +102,16 @@ export default function BreakdownSectionConfigurator({setSaveBreakdown, setCance
     }
 
     useEffect(() => {
-        setLanguageId(language?.languageId)
-    }, [language])
-
-    useEffect(() => {
         GetBreakdowns()
-    }, [languageId, language])
-
-    useEffect(() => {
-        GenerateBreakdownsForms()
-    }, [breakDownsData])
+    }, [language])
 
     useEffect(() => {
         if(typeof(setSaveBreakdown) == "function" && typeof(setCancelBreakdown) == "function") {
             setSaveBreakdown({function: SaveBreakdowns})
             setCancelBreakdown({function: CancelBreakdowns})
         }
-    }, [breakDownsData, languageId, language])
+        GenerateBreakdownsForms()
+    }, [breakDownsData, language])
 
     return( <div className={styles.content}>
         <CapsuleLable label={"BREAKDOWNS"} />
@@ -133,8 +124,6 @@ export default function BreakdownSectionConfigurator({setSaveBreakdown, setCance
             </div>
             : null}
 
-        {breakDownsForm.map((form) => {
-            return form
-        })}
+        {breakDownsForm}
     </div>)
 }
