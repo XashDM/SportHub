@@ -29,6 +29,7 @@ const EditMenu = ({item,setShowEditMenu,itemId,depthLevel}) => {
   }
 
   const HideTeam = () => {
+    console.log(item)
     hideTeam(item.subCategoryId,itemId)
   }
 

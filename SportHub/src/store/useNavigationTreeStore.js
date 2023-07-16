@@ -46,7 +46,7 @@ export const useNavigationItemsCategories = create((set) =>(
                 return {subcategories: {...state.subcategories,[categoryId]: newSubCategory}}
             }),
             addNewSubCategory: (categoryId,SubCategoryname) => set((state) => {
-                const newSubCategory = {id : uuid(),title:SubCategoryname,isHidden:false,new:true}
+                const newSubCategory = {id : uuid(),title:SubCategoryname,categoryId:categoryId,isHidden:false,new:true}
                 const new_element_list = state.subcategories
                 new_element_list[categoryId] = [...new_element_list[categoryId],newSubCategory]
                 useNavigationItemsTeams.getState().addNewSubCategory(uuid())
@@ -91,7 +91,7 @@ export const useNavigationItemsCategories = create((set) =>(
                     return {teams: {...state.teams,[subCategoryId]: newTeam}}
                 }),
                 addNewTeam: (SubCategoryId,teamName) => set((state) => {
-                    const newTeam = {id : uuid(),title:teamName,description:"There is no description",isHidden:false,new:true}
+                    const newTeam = {id : uuid(),title:teamName,description:"There is no description",subCategoryId:SubCategoryId,isHidden:false,new:true}
                     const new_element_list = state.teams
                     new_element_list[SubCategoryId] = [...new_element_list[SubCategoryId],newTeam]
                     return {teams: new_element_list}
