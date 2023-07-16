@@ -3,16 +3,15 @@ import Input from "../../../ui/Input"
 import HeaderContainer from "../../../components/HeaderContainer"
 import { useTranslation } from "react-i18next"
 import SelectLanguage from "../../SelectLanguage"
+import SearchDropdownList from "../../SearchDropdownList/components/SearchDropdownList"
 
-const UserHeader = ({username, userimg}) =>
-{
+const UserHeader = ({ username, userimg, setIsContentSearch, setContentSearchValue }) => {
     const { t, i18n } = useTranslation()
     return (
         <HeaderContainer>
             <div className={styles.header}>
                 <div className={styles.searchbar}>
-                    <img className={styles.img_icon} src={'/icons/Magnifying-glass.svg'} ></img>
-                    <Input className={styles.input} placeholder={t('Header.UserHeader.SearchByCaption')}></Input>
+                    <SearchDropdownList setIsContentSearch={setIsContentSearch} setContentSearchValue={setContentSearchValue} />
                 </div>
                 <div className={styles.media}>
                     <span className={styles.share}>{t('Header.UserHeader.ShareCaption')}</span>
@@ -26,7 +25,7 @@ const UserHeader = ({username, userimg}) =>
                     <img className={styles.profile_img_icon} src={'/icons/Polygon.svg'}></img>
                 </div>
                 <div className={styles.languages}>
-                    <SelectLanguage/>
+                    <SelectLanguage />
                 </div>
             </div>
         </HeaderContainer>

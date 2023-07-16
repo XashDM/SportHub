@@ -59,6 +59,53 @@ namespace SportHub.API.Controllers
 			}
 		}
 
+		[HttpPut(Name = "Article")]
+		public async Task<IActionResult> UpdateArticleAsync()
+		{
+			try
+			{
+				var file = Request.Form.Files["file"];
+				var articleJson = Request.Form["article"];
+				var imageJson = Request.Form["image"];
+
+				if (file == null || string.IsNullOrEmpty(articleJson) || string.IsNullOrEmpty(imageJson))
+				{
+					return BadRequest("Missing input data.");
+				}
+
+				var article = JsonConvert.DeserializeObject<Article>(articleJson);
+
+				var image = JsonConvert.DeserializeObject<Image>(imageJson);
+
+				var fileName = await _imageStorageService.SaveImageFile(file);
+				await _articlesService.UpdateArticleAsync(article, image, fileName);
+
+				return Ok();
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError(ex.Message);
+				return BadRequest(ex.Message);
+			}
+		}
+
+		[HttpGet("{id}")]
+		public async Task<IActionResult> GetArticleByIdAsync([FromRoute] string id)
+		{
+			try
+			{
+				var articleWithImage = await _articlesService.GetArticleByIdAsync(id);
+				var result = new { article = articleWithImage.Item1, image = articleWithImage.Item2 };
+
+				return Ok(result);
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError(ex.Message);
+				return BadRequest(ex.Message);
+			}
+		}
+
 		[HttpGet(Name = "GetArticleByIdAndLanguage")]
 		public async Task<IActionResult> GetArticleByIdAndLanguageAsync([FromQuery] string id, string language)
 		{

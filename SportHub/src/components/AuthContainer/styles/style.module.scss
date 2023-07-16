@@ -6,10 +6,17 @@
     height: 100vh;
 
     .img_container{
-        background-image:
-                url("https://library.sportingnews.com/2023-02/nba-plain--bae9f57c-4bd8-46fd-a3ad-5e5f2c6d7df4.png") !important;
-        background-size: cover;
-        width: 45%;
+        position: relative;
+
+        .img{
+            object-fit: cover;
+            height: 100%;
+            width: 40vw;
+
+            &__darken{
+                filter: brightness(70%);
+            }
+        }
 
         .logo{
             position: absolute;
@@ -28,7 +35,7 @@
     .form_container{
         @include flex-center;
         position: relative;
-        width: 55%;
+        width: 60%;
 
         .controls_container{
             position: absolute;
