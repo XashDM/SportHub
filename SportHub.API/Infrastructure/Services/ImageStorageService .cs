@@ -7,25 +7,26 @@ namespace SportHub.API.Infrastructure.Services
 	{
 		private readonly string _blobStorageConnectionString;
 		private readonly string _blobContainerName;
+		private readonly string _azureUrl;
+
 
 		public ImageStorageService(IConfiguration config)
 		{
 			_blobStorageConnectionString = config.GetSection("Azure")["BlobStorageConnectionString"];
 			_blobContainerName = config.GetSection("Azure")["BlobStorageContainerName"];
+			_azureUrl = config.GetSection("Azure")["Url"];
 		}
 
 		public async Task<string> SaveImageFile(IFormFile file)
 		{
 			var imageId = Guid.NewGuid().ToString();
 
-			var fileName = imageId + Path.GetExtension(file.FileName);
-
 			var container = new BlobContainerClient(_blobStorageConnectionString, _blobContainerName);
-			var blob = container.GetBlobClient(fileName);
+			var blob = container.GetBlobClient(imageId);
 
 			await blob.UploadAsync(file.OpenReadStream());
-
-			return fileName;
+			var url = _azureUrl + _blobContainerName + "/" + imageId;
+			return url;
 		}
 	}
 }

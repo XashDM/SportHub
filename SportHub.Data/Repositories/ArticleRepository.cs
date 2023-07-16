@@ -43,7 +43,14 @@ public class ArticleRepository : IArticleRepository
 		{
 			using (var connection = _dbConnectionFactory.GetConnection())
 			{
-				await _imageRepository.CreateImageAsync(image);
+				if (await _imageRepository.ImageExists(image.ImageId))
+				{
+					await _imageRepository.UpdateImageAsync(image);
+				}
+				else
+				{
+					await _imageRepository.CreateImageAsync(image);
+				}
 				connection.Open();
 
 				var sqlArticle = "UPDATE Articles SET PublishingDate = @PublishingDate, AuthorId = @AuthorId, CategoryId = @CategoryId, " +

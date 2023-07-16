@@ -1,18 +1,31 @@
 import styles from "../styles/style.module.scss"
 import Label from "../../Label"
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 
+export default function ImageUploader({ selectedImage, setSelectedImage, fileUrl }) {
+    const [imageUrl, setImageUrl] = useState(null)
 
-export default function ImageUploader({setSelectedImage }) {
-    const [image, setImage] = useState(null)
+    const downloadImageByUrl = async (url) => {
+        const response = await fetch(url)
+        const blob = await response.blob()            
+        setImageUrl(URL.createObjectURL(blob))
+    }
+
+    useEffect(() => {
+        if (selectedImage instanceof Blob){
+            setImageUrl(URL.createObjectURL(selectedImage))
+        }
+    }, [selectedImage])
+
+    useEffect(() => {
+        if (fileUrl) {
+            downloadImageByUrl(fileUrl)
+        }
+    }, [fileUrl])
 
     const handleImageSelect = (event) => {
         const file = event.target.files[0]
-        if (file) {
-            setSelectedImage(file)
-            setImage(URL.createObjectURL(file))
-            event.target.classList.add(styles.with_image)
-        }
+        setSelectedImage(file)
     }
 
     const handleDragOver = (event) => {
@@ -23,8 +36,6 @@ export default function ImageUploader({setSelectedImage }) {
         event.preventDefault()
         const file = event.dataTransfer.files[0]
         setSelectedImage(file)
-        setImage(URL.createObjectURL(file))
-        event.target.classList.add(styles.with_image)
     }
 
     return (
@@ -32,13 +43,13 @@ export default function ImageUploader({setSelectedImage }) {
             <Label>Image*</Label>
             <div className={styles.container}>
                 <input
-                    className={styles.image_uploader}
+                    className={imageUrl ? styles.image_uploader  + " " + styles.with_image : styles.image_uploader}
                     type="file"
                     onChange={handleImageSelect}
                     onDragOver={handleDragOver}
                     onDrop={handleDrop}
                     style={{
-                        backgroundImage: `url(${image})`
+                        backgroundImage: `url(${imageUrl})`
                     }}
                     accept=".png, .jpg, .jpeg, .tif"
                 />
