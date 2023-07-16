@@ -32,6 +32,12 @@ export default function HorizontalAdminMenu({currentMenuElement, setCurrentMenuE
         sectionElements.current.scrollLeft + sectionElements.current.offsetWidth + scrollPixel < sectionElements.current.scrollWidth ? setCanScrollRight(true) : setCanScrollRight(false)
     }
 
+    const getCategories = async () => {
+        const result = await getCategoriesRequest()
+        const value = [{categoryName: "Home", categoryId: ""}].concat(result.data)
+        setListOfSections(value)
+    }
+
     const GetLeftArrow = () => {
         if(isBiggerThanWindowWidth) {
             setLeftArrow(<div className={canScrollLeft ? styles.left_arrow : styles.left_arrow_disabled}
@@ -48,9 +54,9 @@ export default function HorizontalAdminMenu({currentMenuElement, setCurrentMenuE
     const GetSectionElementsForm = () => {
         setSectionElementsForm(<div ref={sectionElements} className={isBiggerThanWindowWidth ? styles.section_elements_scrolled : styles.section_elements}>
             {listOfSections.map((section, index) => {
-                return <div key={index} onClick={() => {setCurrentMenuElement(section.categoryName); setSelectedCategory(section)}}
+                return <div key={index} onClick={() => {setCurrentMenuElement(section?.categoryName); setSelectedCategory(section)}}
                             className={styles.horizontal_menu_element}>
-                    <HorizontalAdminMenuElement name={section.categoryName} active={section.categoryName === currentMenuElement}  />
+                    <HorizontalAdminMenuElement name={section?.categoryName} active={section?.categoryName === currentMenuElement}  />
                 </div>
             })}
         </div>)
@@ -75,22 +81,16 @@ export default function HorizontalAdminMenu({currentMenuElement, setCurrentMenuE
 
     useEffect(() => {
         GetSectionElementsForm()
-    }, [sectionElements, canScrollLeft, canScrollRight])
+    }, [sectionElements, canScrollLeft, canScrollRight, listOfSections, currentMenuElement])
 
     useEffect(() => {
         CheckIsBiggerThanWindowWidth()
-    }, [sectionElements, sectionElementsForm])
+    }, [sectionElements, sectionElementsForm, listOfSections])
 
     useEffect(() => {
         GetLeftArrow()
         GetRightArrow()
     }, [isBiggerThanWindowWidth, canScrollLeft, canScrollRight])
-
-    const getCategories = async () => {
-        const result = await getCategoriesRequest()
-        const value = [{categoryName: "Home", categoryId: ""}].concat(result.data)
-        setListOfSections(value)
-    }
 
     return (
         <div>

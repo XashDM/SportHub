@@ -16,7 +16,6 @@ export default function BreakdownSectionConfigurator({setSaveBreakdown, setCance
         let breakdowns = []
         for (let breakdownsCount = 0; breakdownsCount < request.data?.length; breakdownsCount++){
             const data = request.data[breakdownsCount]
-            console.log(breakdownsCount)
             breakdowns[breakdownsCount] = {
                 order: null,
                 isLastBreakDown: null,
@@ -25,7 +24,6 @@ export default function BreakdownSectionConfigurator({setSaveBreakdown, setCance
                 team: data.team
             }
         }
-        console.log(breakdowns)
         setBreakDownsData(breakdowns)
         setStartBreakDownData(breakdowns)
     }

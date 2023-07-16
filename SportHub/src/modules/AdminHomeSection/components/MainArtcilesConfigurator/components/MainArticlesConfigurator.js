@@ -44,7 +44,6 @@ export default function MainArticlesConfigurator({setSaveMainArticles, setCancel
                     "languageId": language?.languageId
                 })
             }
-            console.log(request)
             postMainArticlesRequest(request)
             setStartMainArticlesData(mainArticlesData)
         }
