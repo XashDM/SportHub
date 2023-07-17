@@ -1,0 +1,20 @@
+.add_button{
+        margin-top:10px;
+        width: 40px;
+        height: 40px;
+        position: relative;
+        width: 160px;
+        font-size: 15px;
+        font-family: var(--font-style-open-sans), sans-serif;
+        color: var(--color-dark-menu-item);
+        border: 1px;
+        border-style: dashed;
+        background-color: transparent;
+        cursor: pointer;
+        padding: 2px;
+        text-align: center;
+
+        &:hover{
+            background-color: #f2f2f2;
+        }
+}
