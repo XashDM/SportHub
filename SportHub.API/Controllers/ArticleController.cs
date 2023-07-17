@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -27,7 +28,8 @@ namespace SportHub.API.Controllers
 			_imageStorageService = imageStorageService;
 		}
 
-		[HttpPost(Name = "Article")]
+		[HttpPost]
+		[Authorize(Policy = "AdminPolicy")]
 		public async Task<IActionResult> CreateArticleAsync()
 		{
 			try
@@ -59,7 +61,8 @@ namespace SportHub.API.Controllers
 			}
 		}
 
-		[HttpPut(Name = "Article")]
+		[HttpPut]
+		[Authorize(Policy = "AdminPolicy")]
 		public async Task<IActionResult> UpdateArticleAsync()
 		{
 			try
@@ -88,8 +91,9 @@ namespace SportHub.API.Controllers
 				return BadRequest(ex.Message);
 			}
 		}
-
+		
 		[HttpGet("{id}")]
+		[AllowAnonymous]
 		public async Task<IActionResult> GetArticleByIdAsync([FromRoute] string id)
 		{
 			try
@@ -107,6 +111,7 @@ namespace SportHub.API.Controllers
 		}
 
 		[HttpGet(Name = "GetArticleByIdAndLanguage")]
+		[AllowAnonymous]
 		public async Task<IActionResult> GetArticleByIdAndLanguageAsync([FromQuery] string id, string language)
 		{
 			try
@@ -124,6 +129,7 @@ namespace SportHub.API.Controllers
 		
 				
 		[HttpGet( "~/AllArticlesByFilters")]
+		[AllowAnonymous]
 		public async Task<IActionResult> GetArticlesByFiltersAsync([FromQuery] string languageId, string articleId = null, string authorId = null,
 			string categoryId = null, string subcategoryId = null, string teamId = null, string locationId = null, bool? published = null,
 			bool? showComments = null, bool? lastArticles = null, int? numberOfArticles = null)
@@ -154,6 +160,7 @@ namespace SportHub.API.Controllers
 		}
 		
 		[HttpGet("ArticleByIdAndLanguageId")]
+		[AllowAnonymous]
 		public async Task<IActionResult> GetArticleByIdAndLanguageIdAsync([FromQuery] string articleId, string languageId)
 		{
 			try
@@ -170,6 +177,7 @@ namespace SportHub.API.Controllers
 		}
 		
 		[HttpGet("MainArticles")]
+		[AllowAnonymous]
 		public async Task<IActionResult> GetMainArticlesAsync([FromQuery] string language)
 		{
 			try
@@ -186,6 +194,7 @@ namespace SportHub.API.Controllers
 		}
 		
 		[HttpPost("MainArticle")]
+		[Authorize(Policy = "AdminPolicy")]
 		public async Task<IActionResult> AddMainArticlesAsync([FromBody] IEnumerable<MainArticleRequest> mainArticlesRequests)
 		{
 			try
@@ -202,7 +211,8 @@ namespace SportHub.API.Controllers
 		}
 		
 		[HttpGet("MainArticleByLanguageId")]
-            public async Task<IActionResult> GetMainArticlesByLanguageIdAsync([FromQuery] string languageId)
+		[AllowAnonymous]
+		public async Task<IActionResult> GetMainArticlesByLanguageIdAsync([FromQuery] string languageId)
             {
                 try
                 {
@@ -217,6 +227,7 @@ namespace SportHub.API.Controllers
             }
             
         [HttpGet("MainArticlesDetails")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetMainArticlesDetailsByLanguageIdAsync([FromQuery] string languageId)
         {
             try
@@ -233,6 +244,7 @@ namespace SportHub.API.Controllers
         
 		
 		[HttpGet("GetPageOfArticlesByCategory")]
+		[AllowAnonymous]
 		public async Task<IActionResult> GetPageOfArticlesByCategoryAsync([FromQuery] string language, [FromQuery] string categoryId, [FromQuery] int pageNumber)
 		{
 			try
@@ -249,6 +261,7 @@ namespace SportHub.API.Controllers
 		}
 
         [HttpGet("GetPageOfSearchArticles")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetPageOfSearchArticlesAsync([FromQuery] string language, [FromQuery] string findText, [FromQuery] int pageNumber, [FromQuery] int pageSize)
         {
             try

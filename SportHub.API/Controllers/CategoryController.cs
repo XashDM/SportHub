@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SportHub.Business;
 using SportHub.Business.Implementations;
@@ -23,6 +24,7 @@ namespace SportHub.API.Controllers
         }
 
         [HttpGet("all")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetAllCategoriesAsync()
         {
             var Categories = await _CategoryService.GetAllCategoriesAsync();
@@ -31,6 +33,7 @@ namespace SportHub.API.Controllers
         }
 
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetCategoryByIdAsync([FromRoute] string id)
         {
             try
@@ -52,6 +55,7 @@ namespace SportHub.API.Controllers
         }
 
         [HttpPost]
+        [Authorize("AdminPolicy")]
         public async Task<IActionResult> CreateCategoryAsync([FromBody] CategoryCreateDto categoryDto)
         {
             try
@@ -69,6 +73,7 @@ namespace SportHub.API.Controllers
         }
 
         [HttpDelete("{CategoryId}")]
+        [Authorize("AdminPolicy")]
         public async Task<IActionResult> DeleteCategoryAsync([FromRoute] string CategoryId)
         {
             try
@@ -91,6 +96,7 @@ namespace SportHub.API.Controllers
         }
 
         [HttpPut("{CategoryId}")]
+        [Authorize("AdminPolicy")]
         public async Task<IActionResult> UpdateCategoryAsync([FromRoute] string CategoryId, [FromBody] string CategoryName)
         {
             try

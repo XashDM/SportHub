@@ -7,7 +7,6 @@ using SportHub.Data.Entities;
 
 namespace SportHub.Controllers;
 
-[AllowAnonymous]
 [ApiController]
 [Route("[controller]")]
 public class AuthController : ControllerBase
