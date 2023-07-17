@@ -1,4 +1,4 @@
-﻿using SportHub.Data.Entities;
+using SportHub.Data.Entities;
 
 namespace SportHub.Data.Entities;
 

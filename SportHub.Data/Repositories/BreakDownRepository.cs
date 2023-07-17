@@ -13,7 +13,7 @@ public class BreakDownRepository : IBreakDownRepository
         _dbConnectionFactory = dbConnectionFactory;
     }
 
-    public async Task<IEnumerable<BreakDown>> GetBreakDownsAsync(string languageId)
+    public async Task<IEnumerable<BreakDown>> GetBreakDownsByLanguageIdAsync(string languageId)
     {
         using (var connection = _dbConnectionFactory.GetConnection())
         {
@@ -25,6 +25,18 @@ public class BreakDownRepository : IBreakDownRepository
         }
     }
 
+    public async Task<IEnumerable<BreakDown>> GetBreakDownsByLanguageAsync(string language)
+    {
+        using (var connection = _dbConnectionFactory.GetConnection())
+        {
+            connection.Open();
+            
+            var query = $"SELECT * FROM BreakDown where LanguageId in (Select LanguageId from Language where ShortTitle = '{language}');";
+            var response = await connection.QueryAsync<BreakDown>(query);
+            
+            return response;
+        }
+    }
     public async Task DeleteAllBreakDownsAsync(string languageId)
     {
         using (var connection = _dbConnectionFactory.GetConnection())
