@@ -1,38 +1,40 @@
 import styles from "../style/style.module.scss"
 import Input from "../../../ui/Input"
 import Button from "../../../ui/Button"
+import { useTranslation } from "react-i18next"
 function Footer(){
+    const {t, i18n} = useTranslation()
     return(
             <footer className={styles.footer}>
                 <div className={styles.footer_div}>
                     <div className={styles.top_footer}>
                         <div className={styles.newsletter}>
-                            <h1>NEWSLETTER</h1>
+                            <h1>{t('Footer.Newsletter')}</h1>
                             <ul>
-                                <li>Sign up to recive the latest sports news</li>
+                                <li>{t('Footer.SignUpAgitation')}</li>
                             </ul>
                             <div className={styles.input}>
-                                <Input className={styles.search_bar} placeholder={"Your email address"}/>
+                                <Input className={styles.search_bar} placeholder={t('Footer.EmailPlaceholder')}/>
 
-                                <Button text={"Subscribe"}/>
+                                <Button text={t('Footer.Subscribe')}/>
                             </div>
                         </div>
                         <div className={styles.contributors}>
-                            <h1>CONTRIBUTIONS</h1>
+                            <h1>{t('Footer.Contributions')}</h1>
                             <ul>
-                                <li>Featured Writers Program</li>
-                                <li>Featured Team Writers Program</li>
-                                <li>Internship Program</li>
+                                <li>{t('Footer.FeaturedWritersProgram')}</li>
+                                <li>{t('Footer.FeaturedTeamWritersProgram')}</li>
+                                <li>{t('Footer.InternshipProgram')}</li>
                             </ul>
                         </div>
                         <div className={styles.company_info}>
-                            <h1>COMPANY INFO</h1>
+                            <h1>{t('Footer.CompanyInfo')}</h1>
                             <ul>
-                                <li>About Sports Hub</li>
-                                <li>News / In the Press</li>
-                                <li>Advertising / Sports Blogger Ad Network</li>
-                                <li>Events</li>
-                                <li>Contact Us</li>
+                                <li>{t('Footer.About')}</li>
+                                <li>{t('Footer.News')}</li>
+                                <li>{t('Footer.Advertising')}</li>
+                                <li>{t('Footer.Events')}</li>
+                                <li>{t('Footer.ContactUs')}</li>
                             </ul>
                         </div>
 

@@ -8,8 +8,11 @@ import getUsersRequest from "../helpers/getUsersRequest";
 import putUsersStatusRequest from "../helpers/putUsersStatusRequest";
 import styles from "../styles/style.module.scss";
 import { useAuthStore } from "../../../store/useAuthStore";
+import { useTranslation } from "react-i18next"
 
 function UsersManagement() {
+    const { t, i18n } = useTranslation()
+
     const [users, setUsers] = useState([]);
     const [admins, setAdmins] = useState(0);
     const [selectedUser, setSelectedUser] = useState(null);
@@ -382,18 +385,18 @@ function UsersManagement() {
             <div className={styles.table_container}>
                 <div className={styles.table_header}>
                     <div className={styles.user_admin_header}>
-            <span
-                className={!showAdmins ? styles.active : ""}
-                onClick={handleShowAllUsers}
-            >
-              USERS ({initialUsersCount})
-            </span>
+                        <span
+                            className={!showAdmins ? styles.active : ""}
+                            onClick={handleShowAllUsers}
+                        >
+                            {t('AdminPage.MyUsers.Users')} ({initialUsersCount})
+                        </span>
                         <span
                             className={showAdmins ? styles.active : ""}
                             onClick={handleShowAdmins}
                         >
-              ADMINS ({admins})
-            </span>
+                            {t('AdminPage.MyUsers.Admins')} ({admins})
+                        </span>
                     </div>
                     {!showSearch ? (
                         <></>
@@ -405,7 +408,7 @@ function UsersManagement() {
                                 value={searchInput}
                                 onChange={handleSearchInputChange}
                                 className={styles.search_input}
-                                placeholder="Type a user name here"
+                                placeholder={t('AdminPage.MyUsers.SearchPlaceholder')}
                                 InputProps={{
                                     startAdornment: (
                                         <img
@@ -443,75 +446,75 @@ function UsersManagement() {
                 </div>
                 <table className={styles.users_table}>
                     <thead>
-                    <tr>
-                        <th className="align-left">NAME</th>
-                        <th>
-                            <div className={styles.user_profile_status}>
-                                STATUS
-                            </div>
-                        </th>
-                        <th>
-                            <div className={styles.user_profile_status}>
-                                ACTION
-                            </div>
-                        </th>
-                    </tr>
+                        <tr>
+                            <th className="align-left">{t('AdminPage.MyUsers.Name')}</th>
+                            <th>
+                                <div className={styles.user_profile_status}>
+                                    {t('AdminPage.MyUsers.Status')}
+                                </div>
+                            </th>
+                            <th>
+                                <div className={styles.user_profile_status}>
+                                    {t('AdminPage.MyUsers.Action')}
+                                </div>
+                            </th>
+                        </tr>
                     </thead>
                     <tbody>
-                    {displayedUsers && displayedUsers.length ? (
-                        displayedUsers.map((user) => (
-                            <tr key={user.id} onClick={() => handleShowUserInfo(user)}>
-                                <td className="align-left">
-                                    <div className={styles.user_profile}>
-                                        <img
-                                            className={styles.user_profile_photo}
-                                            src={"/icons/User.svg"}
-                                            alt="User"
-                                        />
-                                        <div className={styles.user_profile_text}>
-                                            {user.firstName} {user.lastName}
+                        {displayedUsers && displayedUsers.length ? (
+                            displayedUsers.map((user) => (
+                                <tr key={user.id} onClick={() => handleShowUserInfo(user)}>
+                                    <td className="align-left">
+                                        <div className={styles.user_profile}>
+                                            <img
+                                                className={styles.user_profile_photo}
+                                                src={"/icons/User.svg"}
+                                                alt="User"
+                                            />
+                                            <div className={styles.user_profile_text}>
+                                                {user.firstName} {user.lastName}
+                                            </div>
                                         </div>
-                                    </div>
-                                </td>
-                                <td className="align-right">
-                                    <div className={styles.user_profile_status}>
-                                        {user.isActivated ? (
-                                            <span className={styles.align_right_active}>Active</span>
-                                        ) : (
-                                            <span>Blocked</span>
-                                        )}
-                                    </div>
-                                </td>
-                                <td>
-                                    <div className={styles.user_profile_status}>
-                                        {showAdmins ? (
-                                            <></>
-                                        ) : (
-                                            <>
-                                                {userData && user.userId === userData.userId ? (
-                                                    <span>Disabled</span>
-                                                ) : (
-                                                    <Select
-                                                        id={`changeUserStatus_${user.userId}`}
-                                                        value={user.isActivated ? "activate" : "block"}
-                                                        onChange={(event) => handleChangeAction(event, user)}
-                                                        sx={selectStyles[user.userId]}
-                                                    >
-                                                        <MenuItem value="block">Block</MenuItem>
-                                                        <MenuItem value="activate">Activate</MenuItem>
-                                                    </Select>
-                                                )}
-                                            </>
-                                        )}
-                                    </div>
-                                </td>
+                                    </td>
+                                    <td className="align-right">
+                                        <div className={styles.user_profile_status}>
+                                            {user.isActivated ? (
+                                                <span className={styles.align_right_active}>{t('AdminPage.MyUsers.Active')}</span>
+                                            ) : (
+                                                <span>{t('AdminPage.MyUsers.Blocked')}</span>
+                                            )}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div className={styles.user_profile_status}>
+                                            {showAdmins ? (
+                                                <></>
+                                            ) : (
+                                                <>
+                                                    {userData && user.userId === userData.userId ? (
+                                                        <span>{t('AdminPage.MyUsers.Disabled')}</span>
+                                                    ) : (
+                                                        <Select
+                                                            id={`changeUserStatus_${user.userId}`}
+                                                            value={user.isActivated ? "activate" : "block"}
+                                                            onChange={(event) => handleChangeAction(event, user)}
+                                                            sx={selectStyles[user.userId]}
+                                                        >
+                                                            <MenuItem value="block">{t('AdminPage.MyUsers.Block')}</MenuItem>
+                                                            <MenuItem value="activate">{t('AdminPage.MyUsers.Activate')}</MenuItem>
+                                                        </Select>
+                                                    )}
+                                                </>
+                                            )}
+                                        </div>
+                                    </td>
+                                </tr>
+                            ))
+                        ) : (
+                            <tr>
+                                <td colSpan="3">{t('AdminPage.MyUsers.NoUsersFound')}</td>
                             </tr>
-                        ))
-                    ) : (
-                        <tr>
-                            <td colSpan="3">No users found.</td>
-                        </tr>
-                    )}
+                        )}
                     </tbody>
                 </table>
                 {loading && (
@@ -566,7 +569,7 @@ function UsersManagement() {
             {selectedUser && (
                 <div className={styles.user_info}>
                     <div className={styles.user_info_header}>
-                        <div className={styles.general_info}>General Info</div>
+                        <div className={styles.general_info}>{t('AdminPage.MyUsers.GeneralInfo')}</div>
                     </div>
                     <img
                         className={styles.user_photo}

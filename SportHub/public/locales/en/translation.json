@@ -95,6 +95,26 @@
                 "DeleteBtn": "Delete"
             }
         },
+        "ArticleMenu": {
+            "CancelBtn": "Cancel",
+            "SaveBtn": "Save",
+            "PageLanguages": "Page Languages",
+            "ImageLabel": "Image*",
+            "ImagePlaceholderPart1": "+Add picture or drop it right here",
+            "ImagePlaceholderPart2": "You can add next formats: .png .jpg .jpeg .tif",
+            "SubCategoryLabel": "SUBCATEGORY",
+            "TeamLabel": "TEAM",
+            "LocationLabel": "LOCATION",
+            "AltLabel": "ALT.*",
+            "AltPlaceholder": "Alternative text for picture",
+            "HeadlineLabel": "ARTICLE HEADLINE*",
+            "HeadlinePlaceholder": "Name",
+            "CaptionLabel": "CAPTION*",
+            "CaptionPlaceholder": "Write caption here",
+            "ContentLabel": "CONTENT*",
+            "ContentPlaceholder": "Please add text here",
+            "ShowComments": "SHOW COMMENTS"
+        },
         "ArticleMenuCancel": {
             "PopUpRemovalWarning": {
                 "Title": "You are about to discard the changes!",
@@ -111,6 +131,35 @@
                 "AreYouSure": "",
                 "DeleteBtn": "Ok, got it"
             }
+        },
+        "MyUsers": {
+            "Users": "USERS",
+            "Admins": "ADMINS",
+            "SearchPlaceholder": "Type a user name here",
+            "Name": "NAME",
+            "Status": "STATUS",
+            "Action": "Action",
+            "Active": "Active",
+            "Blocked": "Blocked",
+            "Disabled": "Disabled",
+            "Block": "Block",
+            "Activate": "Activate"
         }
+    },
+    "Footer": {
+        "Newsletter": "NEWSLETTER",
+        "SignUpAgitation": "Sign up to recive the latest sports news",
+        "EmailPlaceholder": "Your email address",
+        "Subscribe": "Subscribe",
+        "Contributions": "CONTRIBUTIONS",
+        "FeaturedWritersProgram": "Featured Writers Program",
+        "FeaturedTeamWritersProgram": "Featured Team Writers Program",
+        "InternshipProgram": "Internship Program",
+        "CompanyInfo": "COMPANY INFO",
+        "About": "About Sports Hub",
+        "News": "News / In the Press",
+        "Advertising": "Advertising / Sports Blogger Ad Network",
+        "Events": "Events",
+        "ContactUs": "Contact Us"
     }
 }

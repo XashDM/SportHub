@@ -18,8 +18,11 @@ import getSubcategoriesRequest from "../helpers/getSubcategoriesRequest"
 import getTeamsRequest from "../helpers/getTeamsRequest"
 import getLocationsRequest from "../helpers/getLocationsRequest"
 import articleCanBeSaved from "../helpers/articleCanBeSaved"
+import { useTranslation } from "react-i18next"
 
 function ArticleMenu({ article = null, image = null, request }) {
+    const {t, i18n} = useTranslation()
+
     const [adminMenu, setAdminMenu] = useAtom(adminMenuState)
     const {category, setButtons, setContent} = adminMenu
     
@@ -77,11 +80,11 @@ function ArticleMenu({ article = null, image = null, request }) {
     useEffect(() => {
         if (typeof (setButtons) == "function") {
             setButtons([
-                { text: "Cancel", function: cancelButton, isOutlined: true },
-                { text: "Save", function: saveButton, isOutlined: false }
+                { text: t('AdminPage.ArticleMenu.CancelBtn'), function: cancelButton, isOutlined: true },
+                { text: t('AdminPage.ArticleMenu.SaveBtn'), function: saveButton, isOutlined: false }
             ])
         }
-    }, [canBeSaved, currentLocation, currentSubcategory, currentTeam])
+    }, [canBeSaved, currentLocation, currentSubcategory, currentTeam, i18n.language])
 
     useEffect(() => {
         if (subcategories.length !== 0 && article !== null && article?.subCategoryId) {
@@ -230,7 +233,7 @@ function ArticleMenu({ article = null, image = null, request }) {
             <div className={styles.three_col_container}>
                 <div className={styles.col_element}>
                     <AutoComplete
-                        label={"subcategory"}
+                        label={t('AdminPage.ArticleMenu.SubCategoryLabel')}
                         value={currentSubcategory}
                         setValue={setCurrentSubcategory}
                         options={subcategories}
@@ -241,7 +244,7 @@ function ArticleMenu({ article = null, image = null, request }) {
                 </div>
                 <div className={styles.col_element}>
                     <AutoComplete
-                        label={"team"}
+                        label={t('AdminPage.ArticleMenu.TeamLabel')}
                         value={currentTeam}
                         setValue={setCurrentTeam}
                         disabled={disabled}
@@ -252,7 +255,7 @@ function ArticleMenu({ article = null, image = null, request }) {
                 </div>
                 <div className={styles.col_element}>
                     <AutoComplete
-                        label={"location"}
+                        label={t('AdminPage.ArticleMenu.LocationLabel')}
                         value={currentLocation}
                         setValue={setCurrentLocation}
                         disabled={disabled}
@@ -262,24 +265,24 @@ function ArticleMenu({ article = null, image = null, request }) {
                         propertyToCompare={"locationId"} />
                 </div>
             </div>
-            <Input label={"ALT.*"}
-                placeholder={"Alternative text for picture"}
+            <Input label={t('AdminPage.ArticleMenu.AltLabel')}
+                placeholder={t('AdminPage.ArticleMenu.AltPlaceholder')}
                 value={alt}
                 onChange={(event) => setAlt(event.target.value)} />
-            <Input label={"ARTICLE HEADLINE*"}
-                placeholder={"Name"}
+            <Input label={t('AdminPage.ArticleMenu.HeadlineLabel')}
+                placeholder={t('AdminPage.ArticleMenu.HeadlinePlaceholder')}
                 value={tabData[activeTab]?.headline}
                 onChange={(event) => inputChange(event, "headline")} />
-            <Input label={"CAPTION*"}
+            <Input label={t('AdminPage.ArticleMenu.CaptionLabel')}
                 value={tabData[activeTab]?.caption}
-                placeholder={"Write caption here"}
+                placeholder={t('AdminPage.ArticleMenu.CaptionPlaceholder')}
                 onChange={(event) => inputChange(event, "caption")} />
             <TextEditor
                 value={tabData[activeTab]?.content}
                 onChange={contentChange}
                 activeTab={activeTab} />
             <div>
-                <Label>SHOW COMMENTS</Label>
+                <Label>{t('AdminPage.ArticleMenu.ShowComments')}</Label>
                 <Switch
                     checked={showComments}
                     onChange={() => setShowComments(!showComments)} />

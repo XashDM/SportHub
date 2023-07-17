@@ -1,0 +1,168 @@
+{
+    "LoadingText": "Chargement...",
+    "Header": {
+        "UserHeader": {
+            "LoginBtn": "Connexion",
+            "SignUpBtn": "S'inscrire",
+            "ShareCaption": "Partager",
+            "SearchByCaption": "Rechercher par"
+        }
+    },
+    "AuthContainer": {
+        "QuestionDont": "Vous n'avez pas de compte ?",
+        "QuestionAlready": "Vous avez déjà un compte ?",
+        "QuestionForgotPassword": "Mot de passe oublié ?",
+        "BtnGetStarted": "Commencer",
+        "BtnLogIn": "Se connecter",
+        "FirstNameLabel": "Prénom",
+        "LastNameLabel": "Nom",
+        "PasswordLabel": "Mot de passe",
+        "EmailLabel": "Email",
+        "PasswordPlaceholder": "8 + caractères (lettres et chiffres)",
+        "NewPasswordLabel": "Nouveau mot de passe",
+        "ConfirmPasswordLabel": "Confirmer le mot de passe",
+        "LogInBtn": "SE CONNECTER",
+        "SignUpBtn": "S'INSCRIRE",
+        "RequestLinkBtn": "OBTENIR LE LIEN",
+        "BackToLogInBtn": "Retour à la connexion",
+        "SetNewPasswordBtn": "CHANGER LE MOT DE PASSE",
+        "CheckYourEmail": "Vérifiez votre email",
+        "LoginForm": {
+            "LogInFormCaption": "Connectez-vous à Sports Hub",
+            "IncorrectDataText": "Email ou mot de passe incorrect. Veuillez réessayer."
+        },
+        "SignUpForm": {
+            "SignUpFormCaption": "Créer un compte",
+            "UnexpectedError": "Quelque chose s'est mal passé. Veuillez vérifier les données saisies.",
+            "ShortPassword": "Mot de passe trop court !",
+            "IncorrectEmail": "Email incorrect !",
+            "LetterInfo": "Vous recevrez un courrier avec un lien d'activation"
+        },
+        "ForgotPasswordForm": {
+            "IncorrectDataText": "Quelque chose s'est mal passé. Veuillez réessayer ultérieurement.",
+            "EnterEmailText": "Veuillez saisir votre email ci-dessous et nous vous enverrons votre mot de passe.",
+            "LetterInfo": "Si vous rencontrez des problèmes avec votre compte Sports Hub associé à cette adresse email, nous vous enverrons des instructions pour réinitialiser votre mot de passe."
+        },
+        "ChangePasswordForm": {
+            "SomethingError": "Quelque chose s'est mal passé. Veuillez réessayer ultérieurement.",
+            "MatchError": "Les mots de passe ne correspondent pas",
+            "ChangePasswordFormCaption": "Veuillez saisir votre nouveau mot de passe."
+        }
+    },
+    "AdminPage": {
+        "VerticalAdminMenu": {
+            "Home": "Page d'accueil",
+            "Surveys": "Sondages",
+            "Banners": "Bannières",
+            "Languages": "Langues",
+            "Shares": "Partages",
+            "MyUsers": "Mes utilisateurs",
+            "IA": "IA",
+            "Teams": "Équipes",
+            "NewsPartners": "Partenaires d'actualités",
+            "Advertising": "Publicité"
+        },
+        "LanguagesManagement": {
+            "LanguagesCaption": "LANGUES",
+            "ShowHideCaption": "AFFICHER/MASQUER",
+            "ShowSwitchCaption": "Afficher",
+            "HideSwitchCaption": "Masquer",
+            "AddLanguagesBtn": "Ajouter des langues",
+            "DeleteLanguageHint": "Supprimer la langue",
+            "flashMsg": {
+                "Success": {
+                    "Title": "Succès !",
+                    "ContentAddLanguage": "Une nouvelle langue a été ajoutée !",
+                    "ContentShowHide": "Le paramètre afficher/masquer a été modifié.",
+                    "ContentDeleteLanguage": "La langue a été supprimée."
+                },
+                "Error": {
+                    "Title": "Erreur !",
+                    "ContentShowHide": "Cette langue ne peut pas être masquée.",
+                    "ContentDeleteLanguage": "Cette langue ne peut pas être supprimée."
+                }
+            },
+            "PopUpAddLanguages": {
+                "AddLanguage": "Ajouter une langue",
+                "CancelBtn": "Annuler",
+                "AddBtn": "Ajouter",
+                "SelectLanguageCaption": "CHOISIR UNE LANGUE"
+            },
+            "PopUpRemovalWarning": {
+                "Title": "Vous êtes sur le point de supprimer cette langue !",
+                "Content": "Cette langue sera supprimée de Sports Hub",
+                "AreYouSure": "Êtes-vous sûr(e) ?",
+                "CancelBtn": "Annuler",
+                "DeleteBtn": "Supprimer"
+            }
+        },
+        "ArticleMenu": {
+            "CancelBtn": "Annuler",
+            "SaveBtn": "Enregistrer",
+            "PageLanguages": "Langues de la page",
+            "ImageLabel": "Image*",
+            "ImagePlaceholderPart1": "+Ajouter une image ou la glisser ici",
+            "ImagePlaceholderPart2": "Vous pouvez ajouter les formats suivants : .png .jpg .jpeg .tif",
+            "SubCategoryLabel": "Sous-catégorie",
+            "TeamLabel": "Équipe",
+            "LocationLabel": "Lieu",
+            "AltLabel": "Alt.",
+            "AltPlaceholder": "Texte alternatif pour l'image",
+            "HeadlineLabel": "Titre de l'article",
+            "HeadlinePlaceholder": "Nom",
+            "CaptionLabel": "Légende*",
+            "CaptionPlaceholder": "Saisissez une légende",
+            "ContentLabel": "Contenu*",
+            "ContentPlaceholder": "Veuillez saisir le texte ici",
+            "ShowComments": "Afficher les commentaires"
+        },
+        "ArticleMenuCancel": {
+            "PopUpRemovalWarning": {
+                "Title": "Vous êtes sur le point de rejeter les modifications !",
+                "Content": "Les données saisies seront perdues !",
+                "AreYouSure": "Êtes-vous sûr(e) ?",
+                "CancelBtn": "Non",
+                "DeleteBtn": "Oui"
+            }
+        },
+        "ArticleMenuMissingData": {
+            "PopUpRemovalWarning": {
+                "Title": "Attention, vous avez oublié quelque chose",
+                "Content": "Veuillez vous assurer d'avoir traduit cette page dans toutes les langues disponibles sur le site. Vous pouvez toujours désactiver une langue si vous ne souhaitez pas la prendre en charge sur Sports Hub. Rendez-vous dans les Langues du site.",
+                "AreYouSure": "",
+                "DeleteBtn": "Ok, j'ai compris"
+            }
+        },
+        "MyUsers": {
+            "Users": "Utilisateurs",
+            "Admins": "Administrateurs",
+            "SearchPlaceholder": "Entrez le nom d'utilisateur",
+            "Name": "Nom",
+            "Status": "Statut",
+            "Action": "Action",
+            "Active": "Actif",
+            "Blocked": "Bloqué",
+            "Disabled": "Désactivé",
+            "Block": "Bloquer",
+            "Activate": "Activer",
+            "NoUsersFound": "Aucun utilisateur trouvé.",
+            "GeneralInfo": "Informations générales"
+        }
+    },
+    "Footer": {
+        "Newsletter": "NEWSLETTER",
+        "SignUpAgitation": "Inscrivez-vous pour recevoir les dernières actualités sportives",
+        "EmailPlaceholder": "Votre adresse email",
+        "Subscribe": "S'abonner",
+        "Contributions": "CONTRIBUTIONS",
+        "FeaturedWritersProgram": "Programme des auteurs en vedette",
+        "FeaturedTeamWritersProgram": "Programme des auteurs en vedette de l'équipe",
+        "InternshipProgram": "Programme de stages",
+        "CompanyInfo": "INFORMATIONS SUR L'ENTREPRISE",
+        "About": "À propos de Sports Hub",
+        "News": "Actualités / Dans la presse",
+        "Advertising": "Publicité / Réseau de blogueurs sportifs",
+        "Events": "Événements",
+        "ContactUs": "Contactez-nous"
+    }
+}
