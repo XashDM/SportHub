@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import styles from '../styles/style.module.scss'
-import ProfileSidebar from "./ProfileSidebar"
+import ProfileSidebar from "../../../components/ProfileSidebar"
 import HeaderContainer from "../../../components/HeaderContainer"
 import { useNavigate, useLocation } from "react-router-dom"
 import { ROUTES } from "../../../routes/routes"
@@ -42,8 +42,8 @@ export default function AdminHeader({ setIsContentSearch, setContentSearchValue 
                                     <div className={styles.administrator_label}>Administrator</div>
                                 </div>
                             </div>
-                            <ProfileSidebar active={profileDropdownListActive} user={user} />
                         </div>
+                        <ProfileSidebar active={profileDropdownListActive}/>
                     </div>
                 </div>
                 <div className={styles.languages}>
