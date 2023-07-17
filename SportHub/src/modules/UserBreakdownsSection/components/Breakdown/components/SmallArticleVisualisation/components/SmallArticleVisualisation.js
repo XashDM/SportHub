@@ -12,7 +12,7 @@ export default function SmallArticleVisualisation({article}){
             <img className={styles.image} src={article.image.url} />
             <div className={styles.text}>
                 <div className={styles.main_text}>{article.title}</div>
-                <div className={styles.sub_text}>{article.mainText}</div>
+                <div className={styles.sub_text}>{article.subtitle}</div>
                 <ReactSVG src={process.env.PUBLIC_URL + '/icons/Arrow.svg'} className={styles.arrow} />
             </div>
         </div>
