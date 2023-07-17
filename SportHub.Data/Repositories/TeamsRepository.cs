@@ -56,7 +56,7 @@ public class TeamsRepository : ITeamsRepository
             connection.Open();
             var sql =
                 $"SELECT * FROM Teams t " +
-                $"JOIN Subcategories s ON t.subcategoryId = s.subcategoryId WHERE s.categoryId = {categoryId};";
+                $"JOIN Subcategories s ON t.subcategoryId = s.subcategoryId WHERE s.categoryId = '{categoryId}';";
             var teams = await connection.QueryAsync<Team>(sql);
 
             return teams;

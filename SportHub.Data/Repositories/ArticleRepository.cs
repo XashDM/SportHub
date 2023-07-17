@@ -138,7 +138,7 @@ public class ArticleRepository : IArticleRepository
 			connection.Open();
 			var query = $"SELECT * FROM Articles" +
 			            $" LEFT JOIN ArticleInfos ON Articles.ArticleId = ArticleInfos.ArticleId" +
-			            $" where ArticleInfos.languageId = {languageId}";
+			            $" where ArticleInfos.languageId = \"{languageId}\"";
 
 			foreach (var property in articleSearchOptions.GetType().GetProperties())
 			{
@@ -147,7 +147,7 @@ public class ArticleRepository : IArticleRepository
 
 				if (propertyValue != null && IsNotFilterColumn(propertyName))
 				{
-					query += $" and Articles.{propertyName} = {propertyValue}";
+					query += $" and Articles.{propertyName} = \"{propertyValue}\"";
 				}
 			}
 
@@ -161,7 +161,8 @@ public class ArticleRepository : IArticleRepository
 			{
 				query += $" LIMIT {articleSearchOptions.NumberOfArticles}";
 			}
-
+			query += $";";
+			
 			var articles = await connection.QueryAsync<LanguageSpecificArticle>(query);
 
 			return articles;

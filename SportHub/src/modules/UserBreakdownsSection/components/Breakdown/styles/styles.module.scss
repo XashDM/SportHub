@@ -1,0 +1,12 @@
+.content{
+  margin-top: 3vh;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 57vw;
+
+  .small_articles{
+    display: flex;
+    flex-direction: column;
+  }
+}
