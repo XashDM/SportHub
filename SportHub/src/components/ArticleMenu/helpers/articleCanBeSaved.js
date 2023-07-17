@@ -1,4 +1,4 @@
-const articleCanBeSaved = (tabData, selectedImage, alt) => {
+const articleCanBeSaved = (tabData, selectedImage, alt, article) => {
     let filled = true
     for (let i = 0; i < tabData.length; i++) {
         if (tabData[i]?.headline.length === 0 || tabData[i]?.caption.length === 0 || tabData[i]?.content.length === 0) {
@@ -6,7 +6,7 @@ const articleCanBeSaved = (tabData, selectedImage, alt) => {
             break
         }
     }
-    if (selectedImage === null || alt === "") {
+    if ((selectedImage === null && article === null) || alt === "") {
         filled = false
     }
     return filled
