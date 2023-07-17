@@ -6,4 +6,5 @@ public class Team
     public string TeamName { get; set; } = null!;
     public string TeamDescription { get; set; } = null!;
     public string SubCategoryId { get; set; } = null!;
+    public bool isHidden { get; set; }
 }

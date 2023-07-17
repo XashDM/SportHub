@@ -101,7 +101,7 @@ const SearchResultsList = ({ contentSearchValue }) => {
       >
         {contentSearchValue && articles.map((article) => (
           <div className={styles.container}>
-            <div key={article.id} onClick={() => navigate(ROUTES.LOGIN)} className={styles.option}>
+            <div key={article.id} onClick={() => navigate(ROUTES.ARTICLE.replace(':articleId', article.articleId))} className={styles.option}>
               <ul>
                 <li>
                   <span>{article.category.categoryName}</span>

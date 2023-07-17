@@ -34,6 +34,11 @@ const SearchDropdownList = ({ setIsContentSearch, setContentSearchValue }) => {
     }
   }
 
+  const handleRedirectToArticle = async (articleId) => {
+    // using navigate breaks search dropdown (it isn't work until refreshing page)
+    window.location.href = ROUTES.ARTICLE.replace(':articleId', articleId)
+  }
+
   const showDropdownShadows = (children) => {
     // removing shadows when nothing printed/no results
     if (showSuggestions && inputValue && articles.length !== 0) {
@@ -86,7 +91,7 @@ const SearchDropdownList = ({ setIsContentSearch, setContentSearchValue }) => {
           }
 
           return (
-            <div {...props} onClick={() => navigate(ROUTES.LOGIN)} className={styles.option}>
+            <div {...props} onClick={() => handleRedirectToArticle(option.articleId)} className={styles.option}>
               <ul>
                 <li>
                   <span>{option.category.categoryName}</span>

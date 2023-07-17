@@ -1,12 +1,13 @@
 .profile_sidebar_active{
   width: 13vw;
+  color: var(--color-dark-black);
   font-family: var(--font-style-open-sans);
   background-color: var(--color-light-white);
   z-index: 1;
   overflow: hidden;
   position: absolute;
   top: 10%;
-  left: 85%;
+  left: 78%;
   display: block;
   box-shadow: rgba(149, 157, 165, 0.2) 0 8px 24px;
 
