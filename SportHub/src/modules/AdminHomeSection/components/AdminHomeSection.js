@@ -27,7 +27,10 @@ export default function AdminHomeSection(){
     const [activeTab, setActiveTab] = useState(0)
 
     const [fleshMessageIsOpen, setFleshMessageIsOpen] = useState(false)
-    const handleCloseFleshMessage = () => setFleshMessageIsOpen(false)
+    const handleCloseFleshMessage = () => {
+        setFleshMessageIsOpen(false)
+        setFleshMessageIsSuccessful(true)
+    }
 
     const [fleshMessageIsSuccessful, setFleshMessageIsSuccessful] = useState(true)
 
