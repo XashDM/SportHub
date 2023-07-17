@@ -102,9 +102,9 @@ VALUES ('ce5ad9e9-4c7b-4f83-89f4-07a9a54ac4cd', 'Team Xfinity 1', 'This is a tea
 ----------------------------------------------------------------
 
 INSERT INTO `sporthub`.`images` (`ImageId`, `Url`, `Alt`)
-VALUES ('ff09acfb-7d09-48d5-be1d-de77bae20723', 'https://www.nascar.com/wp-content/uploads/sites/7/2023/06/10/2023-june10-g56-car-2-main-image.jpg', 'Nascar LeMans'),
-('78d2223d-fd6a-4738-8754-147fa227a535', 'https://cdn.vox-cdn.com/thumbor/gR2KN8aVYMhsQtu-Zl4wDfJm3z4=/0x0:5124x3446/1200x800/filters:focal(2102x1250:2920x2068)/cdn.vox-cdn.com/uploads/chorus_image/image/72137144/1476356948.0.jpg', 'Nascar Truck League'),
-('57c88fd5-7bd9-4e29-8d0c-478086997c70', 'https://resources.premierleague.com/photos/2022/08/15/38db8684-2f83-48fc-b180-0450d5315751/MCIDM2223_2.jpg?width=1000&height=480', 'Manchester team');
+VALUES ('ff09acfb-7d09-48d5-be1d-de77bae20723', 'https://blobstoragesporthub.blob.core.windows.net/fileupload/testimage1.jpg', 'Nascar LeMans'),
+('78d2223d-fd6a-4738-8754-147fa227a535', 'https://blobstoragesporthub.blob.core.windows.net/fileupload/testimage2.jpg', 'Nascar Truck League'),
+('57c88fd5-7bd9-4e29-8d0c-478086997c70', 'https://blobstoragesporthub.blob.core.windows.net/fileupload/testimage3.jpg', 'Manchester team');
 
 ----------------------------------------------------------------
 -- Insert locations to `Locations` table
