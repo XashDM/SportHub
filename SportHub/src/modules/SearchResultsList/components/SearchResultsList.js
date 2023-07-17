@@ -21,15 +21,15 @@ const SearchResultsList = ({ contentSearchValue }) => {
   const [refreshSearch, setRefreshSearch] = useState(false)
 
   const [articles, setArticles] = useState([])
-  const [numberOfArticles, setNumberOfArticles] = useState()
+  const [numberOfArticles, setNumberOfArticles] = useState(0)
 
   const handleArticlesGet = async () => {
     if (isLoading) return
 
     try {
       setIsLoading(true)
-
-      const response = await getSearchArticlesRequest(i18n.language, contentSearchValue, currentPageNumber, 5)
+      const articlesPerPage = 5
+      const response = await getSearchArticlesRequest(i18n.language, contentSearchValue, currentPageNumber, articlesPerPage)
       const pageOfArticles = response.data
       if (!pageOfArticles) {
         console.error("Error. Request for articles fails")
@@ -90,7 +90,7 @@ const SearchResultsList = ({ contentSearchValue }) => {
 
     <div className={styles.resultsBlock}>
       <div key={"resultsCount"} className={styles.resultsCount}>
-        <h2>{contentSearchValue + " (" + numberOfArticles + ")"}</h2>
+        <h2>{`${contentSearchValue} (${numberOfArticles})`}</h2>
       </div>
       <InfiniteScroll
         dataLength={articles.length}
