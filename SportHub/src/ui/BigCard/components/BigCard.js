@@ -1,7 +1,12 @@
 import styles from "../styles/style.module.scss"
 import Button from "../../Button"
+import {ROUTES} from "../../../routes/routes"
+import {useNavigate} from "react-router-dom"
 
-export default function BigCard({ idx, onClick, title, subtitle, imageUrl, publishingDate, category }) {
+export default function BigCard({ idx, onClick, articleId, title, subtitle, imageUrl, publishingDate, category }) {
+
+    const navigate = useNavigate()
+
     return (
         <div className={styles.container} onClick={onClick} data-idx={idx}>
             <span className={styles.category}>{category?.toUpperCase()}</span>
@@ -18,7 +23,7 @@ export default function BigCard({ idx, onClick, title, subtitle, imageUrl, publi
                 <div className={styles.button_container}>
                     <Button
                         text={"More"}
-                        onClick={() => console.log("Let's go to article page")}/>
+                        onClick={() => {navigate(ROUTES.ARTICLE.replace(':articleId', articleId))}}/>
                 </div>
             </div>
         </div>

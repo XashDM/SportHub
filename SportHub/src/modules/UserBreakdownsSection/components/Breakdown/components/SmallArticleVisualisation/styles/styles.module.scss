@@ -26,6 +26,9 @@
 
     .sub_text{
       color: var(--color-dark-secondary-text);
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
     }
 
     .arrow{
