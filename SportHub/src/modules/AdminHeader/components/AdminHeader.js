@@ -36,7 +36,7 @@ export default function AdminHeader({ setIsContentSearch, setContentSearchValue 
                             <div className={styles.profile_info} >
                                 <div className={styles.profile_labels}>
                                     <div className={styles.name_surname_label}>
-                                        <div>{user.userData.firstName} {user.userData.lastName}</div>
+                                        <div>{user.userData?.firstName} {user.userData?.lastName}</div>
                                         <img className={styles.open_profile_menu} src={'/icons/Polygon.svg'} />
                                     </div>
                                     <div className={styles.administrator_label}>Administrator</div>
