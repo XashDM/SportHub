@@ -148,3 +148,9 @@ VALUES
 (UUID(), 'a9596f7b-6a44-4a1e-8f54-9b7a68d3f312', '30a89530-a01b-48f7-8e39-61ee2b251e1c', 2),
 (UUID(), 'c695cb5a-971e-4a4f-9b85-62f5d1469763', '30a89530-a01b-48f7-8e39-61ee2b251e1c', 3);
 
+INSERT INTO BreakDown(BreakDownId, LanguageId, CategoryId, SubCategoryId, TeamId)
+VALUES
+(UUID(), "0730ca73-567b-44a6-8a6e-e2edac090e2d", "7f3f21a5-a931-40be-9b6d-c698780a8df0", null, null),
+(UUID(), "0730ca73-567b-44a6-8a6e-e2edac090e2d", "160453c6-52b0-4eb9-8dee-47e3df2e7d1e", null, null),
+(UUID(), "30a89530-a01b-48f7-8e39-61ee2b251e1c", "7f3f21a5-a931-40be-9b6d-c698780a8df0", null, null),
+(UUID(), "30a89530-a01b-48f7-8e39-61ee2b251e1c", "160453c6-52b0-4eb9-8dee-47e3df2e7d1e", null, null);
