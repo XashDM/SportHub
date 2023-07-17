@@ -6,8 +6,11 @@ import styles from "../styles/style.module.scss"
 import draftToHtml from 'draftjs-to-html'
 import htmlToDraft from 'html-to-draftjs'
 import Label from "../../../ui/Label"
+import { useTranslation } from 'react-i18next'
 
 export default function TextEditor({value = "", onChange, activeTab}) {
+    const {t, i18n} = useTranslation()
+
     const [editorState, setEditorState] = useState(EditorState.createWithContent(ContentState.createFromBlockArray(htmlToDraft(value))))
     const [isTextSet, setIsTextSet] = useState(false)
 
@@ -32,9 +35,9 @@ export default function TextEditor({value = "", onChange, activeTab}) {
 
     return (
         <div>
-            <Label>Content*</Label>
+            <Label>{t('AdminPage.ArticleMenu.ContentLabel')}</Label>
             <Editor
-                placeholder={"Please add text here"}
+                placeholder={t('AdminPage.ArticleMenu.ContentPlaceholder')}
                 wrapperClassName={styles.wrapper}
                 editorClassName={styles.editor}
                 toolbarClassName={styles.toolbar}

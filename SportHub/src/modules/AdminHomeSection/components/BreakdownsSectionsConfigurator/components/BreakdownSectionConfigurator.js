@@ -4,8 +4,10 @@ import styles from "../styles/style.module.scss"
 import AddBreakdown from "./AddBreakdown"
 import getBreakdownsRequest from "../helpers/getBreakdownsRequest"
 import postBreakdownsRequest from "../helpers/postBreakdownsRequest"
+import { useTranslation } from "react-i18next"
 
 export default function BreakdownSectionConfigurator({setSaveBreakdown, setCancelBreakdown, language, setFleshMessageIsSuccessful, categories = []}){
+    const {t, i18n} = useTranslation()
 
     const [startBreakDownData, setStartBreakDownData] = useState([])
     const [breakDownsData, setBreakDownsData] = useState([])
@@ -116,12 +118,12 @@ export default function BreakdownSectionConfigurator({setSaveBreakdown, setCance
     }, [breakDownsData, language])
 
     return( <div className={styles.content}>
-        <CapsuleLable label={"BREAKDOWNS"} />
+        <CapsuleLable label={t('AdminPage.HomeSection.BreakdownsConfigurator.Breakdowns')} />
         {breakDownsData.length === 0
             ?
             <div className={styles.add_one_more_breakdown} >
                 <div className={styles.click_box} onClick={() => AddNewBreakDown()}>
-                + Add breakdown
+                {t('AdminPage.HomeSection.BreakdownsConfigurator.AddBreakdown')}
                 </div>
             </div>
             : null}

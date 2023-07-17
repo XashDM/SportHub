@@ -5,8 +5,10 @@ import MAX_MAIN_ARTICLES_AMOUNT from "../constants/MaxMainArticlesAmount"
 import styles from '../styles/style.module.scss'
 import getMainArticlesRequest from "../helpers/getMainArticlesRequest"
 import postMainArticlesRequest from "../helpers/postMainArticlesRequest"
+import { useTranslation } from "react-i18next"
 
 export default function MainArticlesConfigurator({setSaveMainArticles, setCancelMainArticle, language, setFleshMessageIsSuccessful, categories = []}){
+    const {t, i18n} = useTranslation()
 
     const [startMainArticlesData, setStartMainArticlesData] = useState([])
     const [mainArticlesData, setMainArticlesData] = useState([])
@@ -123,12 +125,12 @@ export default function MainArticlesConfigurator({setSaveMainArticles, setCancel
         <div>
             <div className={styles.content}>
 
-                <CapsuleLable label={"MAIN ARTICLES"}/>
+                <CapsuleLable label={t('AdminPage.HomeSection.MainArticlesConfigurator.MainArticles')}/>
                 {mainArticlesData.length === 0
                     ?
                     <div className={styles.add_one_more_article}>
                         <div className={styles.click_box} onClick={() => AddNewMainArticle()}>
-                            + Add main article
+                            {t('AdminPage.HomeSection.MainArticlesConfigurator.AddMainArticle')}
                         </div>
                     </div>
                     : null}

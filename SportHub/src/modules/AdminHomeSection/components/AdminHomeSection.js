@@ -1,15 +1,17 @@
-import React, {useEffect, useState} from "react"
+import React, { useEffect, useState } from "react"
 import styles from "../styles/style.module.scss"
 import MainArticlesConfigurator from "./MainArtcilesConfigurator"
 import BreakdownSectionConfigurator from "./BreakdownsSectionsConfigurator"
-import {useAtom} from "jotai"
-import {adminMenuState} from "../../../store/states/adminMenuState"
+import { useAtom } from "jotai"
+import { adminMenuState } from "../../../store/states/adminMenuState"
 import getCategoriesRequest from "../helpers/getCategoriesRequest"
 import TabPanel from "../../../ui/TabPanel"
 import getLanguagesRequest from "../../../helpers/getLanguagesRequest"
 import FlashMessage from "../../../ui/FlashMessage"
+import { useTranslation } from "react-i18next"
 
-export default function AdminHomeSection(){
+export default function AdminHomeSection() {
+    const { t, i18n } = useTranslation()
 
     const [adminMenu, setAdminMenu] = useAtom(adminMenuState)
     const { setButtons } = adminMenu
@@ -50,14 +52,14 @@ export default function AdminHomeSection(){
 
     const GetHomePage = (categories, language) => {
         setHomePage(<div className={styles.content}>
-            <MainArticlesConfigurator setSaveMainArticles = {setSaveMainArticles} setCancelMainArticle = {setCancelMainArticle}
-                                      categories={categories} language={language} setFleshMessageIsSuccessful={setFleshMessageIsSuccessful}/>
-            <BreakdownSectionConfigurator setSaveBreakdown = {setSaveBreakdown} setCancelBreakdown = {setCancelBreakdown}
-                                          categories={categories} language={language} setFleshMessageIsSuccessful={setFleshMessageIsSuccessful}/>
+            <MainArticlesConfigurator setSaveMainArticles={setSaveMainArticles} setCancelMainArticle={setCancelMainArticle}
+                categories={categories} language={language} setFleshMessageIsSuccessful={setFleshMessageIsSuccessful} />
+            <BreakdownSectionConfigurator setSaveBreakdown={setSaveBreakdown} setCancelBreakdown={setCancelBreakdown}
+                categories={categories} language={language} setFleshMessageIsSuccessful={setFleshMessageIsSuccessful} />
         </div>)
     }
 
-    const Save = () =>{
+    const Save = () => {
         saveMainArticles.function()
         saveBreakdown.function()
         setFleshMessageIsOpen(true)
@@ -68,10 +70,10 @@ export default function AdminHomeSection(){
         cancelBreakdown.function()
     }
 
-    useEffect(() =>{
-        if(typeof(setButtons) == "function"){
-            setButtons([{text: "Cancel", function: Cancel, isOutlined: true},
-                {text: "Save changes", function: Save, isOutlined: false}])
+    useEffect(() => {
+        if (typeof (setButtons) == "function") {
+            setButtons([{ text: t('AdminPage.HomeSection.CancelBtn'), function: Cancel, isOutlined: true },
+            { text: t('AdminPage.HomeSection.SaveBtn'), function: Save, isOutlined: false }])
         }
     }, [setButtons, saveMainArticles, saveBreakdown])
 
@@ -84,15 +86,27 @@ export default function AdminHomeSection(){
         GetHomePage(categories, languages[activeTab])
     }, [categories, languages, activeTab])
 
-    return(<div className={styles.content}>
+    return (
+        <div className={styles.content}>
+            <FlashMessage
+                title={fleshMessageIsSuccessful
+                    ?
+                    t('AdminPage.HomeSection.flashMsg.Success.Title')
+                    :
+                    t('AdminPage.HomeSection.flashMsg.Error.Title')
+                }
+                content={fleshMessageIsSuccessful
+                    ?
+                    t('AdminPage.HomeSection.flashMsg.Success.Content')
+                    :
+                    t('AdminPage.HomeSection.flashMsg.Error.Content')
+                }
+                isSuccess={fleshMessageIsSuccessful} open={fleshMessageIsOpen} handleClose={handleCloseFleshMessage} />
 
-        <FlashMessage title={fleshMessageIsSuccessful ? "Changes saved" : "Changes are not saved"}
-                      content={fleshMessageIsSuccessful ? "All successfully saved." : "Nothing saved."}
-                      isSuccess={fleshMessageIsSuccessful} open={fleshMessageIsOpen} handleClose={handleCloseFleshMessage}/>
-
-        <div className={styles.tabs}>
-        <TabPanel activeTab={activeTab} setActiveTab={setActiveTab} languages={languages} />
+            <div className={styles.tabs}>
+                <TabPanel activeTab={activeTab} setActiveTab={setActiveTab} languages={languages} />
+            </div>
+            {homePage}
         </div>
-        {homePage}
-    </div>)
+    )
 }
