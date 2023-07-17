@@ -294,8 +294,36 @@ public class ArticleRepository : IArticleRepository
 			return pageOfArticles;
 		}
 	}
-	
-	private bool IsNotFilterColumn(string propertyName)
+
+    public async Task<SearchArticlesCount> GetNumberOfSearchArticlesAsync(string language, string findText)
+    {
+        findText = '%' + findText + '%';
+        using (var connection = _dbConnectionFactory.GetConnection())
+        {
+            connection.Open();
+            var articleQuery = @"SELECT COUNT(*) as count FROM Articles a 
+								JOIN ArticleInfos ai ON a.ArticleId = ai.ArticleId 
+								JOIN Categories c ON a.CategoryId = c.CategoryId 
+								LEFT JOIN Subcategories sc ON a.SubCategoryId = sc.SubCategoryId 
+								LEFT JOIN Teams t ON a.TeamId = t.TeamId
+								JOIN Language l ON ai.LanguageId = l.LanguageId 
+								WHERE (
+									ai.MainText LIKE @findText 
+									OR ai.Title LIKE @findText
+									OR ai.SubTitle LIKE @findText
+									OR c.CategoryName LIKE @findText 
+									OR sc.SubCategoryName LIKE @findText 
+									OR t.TeamName LIKE @findText
+								) AND l.shortTitle = @language
+								AND a.Published = true
+								ORDER BY a.PublishingDate DESC";
+
+            var numberOfArticles = await connection.QueryFirstOrDefaultAsync<SearchArticlesCount>(articleQuery, new { findText, language });
+            return numberOfArticles;
+        }
+    }
+
+    private bool IsNotFilterColumn(string propertyName)
 	{
 		foreach (var columnName in _exceptionalColumns)
 		{

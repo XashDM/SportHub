@@ -160,6 +160,13 @@ namespace SportHub.Business.Implementations
 			return await MapToFullLanguageSpecificArticles(languageSpecificArticles);
 		}
 
+		public async Task<SearchArticlesCount> GetNumberOfSearchArticlesAsync(string language, string findText)
+		{
+			var numberOfArticles = await _articleRepository.GetNumberOfSearchArticlesAsync(language, findText);
+
+			return numberOfArticles;
+		}
+
 		private async Task<IEnumerable<FullLanguageSpecificArticle>> MapToFullLanguageSpecificArticles(IEnumerable<LanguageSpecificArticle> articles)
 		{
 			var fullArticles = new List<FullLanguageSpecificArticle>();
