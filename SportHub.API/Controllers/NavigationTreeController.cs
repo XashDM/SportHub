@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using SportHub.Business;
 using SportHub.Business.Implementations;
 using SportHub.Data.DTO;
@@ -24,6 +25,7 @@ namespace SportHub.API.Controllers
         }
 
         [HttpPost("append")]
+        [Authorize("AdminPolicy")]
         public async Task<IActionResult> AppendNavigationTree([FromBody] NavigationTree navigationTree)
         {
             try 
@@ -38,6 +40,7 @@ namespace SportHub.API.Controllers
         }
 
         [HttpDelete("delete")]
+        [Authorize("AdminPolicy")]
         public async Task<IActionResult> DeleteFromNavigationTree([FromBody] NavigationTreeDeleteDTO navigationTree)
         {
             try
@@ -52,6 +55,7 @@ namespace SportHub.API.Controllers
         }
 
         [HttpPut("hide")]
+        [Authorize("AdminPolicy")]
         public async Task<IActionResult> HideNavigationTreeElements([FromBody] NavigationTreeHideDTO navigationTree)
         {
             try
