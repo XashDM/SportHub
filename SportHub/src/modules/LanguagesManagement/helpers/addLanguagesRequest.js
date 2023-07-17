@@ -1,5 +1,4 @@
-import axios from "axios"
-
+import extendedAxios from "../../../extendedAxios"
 
 const addLanguagesRequest = async (languages) => {
     // need to map from LANGUAGE_CONSTANTS form to languageRequest (DTO)
@@ -7,9 +6,7 @@ const addLanguagesRequest = async (languages) => {
         shortTitle: language.code
     }))
     try {
-        const backendHost = process.env.REACT_APP_BACKEND_HOST
-
-        const response = await axios.post(`${backendHost}/Language`,
+        const response = await extendedAxios.post(`/Language`,
             languagesRequest,
             {
                 headers: {

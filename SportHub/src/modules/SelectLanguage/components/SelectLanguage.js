@@ -33,7 +33,7 @@ export default function SelectLanguage() {
                         ?
                         <MenuItemStyles key={language.shortTitle} value={language.shortTitle}>{language.shortTitle.toUpperCase()}</MenuItemStyles>
                         :
-                        <></>
+                        null
                 ))}
             </SelectStyles>
         </>

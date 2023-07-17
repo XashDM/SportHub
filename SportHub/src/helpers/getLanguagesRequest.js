@@ -1,9 +1,8 @@
-import axios from "axios"
-
+import extendedAxios from "../extendedAxios"
 
 const getLanguagesRequest = async () => {
     try {
-        const response = await axios.get('https://localhost:7168/Language', {})
+        const response = await extendedAxios.get('/Language')
         return response
     } catch (error) {
         console.error(error)

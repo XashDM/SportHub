@@ -1,11 +1,9 @@
-import axios from "axios";
+import extendedAxios from "../../../extendedAxios"
 
 const putUsersStatusRequest = async (user) => {
     try {
-
-        const backendHost = process.env.REACT_APP_BACKEND_HOST
-        const response = await axios.put(
-            `${backendHost}/User`,
+        const response = await extendedAxios.put(
+            `/User`,
             {
                 UserId: user.userId,
                 IsAdmin: user.isAdmin,

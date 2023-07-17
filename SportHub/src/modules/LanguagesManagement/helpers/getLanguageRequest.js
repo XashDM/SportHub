@@ -1,11 +1,8 @@
-import axios from "axios"
-
+import extendedAxios from "../../../extendedAxios"
 
 const getLanguageRequest = async (shortTitle) => {
     try {
-        const backendHost = process.env.REACT_APP_BACKEND_HOST
-
-        const response = await axios.get(`${backendHost}/Language/${shortTitle}`, {})
+        const response = await extendedAxios.get(`/Language/${shortTitle}`, {})
         if (response.status === 204) {
             return null
         }

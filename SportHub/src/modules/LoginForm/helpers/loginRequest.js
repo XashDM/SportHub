@@ -1,10 +1,8 @@
-import axios from "axios"
 import hashPassword from "../../../helpers/hashPassword"
+import extendedAxios from "../../../extendedAxios"
 const loginRequest = async (email, password) => {
-    const backendHost = process.env.REACT_APP_BACKEND_HOST
-
     try {
-        const response = await axios.post(`${backendHost}/Auth/login`,null, {
+        const response = await extendedAxios.post(`/Auth/login`,null, {
             params: {
                 email: email,
                 password: hashPassword(password)

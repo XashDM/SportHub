@@ -1,11 +1,8 @@
-import axios from "axios"
-
+import extendedAxios from "../../../extendedAxios"
 
 const getLanguagesRequest = async () => {
     try {
-        const backendHost = process.env.REACT_APP_BACKEND_HOST
-
-        const response = await axios.get(`${backendHost}/Language`, {})
+        const response = await extendedAxios.get(`/Language`, {})
         console.log(response.data)
         return response
     } catch (error) {

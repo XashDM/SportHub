@@ -1,10 +1,8 @@
-import axios from "axios"
-
+import extendedAxios from "../../../extendedAxios"
 
 const getLocationsRequest = async () => {
     try {
-        const backendHost = process.env.REACT_APP_BACKEND_HOST
-        const response = await axios.get(`${backendHost}/Location/all`)
+        const response = await extendedAxios.get(`/Location/all`)
         if (response.status === 204) {
             return null
         }

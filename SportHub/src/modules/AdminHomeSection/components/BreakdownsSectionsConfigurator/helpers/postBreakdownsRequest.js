@@ -1,9 +1,8 @@
-import axios from "axios"
+import extendedAxios from "../../../../../extendedAxios"
 
 const postBreakdownsRequest = async (languageId, breakdowns) => {
-    const backendHost = process.env.REACT_APP_BACKEND_HOST
     try {
-        return axios.post(`${backendHost}/BreakDown?languageId=` + languageId, JSON.stringify(breakdowns),
+        return extendedAxios.post(`/BreakDown?languageId=` + languageId, JSON.stringify(breakdowns),
             {headers: {'Content-Type': 'application/json'}})
     } catch (error) {
         return error.code
