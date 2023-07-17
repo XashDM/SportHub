@@ -1,11 +1,15 @@
 import Requests from "../../../../MainArtcilesConfigurator/components/AddMainArticle/requests"
-import React, {useEffect, useState} from "react"
+import React, { useEffect, useState } from "react"
 import styles from "../../../../MainArtcilesConfigurator/components/AddMainArticle/styles/style.module.scss"
 import AutoComplete from "../../../../../../../ui/AutoComplete"
+import { useTranslation } from "react-i18next"
 
-export default function AddBreakdown({order = null, category = null, categoriesOptions = [], subcategory = null,
-                                         team = null, language, isLastBreakDown, AddNewBreakDown, DeleteBreakDown, SaveData}){
-    const request = new Requests();
+export default function AddBreakdown({ order = null, category = null, categoriesOptions = [], subcategory = null,
+    team = null, language, isLastBreakDown, AddNewBreakDown, DeleteBreakDown, SaveData }) {
+
+    const { t, i18n } = useTranslation()
+
+    const request = new Requests()
 
     const [currentOrder, setCurrentOrder] = useState(order)
 
@@ -20,14 +24,14 @@ export default function AddBreakdown({order = null, category = null, categoriesO
     const [disabled, setDisabled] = useState(currentCategory === undefined || currentCategory === null)
 
     const GetDataAfterChoosingCategory = async () => {
-        if(currentCategory !== null) {
+        if (currentCategory !== null) {
             setSubcategoriesOptions(await request.getSubCategories(category?.categoryId))
             setTeamsOptions(await request.getTeamsByCategoryId(category?.categoryId))
         }
     }
 
     const GetDataAfterChoosingSubCategory = async () => {
-        if(currentSubcategory !== null)
+        if (currentSubcategory !== null)
             setTeamsOptions(await request.getTeamBySubCategoryId(currentSubcategory?.subCategoryId))
     }
 
@@ -40,7 +44,7 @@ export default function AddBreakdown({order = null, category = null, categoriesO
 
         setCurrentTeam(null)
 
-        if(currentSubcategory === subcategory)
+        if (currentSubcategory === subcategory)
             setCurrentTeam(team)
 
     }, [currentSubcategory])
@@ -52,7 +56,7 @@ export default function AddBreakdown({order = null, category = null, categoriesO
         setCurrentSubcategory(null)
         setCurrentTeam(null)
 
-        if(currentCategory === category){
+        if (currentCategory === category) {
             setCurrentSubcategory(subcategory)
             setCurrentTeam(team)
         }
@@ -69,7 +73,7 @@ export default function AddBreakdown({order = null, category = null, categoriesO
                 <div className={styles.upper_autocompletes}>
                     <div className={styles.small_autocomplete}>
                         <AutoComplete
-                            label={"CATEGORY*"}
+                            label={t('AdminPage.HomeSection.CategoryLabel')}
                             value={category}
                             setValue={setCurrentCategory}
                             options={categoriesOptions}
@@ -79,7 +83,7 @@ export default function AddBreakdown({order = null, category = null, categoriesO
                     </div>
                     <div className={styles.small_autocomplete}>
                         <AutoComplete
-                            label={"SUBCATEGORY"}
+                            label={t('AdminPage.HomeSection.SubCategoryLabel')}
                             value={subcategory}
                             setValue={setCurrentSubcategory}
                             disabled={disabled}
@@ -90,7 +94,7 @@ export default function AddBreakdown({order = null, category = null, categoriesO
                     </div>
                     <div className={styles.small_autocomplete}>
                         <AutoComplete
-                            label={"TEAM"}
+                            label={t('AdminPage.HomeSection.TeamLabel')}
                             value={team}
                             setValue={setCurrentTeam}
                             disabled={disabled}
@@ -102,12 +106,18 @@ export default function AddBreakdown({order = null, category = null, categoriesO
                 </div>
 
                 <div className={styles.buttons}>
-                    <div className={styles.delete_button} onClick={() => {DeleteBreakDown(currentOrder)}}>Delete</div>
-                    {isLastBreakDown
-                        ? <div className={styles.add_one_more_article} onClick={() => AddNewBreakDown()}>
-                            + Add one more breakdown
-                        </div>
-                        : null}
+                    <div className={styles.delete_button} onClick={() => { DeleteBreakDown(currentOrder) }}>
+                        {t('AdminPage.HomeSection.DeleteBtn')}
+                    </div>
+                    {
+                        isLastBreakDown
+                            ?
+                            <div className={styles.add_one_more_article} onClick={() => AddNewBreakDown()}>
+                                {t('AdminPage.HomeSection.AddBreakdownBtn')}
+                            </div>
+                            :
+                            null
+                    }
                 </div>
                 <div className={styles.line}></div>
             </div>

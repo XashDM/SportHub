@@ -147,6 +147,35 @@
             "Activate": "Activer",
             "NoUsersFound": "Aucun utilisateur trouvé.",
             "GeneralInfo": "Informations générales"
+        },
+        "HomeSection": {
+            "CancelBtn": "Annuler",
+            "SaveBtn": "Enregistrer les modifications",
+            "flashMsg": {
+                "Success": {
+                    "Title": "Modifications enregistrées",
+                    "Content": "Tout a été enregistré avec succès."
+                },
+                "Error": {
+                    "Title": "Modifications non enregistrées",
+                    "ContentShowHide": "Rien n'a été enregistré."
+                }
+            },
+            "MainArticlesConfigurator": {
+                "MainArticles": "Articles Principaux",
+                "AddMainArticle": "+ Ajouter un article principal"
+            },
+            "BreakdownsConfigurator": {
+                "Breakdowns": "Derniers Articles",
+                "AddBreakdown": "+ Ajouter un dernier article"
+            },
+            "CategoryLabel": "Catégorie*",
+            "SubCategoryLabel": "Sous-catégorie",
+            "TeamLabel": "Équipe",
+            "ArticleLabel": "Article*",
+            "DeleteBtn": "Supprimer",
+            "AddArticleBtn": "+ Ajouter un autre article principal",
+            "AddBreakdownBtn": "+ Ajouter un autre dernier article"
         }
     },
     "Footer": {

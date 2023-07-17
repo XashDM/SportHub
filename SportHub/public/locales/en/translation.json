@@ -51,6 +51,7 @@
     },
     "AdminPage": {
         "VerticalAdminMenu": {
+            "Home": "Home",
             "Surveys": "Surveys",
             "Banners": "Banners",
             "Languages": "Languages",
@@ -138,12 +139,43 @@
             "SearchPlaceholder": "Type a user name here",
             "Name": "NAME",
             "Status": "STATUS",
-            "Action": "Action",
+            "Action": "ACTION",
             "Active": "Active",
             "Blocked": "Blocked",
             "Disabled": "Disabled",
             "Block": "Block",
-            "Activate": "Activate"
+            "Activate": "Activate",
+            "NoUsersFound": "No users found.",
+            "GeneralInfo": "General Info"
+        },
+        "HomeSection": {
+            "CancelBtn": "Cancel",
+            "SaveBtn": "Save changes",
+            "flashMsg": {
+                "Success": {
+                    "Title": "Changes saved",
+                    "Content": "All successfully saved."
+                },
+                "Error": {
+                    "Title": "Changes are not saved",
+                    "ContentShowHide": "Nothing saved."
+                }
+            },
+            "MainArticlesConfigurator": {
+                "MainArticles": "MAIN ARTICLES",
+                "AddMainArticle": "+ Add main article"
+            },
+            "BreakdownsConfigurator": {
+                "Breakdowns": "BREAKDOWNS",
+                "AddBreakdown": "+ Add breakdown"
+            },
+            "CategoryLabel": "CATEGORY*",
+            "SubCategoryLabel": "SUBCATEGORY",
+            "TeamLabel": "TEAM",
+            "ArticleLabel": "ARTICLE*",
+            "DeleteBtn": "Delete",
+            "AddArticleBtn": "+ Add one more article",
+            "AddBreakdownBtn": "+ Add one more breakdown"
         }
     },
     "Footer": {

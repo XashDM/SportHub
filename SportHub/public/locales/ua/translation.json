@@ -147,6 +147,35 @@
             "Activate": "Активувати",
             "NoUsersFound": "Не знайдено користувачів.",
             "GeneralInfo": "Загальна інформація"
+        },
+        "HomeSection": {
+            "CancelBtn": "Відміна",
+            "SaveBtn": "Зберегти зміни",
+            "flashMsg": {
+                "Success": {
+                    "Title": "Зміни збережено",
+                    "Content": "Все збережено успішно."
+                },
+                "Error": {
+                    "Title": "Зміни не збережено",
+                    "ContentShowHide": "Нічого не збережено."
+                }
+            },
+            "MainArticlesConfigurator": {
+                "MainArticles": "ГОЛОВНІ СТАТТІ",
+                "AddMainArticle": "+ Додати головну статтю"
+            },
+            "BreakdownsConfigurator": {
+                "Breakdowns": "Останні статті",
+                "AddBreakdown": "+ Додати останні статті"
+            },
+            "CategoryLabel": "КАТЕГОРІЯ*",
+            "SubCategoryLabel": "СУБКАТЕГОРІЯ",
+            "TeamLabel": "КОМАНДА",
+            "ArticleLabel": "СТАТТЯ*",
+            "DeleteBtn": "Видалити",
+            "AddArticleBtn": "+ Додати ще одну головну статтю",
+            "AddBreakdownBtn": "+ Додати ще одну останню статтю"
         }
     },
     "Footer": {
