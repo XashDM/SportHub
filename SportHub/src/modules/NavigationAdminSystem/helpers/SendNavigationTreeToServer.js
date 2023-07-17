@@ -1,5 +1,5 @@
-import axios from "axios";
 import { useNavigationItemsCategories,useNavigationItemsSubCategories,useNavigationItemsTeams } from "../../../store/useNavigationTreeStore";
+import extendedAxios from "../../../extendedAxios"
 
 const SendNavigationTreeAppendRequest = async (Categories,SubCategories,Teams) => {
     const body = {
@@ -7,14 +7,12 @@ const SendNavigationTreeAppendRequest = async (Categories,SubCategories,Teams) =
         "subcategories" : SubCategories,
         "teams" : Teams
     }
-    const backendHost = process.env.REACT_APP_BACKEND_HOST
 
     if (Categories.length!=0 || SubCategories.length!=0 || Teams.length!=0){
-        const response = await axios.post(`${backendHost}/NavigationTree/append`,body,{
+        const response = await extendedAxios.post(`/NavigationTree/append`,body,{
         headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`
-        }   
+        }
     })
     console.log(response)
     }
@@ -30,10 +28,9 @@ const SendNavigationTreeDeletedRequest = async (deleteCategories,deleteSubCatego
     const backendHost = process.env.REACT_APP_BACKEND_HOST
 
     if (deleteCategories.length!=0 || deleteSubCategories.length!=0 || deleteTeams.length!=0){
-        const response = await axios.delete(`${backendHost}/NavigationTree/delete`, {
+        const response = await extendedAxios.delete(`/NavigationTree/delete`, {
             headers: {
               'Content-Type': 'application/json',
-              Authorization: `Bearer ${localStorage.getItem("accessToken")}`
             },
             data: JSON.stringify(body)
           });
@@ -54,11 +51,10 @@ const SendNavigationTreeHideRequest = async (Categories,SubCategories,Teams) => 
     const backendHost = process.env.REACT_APP_BACKEND_HOST
 
     if (Categories.length!=0 || SubCategories.length!=0 || Teams.length!=0){
-        const response = await axios.put(`${backendHost}/NavigationTree/hide`,body,{
+        const response = await extendedAxios.put(`/NavigationTree/hide`,body,{
         headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`
-        }   
+        }
     })
     console.log(response)
     }
