@@ -69,7 +69,8 @@ namespace SportHub.Business.Implementations
 
 		private string GetImageIdFromUrl(string url)
 		{
-			var imageId = url.Substring(url.Length - 36);
+			var slashPosition = url.LastIndexOf('/');
+			var imageId = url.Substring(slashPosition+1);
 
 			return imageId;
 		}

@@ -9,7 +9,6 @@ namespace SportHub.API.Infrastructure.Services
 		private readonly string _blobContainerName;
 		private readonly string _azureUrl;
 
-
 		public ImageStorageService(IConfiguration config)
 		{
 			_blobStorageConnectionString = config.GetSection("Azure")["BlobStorageConnectionString"];
