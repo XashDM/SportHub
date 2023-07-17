@@ -52,6 +52,9 @@ builder.Services.AddScoped<ISubCategoryService, SubCategoryService>();
 builder.Services.AddScoped<ITeamsRepository, TeamsRepository>();
 builder.Services.AddScoped<ITeamsService, TeamsService>();
 
+builder.Services.AddScoped<INavigationTreeRepository, NavigationTreeRepository>();
+builder.Services.AddScoped<INavigationTreeService,NavigationTreeService>();
+
 builder.Services.AddScoped<IBreakDownRepository, BreakDownRepository>();
 builder.Services.AddScoped<IBreakDownService, BreakDownService>();
 

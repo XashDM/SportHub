@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SportHub.Business;
 using SportHub.Data.DTO;
@@ -22,7 +23,8 @@ namespace SportHub.API.Controllers
 		}
 
 		[HttpGet("all")]
-		public async Task<IActionResult> GetAllSubCategoriesAsync()
+        [AllowAnonymous]
+        public async Task<IActionResult> GetAllSubCategoriesAsync()
 		{
 			var subCategories = await _subCategoryService.GetAllSubCategoriesAsync();
 
@@ -30,6 +32,7 @@ namespace SportHub.API.Controllers
 		}
 
         [HttpGet("category/{id}")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetSubCategoriesByCategoryAsync([FromRoute] string id)
         {
 			try
@@ -46,6 +49,7 @@ namespace SportHub.API.Controllers
         }
 
         [HttpGet("{SubCategoryId}")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetSubCategoriesByIdAsync([FromRoute] string SubCategoryId)
 		{
 			try
@@ -68,7 +72,8 @@ namespace SportHub.API.Controllers
         }
 
         [HttpPost]
-		public async Task<IActionResult> CreateNewSubCategory([FromBody] SubCategoryCreateDto subCategoryDto)
+        [Authorize("AdminPolicy")]
+        public async Task<IActionResult> CreateNewSubCategory([FromBody] SubCategoryCreateDto subCategoryDto)
 		{	
 			
             try
@@ -86,7 +91,8 @@ namespace SportHub.API.Controllers
 		}
 
 		[HttpDelete("{SubCategoryId}")]
-		public async Task<IActionResult> DeleteSubCategoryAsync([FromRoute]string SubCategoryId)
+        [Authorize("AdminPolicy")]
+        public async Task<IActionResult> DeleteSubCategoryAsync([FromRoute]string SubCategoryId)
 		{
 			try
 			{
@@ -108,6 +114,7 @@ namespace SportHub.API.Controllers
         }
 
 		[HttpPut("{SubCategoryId}")]
+        [Authorize("AdminPolicy")]
         public async Task<IActionResult> UpdateSubcategory([FromRoute] string SubCategoryId,[FromBody] string SubCategoryName)
 		{
 			try
@@ -130,6 +137,7 @@ namespace SportHub.API.Controllers
         }
 
         [HttpPut("{SubCategoryId}/category")]
+        [Authorize("AdminPolicy")]
         public async Task<IActionResult> UpdateCategoryOfSubCategoryAsync([FromRoute] string SubCategoryId, [FromBody] string CategoryId)
         {
             try

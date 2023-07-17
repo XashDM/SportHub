@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react'
 import TextFieldStyles from "../styles/TextFieldStyles"
 import Autocomplete from '@mui/material/Autocomplete'
 import styles from "../styles/style.module.scss"
+import Label from "../../Label"
 
 export default function AutoComplete({label, setValue, disabled, value, areOptionsObjects=false, optionLable=null, propertyToCompare=null, required=false, ...props}){
 
@@ -11,9 +12,10 @@ export default function AutoComplete({label, setValue, disabled, value, areOptio
     return (
         <div>
             <div className={styles.content}>
-                <div className={styles.label}>{label}</div>
+                <Label children={label} />
                 <Autocomplete
                     {...props}
+                    disablePortal={true}
                     sx = {{ width: "100%"}}
                     disabled = {disabled}
                     value = {value}

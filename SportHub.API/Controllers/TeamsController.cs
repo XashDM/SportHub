@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SportHub.Business;
 using SportHub.Business.Implementations;
@@ -23,6 +24,7 @@ namespace SportHub.API.Controllers
         }
 
         [HttpGet("all")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetAllTeamsAsync()
         {
             var Teams = await _TeamsService.GetAllTeamsAsync();
@@ -31,6 +33,7 @@ namespace SportHub.API.Controllers
         }
 
         [HttpGet("{TeamId}")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetTeamByIdAsync([FromRoute] string TeamId)
         {
             try
@@ -52,6 +55,7 @@ namespace SportHub.API.Controllers
         }
 
         [HttpGet("subcategory/{SubCategoryId}")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetTeamBySubCategoryIdAsync([FromRoute] string SubCategoryId)
         {
             try
@@ -68,6 +72,7 @@ namespace SportHub.API.Controllers
         }
         
         [HttpGet("category/{categoryId}")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetTeamByCategoryIdAsync([FromRoute] string categoryId)
         {
             try
@@ -83,6 +88,7 @@ namespace SportHub.API.Controllers
         }
 
         [HttpPost]
+        [Authorize("AdminPolicy")]
         public async Task<IActionResult> CreateNewTeamAsync([FromBody] TeamCreateDto teamCreateDto)
         {
 
@@ -101,6 +107,7 @@ namespace SportHub.API.Controllers
         }
 
         [HttpPut("{TeamId}")]
+        [Authorize("AdminPolicy")]
         public async Task<IActionResult> UpdateTeamAsync([FromRoute] string TeamId, [FromBody] TeamChangeDto teamChangeDto)
         {
             try
@@ -123,6 +130,7 @@ namespace SportHub.API.Controllers
         }
 
         [HttpPut("{TeamId}/subcategory")]
+        [Authorize("AdminPolicy")]
         public async Task<IActionResult> UpdateSubcategoryOfTeamAsync([FromRoute] string TeamId, [FromBody] string SubCategoryId)
         {
             try
@@ -145,6 +153,7 @@ namespace SportHub.API.Controllers
         }
 
         [HttpDelete("{TeamId}")]
+        [Authorize("AdminPolicy")]
         public async Task<IActionResult> DeleteTeamAsync([FromRoute] string TeamId)
         {
             try

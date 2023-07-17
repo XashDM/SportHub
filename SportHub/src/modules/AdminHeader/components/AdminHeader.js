@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import styles from '../styles/style.module.scss'
-import ProfileSidebar from "./ProfileSidebar"
+import ProfileSidebar from "../../../components/ProfileSidebar"
 import HeaderContainer from "../../../components/HeaderContainer"
 import { useNavigate, useLocation } from "react-router-dom"
 import { ROUTES } from "../../../routes/routes"
@@ -36,14 +36,14 @@ export default function AdminHeader({ setIsContentSearch, setContentSearchValue 
                             <div className={styles.profile_info} >
                                 <div className={styles.profile_labels}>
                                     <div className={styles.name_surname_label}>
-                                        <div>{user.userData.firstName} {user.userData.lastName}</div>
+                                        <div>{user.userData?.firstName} {user.userData?.lastName}</div>
                                         <img className={styles.open_profile_menu} src={'/icons/Polygon.svg'} />
                                     </div>
                                     <div className={styles.administrator_label}>Administrator</div>
                                 </div>
                             </div>
-                            <ProfileSidebar active={profileDropdownListActive} user={user} />
                         </div>
+                        <ProfileSidebar active={profileDropdownListActive}/>
                     </div>
                 </div>
                 <div className={styles.languages}>
