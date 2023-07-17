@@ -17,12 +17,14 @@ export default function UserBreakdownSection(){
     }
 
     const SetBreakdownsSection = (breakdowns) => {
-        let breakdownSection = []
-        for(let breakdownsCounter = 0; breakdownsCounter < breakdowns.length; breakdownsCounter++){
-            breakdownSection.push(<BreakDown groupName={breakdowns[breakdownsCounter].groupName} articles={breakdowns[breakdownsCounter].articles}/>)
+        if(breakdowns !== undefined && breakdowns !== null) {
+            let breakdownSection = []
+            for (let breakdownsCounter = 0; breakdownsCounter < breakdowns?.length; breakdownsCounter++) {
+                breakdownSection.push(<BreakDown groupName={breakdowns[breakdownsCounter].groupName}
+                                                 articles={breakdowns[breakdownsCounter].articles}/>)
+            }
+            setBreakdownSection(breakdownSection)
         }
-
-        setBreakdownSection(breakdownSection)
     }
 
     useEffect(() => {
