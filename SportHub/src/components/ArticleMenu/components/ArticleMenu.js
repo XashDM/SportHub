@@ -18,6 +18,7 @@ import getSubcategoriesRequest from "../helpers/getSubcategoriesRequest"
 import getTeamsRequest from "../helpers/getTeamsRequest"
 import getLocationsRequest from "../helpers/getLocationsRequest"
 import articleCanBeSaved from "../helpers/articleCanBeSaved"
+import { use } from "i18next"
 
 function ArticleMenu({ article = null, image = null, request }) {
     const [adminMenu, setAdminMenu] = useAtom(adminMenuState)
@@ -31,7 +32,6 @@ function ArticleMenu({ article = null, image = null, request }) {
     const [locations, setLocations] = useState([])
 
     const [selectedImage, setSelectedImage] = useState(null)
-    const [imageURL, setImageURL] = useState(null);
     const [alt, setAlt] = useState(null)
 
     const [currentSubcategory, setCurrentSubcategory] = useState(null)
@@ -71,7 +71,7 @@ function ArticleMenu({ article = null, image = null, request }) {
     }, [currentSubcategory])
 
     useEffect(() => {
-        setCanBeSaved(articleCanBeSaved(tabData, selectedImage, alt))
+        setCanBeSaved(articleCanBeSaved(tabData, selectedImage, alt, article))
     }, [selectedImage, tabData, alt])
 
     useEffect(() => {
@@ -81,7 +81,7 @@ function ArticleMenu({ article = null, image = null, request }) {
                 { text: "Save", function: saveButton, isOutlined: false }
             ])
         }
-    }, [canBeSaved, currentLocation, currentSubcategory, currentTeam])
+    }, [canBeSaved, currentLocation, currentSubcategory, currentTeam, tabData, selectedImage, alt, showComments])
 
     useEffect(() => {
         if (subcategories.length !== 0 && article !== null && article?.subCategoryId) {
@@ -107,7 +107,6 @@ function ArticleMenu({ article = null, image = null, request }) {
     useEffect(() => {
         if (image !== null) {
             setAlt(image.alt)
-            setImageURL(process.env.PUBLIC_URL + image.url)
         }
     }, [image])
 
@@ -226,7 +225,7 @@ function ArticleMenu({ article = null, image = null, request }) {
     return (
         <div className={styles.container}>
             <TabPanel activeTab={activeTab} setActiveTab={setActiveTab} languages={languages} />
-            <ImageUploader selectedImage={selectedImage} setSelectedImage={setSelectedImage} imageURL={imageURL} setImageURL={setImageURL} />
+            <ImageUploader selectedImage={selectedImage} setSelectedImage={setSelectedImage} fileUrl={image?.url} />
             <div className={styles.three_col_container}>
                 <div className={styles.col_element}>
                     <AutoComplete
