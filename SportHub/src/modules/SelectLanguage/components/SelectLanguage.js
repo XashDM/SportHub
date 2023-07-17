@@ -20,7 +20,7 @@ export default function SelectLanguage() {
 
     useEffect(() => {
         handleLanguagesGet()
-    }, [i18n.language])
+    }, [])
 
     return (
         <>
