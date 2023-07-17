@@ -1,0 +1,21 @@
+@import "src/styles/mixins";
+
+.container {
+    @include flex-center();
+    flex-direction: column;
+    padding: (0 8vw 4vh 8vw);
+    text-align: center;
+
+    img {
+        transform: translateY(-50%);
+        margin-bottom: 0;
+    }
+}
+
+.buttonContainer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 1vh;
+    padding: (2vh 3vw 3vh 3vw);
+}

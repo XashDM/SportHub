@@ -30,7 +30,7 @@ namespace SportHub.Business.Implementations
 			_languageService = languageService;
 		}
 
-		public async Task CreateArticleAsync(Article article, Image image, string fileName)
+		public async Task CreateArticleAsync(Article article, Image image, string imageUrl)
 		{
 			var articleId = Guid.NewGuid().ToString();
 
@@ -41,16 +41,16 @@ namespace SportHub.Business.Implementations
 			}
 			article.PublishingDate = DateTime.Now;
 
-			var imageId = fileName.Substring(0, fileName.IndexOf('.'));
+			var imageId = GetImageIdFromUrl(imageUrl);
 
 			article.ImageId = imageId;
 			image.ImageId = imageId;
-			image.Url = fileName;
+			image.Url = imageUrl;
 
 			await _articleRepository.CreateArticleAsync(article, image);
 		}
 
-		public async Task UpdateArticleAsync(Article article, Image image, string fileName)
+		public async Task UpdateArticleAsync(Article article, Image image, string imageUrl)
 		{
 			var articleId = article.ArticleId;
 
@@ -58,13 +58,21 @@ namespace SportHub.Business.Implementations
 			{
 				el.ArticleId = articleId;
 			}
-			var imageId = fileName.Substring(0, fileName.IndexOf('.'));
+			var imageId = GetImageIdFromUrl(imageUrl);
 
 			article.ImageId = imageId;
 			image.ImageId = imageId;
-			image.Url = fileName;
+			image.Url = imageUrl;
 
 			await _articleRepository.UpdateArticleAsync(article, image);
+		}
+
+		private string GetImageIdFromUrl(string url)
+		{
+			var slashPosition = url.LastIndexOf('/');
+			var imageId = url.Substring(slashPosition+1);
+
+			return imageId;
 		}
 
 		public async Task<(Article, Image)> GetArticleByIdAsync(string articleId)

@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@azure/storage-blob": "^12.15.0",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
     "@mui/material": "^5.11.16",
@@ -36,6 +37,7 @@
     "react-scripts": "5.0.1",
     "react-svg": "^16.1.7",
     "react-use-localstorage": "^3.5.3",
+    "react-uuid": "^2.0.0",
     "react-xarrows": "^2.0.2",
     "sass": "^1.62.0",
     "zustand": "^4.3.7"
