@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SportHub.Business;
@@ -23,7 +24,8 @@ namespace SportHub.API.Controllers
             _mapper = mapper;
         }
         
-        [HttpGet()]
+        [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> GetBreakDownsAsync([FromQuery] string languageId)
         {
             try
@@ -40,6 +42,7 @@ namespace SportHub.API.Controllers
         }
         
         [HttpGet("~/GetBreakdownsByLanguage")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetBreakDownsByLanguageAsync([FromQuery] string language)
         {
             try
@@ -55,7 +58,8 @@ namespace SportHub.API.Controllers
             }
         }
         
-        [HttpPost()]
+        [HttpPost]
+        [Authorize("AdminPolicy")]
         public async Task<IActionResult> CreateBreakDownsAsync([FromQuery] string languageId, [FromBody] IEnumerable<BreakDownRequest> breakDownsRequest)
         {
             try
@@ -72,6 +76,7 @@ namespace SportHub.API.Controllers
         }
         
         [HttpGet("GetArticles")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetBreakDownArticlesAsync([FromQuery] string language, bool? lastArticles = null,
             int? numberOfArticles = null)
         {
@@ -92,6 +97,7 @@ namespace SportHub.API.Controllers
         }
         
         [HttpGet("GetDetails")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetBreakDownDetailsAsync([FromQuery] string languageId)
         {
             try

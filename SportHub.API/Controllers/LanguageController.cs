@@ -28,13 +28,14 @@ namespace SportHub.API.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> GetLanguagesAsync()
         {
             try
             {
                 var languages = await _languageService.GetLanguagesAsync();
 
-		return Ok(languages);
+		        return Ok(languages);
             }
             catch (Exception ex)
             {
@@ -44,6 +45,7 @@ namespace SportHub.API.Controllers
         }
 
         [HttpGet("{shortTitle}")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetLanguageByTitleAsync([FromRoute] string shortTitle)
         {
             try
@@ -61,6 +63,7 @@ namespace SportHub.API.Controllers
         }
 
         [HttpPost]
+        [Authorize("AdminPolicy")]
         public async Task<IActionResult> AddLanguageAsync([FromBody] IEnumerable<LanguageRequest> languagesRequests)
         {
             try
@@ -79,6 +82,7 @@ namespace SportHub.API.Controllers
         }
 
         [HttpPut("{shortTitle}")]
+        [Authorize("AdminPolicy")]
         public async Task<IActionResult> ChangeLanguageIsActiveAsync([FromRoute] string shortTitle, [FromBody] bool isActive)
         {
             try
@@ -95,6 +99,7 @@ namespace SportHub.API.Controllers
         }
 
         [HttpDelete("{shortTitle}")]
+        [Authorize("AdminPolicy")]
         public async Task<IActionResult> DeleteLanguageAsync([FromRoute] string shortTitle)
         {
             try

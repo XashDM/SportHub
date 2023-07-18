@@ -75,6 +75,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPut]
+    [Authorize("UserPolicy")]
     public async Task<IActionResult> UpdateUserAsync([FromBody] UserUpdateRequestDto userUpdatesDto)
     {
         try

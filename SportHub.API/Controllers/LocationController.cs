@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SportHub.Business;
@@ -21,6 +22,7 @@ namespace SportHub.API.Controllers
 		}
 
 		[HttpGet("all")]
+		[AllowAnonymous]
 		public async Task<IActionResult> GetLocationsAsync()
 		{
 			try

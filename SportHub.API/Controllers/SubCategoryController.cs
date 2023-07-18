@@ -23,8 +23,8 @@ namespace SportHub.API.Controllers
 		}
 
 		[HttpGet("all")]
-        [AllowAnonymous]
-        public async Task<IActionResult> GetAllSubCategoriesAsync()
+		[AllowAnonymous]
+		public async Task<IActionResult> GetAllSubCategoriesAsync()
 		{
 			var subCategories = await _subCategoryService.GetAllSubCategoriesAsync();
 
@@ -73,7 +73,7 @@ namespace SportHub.API.Controllers
 
         [HttpPost]
         [Authorize("AdminPolicy")]
-        public async Task<IActionResult> CreateNewSubCategory([FromBody] SubCategoryCreateDto subCategoryDto)
+		public async Task<IActionResult> CreateNewSubCategory([FromBody] SubCategoryCreateDto subCategoryDto)
 		{	
 			
             try
@@ -91,8 +91,8 @@ namespace SportHub.API.Controllers
 		}
 
 		[HttpDelete("{SubCategoryId}")]
-        [Authorize("AdminPolicy")]
-        public async Task<IActionResult> DeleteSubCategoryAsync([FromRoute]string SubCategoryId)
+		[Authorize("AdminPolicy")]
+		public async Task<IActionResult> DeleteSubCategoryAsync([FromRoute]string SubCategoryId)
 		{
 			try
 			{
@@ -114,7 +114,7 @@ namespace SportHub.API.Controllers
         }
 
 		[HttpPut("{SubCategoryId}")]
-        [Authorize("AdminPolicy")]
+		[Authorize("AdminPolicy")]
         public async Task<IActionResult> UpdateSubcategory([FromRoute] string SubCategoryId,[FromBody] string SubCategoryName)
 		{
 			try
