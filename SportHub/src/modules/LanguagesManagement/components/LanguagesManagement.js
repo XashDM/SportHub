@@ -38,7 +38,7 @@ function LanguagesManagement() {
         if(typeof(setButtons) == "function"){
             setButtons([{text: t('AdminPage.LanguagesManagement.AddLanguagesBtn'), function: handleOpenPopUpAddLanguages, isOutlined: false}])
         }
-    }, [languages])
+    }, [])
 
     const handleCloseFlashMessage = () => {
         setOpenFlashMessage(false)
