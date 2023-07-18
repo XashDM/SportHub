@@ -49,8 +49,8 @@ namespace SportHub.API.Controllers
 				var imageCreateDto = JsonConvert.DeserializeObject<ImageCreateDto>(imageJson);
 				var image = _mapper.Map<ImageCreateDto, Image>(imageCreateDto);
 
-				var fileName = await _imageStorageService.SaveImageFile(file);
-				await _articlesService.CreateArticleAsync(article, image, fileName);
+				var imageUrl = await _imageStorageService.SaveImageFile(file);
+				await _articlesService.CreateArticleAsync(article, image, imageUrl);
 
 				return Ok();
 			}
@@ -71,7 +71,7 @@ namespace SportHub.API.Controllers
 				var articleJson = Request.Form["article"];
 				var imageJson = Request.Form["image"];
 
-				if (file == null || string.IsNullOrEmpty(articleJson) || string.IsNullOrEmpty(imageJson))
+				if (string.IsNullOrEmpty(articleJson) || string.IsNullOrEmpty(imageJson))
 				{
 					return BadRequest("Missing input data.");
 				}
@@ -80,8 +80,12 @@ namespace SportHub.API.Controllers
 
 				var image = JsonConvert.DeserializeObject<Image>(imageJson);
 
-				var fileName = await _imageStorageService.SaveImageFile(file);
-				await _articlesService.UpdateArticleAsync(article, image, fileName);
+				var imageUrl = image.Url;
+
+				if(file != null)
+					imageUrl = await _imageStorageService.SaveImageFile(file);
+
+				await _articlesService.UpdateArticleAsync(article, image, imageUrl);
 
 				return Ok();
 			}
@@ -269,6 +273,23 @@ namespace SportHub.API.Controllers
                 var pageOfArticles = await _articlesService.GetPageOfSearchArticlesAsync(language, findText, pageNumber, pageSize);
 
                 return Ok(pageOfArticles);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("GetNumberOfSearchArticles")]
+        public async Task<IActionResult> GetNumberOfSearchArticlesAsync([FromQuery] string language, [FromQuery] string findText)
+        {
+            try
+            {
+                var response = await _articlesService.GetNumberOfSearchArticlesAsync(language, findText);
+                var numberOfArticles = _mapper.Map<SearchArticlesCount, SearchArticlesCountDto>(response);
+
+                return Ok(numberOfArticles);
             }
             catch (Exception ex)
             {

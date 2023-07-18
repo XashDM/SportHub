@@ -1,12 +1,14 @@
-import React, {useRef, useState, useEffect} from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import { ReactSVG } from "react-svg"
 import styles from "../styles/style.module.scss"
 import HorizontalAdminMenuElement from "./HorizontalAdminMenuElement"
 import Button from "../../../ui/Button"
 
 import getCategoriesRequest from "../helpers/getCategoriesRequest"
+import { useTranslation } from 'react-i18next'
 
-export default function HorizontalAdminMenu({currentMenuElement, setCurrentMenuElement, headerButtons, setSelectedCategory}){
+export default function HorizontalAdminMenu({ currentMenuElement, setCurrentMenuElement, headerButtons, setSelectedCategory }) {
+    const { t, i18n } = useTranslation()
 
     const [listOfSections, setListOfSections] = useState([])
 
@@ -34,19 +36,19 @@ export default function HorizontalAdminMenu({currentMenuElement, setCurrentMenuE
 
     const getCategories = async () => {
         const result = await getCategoriesRequest()
-        const value = [{categoryName: "Home", categoryId: ""}].concat(result.data)
+        const value = [{ categoryName: "Home", categoryId: "" }].concat(result.data)
         setListOfSections(value)
     }
 
     const GetLeftArrow = () => {
-        if(isBiggerThanWindowWidth) {
+        if (isBiggerThanWindowWidth) {
             setLeftArrow(<div className={canScrollLeft ? styles.left_arrow : styles.left_arrow_disabled}
-                              onClick={() => scroll(-20)}>
+                onClick={() => scroll(-20)}>
                 <ReactSVG src={process.env.PUBLIC_URL + '/icons/Arrow.svg'}
-                          className={canScrollLeft ? styles.arrow : styles.arrow_disable}/>
+                    className={canScrollLeft ? styles.arrow : styles.arrow_disable} />
             </div>)
         }
-        else{
+        else {
             setLeftArrow(null)
         }
     }
@@ -54,23 +56,23 @@ export default function HorizontalAdminMenu({currentMenuElement, setCurrentMenuE
     const GetSectionElementsForm = () => {
         setSectionElementsForm(<div ref={sectionElements} className={isBiggerThanWindowWidth ? styles.section_elements_scrolled : styles.section_elements}>
             {listOfSections.map((section, index) => {
-                return <div key={index} onClick={() => {setCurrentMenuElement(section?.categoryName); setSelectedCategory(section)}}
-                            className={styles.horizontal_menu_element}>
-                    <HorizontalAdminMenuElement name={section?.categoryName} active={section?.categoryName === currentMenuElement}  />
+                return <div key={index} onClick={() => { setCurrentMenuElement(section?.categoryName); setSelectedCategory(section) }}
+                    className={styles.horizontal_menu_element}>
+                    <HorizontalAdminMenuElement name={section?.categoryName} active={section?.categoryName === currentMenuElement} />
                 </div>
             })}
         </div>)
     }
 
     const GetRightArrow = () => {
-        if(isBiggerThanWindowWidth) {
+        if (isBiggerThanWindowWidth) {
             setRightArrow(<div className={canScrollRight ? styles.right_arrow : styles.right_arrow_disabled}
-                               onClick={() => scroll(20)}>
-                                <ReactSVG src={process.env.PUBLIC_URL + '/icons/Arrow.svg'}
-                          className={canScrollRight ? styles.arrow : styles.arrow_disable}/>
+                onClick={() => scroll(20)}>
+                <ReactSVG src={process.env.PUBLIC_URL + '/icons/Arrow.svg'}
+                    className={canScrollRight ? styles.arrow : styles.arrow_disable} />
             </div>)
         }
-        else{
+        else {
             setRightArrow(null)
         }
     }
@@ -95,7 +97,13 @@ export default function HorizontalAdminMenu({currentMenuElement, setCurrentMenuE
     return (
         <div>
             <div className={styles.new_article_area}>
-                <div className={styles.section_name}>{currentMenuElement}</div>
+                <div className={styles.section_name}>
+                    {
+                        t(`AdminPage.VerticalAdminMenu.${currentMenuElement}`) === `AdminPage.VerticalAdminMenu.${currentMenuElement}`
+                            ? currentMenuElement
+                            : t(`AdminPage.VerticalAdminMenu.${currentMenuElement}`)
+                    }
+                </div>
                 <div className={styles.buttons}>
                     {headerButtons.map((button, index) => {
                         return <Button

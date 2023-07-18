@@ -36,6 +36,7 @@ CREATE TABLE IF NOT EXISTS `SportHub`.`Token` (
 CREATE TABLE IF NOT EXISTS `SportHub`.`Categories` (
   `CategoryId` VARCHAR(36) NOT NULL,
   `CategoryName` VARCHAR(45) NOT NULL,
+  `IsHidden`  TINYINT(1) NULL,
   PRIMARY KEY (`CategoryId`),
   UNIQUE INDEX `CategoryId_UNIQUE` (`CategoryId` ASC) ,
   UNIQUE INDEX `CategoryName_UNIQUE` (`CategoryName` ASC) )
@@ -45,6 +46,7 @@ CREATE TABLE IF NOT EXISTS `SportHub`.`SubCategories` (
   `SubCategoryId` VARCHAR(36) NOT NULL,
   `SubCategoryName` VARCHAR(45) NOT NULL,
   `CategoryId` VARCHAR(36) NOT NULL,
+  `IsHidden`  TINYINT(1) NULL,
   PRIMARY KEY (`SubCategoryId`),
   INDEX `fk_Category_idx` (`CategoryId` ASC) ,
    CONSTRAINT `fk_Categories`
@@ -76,6 +78,7 @@ CREATE TABLE IF NOT EXISTS `SportHub`.`Teams` (
   `TeamId` VARCHAR(36) NOT NULL,
   `TeamName` VARCHAR(45) NOT NULL,
   `TeamDescription` TEXT NOT NULL,
+  `IsHidden`  TINYINT(1) NULL,
   `SubCategoryId` VARCHAR(36),
   PRIMARY KEY (`TeamId`),
   UNIQUE INDEX `TeamId_UNIQUE` (`TeamId` ASC) ,

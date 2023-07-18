@@ -52,6 +52,7 @@ export default function AdminPage() {
                 break
             case "MyUsers":
                 setContent(<UsersManagment/>)
+                setIsContentSearch(false)
                 break
             default:
                 setContent(<AdminArticlesList />)

@@ -1,13 +1,17 @@
-import React, {useEffect, useState} from "react"
+import React, { useEffect, useState } from "react"
 import AutoComplete from "../../../../../../../ui/AutoComplete"
 import styles from "../styles/style.module.scss"
 import Requests from "../requests"
+import { useTranslation } from "react-i18next"
 
-export default function AddMainArticle({order = null, category = null, categoriesOptions = [], subcategory = null,
-                                           team = null, article= null, language, isLastMainArticle,
-                                           AddNewMainArticle, DeleteMainArticle, SaveData}){
+export default function AddMainArticle({ order = null, category = null, categoriesOptions = [], subcategory = null,
+    team = null, article = null, language, isLastMainArticle,
+    AddNewMainArticle, DeleteMainArticle, SaveData }) {
 
-    const request = new Requests();
+    const { t, i18n } = useTranslation()
+
+    const request = new Requests()
+
     const [currentOrder, setCurrentOrder] = useState(order)
 
     const [currentCategory, setCurrentCategory] = useState(category)
@@ -24,7 +28,7 @@ export default function AddMainArticle({order = null, category = null, categorie
     const [disabled, setDisabled] = useState(currentCategory === undefined || currentCategory === null)
 
     const GetDataAfterChoosingCategory = async () => {
-        if(currentCategory !== null) {
+        if (currentCategory !== null) {
             setSubcategoriesOptions(await request.getSubCategories(currentCategory?.categoryId))
             setTeamsOptions(await request.getTeamsByCategoryId(currentCategory?.categoryId))
             setArticlesOptions(await request.getArticleByLanguageIdAndCategoryId(language?.languageId, currentCategory?.categoryId))
@@ -32,7 +36,7 @@ export default function AddMainArticle({order = null, category = null, categorie
     }
 
     const GetDataAfterChoosingSubCategory = async () => {
-        if(currentSubcategory !== null) {
+        if (currentSubcategory !== null) {
             setTeamsOptions(await request.getTeamBySubCategoryId(currentSubcategory?.subCategoryId))
             setArticlesOptions(await request.getArticleByLanguageIdAndSubCategoryId(language?.languageId, currentSubcategory?.subCategoryId))
         }
@@ -47,19 +51,19 @@ export default function AddMainArticle({order = null, category = null, categorie
     }, [currentOrder, currentCategory, currentSubcategory, currentTeam, currentArticle])
 
     useEffect(() => {
-        if(currentCategory?.categoryId !== category?.categoryId) setCurrentCategory(category)
+        if (currentCategory?.categoryId !== category?.categoryId) setCurrentCategory(category)
     }, [category])
 
     useEffect(() => {
-        if(currentSubcategory?.subCategoryId !== subcategory?.subCategoryId) setCurrentSubcategory(subcategory)
+        if (currentSubcategory?.subCategoryId !== subcategory?.subCategoryId) setCurrentSubcategory(subcategory)
     }, [subcategory])
 
     useEffect(() => {
-        if(currentTeam?.teamId !== team?.teamId) setCurrentTeam(team)
+        if (currentTeam?.teamId !== team?.teamId) setCurrentTeam(team)
     }, [team])
 
     useEffect(() => {
-        if(currentArticle?.articleId !== article?.articleId) setCurrentArticle(article)
+        if (currentArticle?.articleId !== article?.articleId) setCurrentArticle(article)
     }, [article])
 
     useEffect(() => {
@@ -70,7 +74,7 @@ export default function AddMainArticle({order = null, category = null, categorie
         setCurrentTeam(null)
         setCurrentArticle(null)
 
-        if(currentCategory === category){
+        if (currentCategory === category) {
             setCurrentSubcategory(subcategory)
             setCurrentTeam(team)
             setCurrentArticle(article)
@@ -79,13 +83,13 @@ export default function AddMainArticle({order = null, category = null, categorie
     }, [currentCategory])
 
     useEffect(() => {
-        if(currentSubcategory?.subCategoryName === undefined) GetDataAfterChoosingCategory()
+        if (currentSubcategory?.subCategoryName === undefined) GetDataAfterChoosingCategory()
         else GetDataAfterChoosingSubCategory()
 
         setCurrentTeam(null)
         setCurrentArticle(null)
 
-        if(currentSubcategory === subcategory){
+        if (currentSubcategory === subcategory) {
             setCurrentTeam(team)
             setCurrentArticle(article)
         }
@@ -93,13 +97,13 @@ export default function AddMainArticle({order = null, category = null, categorie
     }, [currentSubcategory])
 
     useEffect(() => {
-        if(currentTeam?.teamName === undefined) GetDataAfterChoosingSubCategory()
+        if (currentTeam?.teamName === undefined) GetDataAfterChoosingSubCategory()
         else GetDataAfterChoosingTeam()
 
 
         setCurrentArticle(null)
 
-        if(currentTeam === team)
+        if (currentTeam === team)
             setCurrentArticle(article)
 
     }, [currentTeam])
@@ -111,7 +115,7 @@ export default function AddMainArticle({order = null, category = null, categorie
                 <div className={styles.upper_autocompletes}>
                     <div className={styles.small_autocomplete}>
                         <AutoComplete
-                            label={"CATEGORY*"}
+                            label={t('AdminPage.HomeSection.CategoryLabel')}
                             value={category}
                             setValue={setCurrentCategory}
                             options={categoriesOptions}
@@ -121,7 +125,7 @@ export default function AddMainArticle({order = null, category = null, categorie
                     </div>
                     <div className={styles.small_autocomplete}>
                         <AutoComplete
-                            label={"SUBCATEGORY"}
+                            label={t('AdminPage.HomeSection.SubCategoryLabel')}
                             value={subcategory}
                             setValue={setCurrentSubcategory}
                             disabled={disabled}
@@ -132,19 +136,19 @@ export default function AddMainArticle({order = null, category = null, categorie
                     </div>
                     <div className={styles.small_autocomplete}>
                         <AutoComplete
-                            label={"TEAM"}
+                            label={t('AdminPage.HomeSection.TeamLabel')}
                             value={team}
                             setValue={setCurrentTeam}
                             disabled={disabled}
                             options={teamsOptions}
-                            areOptionsObjects={typeof(team) === "object"}
+                            areOptionsObjects={typeof (team) === "object"}
                             optionLable={"teamName"}
                             propertyToCompare={"teamId"} />
                     </div>
                 </div>
                 <div className={styles.add_article_autocomplete}>
                     <AutoComplete
-                        label={"ARTICLE*"}
+                        label={t('AdminPage.HomeSection.ArticleLabel')}
                         value={article}
                         setValue={setCurrentArticle}
                         disabled={disabled}
@@ -154,12 +158,18 @@ export default function AddMainArticle({order = null, category = null, categorie
                         propertyToCompare={"articleId"} />
                 </div>
                 <div className={styles.buttons}>
-                    <div className={styles.delete_button} onClick={() => {DeleteMainArticle(currentOrder)}}>Delete</div>
-                    {isLastMainArticle
-                        ? <div className={styles.add_one_more_article} onClick={() => AddNewMainArticle()}>
-                            + Add one more article
-                        </div>
-                        : null}
+                    <div className={styles.delete_button} onClick={() => { DeleteMainArticle(currentOrder) }}>
+                        {t('AdminPage.HomeSection.DeleteBtn')}
+                    </div>
+                    {
+                        isLastMainArticle
+                            ?
+                            <div className={styles.add_one_more_article} onClick={() => AddNewMainArticle()}>
+                                {t('AdminPage.HomeSection.AddArticleBtn')}
+                            </div>
+                            :
+                            null
+                    }
                 </div>
                 <div className={styles.line}></div>
             </div>
