@@ -51,6 +51,7 @@
     },
     "AdminPage": {
         "VerticalAdminMenu": {
+            "Home": "Головна",
             "Surveys": "Опитування",
             "Banners": "Банери",
             "Languages": "Мови",
@@ -94,6 +95,103 @@
                 "CancelBtn": "Відміна",
                 "DeleteBtn": "Видалити"
             }
+        },
+        "ArticleMenu": {
+            "CancelBtn": "Відміна",
+            "SaveBtn": "Зберегти",
+            "PageLanguages": "Мови сторінки",
+            "ImageLabel": "Зображення*",
+            "ImagePlaceholderPart1": "+Додайте зображення або перенесіть його сюди",
+            "ImagePlaceholderPart2": "Ви можете додати наступні формати: .png .jpg .jpeg .tif",
+            "SubCategoryLabel": "СУБКАТЕГОРІЯ",
+            "TeamLabel": "КОМАНДА",
+            "LocationLabel": "ЛОКАЦІЯ",
+            "AltLabel": "АЛЬТ.*",
+            "AltPlaceholder": "Альтернативний текст для зображення",
+            "HeadlineLabel": "ЗАГОЛОВОК СТАТТІ*",
+            "HeadlinePlaceholder": "Назва",
+            "CaptionLabel": "ПІДЗАГОЛОВОК*",
+            "CaptionPlaceholder": "Введіть підзаголовок",
+            "ContentLabel": "КОНТЕНТ*",
+            "ContentPlaceholder": "Будь ласка введіть сюди текст",
+            "ShowComments": "ПОКАЗУВАТИ КОМЕНТАРІ"
+        },
+        "ArticleMenuCancel": {
+            "PopUpRemovalWarning": {
+                "Title": "Ви збираєтесь відхилити зміни!",
+                "Content": "Введені дані будуть втрачені!",
+                "AreYouSure": "Ви впевнені?",
+                "CancelBtn": "Ні",
+                "DeleteBtn": "Так"
+            }
+        },
+        "ArticleMenuMissingData": {
+            "PopUpRemovalWarning": {
+                "Title": "Увага, ви щось пропустили",
+                "Content": "Будь ласка, переконайтеся, що у цій сторінці є переклад для всіх доступних мов на сайті. Ви завжди можете вимкнути мову, якщо не хочете підтримувати її на Sports Hub. Перейдіть до Мови сайту.",
+                "AreYouSure": "",
+                "DeleteBtn": "Ок, зрозуміло"
+            }
+        },
+        "MyUsers": {
+            "Users": "КОРИСТУВАЧІ",
+            "Admins": "АДМІНІСТРАТОРИ",
+            "SearchPlaceholder": "Введіть ім'я користувача",
+            "Name": "ІМ'Я",
+            "Status": "СТАТУС",
+            "Action": "ДІЯ",
+            "Active": "Активний",
+            "Blocked": "Заблокований",
+            "Disabled": "Вимкнено",
+            "Block": "Заблокувати",
+            "Activate": "Активувати",
+            "NoUsersFound": "Не знайдено користувачів.",
+            "GeneralInfo": "Загальна інформація"
+        },
+        "HomeSection": {
+            "CancelBtn": "Відміна",
+            "SaveBtn": "Зберегти зміни",
+            "flashMsg": {
+                "Success": {
+                    "Title": "Зміни збережено",
+                    "Content": "Все збережено успішно."
+                },
+                "Error": {
+                    "Title": "Зміни не збережено",
+                    "ContentShowHide": "Нічого не збережено."
+                }
+            },
+            "MainArticlesConfigurator": {
+                "MainArticles": "ГОЛОВНІ СТАТТІ",
+                "AddMainArticle": "+ Додати головну статтю"
+            },
+            "BreakdownsConfigurator": {
+                "Breakdowns": "Останні статті",
+                "AddBreakdown": "+ Додати останні статті"
+            },
+            "CategoryLabel": "КАТЕГОРІЯ*",
+            "SubCategoryLabel": "СУБКАТЕГОРІЯ",
+            "TeamLabel": "КОМАНДА",
+            "ArticleLabel": "СТАТТЯ*",
+            "DeleteBtn": "Видалити",
+            "AddArticleBtn": "+ Додати ще одну головну статтю",
+            "AddBreakdownBtn": "+ Додати ще одну останню статтю"
         }
+    },
+    "Footer": {
+        "Newsletter": "РОЗСИЛКА",
+        "SignUpAgitation": "Підпишіться, щоб отримувати останні спортивні новини",
+        "EmailPlaceholder": "Ваша електронна адреса",
+        "Subscribe": "Підписатися",
+        "Contributions": "ВНЕСОК",
+        "FeaturedWritersProgram": "Програма Вибраних Авторів",
+        "FeaturedTeamWritersProgram": "Програма Вибраних Авторів Команди",
+        "InternshipProgram": "Програма Стажування",
+        "CompanyInfo": "ІНФОРМАЦІЯ ПРО КОМПАНІЮ",
+        "About": "Про Sports Hub",
+        "News": "Новини / В ЗМІ",
+        "Advertising": "Реклама / Спортивна мережа блогерів",
+        "Events": "Події",
+        "ContactUs": "Зв'яжіться з нами"
     }
 }

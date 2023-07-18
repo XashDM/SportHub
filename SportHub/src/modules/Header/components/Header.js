@@ -25,7 +25,7 @@ export default function Header() {
                     return <AdminHeader setIsContentSearch={setIsContentSearch} setContentSearchValue={setContentSearchValue} />
                 }
                 else if (userData?.isAdmin === false) {
-                    return <UserHeader setIsContentSearch={setIsContentSearch} setContentSearchValue={setContentSearchValue} />
+                    return <UserHeader setIsContentSearch={setIsContentSearch} setContentSearchValue={setContentSearchValue} username={userData} />
                 }
                 else {
                     return <NotLoginedHeader setIsContentSearch={setIsContentSearch} setContentSearchValue={setContentSearchValue} />

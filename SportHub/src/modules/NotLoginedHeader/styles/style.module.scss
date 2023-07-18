@@ -29,7 +29,7 @@ select::-ms-expand {
 
   .searchbar {
     display: flex;
-    background: var(white);
+    background: white;
     width: 25vw;
     height: 12vh;
     font-size: 18px;
@@ -43,7 +43,7 @@ select::-ms-expand {
     left: 43vw;
     top: 0;
     @include flex-center;
-    background: var(white);
+    background: white;
     width: 25vw;
     height: 12vh;
     font-size: 15px;
@@ -109,7 +109,7 @@ select::-ms-expand {
     left: 68vw;
     top: 0;
     @include flex-center;
-    background: var(white);
+    background: white;
     width: 21vw;
     height: 12vh;
     font-size: 18px;
@@ -122,7 +122,7 @@ select::-ms-expand {
     left: 89vw;
     top: 0;
     @include flex-center;
-    background: var(white);
+    background: white;
     width: 11vw;
     height: 12vh;
     font-size: 18px;

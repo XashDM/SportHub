@@ -1,0 +1,24 @@
+.EditmenuElement{
+    height: 40px;
+    width: 100%;
+    font-family: var(--font-style-open-sans),;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 19px;
+    color: black;
+    display: flex;
+    padding-left: 10px;
+    align-items: center;
+
+    span{
+        text-align: center;
+    }
+
+    &:hover{
+        background-color: #D721301C;
+        color: var(--color-red-hover);
+    }
+}
+
+

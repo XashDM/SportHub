@@ -38,4 +38,30 @@ public class ImageRepository : IImageRepository
 			await connection.ExecuteAsync(sqlImage, image);
 		}
 	}
+
+	public async Task UpdateImageAsync(Image image)
+	{
+		using (var connection = _dbConnectionFactory.GetConnection())
+		{
+			connection.Open();
+
+			var sqlImage = $"UPDATE Images SET Url = @Url, Alt = @Alt WHERE ImageId = '{image.ImageId}'";
+
+			await connection.ExecuteAsync(sqlImage, image);
+		}
+	}
+
+	public async Task<bool> ImageExists(string id)
+	{
+		using (var connection = _dbConnectionFactory.GetConnection())
+		{
+			connection.Open();
+
+			var sqlImage = $"SELECT * FROM Images WHERE ImageId = '{id}'";
+
+			var image = await connection.QueryFirstOrDefaultAsync<Image>(sqlImage);
+
+			return image != null;
+		}
+	}
 }

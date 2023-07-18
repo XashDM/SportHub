@@ -2,9 +2,12 @@ import React, { useEffect, useState } from "react"
 import styles from "../styles/style.module.scss"
 import Tab from "./Tab"
 import Label from "../../../ui/Label"
+import { useTranslation } from "react-i18next"
 
 
 export default function TabPanel({activeTab, setActiveTab, languages}){
+    const {t, i18n} = useTranslation()
+
     const tabChange = (event) => {
         const newTab = Number(event.target.getAttribute("value"))
         setActiveTab(newTab)
@@ -20,7 +23,7 @@ export default function TabPanel({activeTab, setActiveTab, languages}){
 
     return (
         <div>
-            <Label>Page Languages</Label>
+            <Label>{t('AdminPage.ArticleMenu.PageLanguages')}</Label>
             <div className={styles.tab_menu}>
                 {tabs}
             </div>
