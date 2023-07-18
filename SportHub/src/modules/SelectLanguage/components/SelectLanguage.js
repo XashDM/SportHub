@@ -1,4 +1,4 @@
-import getLanguagesRequest from "../../LanguagesManagement/helpers/getLanguagesRequest"
+import getLanguagesRequest from "../../../helpers/getLanguagesRequest"
 import { useEffect, useState } from "react"
 import { changeLanguage } from "i18next"
 import SelectStyles from "../styles/SelectStyles"
