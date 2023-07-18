@@ -1,11 +1,8 @@
-import axios from "axios"
-
+import extendedAxios from "../../../extendedAxios"
 
 const deleteLanguageRequest = async (shortTitle) => {
     try {
-        const backendHost = process.env.REACT_APP_BACKEND_HOST
-
-        const response = await axios.delete(`${backendHost}/Language/${shortTitle}`, {})
+        const response = await extendedAxios.delete(`/Language/${shortTitle}`, {})
         console.log(response.data)
         return response
     } catch (error) {

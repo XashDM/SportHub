@@ -1,9 +1,8 @@
-import axios from "axios"
-const passwordResetRequest = async (email) => {
-    const backendHost = process.env.REACT_APP_BACKEND_HOST
+import extendedAxios from "../../../extendedAxios"
 
+const passwordResetRequest = async (email) => {
     try {
-        return await axios.get(`${backendHost}/Auth/requestResetPassword/${email}`)
+        return await extendedAxios.get(`/Auth/requestResetPassword/${email}`)
     } catch (error) {
         console.error(error)
         return error.code

@@ -1,8 +1,8 @@
-import axios from "axios"
+import extendedAxios from "../../../extendedAxios"
+
 const getUsersRequest = async () => {
-    const backendHost = process.env.REACT_APP_BACKEND_HOST
     try {
-        const response = await axios.get(`${backendHost}/User/users`, {})
+        const response = await extendedAxios.get(`/User/users`, {})
         return response
     } catch (error) {
         console.error(error)

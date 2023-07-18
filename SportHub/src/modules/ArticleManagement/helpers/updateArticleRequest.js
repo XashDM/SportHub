@@ -1,10 +1,8 @@
-import axios from "axios"
-
+import extendedAxios from "../../../extendedAxios"
 
 const updateArticleRequest = async (articleForm) => {
     try {
-        const backendHost = process.env.REACT_APP_BACKEND_HOST
-        const response = await axios.put(`${backendHost}/Article`,
+        const response = await extendedAxios.put(`/Article`,
         articleForm,
             {
                 headers: {

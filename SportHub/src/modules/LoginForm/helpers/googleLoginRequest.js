@@ -1,9 +1,8 @@
-import axios from "axios"
-const googleLoginRequest = async (accessToken) => {
-    const backendHost = process.env.REACT_APP_BACKEND_HOST
+import extendedAxios from "../../../extendedAxios"
 
+const googleLoginRequest = async (accessToken) => {
     try {
-        const response = await axios.post(`${backendHost}/GoogleAuthorization`,null, {
+        const response = await extendedAxios.post(`/GoogleAuthorization`,null, {
             params: {
                 accessToken
             }

@@ -55,8 +55,7 @@ function MainArticlesSlider() {
 
         },0)
 
-        // TODO: start animation when component rendered
-        // When component unmount
+
         return () => stopAutoScroll()
     }, [])
 

@@ -23,22 +23,20 @@ function App() {
         <GoogleOAuthProvider clientId="1053346154092-0ht8fsk771fsnn1lvd5a94e3r5etphle.apps.googleusercontent.com">
         <BrowserRouter>
             <Routes>
-                <Route exact path={ROUTES.HOME} element={
-                        <HomePage/>
-                } />
+                <Route exact path={ROUTES.HOME} element={<HomePage/>} />
                 <Route exact path={ROUTES.SEARCH} element={<SearchArticlesPage/>} />
                 <Route exact path={ROUTES.ARTICLE} element={<Article/>} />
 
                 <Route exact path={ROUTES.ADMIN} element={
-                    // <ProtectedRoute roles={["admin"]}>
+                    <ProtectedRoute roles={["admin"]}>
                         <AdminPage />
-                    // </ProtectedRoute>
+                    </ProtectedRoute>
                 } />
-                    <Route exact path={ROUTES.SIGNUP} element={<RegistrationPage/>} />
-                    <Route exact path={ROUTES.PASSWORD_RESET} element={<PasswordResetPage/>} />
-                    <Route exact path={ROUTES.PASSWORD_CHANGE} element={<PasswordChangePage/>} />
-                    <Route exact path={ROUTES.LOGIN} element={<AuthorizationPage/>} />
-                    <Route exact path="*" element={<ErrorPage/>} />
+                <Route exact path={ROUTES.SIGNUP} element={<RegistrationPage/>} />
+                <Route exact path={ROUTES.PASSWORD_RESET} element={<PasswordResetPage/>} />
+                <Route exact path={ROUTES.PASSWORD_CHANGE} element={<PasswordChangePage/>} />
+                <Route exact path={ROUTES.LOGIN} element={<AuthorizationPage/>} />
+                <Route exact path="*" element={<ErrorPage/>} />
             </Routes>
         </BrowserRouter>
         </GoogleOAuthProvider>

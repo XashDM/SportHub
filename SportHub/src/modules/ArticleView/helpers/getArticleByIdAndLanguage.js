@@ -1,9 +1,8 @@
-import axios from "axios"
-const getArticleByIdAndLanguage = async (articleId, language) => {
-    const backendHost = process.env.REACT_APP_BACKEND_HOST
+import extendedAxios from "../../../extendedAxios"
 
+const getArticleByIdAndLanguage = async (articleId, language) => {
     try {
-        const response = await axios.get( `${backendHost}/Article/?id=${articleId}&language=${language}`)
+        const response = await extendedAxios.get( `/Article/?id=${articleId}&language=${language}`)
         console.log(response)
         return response.data
     } catch (error) {

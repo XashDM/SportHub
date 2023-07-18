@@ -1,8 +1,8 @@
-import axios from "axios";
+import extendedAxios from "../../../extendedAxios"
 
 const CategoryRequest = async () => {
     const backendHost = process.env.REACT_APP_BACKEND_HOST
-    const preListCategory = (await axios.get(`${backendHost}/Category/all`))["data"]
+    const preListCategory = (await extendedAxios.get(`/Category/all`))["data"]
     const ListCategory = []
     for (let i of preListCategory){
         i.id = i.categoryId
@@ -11,7 +11,7 @@ const CategoryRequest = async () => {
         delete i.categoryName
         ListCategory.push(i)
     }
-    
+
     return ListCategory
 }
 

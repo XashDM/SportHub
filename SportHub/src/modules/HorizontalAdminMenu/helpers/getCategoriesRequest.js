@@ -1,9 +1,8 @@
-import axios from "axios"
+import extendedAxios from "../../../extendedAxios"
 
 const getCategoriesRequest = async () => {
-    const backendHost = process.env.REACT_APP_BACKEND_HOST
     try {
-        return await axios.get(`${backendHost}/Category/all`, {})
+        return await extendedAxios.get(`/Category/all`, {})
     } catch (error) {
         console.error(error)
         return error.code

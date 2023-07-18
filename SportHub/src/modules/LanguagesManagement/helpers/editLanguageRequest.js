@@ -1,11 +1,8 @@
-import axios from "axios"
-
+import extendedAxios from "../../../extendedAxios"
 
 const editLanguageRequest = async (shortTitle, isActive) => {
     try {
-        const backendHost = process.env.REACT_APP_BACKEND_HOST
-
-        const response = await axios.put(`${backendHost}/Language/${shortTitle}`,
+        const response = await extendedAxios.put(`/Language/${shortTitle}`,
             isActive,
             {
                 headers: {
