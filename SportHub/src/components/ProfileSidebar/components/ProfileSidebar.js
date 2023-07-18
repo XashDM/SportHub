@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next"
 export default function ProfileSidebar({ active, left }) {
     const navigate = useNavigate()
     const { t } = useTranslation()
-    const { userData, setUserData, setAccessToken } = useAuthStore()
+    const { userData, accessToken, setUserData, setAccessToken } = useAuthStore()
 
     const handleLogout = async (event) => {
         event.preventDefault()
@@ -23,7 +23,7 @@ export default function ProfileSidebar({ active, left }) {
                 <div className={styles.email}>{userData?.email}</div>
                 <div className={styles.view_profile_button}>{t('ProfileSidebar.ViewProfile')}</div>
                 <div className={styles.personal}>{t('ProfileSidebar.Personal')}</div>
-                <div className={styles.change_password} onClick={() => navigate(ROUTES.PASSWORD_CHANGE)}>{t('ProfileSidebar.ChangePassword')}</div>
+                <div className={styles.change_password} onClick={() => navigate(ROUTES.PASSWORD_CHANGE.replace(':token', accessToken))}>{t('ProfileSidebar.ChangePassword')}</div>
                 <div className={styles.change_password} onClick={handleLogout}>{t('ProfileSidebar.LogOut')}</div>
             </div>
         </div>
