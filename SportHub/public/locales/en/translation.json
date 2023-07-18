@@ -193,5 +193,11 @@
         "Advertising": "Advertising / Sports Blogger Ad Network",
         "Events": "Events",
         "ContactUs": "Contact Us"
+    },
+    "ProfileSidebar": {
+        "ViewProfile": "VIEW PROFILE",
+        "Personal": "Personal",
+        "ChangePassword": "Change password",
+        "LogOut": "Log out"
     }
 }

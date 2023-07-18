@@ -193,5 +193,11 @@
         "Advertising": "Publicité / Réseau de blogueurs sportifs",
         "Events": "Événements",
         "ContactUs": "Contactez-nous"
+    },
+    "ProfileSidebar": {
+        "ViewProfile": "PROFIL",
+        "Personal": "Données personnelles",
+        "ChangePassword": "Changer le mot de passe",
+        "LogOut": "Déconnexion"
     }
 }

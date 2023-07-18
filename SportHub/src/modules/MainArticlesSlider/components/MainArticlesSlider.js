@@ -57,7 +57,7 @@ function MainArticlesSlider() {
 
 
         return () => stopAutoScroll()
-    }, [])
+    }, [i18n.language])
 
     if(noArticlesFromBackend()) return null
 
