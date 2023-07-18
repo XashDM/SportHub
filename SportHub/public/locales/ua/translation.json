@@ -193,5 +193,11 @@
         "Advertising": "Реклама / Спортивна мережа блогерів",
         "Events": "Події",
         "ContactUs": "Зв'яжіться з нами"
+    },
+    "ProfileSidebar": {
+        "ViewProfile": "ПРОФІЛЬ",
+        "Personal": "Особисті дані",
+        "ChangePassword": "Змінити пароль",
+        "LogOut": "Вийти"
     }
 }
